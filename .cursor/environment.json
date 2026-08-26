@@ -1,0 +1,13 @@
+{
+  "name": "cursor-cloud-tutorial",
+  "terminals": [
+    {
+      "name": "static-server",
+      "command": "python3 -m http.server 8000 --bind 0.0.0.0",
+      "description": "Serves the tutorial site (index.html) at http://localhost:8000 for live preview."
+    }
+  ],
+  "ports": [
+    { "name": "static site", "port": 8000 }
+  ]
+}
