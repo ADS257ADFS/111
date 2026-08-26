@@ -1313,7 +1313,7 @@ html.theme-dark,html.studio-theme-dark{--canvas-glass-glider-shadow:inset 0 1px 
     #imageQuickToolbar.image-quick-toolbar .iqt-dropdown-menu{background:#1f1f1f !important;background-color:#1f1f1f !important}
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card .composer-card-material{background:linear-gradient(155deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .014) 46%, rgba(255, 255, 255, .035)),
         rgba(var(--sc-base-rgb), .76);box-shadow:inset 0 1px 0 rgba(255, 255, 255, .09)}
-:is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card .composer-card-surface{background:#0e0e0e !important;box-shadow:inset 0 1px 0 rgba(255, 255, 255, .035)}
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card .composer-card-surface{background:var(--ui-surface-composer) !important;box-shadow:inset 0 1px 0 rgba(255, 255, 255, .035)}
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
     .composer-tool-btn,
     .composer-api-settings-btn,

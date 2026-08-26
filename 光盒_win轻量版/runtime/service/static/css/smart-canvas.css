@@ -3630,7 +3630,7 @@ html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover .has-strong-s
 .shell .composer .composer-footer .composer-footer-bar {
     position:relative;
     isolation:isolate;
-    transform:translateY(-11px);
+    transform:translateY(-16px);
 }
 .shell .composer .composer-footer .composer-footer-glider {
     display:block;

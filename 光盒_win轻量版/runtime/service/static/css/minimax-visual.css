@@ -1553,7 +1553,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
     color: var(--ui-text) !important;
 }
 
-/* 底部输入框表面：浅色纯白；深色沿用壳层 #181818，压过冻结层 #0e0e0e。 */
+/* 底部输入框表面：浅色纯白；深色比画布更浅，压过冻结层 #0e0e0e。 */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card .composer-card-surface {
     background-color: var(--ui-surface-composer) !important;
@@ -4341,4 +4341,23 @@ body #shell.shell #composer.composer .composer-footer
     min-height: calc(var(--ui-menu-item-h) + var(--ui-space-4)) !important;
     padding: var(--ui-space-2) var(--ui-space-3) !important;
     gap: var(--ui-space-3) !important;
+}
+
+/* Dark composer: solid elevated face, clearly lighter than the canvas. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer .composer-card {
+    background: var(--ui-surface-composer) !important;
+    background-image: none !important;
+    background-color: var(--ui-surface-composer) !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card > .composer-card-surface {
+    display: block !important;
+    background: var(--ui-surface-composer) !important;
+    background-color: var(--ui-surface-composer) !important;
+    background-image: none !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-footer-bar {
+    background: transparent !important;
+    box-shadow: none !important;
 }
