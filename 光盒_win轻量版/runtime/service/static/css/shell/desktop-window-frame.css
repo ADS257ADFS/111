@@ -226,13 +226,14 @@ html.lightbox-desktop-native .lightbox-native-window-controls button {
     position: relative;
     z-index: 1;
     width: 30px;
-    height: 32px;
+    height: 30px;
     border: 0;
-    border-radius: 999px;
+    border-radius: 6px;
     background: transparent;
     color: currentColor;
     cursor: default;
     outline: none;
+    overflow: visible;
 }
 
 /* 悬停光斑：方框，覆盖略大于图标区 */
@@ -241,8 +242,8 @@ html.lightbox-desktop-native .lightbox-native-window-controls button::before {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     transform: translate(-50%, -50%);
     border-radius: 6px;
     background: transparent;

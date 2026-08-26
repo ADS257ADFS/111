@@ -335,10 +335,10 @@ html.lightbox-desktop-native body #shell.shell #gptDockOpenBtn.dock-open-btn {
     border-radius: var(--ui-radius-control) !important;
 }
 
-/* 例外：确需保持圆形的元素（开关滑钮、主题切换钮、加载圈、头像、状态点） */
+/* 例外：确需保持圆形的元素（开关滑钮、主题切换钮、加载圈、头像、状态点）
+   窗口控制按钮悬停改为方框，故不在此列。 */
 body :is(
     .tt-knob, .tt-face, .ios-slider::before,
-    .lightbox-native-window-controls button,
     [class*="spinner"], [class*="avatar"], [class*="-dot"], .gate-trash-badge
 ) {
     border-radius: 999px !important;
@@ -786,37 +786,39 @@ html.lightbox-desktop-native .lightbox-native-window-controls {
     width: auto !important;
     min-width: 0 !important;
     flex-basis: auto !important;
-    height: 26px !important;
-    gap: 10px !important;
-    padding: 0 6px !important;
+    height: 30px !important;
+    gap: 8px !important;
+    padding: 0 4px !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button {
-    width: 28px !important;
-    height: 28px !important;
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 6px !important;
+    overflow: visible !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button::before {
-    width: 28px !important;
-    height: 28px !important;
+    width: 30px !important;
+    height: 30px !important;
     border-radius: 6px !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button:is([data-native-window-action="minimize"], [data-native-window-action="maximize"]) span {
     width: 8px !important;
-    left: 10px !important;
+    left: 11px !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button[data-native-window-action="maximize"] span {
     width: 7px !important;
     height: 7px !important;
-    left: 10.5px !important;
+    left: 11.5px !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button[data-native-window-action="close"] span {
     width: 10px !important;
     height: 10px !important;
-    left: 9px !important;
+    left: 10px !important;
 }
 
 /* —— 8.2 壳层三栏：左侧栏 / 中画布 / 右对话栏，无窗框 —— */
