@@ -4267,8 +4267,6 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     .canvas-context-menu,
     .shell-user-menu,
     .dock-chrome-title-menu,
-    .canvas-history-panel,
-    .shell-settings-dialog,
     #composerApiSettingsPopover,
     #composerSizePopover,
     #composerKindPopover,
@@ -4276,6 +4274,30 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
 ),
 html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body.gpt-dock-canvas-mode .chat-shell .composer {
     box-shadow: var(--ui-shadow-float) !important;
+}
+
+/* ================================================================
+ * M76b：设置中心与历史记录面板用更明显的对话框投影。
+ * 浮层 float 阴影在深色遮罩上几乎看不见，这里单独加一档。
+ * ================================================================ */
+html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body :is(
+    .shell-settings-dialog,
+    .shell-project-history-dialog,
+    .canvas-history-panel
+) {
+    box-shadow:
+        0 22px 54px rgba(28, 34, 42, .28),
+        0 8px 20px rgba(28, 34, 42, .14) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark):not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body :is(
+    .shell-settings-dialog,
+    .shell-project-history-dialog,
+    .canvas-history-panel
+) {
+    box-shadow:
+        0 22px 54px rgba(0, 0, 0, .52),
+        0 8px 20px rgba(0, 0, 0, .32) !important;
 }
 
 /* ================================================================
