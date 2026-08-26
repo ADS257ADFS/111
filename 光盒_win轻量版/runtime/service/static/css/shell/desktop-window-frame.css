@@ -7,12 +7,9 @@
 }
 
 html.lightbox-desktop-native {
-    --lightbox-chrome-bg: #dedede;
-    --lightbox-chrome-surface:
-        linear-gradient(to bottom, rgba(255, 255, 255, .96) 0, rgba(255, 255, 255, .55) 14px, rgba(255, 255, 255, 0) 48px),
-        linear-gradient(to right, rgba(255, 255, 255, .84) 0, rgba(255, 255, 255, .36) 12px, rgba(255, 255, 255, 0) 38px),
-        linear-gradient(to left, rgba(255, 255, 255, .84) 0, rgba(255, 255, 255, .36) 12px, rgba(255, 255, 255, 0) 38px),
-        linear-gradient(to top, rgba(255, 255, 255, .84) 0, rgba(255, 255, 255, .36) 12px, rgba(255, 255, 255, 0) 38px);
+    /* 与 win_launcher.CHROME_BG light / 顶栏纯白一致，避免圆角抗锯齿补边错色。 */
+    --lightbox-chrome-bg: #fff;
+    --lightbox-chrome-surface: none;
     /* 根背景与顶栏同色，避免 WebView2 缩放取整时露出异色细缝。 */
     background: var(--lightbox-chrome-bg) !important;
 }
@@ -1266,7 +1263,8 @@ html.lightbox-desktop-native .shell-canvas-project-cluster {
 }
 
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) {
-    --lightbox-chrome-bg: #252528;
+    /* 与 win_launcher.CHROME_BG dark / --ui-surface-shell 一致。 */
+    --lightbox-chrome-bg: #181818;
 }
 
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-titlebar {

@@ -4253,7 +4253,8 @@ html.lightbox-desktop-native .mm-sidebar .mm-sidebar-user:is(:hover, :focus-visi
 /* ================================================================
  * M76：指定浮层表面恢复投影（--ui-shadow-float）。
  * 覆盖范围：画布底部输入白面、右侧对话输入卡、媒体上方工具栏、
- * 选区打组/解组胶囊、双击空白引用面板、画布右键面板、左下用户面板。
+ * 选区打组/解组胶囊、双击空白引用面板、画布右键面板、左下用户面板、
+ * 右侧栏顶部对话标题下拉菜单。
  * :not(#ui-shadow-reset-*) 前缀用于压过 M13 的全局投影清零。
  * ================================================================ */
 html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body :is(
@@ -4264,6 +4265,7 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     .node-context-menu,
     .canvas-context-menu,
     .shell-user-menu,
+    .dock-chrome-title-menu,
     #composerApiSettingsPopover,
     #composerSizePopover,
     #composerKindPopover,
