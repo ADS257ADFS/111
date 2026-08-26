@@ -888,10 +888,10 @@ html.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-the
     border-left-color: var(--mm-border, rgba(255, 255, 255, .08)) !important;
 }
 
-/* iframe 左缩 1px 露出分割线；圆角清零 */
+/* iframe 左缩 1px 露出分割线；右缘留 8px 让滚动条离开窗口拉伸热区；圆角清零 */
 html.lightbox-desktop-native.lightbox-desktop-native:not(.lightbox-compact-mode) .gpt-dock iframe {
-    margin: 0 0 0 1px !important;
-    width: calc(100% - 1px) !important;
+    margin: 0 8px 0 1px !important;
+    width: calc(100% - 9px) !important;
     border-radius: 0 !important;
     backface-visibility: hidden;
     transform: translate3d(0, 0, 0);

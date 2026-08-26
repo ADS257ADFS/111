@@ -1387,12 +1387,23 @@ html.lightbox-desktop-native [data-native-window-resize^="bottom-"] {
 html.lightbox-desktop-native [data-native-window-resize$="-left"] { left: 0; cursor: nwse-resize; }
 html.lightbox-desktop-native [data-native-window-resize$="-right"] { right: 0; cursor: nesw-resize; }
 
-/* 右侧对话栏展开时：关掉窗口右缘拉伸热区，避免盖住对话栏纵向滚动条。
- * 窗口仍可通过左缘、上下缘与四角拉伸。 */
+/* 右侧对话栏展开时：关掉窗口右缘/右上右下角拉伸热区，避免盖住纵向滚动条。
+ * 窗口仍可通过左缘、上下缘与左上/左下角拉伸；右缘改由收起对话栏后恢复。 */
 html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.lightbox-compact-mode)
-    [data-native-window-resize="right"] {
+    [data-native-window-resize="right"],
+html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.lightbox-compact-mode)
+    [data-native-window-resize="top-right"],
+html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.lightbox-compact-mode)
+    [data-native-window-resize="bottom-right"] {
     pointer-events: none !important;
     cursor: auto !important;
+}
+
+/* 对话栏内容右缘留出窄缝，滚动条不要紧贴窗口最外沿。 */
+html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.lightbox-compact-mode)
+    .gpt-dock iframe {
+    margin-right: 8px !important;
+    width: calc(100% - 9px) !important;
 }
 
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-window-controls button:hover::before {
