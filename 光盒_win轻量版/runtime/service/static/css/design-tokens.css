@@ -84,8 +84,8 @@ body.studio-theme-dark {
     --ui-surface-card: #212121;
     --ui-surface-elevated: #232323;
     --ui-surface-input: #1e1e1e;
-    --ui-surface-composer: #181818;
-    --ui-surface-composer-topbar: rgba(255, 255, 255, .04);
+    --ui-surface-composer: #242424;
+    --ui-surface-composer-topbar: rgba(255, 255, 255, .06);
 
     --ui-hover: rgba(255, 255, 255, .07);
     --ui-active: rgba(255, 255, 255, .11);
@@ -270,7 +270,7 @@ body.studio-theme-dark {
 :root {
     --ui-titlebar-h: 28px;
     --ui-sidebar-w: 208px;
-    --ui-sidebar-logo-h: 9.333px;
+    --ui-sidebar-logo-h: 11.666px; /* was 9.333px; +25% for titlebar Welcome mark */
     --ui-dock-w: 460px;
     --ui-composer-w: 760px;
     --ui-composer-surface-h: 174px;

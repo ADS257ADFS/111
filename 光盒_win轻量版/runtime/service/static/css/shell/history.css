@@ -146,53 +146,31 @@ html.studio-theme-dark .shell-project-history-dialog {
 }
 
 .shell-project-history-filters {
-    width: 100%;
-    min-width: 0;
-    overflow: visible;
+    display: none !important;
 }
 
 .shell-project-history-controls {
     width: 100%;
     min-width: 0;
-}
-
-.shell-project-history-filters button {
-    flex: 0 0 auto;
-    min-height: 34px;
-    padding: 0 10px;
-    border: 1px solid transparent;
-    border-radius: 999px;
-    background: transparent;
-    color: var(--ui-text-secondary);
-    font-size:12px;
-    font-weight: 445;
-    line-height: 1;
-    white-space: nowrap;
-    word-break: keep-all;
-    cursor: pointer;
-}.shell-project-history-filters button:hover{
-    background: var(--nav-hover-bg);
-}
-
-.shell-project-history-filters button.active {
-    border-color: var(--ui-accent);
-    background: var(--ui-accent);
-    color: var(--ui-text-on-accent);
+    justify-content: flex-start;
 }
 
 .shell-project-history-search {
-    width: auto;
+    width: 200px;
+    max-width: 200px;
     min-width: 0;
-    flex: 1 1 auto;
-    min-height: 38px;
+    flex: 0 1 200px;
+    height: 36px;
+    min-height: 36px;
     padding: 0 12px;
     display: flex;
     align-items: center;
     gap: 8px;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 10px;
     background: var(--sidebar-bg);
     color: var(--ui-text-secondary);
+    box-sizing: border-box;
 }
 
 .shell-project-history-search:focus-within {
@@ -225,33 +203,42 @@ html.studio-theme-dark .shell-project-history-dialog {
 }
 
 .shell-project-history-sort {
-    width: 118px;
-    flex: 0 0 118px;
-    min-height: 38px;
+    width: auto;
+    min-width: 132px;
+    flex: 0 0 auto;
+    height: 36px;
+    min-height: 36px;
     padding: 0 34px 0 12px;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 10px;
     background: var(--sidebar-bg);
     color: var(--ui-text);
     font-size:12px;
     font-weight: 445;
+    line-height: 1;
     cursor: pointer;
+    box-sizing: border-box;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: nowrap;
 }
 
 .shell-project-history-view-toggle {
     flex: 0 0 auto;
-    height: 38px;
+    height: 36px;
+    min-height: 36px;
     padding: 3px;
     display: inline-flex;
     align-items: center;
     gap: 2px;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 10px;
     background: #f7f9fa;
+    box-sizing: border-box;
 }
 
 .shell-project-history-view-toggle button {
-    width: 31px;
+    width: 30px;
     height: 30px;
     padding: 0;
     display: inline-flex;
