@@ -2,8 +2,8 @@
 (function(global){
     'use strict';
 
-    const DEFAULT_HEIGHT = 108;
-    const MIN_HEIGHT = 108;
+    const DEFAULT_HEIGHT = 84;
+    const MIN_HEIGHT = 84;
 
     function maxHeight(){
         return Math.max(MIN_HEIGHT, Math.min(420, Math.round(global.innerHeight * 0.46)));
