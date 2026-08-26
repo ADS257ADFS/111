@@ -21,7 +21,7 @@
     /* 表面 */
     --ui-surface-canvas: #fcfcfc;        /* 画布底 */
     --ui-surface-chrome: #f7f7f8;        /* 窗口栏 / 侧栏 / 全局面板 */
-    --ui-surface-shell: #fafafb;         /* 顶部窗口栏 / 左侧主导航 */
+    --ui-surface-shell: #ffffff;         /* 顶部窗口栏 / 左侧主导航；与 win_launcher CHROME_BG light 一致 */
     --ui-surface-card: #ffffff;          /* 卡片 / 面板内容底 */
     --ui-surface-elevated: #ffffff;      /* 菜单 / 弹层 */
     --ui-surface-input: #ffffff;         /* 输入框 */
@@ -84,8 +84,9 @@ body.studio-theme-dark {
     --ui-surface-card: #212121;
     --ui-surface-elevated: #232323;
     --ui-surface-input: #1e1e1e;
-    --ui-surface-composer: #181818;
-    --ui-surface-composer-topbar: rgba(255, 255, 255, .04);
+    --ui-surface-composer: #0e0e0e;      /* 画布底部输入面：贴近画布底色 */
+    --ui-surface-dock-composer: #2e2e2e; /* 右侧对话栏输入面：比栏底更浅 */
+    --ui-surface-composer-topbar: rgba(255, 255, 255, .06);
 
     --ui-hover: rgba(255, 255, 255, .07);
     --ui-active: rgba(255, 255, 255, .11);
@@ -270,7 +271,7 @@ body.studio-theme-dark {
 :root {
     --ui-titlebar-h: 28px;
     --ui-sidebar-w: 208px;
-    --ui-sidebar-logo-h: 9.333px;
+    --ui-sidebar-logo-h: 11.666px; /* was 9.333px; +25% for titlebar Welcome mark */
     --ui-dock-w: 460px;
     --ui-composer-w: 760px;
     --ui-composer-surface-h: 174px;

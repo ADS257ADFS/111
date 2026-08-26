@@ -199,10 +199,12 @@ def disable_system_window_rounding(hwnd: int) -> None:
         pass
 
 
-# 宿主底色必须与 CSS 窗框色（--ui-surface-shell）一致：WebView2 缩放取整
-# 会在窗口左右/底部留下 1px 缝隙，露出宿主色——写死白色会浅色露白、深色漏黑。
-# 浅色用 MiniMax 浅灰窗框 #fafafb；深色用 MiniMax 深灰窗框 #1b1b1b。
-CHROME_BG = {"light": (0xFA, 0xFA, 0xFB), "dark": (0x18, 0x18, 0x18)}
+# 宿主底色必须与 CSS 窗框色一致：浅色完整窗口栏为纯白 #fff
+# （desktop-window-frame --lightbox-chrome-bg），深色为 #181818
+# （--ui-surface-shell）。WebView2 缩放取整会在窗口左右/底部留下
+# 1px 缝隙，露出宿主色；抗锯齿补边也用同一色，避免上角贴合、下角
+# 错色导致“上圆角更大 + 锯齿”。
+CHROME_BG = {"light": (0xFF, 0xFF, 0xFF), "dark": (0x18, 0x18, 0x18)}
 _host_theme = "light"
 
 
@@ -448,8 +450,11 @@ class WindowShadow:
                 g.DrawPath(pen, ring)
                 ring.Dispose()
                 pen.Dispose()
-            # 抗锯齿补边：主窗被 SetWindowRgn 圆角裁剪后边缘是硬锯齿；在阴影
-            # 窗上以窗框色实心填充同半径圆角矩形，四角透出的平滑圆弧盖住锯齿。
+            # 抗锯齿补边：主窗被 SetWindowRgn 圆角裁剪后边缘是硬锯齿。
+            # 1) 用与 CSS 窗框完全一致的实色圆角矩形垫底，四角透出的平滑
+            #    圆弧盖住锯齿（上下左右同一半径，避免旧 CreateRoundRectRgn
+            #    或顶栏色/底栏色不一致造成“上大下小”）。
+            # 2) 再沿轮廓画几圈半透明描边，进一步柔化锯齿台阶。
             edge_r, edge_g, edge_b = CHROME_BG[_host_theme]
             edge_brush = SolidBrush(Color.FromArgb(255, edge_r, edge_g, edge_b))
             edge_path = round_rect_path(
@@ -459,6 +464,26 @@ class WindowShadow:
             g.FillPath(edge_brush, edge_path)
             edge_path.Dispose()
             edge_brush.Dispose()
+            if _host_theme == "dark":
+                stroke_rgb = (255, 255, 255)
+            else:
+                stroke_rgb = (0, 0, 0)
+            for inset, alpha, pen_w in (
+                (0.0, 34, 1.35),
+                (0.55, 20, 1.05),
+                (1.1, 10, 1.0),
+            ):
+                pen = Pen(Color.FromArgb(alpha, *stroke_rgb), pen_w)
+                path = round_rect_path(
+                    float(win_x + inset),
+                    float(win_y + inset),
+                    float(win_w - inset * 2),
+                    float(win_h - inset * 2),
+                    max(1.0, float(WINDOW_CORNER_RADIUS) - inset),
+                )
+                g.DrawPath(pen, path)
+                path.Dispose()
+                pen.Dispose()
             self._edge_theme = _host_theme
             g.Dispose()
 
