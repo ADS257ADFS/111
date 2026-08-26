@@ -10,7 +10,7 @@
     position: fixed;
     right: var(--shell-agent-control-reserve, 120px);
     left: auto;
-    top: 12px;
+    top: 15px;
     bottom: auto;
     z-index: 57;
     display: flex;
@@ -348,7 +348,7 @@ html:not(.theme-dark):not(.studio-theme-dark) :is(.canvas-bottom-capsule, .canva
     .canvas-bottom-chrome {
         right: 14px;
         left: auto;
-        top: 14px;
+        top: 17px;
         bottom: auto;
     }
 
