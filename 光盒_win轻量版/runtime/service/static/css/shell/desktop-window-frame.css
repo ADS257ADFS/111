@@ -1387,6 +1387,37 @@ html.lightbox-desktop-native [data-native-window-resize^="bottom-"] {
 html.lightbox-desktop-native [data-native-window-resize$="-left"] { left: 0; cursor: nwse-resize; }
 html.lightbox-desktop-native [data-native-window-resize$="-right"] { right: 0; cursor: nesw-resize; }
 
+/* 右侧对话栏展开时：右缘拉伸条收窄到最外 4px，与 dock padding(5px) 错开，
+ * 滚动条仍可点；窗口仍可用右缘/右上/右下角拉伸（原生 right 命中已关闭）。 */
+html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.lightbox-compact-mode)
+    [data-native-window-resize="right"] {
+    width: 4px !important;
+    pointer-events: auto !important;
+    cursor: ew-resize !important;
+}
+
+html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.lightbox-compact-mode)
+    [data-native-window-resize="top-right"],
+html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.lightbox-compact-mode)
+    [data-native-window-resize="bottom-right"] {
+    width: 10px !important;
+    height: 10px !important;
+    pointer-events: auto !important;
+}
+
+/* 对话栏内容右缘均匀内缩（不再用不对称 margin 拉宽 iframe）。 */
+html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.lightbox-compact-mode)
+    .gpt-dock {
+    padding-right: 5px !important;
+    box-sizing: border-box !important;
+}
+
+html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.lightbox-compact-mode)
+    .gpt-dock iframe {
+    margin: 0 !important;
+    width: 100% !important;
+}
+
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-window-controls button:hover::before {
     background: rgba(255, 255, 255, .10);
 }

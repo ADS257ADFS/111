@@ -3371,7 +3371,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-inpu
 .composer-height-toggle {
     position:absolute;
     right:12px;
-    top:43px;
+    top:37px;
     z-index:6;
     width:26px;
     height:26px;
@@ -3631,6 +3631,10 @@ html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover .has-strong-s
     position:relative;
     isolation:isolate;
     transform:translateY(-6px);
+}
+.shell .composer .composer-footer .composer-footer-tools {
+    position:relative;
+    top:0;
 }
 .shell .composer .composer-footer .composer-footer-glider {
     display:block;
