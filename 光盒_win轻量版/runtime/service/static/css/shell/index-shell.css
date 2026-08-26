@@ -1170,14 +1170,15 @@
         .dock-chrome-title-menu {
             position: fixed;
             z-index: 360;
-            width: min(200px, calc(var(--chat-dock-width) - 40px));
-            max-height: min(320px, calc(100vh - 24px));
+            width: 176px;
+            max-width: min(176px, calc(100vw - 24px));
+            max-height: min(280px, calc(100vh - 24px));
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            padding: 4px;
+            padding: 3px;
             border: 1px solid rgba(255, 255, 255, 0.96);
-            border-radius: 12px;
+            border-radius: 10px;
             background: #fff;
             box-shadow:
                 0 22px 54px rgba(55, 65, 81, 0.16),
@@ -1208,17 +1209,17 @@
         .dock-chrome-menu-new {
             flex: 0 0 auto;
             width: 100%;
-            min-height: 30px;
-            padding: 0 8px;
+            min-height: 26px;
+            padding: 0 7px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             background: transparent;
             color: #50565e;
             font-size: 12px;
             font-weight: 445;
-            line-height: 1.2;
+            line-height: 1.15;
             text-align: left;
             cursor: pointer;
             transition: background-color .16s ease;
@@ -1243,14 +1244,14 @@
         .dock-chrome-menu-item {
             box-sizing: border-box;
             width: 100%;
-            min-height: 24px;
-            padding: 2px 4px 2px 8px;
+            min-height: 22px;
+            padding: 1px 4px 1px 7px;
             border: none;
             border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 6px;
+            gap: 4px;
             background: transparent;
             color: #50565e;
             font: inherit;
@@ -1293,7 +1294,7 @@
             min-width: 0;
             font-size: 12px;
             font-weight: 400;
-            line-height: 1.15;
+            line-height: 1.1;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -1301,7 +1302,7 @@
 
         .dock-chrome-menu-item-time {
             flex: 0 0 auto;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 400;
             line-height: 1.1;
             color: #9aa0a9;
