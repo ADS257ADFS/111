@@ -92,14 +92,15 @@ html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome {
     backdrop-filter: none !important;
 }
 
+/* Dock chrome title/actions mirror left-rail「新建画布」tokens; do not force gray/600. */
 html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-title {
-    color: #50565e !important;
-    font-weight: 600 !important;
+    color: var(--ui-text);
+    font-weight: var(--ui-weight-menu-strong);
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-btn {
-    color: #747b85 !important;
-    font-weight: 600 !important;
+    color: var(--ui-text);
+    font-weight: var(--ui-weight-menu-strong);
     background: transparent !important;
     border-color: transparent !important;
     box-shadow: none !important;
