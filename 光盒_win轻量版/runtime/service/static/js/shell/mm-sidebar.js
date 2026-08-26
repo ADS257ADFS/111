@@ -326,7 +326,12 @@
             row.querySelector('.mm-recent-menu-trigger')?.addEventListener('click', event => {
                 event.preventDefault();
                 event.stopPropagation();
+                event.stopImmediatePropagation?.();
                 toggleRecentMenu(event.currentTarget, row, item);
+            });
+            row.querySelector('.mm-recent-menu-trigger')?.addEventListener('mousedown', event => {
+                event.preventDefault();
+                event.stopPropagation();
             });
         });
     }

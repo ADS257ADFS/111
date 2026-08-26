@@ -2676,7 +2676,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body
         .shell-project-history-view-toggle
     ) {
     border-color: var(--gh-library-line) !important;
-    background: #fff !important;
+    background-color: #fff !important;
     color: var(--gh-library-primary) !important;
 }
 
