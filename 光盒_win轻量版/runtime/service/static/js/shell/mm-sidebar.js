@@ -105,6 +105,11 @@
         menu.innerHTML = `
             <button class="mm-recent-rename" type="button" role="menuitem"><i data-lucide="pencil"></i><span>重命名</span></button>
             <button class="mm-recent-delete" type="button" role="menuitem"><i data-lucide="trash-2"></i><span>删除</span></button>`;
+        menu.addEventListener('mousedown', event => {
+            event.preventDefault();
+            event.stopPropagation();
+        });
+        menu.addEventListener('click', event => event.stopPropagation());
         menu.querySelector('.mm-recent-rename')?.addEventListener('click', event => {
             event.preventDefault();
             event.stopPropagation();
@@ -129,12 +134,17 @@
         const menu = ensureRecentMenu();
         const wasOpen = recentMenuRow === row && !menu.hidden;
         closeRecentMenus();
-        if(wasOpen) return;
+        if(wasOpen || !trigger || !row || !item) return;
         recentMenuItem = item;
         recentMenuRow = row;
         row.classList.add('menu-open');
         trigger.setAttribute('aria-expanded', 'true');
         menu.hidden = false;
+        // Measure after paint so fixed menu is not positioned with a zero box.
+        requestAnimationFrame(() => {
+            if(recentMenuRow !== row || menu.hidden) return;
+            positionRecentMenu(trigger, menu);
+        });
         positionRecentMenu(trigger, menu);
     }
 
@@ -319,19 +329,23 @@
             const item = records.find(record => String(record.id) === row.dataset.canvasId);
             if(!item) return;
             row.querySelector('.mm-recent-open')?.addEventListener('click', event => {
+                // Ignore clicks that actually landed on the ellipsis (or its children).
+                if(event.target?.closest?.('.mm-recent-actions, .mm-recent-menu-trigger')) return;
                 event.preventDefault();
                 void global.SmartCanvasShellHistory?.openCanvasRecord?.({ id: String(item.id) });
                 global.setTimeout(render, 600);
             });
-            row.querySelector('.mm-recent-menu-trigger')?.addEventListener('click', event => {
+            const trigger = row.querySelector('.mm-recent-menu-trigger');
+            if(!trigger) return;
+            trigger.addEventListener('pointerdown', event => {
+                // Keep the document outside-click closer from seeing this press.
+                event.stopPropagation();
+            });
+            trigger.addEventListener('click', event => {
                 event.preventDefault();
                 event.stopPropagation();
                 event.stopImmediatePropagation?.();
-                toggleRecentMenu(event.currentTarget, row, item);
-            });
-            row.querySelector('.mm-recent-menu-trigger')?.addEventListener('mousedown', event => {
-                event.preventDefault();
-                event.stopPropagation();
+                toggleRecentMenu(trigger, row, item);
             });
         });
     }
@@ -578,9 +592,17 @@
                 if(nameEl) nameEl.textContent = event.target.value || '用户';
             }
         });
+        document.addEventListener('pointerdown', event => {
+            const target = event.target;
+            if(!(target instanceof Element)) return;
+            if(!target.closest('.mm-recent-actions, .mm-recent-menu-trigger, .mm-recent-menu')) closeRecentMenus();
+            if(!target.closest('.mm-asset-folder-menu-trigger, .mm-asset-folder-menu')) closeAssetFolderMenu();
+        });
         document.addEventListener('click', event => {
-            if(!event.target?.closest?.('.mm-recent-actions, .mm-recent-menu')) closeRecentMenus();
-            if(!event.target?.closest?.('.mm-asset-folder-menu-trigger, .mm-asset-folder-menu')) closeAssetFolderMenu();
+            const target = event.target;
+            if(!(target instanceof Element)) return;
+            if(!target.closest('.mm-recent-actions, .mm-recent-menu-trigger, .mm-recent-menu')) closeRecentMenus();
+            if(!target.closest('.mm-asset-folder-menu-trigger, .mm-asset-folder-menu')) closeAssetFolderMenu();
         });
         document.addEventListener('keydown', event => {
             if(event.key === 'Escape'){
