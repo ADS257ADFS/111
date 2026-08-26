@@ -20,6 +20,9 @@
         const isExpanded = expanded === true;
         applyHeight(composer, isExpanded ? maxHeight() : DEFAULT_HEIGHT);
         composer.dataset.heightState = isExpanded ? 'expanded' : 'default';
+        // Keep bottom edge fixed; height changes only grow/shrink upward.
+        composer.style.top = 'auto';
+        composer.style.bottom = '';
         toggle.setAttribute('aria-pressed', String(isExpanded));
         toggle.setAttribute('aria-label', isExpanded ? '恢复输入框高度' : '展开输入框');
         toggle.title = isExpanded ? '恢复输入框高度' : '展开输入框';
