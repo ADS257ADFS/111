@@ -323,12 +323,12 @@
             pointer-events: none;
         }
 
-        /* 主舞台区域 */
+        /* 主舞台区域（桌面原生窗由 win_launcher 裁外圆角；网页壳内舞台保持直角） */
         .stage {
             flex: 1;
             background: var(--stage-bg);
             margin: 16px;
-            border-radius: 32px;
+            border-radius: 0;
             overflow: hidden;
             border: 0;
             position: relative;
