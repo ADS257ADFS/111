@@ -323,12 +323,12 @@
             pointer-events: none;
         }
 
-        /* 主舞台区域 */
+        /* 主舞台区域（桌面原生窗由 win_launcher 裁外圆角；网页壳内舞台保持直角） */
         .stage {
             flex: 1;
             background: var(--stage-bg);
             margin: 16px;
-            border-radius: 32px;
+            border-radius: 0;
             overflow: hidden;
             border: 0;
             position: relative;
@@ -1080,10 +1080,11 @@
             max-width: 100%;
             padding-left: 0;
             padding-right: 0;
-            font-size: 13px;
-            font-weight: 600;
-            line-height: 1.35;
-            color: #50565e;
+            font-family: var(--ui-font);
+            font-size: var(--ui-type-section);
+            font-weight: var(--ui-weight-menu-strong);
+            line-height: var(--ui-leading-tight);
+            color: var(--ui-text);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -1120,11 +1121,12 @@
         }
 
         .dock-chrome-title-trigger-icon {
-            flex: 0 0 auto;
-            width: 12px;
-            height: 12px;
-            color: #8b9199;
-            stroke-width: 1.8;
+            flex: 0 0 var(--ui-sidebar-nav-icon-size);
+            width: var(--ui-sidebar-nav-icon-size);
+            height: var(--ui-sidebar-nav-icon-size);
+            color: var(--ui-text);
+            stroke: currentColor;
+            stroke-width: var(--ui-sidebar-nav-icon-stroke);
             transition: transform .18s ease;
         }
 
@@ -1392,9 +1394,9 @@
             justify-content: center;
             gap: 0;
             background: transparent;
-            color: #747b85;
+            color: var(--ui-text);
             font-size: 11px;
-            font-weight: 600;
+            font-weight: var(--ui-weight-menu-strong);
             line-height: 1;
             cursor: pointer;
             box-shadow: none;
@@ -1409,10 +1411,13 @@
 
         .dock-chrome-btn svg,
         .dock-chrome-btn i {
-            width: 16px;
-            height: 16px;
+            width: var(--ui-sidebar-nav-icon-size);
+            height: var(--ui-sidebar-nav-icon-size);
+            flex: 0 0 var(--ui-sidebar-nav-icon-size);
             flex-shrink: 0;
-            stroke-width: 1.5;
+            color: currentColor;
+            stroke: currentColor;
+            stroke-width: var(--ui-sidebar-nav-icon-stroke);
         }.dock-chrome-btn:not(:disabled):hover,
 .dock-chrome-btn:not(:disabled):focus-visible{
             background: #f9fafb;
