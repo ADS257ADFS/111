@@ -21,9 +21,17 @@ html.lightbox-desktop-native:not(.lightbox-compact-mode) .mm-sidebar {
 html.lightbox-desktop-native:not(.lightbox-compact-mode) .mm-sidebar { transition: transform var(--ui-motion-surface) var(--ui-ease-panel); }
 html.mm-sidebar-collapsed .mm-sidebar { transform: translateX(calc(-100% - 2px)); pointer-events: none; }
 
-.mm-sidebar-head { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: var(--ui-space-4); padding: var(--ui-space-2) var(--ui-space-2) var(--ui-space-5) var(--ui-space-5); }
+.mm-sidebar-head { flex: 0 0 auto; display: flex; align-items: center; justify-content: flex-end; gap: var(--ui-space-4); padding: var(--ui-space-2) var(--ui-space-2) var(--ui-space-5) var(--ui-space-5); }
 .mm-sidebar-logo { height: var(--ui-sidebar-logo-h); width: auto; object-fit: contain; user-select: none; -webkit-user-drag: none; pointer-events: none; }
 html:is(.theme-dark, .studio-theme-dark) .mm-sidebar-logo { filter: brightness(0) invert(1); }
+.lightbox-native-titlebar-logo {
+    display: block;
+    height: var(--ui-sidebar-logo-h);
+    width: auto;
+    max-width: min(220px, 42vw);
+    margin: 0 0 0 3px;
+    flex: 0 0 auto;
+}
 .mm-sidebar-collapse, .mm-sidebar-reopen { appearance: none; width: 30px; height: 30px; flex: 0 0 30px; border: 1px solid var(--ui-border); border-radius: var(--ui-canvas-nav-radius, 10px); background: var(--ui-surface-elevated); color: var(--ui-text-secondary); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
 .mm-sidebar-collapse:hover, .mm-sidebar-reopen:hover { background: var(--ui-hover); border-color: var(--ui-border); }
 .mm-sidebar-collapse :is(i, svg), .mm-sidebar-reopen :is(i, svg) { width: var(--ui-icon-sm); height: var(--ui-icon-sm); stroke-width: var(--ui-icon-stroke); }
