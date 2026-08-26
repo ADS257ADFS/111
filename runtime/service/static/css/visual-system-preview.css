@@ -1,0 +1,1552 @@
+/*
+ * Reversible visual-system preview.
+ * This file contains visual overrides only: no layout, dimensions, DOM, or
+ * interaction rules. Remove the three stylesheet links that load this file
+ * to restore the original appearance.
+ */
+
+/*
+ * Shared magnetic motion for every moving highlight.
+ * It advances quickly, eases sharply near the target, then settles with a
+ * restrained overshoot instead of drifting at an almost constant speed.
+ */
+:root {
+    --vs-magnetic-ease: cubic-bezier(.16, 1.28, .24, 1);
+    --vs-magnetic-resize-ease: cubic-bezier(.20, 1.08, .28, 1);
+    --vs-magnetic-motion: 360ms;
+    --vs-magnetic-resize: 290ms;
+}
+
+/* Composer only follows the left chat dock; right-side panels never move it. */
+.shell .composer {
+    left: calc(50% + (var(--shell-chat-dock-width, 0px) / 5)) !important;
+    z-index: var(--ui-z-overlay) !important;
+    transition:
+        opacity .24s cubic-bezier(.4,0,.2,1), transform .28s cubic-bezier(.4,0,.2,1), left var(--shell-chat-dock-motion, 260ms cubic-bezier(.3,0,0,1)) !important;
+}
+
+.floating-toolbar::before,
+.shell-user-menu-glider,
+.image-quick-toolbar .iqt-glass-glider,
+.selection-capsule-glider,
+.shell .composer .composer-footer .composer-footer-glider,
+.size-choice-glider,
+.port-link-pick-glider {
+    transition:
+        transform var(--vs-magnetic-motion) var(--vs-magnetic-ease), width var(--vs-magnetic-resize) var(--vs-magnetic-resize-ease), height var(--vs-magnetic-resize) var(--vs-magnetic-resize-ease), opacity 120ms ease-out, background 220ms ease, box-shadow 220ms ease !important;
+}
+
+.shell .composer-card-topbar .composer-kind-toggle .composer-mode-glider {
+    transition: transform .22s ease, width .22s ease, height .22s ease, opacity .16s ease !important;
+}
+
+.image-quick-toolbar .iqt-menu-glass-glider {
+    transition:
+        transform var(--vs-magnetic-motion) var(--vs-magnetic-ease), height var(--vs-magnetic-resize) var(--vs-magnetic-resize-ease), opacity 120ms ease-out, box-shadow 220ms ease !important;
+}
+
+.size-choice-glider.is-primed {
+    transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .floating-toolbar::before,
+    .shell-user-menu-glider,
+    .image-quick-toolbar .iqt-glass-glider,
+    .image-quick-toolbar .iqt-menu-glass-glider,
+    .selection-capsule-glider,
+    .shell .composer .composer-footer .composer-footer-glider,
+    .shell .composer-card-topbar .composer-kind-toggle .composer-mode-glider,
+    .size-choice-glider,
+    .port-link-pick-glider {
+        transition: none !important;
+    }
+}
+
+/* Shell: floating rail, dock chrome, and account menu. */
+html:not(.theme-dark):not(.studio-theme-dark) body .floating-toolbar {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not(.active):not([aria-pressed="true"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-main-button:not(.active):not([aria-pressed="true"]) {
+    color: #747b85 !important;
+    font-weight: 400 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not(.active):not([aria-pressed="true"]) svg,
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-main-button:not(.active):not([aria-pressed="true"]) svg {
+    stroke-width: 1.35 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome {
+    color: var(--text);
+    background: var(--vs-glass-bg) !important;
+    border-color: var(--vs-glass-border) !important;
+    box-shadow: -12px 4px 30px rgba(103, 116, 134, 0.10) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-title {
+    color: #50565e !important;
+    font-weight: 600 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-btn {
+    color: #747b85 !important;
+    font-weight: 600 !important;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-btn:not(:disabled):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-btn:not(:disabled):focus-visible{
+    background: #f9fafb !important;
+    border-color: rgba(148, 163, 184, .44) !important;
+    box-shadow: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-title-menu {
+    color: var(--text);
+    background: #fff !important;
+    border-color: rgba(255, 255, 255, 0.96) !important;
+    box-shadow:
+        0 22px 54px rgba(55, 65, 81, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-new {
+    color: #50565e !important;
+    font-weight: 445 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-item,
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-item-title,
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-item-time {
+    color: #50565e !important;
+    font-weight: 400 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-item-time {
+    color: #9aa0a9 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-new:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-new:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-item:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-item:focus-visible {
+    background: #f9fafb !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-item.is-active {
+    background: #f3f4f6 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu {
+    color: var(--text);
+    background: #fff !important;
+    border-color: rgba(255, 255, 255, 0.96) !important;
+    box-shadow:
+        0 22px 54px rgba(55, 65, 81, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-profile strong,
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-points strong,
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-item.is-current {
+    color: var(--text-main) !important;
+    font-weight: 600 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-name-row input {
+    font-weight: 600 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-profile span,
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-item {
+    font-weight: 400 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-points,
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-item-icon {
+    background-color: #fff !important;
+    background-image: none !important;
+    opacity: 1 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-item:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-item:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-item.is-current {
+    background: var(--card-solid) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-glider {
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    top: 0;
+    width: var(--shell-user-glider-width);
+    height: var(--shell-user-glider-height);
+    border-radius: 11px;
+    opacity: 0;
+    pointer-events: none;
+    background: #fff;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .08);
+    transform: translate3d(var(--shell-user-glider-x), var(--shell-user-glider-y), 0) scale(.94);
+    transform-origin: center;
+    transition:
+        transform .46s cubic-bezier(.37, 1.55, .66, .96), width .38s cubic-bezier(.37, 1.35, .66, .96), height .38s cubic-bezier(.37, 1.35, .66, .96), opacity .18s ease;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-glider.is-visible {
+    opacity: 1;
+    transform: translate3d(var(--shell-user-glider-x), var(--shell-user-glider-y), 0) scale(1);
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-profile,
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-points,
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-list,
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-status {
+    position: relative;
+    z-index: 1;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu.has-item-glider .shell-user-menu-item:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu.has-item-glider .shell-user-menu-item:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu.has-item-glider .shell-user-menu-item.is-current {
+    background: transparent !important;
+}
+
+/* Canvas: dynamic chrome. M5 扁平定案:玻璃 ::before/::after 已在基础层拆除 */
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar {
+    padding-left: 10.5px;
+    padding-right: 10.5px;
+    isolation: isolate;
+    background: var(--ui-surface-elevated) !important;
+    border: 1px solid var(--ui-border) !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    transition:
+        opacity .18s ease, transform .24s cubic-bezier(.22, .75, .3, 1) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button {
+    color: var(--muted) !important;
+    transition:
+        background-color .15s ease !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar button {
+    color: #747b85 !important;
+}html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button[aria-pressed="true"]{
+    background-color: #fff !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    transform: none !important;
+    animation: none !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button[aria-pressed="true"]{color: var(--text-main) !important;}
+
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-glass-glider {
+    display: block !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .08) !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-glass-glider.is-visible {
+    opacity: 1 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar {
+    padding-left: 16px;
+    padding-right: 16px;
+    isolation: isolate;
+    background: var(--ui-surface-elevated) !important;
+    border: 1px solid var(--ui-border) !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    transition:
+        opacity .18s ease, transform .24s cubic-bezier(.22, .75, .3, 1) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar::before {
+    content: none !important;
+    display: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar::after {
+    opacity: 0 !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar:hover::after,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar:focus-within::after {
+    opacity: 0 !important;
+    scale: .99;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar:has(button:active)::after {
+    opacity: 0 !important;
+    scale: .99;
+    rotate: 0deg;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-glider {
+    display: block !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .08) !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-glider.is-visible {
+    opacity: 1 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn {
+    color: var(--muted) !important;
+    transition:
+        background-color .15s ease !important;
+}html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn.open,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn[aria-pressed="true"]{
+    background-color: #fff !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    transform: none !important;
+    animation: none !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn.open,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn[aria-pressed="true"]{color: var(--text-main) !important;}
+
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn svg,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn i {
+    stroke-width: 1.55 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-count {
+    color: var(--muted) !important;
+    font-weight: 445 !important;
+}html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button[aria-pressed="true"],
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar button.open,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar button[aria-pressed="true"]{
+}
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button[aria-pressed="true"],
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar button.open,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar button[aria-pressed="true"]{color: var(--text-main) !important;}
+
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar.image-quick-toolbar button svg:not(.iqt-dropdown-chevron),
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-chevron,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .image-action-hd-icon rect {
+    stroke-width: 1.55 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:hover svg:not(.iqt-dropdown-chevron),
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:focus-visible svg:not(.iqt-dropdown-chevron),
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button[aria-pressed="true"] svg:not(.iqt-dropdown-chevron),
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:hover .iqt-dropdown-chevron,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:focus-visible .iqt-dropdown-chevron,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button[aria-pressed="true"] .iqt-dropdown-chevron,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:hover .image-action-hd-icon rect,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:focus-visible .image-action-hd-icon rect,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button[aria-pressed="true"] .image-action-hd-icon rect,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle svg,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn:hover svg,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn:focus-visible svg,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn.open svg,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn[aria-pressed="true"] svg {
+    stroke-width: 1.8 !important;
+}
+
+/* Stable frosted panels: composer, double-click create panel, and popovers. */
+html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card,
+html:not(.theme-dark):not(.studio-theme-dark) .create-menu,
+html:not(.theme-dark):not(.studio-theme-dark) .composer-tool-popover,
+html:not(.theme-dark):not(.studio-theme-dark) .composer-api-settings-popover,
+html:not(.theme-dark):not(.studio-theme-dark) .smart-popover,
+html:not(.theme-dark):not(.studio-theme-dark) .asset-panel {
+    background: var(--vs-glass-bg) !important;
+    border-color: var(--vs-glass-border) !important;
+    box-shadow: var(--vs-glass-shadow) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/* Primary shell panels use a fully opaque white surface in light mode. */
+html:not(.theme-dark):not(.studio-theme-dark) .asset-panel {
+    background-color: #fff !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/*
+ * Composer frame: keep the DOM/content at full scale so text stays sharp.
+ * The 50% base colour lives on the animated material layer instead, allowing
+ * the complete visible frame to follow the existing hover/focus contraction.
+ */
+html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .composer-card-material {
+    background: rgba(248, 249, 251, 0.50) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/* Empty media placeholders keep the preview material. Populated text nodes
+ * intentionally use the shared text/audio glass parameters from smart-canvas. */
+html:not(.theme-dark):not(.studio-theme-dark) .shell .image-node.typed-placeholder-node::before {
+    background: rgba(248, 249, 251, 0.50) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/* Port-link creation panel: use the account menu's text hierarchy. */
+html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-head {
+    color: #747b85 !important;
+    font-weight: 445 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-item,
+html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-icon {
+    color: #747b85 !important;
+    font-weight: 400 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-title {
+    color: #17181b !important;
+    font-weight: 600 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-desc,
+html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-badge {
+    color: #9aa0a9 !important;
+    font-weight: 400 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-icon svg,
+html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-icon i {
+    stroke-width: 1.55px !important;
+}html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-item.is-hover .port-link-pick-title,
+html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-item:hover .port-link-pick-title{
+}
+html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-item.is-hover .port-link-pick-title{color: #17181b !important;}html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-item:not(.is-disabled):not(:disabled).is-hover .port-link-pick-icon,
+html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-item:not(.is-disabled):not(:disabled):hover .port-link-pick-icon{
+    background: linear-gradient(145deg, var(--ui-accent), var(--ui-accent)) !important;
+    border-color: var(--ui-accent) !important;
+    box-shadow: 0 6px 14px rgba(var(--ui-accent-rgb), .24) !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-item:not(.is-disabled):not(:disabled).is-hover .port-link-pick-icon{color: #fff !important;}
+
+html:not(.theme-dark):not(.studio-theme-dark) .create-menu,
+html:not(.theme-dark):not(.studio-theme-dark) .composer-tool-popover,
+html:not(.theme-dark):not(.studio-theme-dark) .composer-api-settings-popover,
+html:not(.theme-dark):not(.studio-theme-dark) .smart-popover,
+html:not(.theme-dark):not(.studio-theme-dark) .asset-panel {
+    color: var(--text);
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .create-menu button,
+html:not(.theme-dark):not(.studio-theme-dark) .composer-footer button,
+html:not(.theme-dark):not(.studio-theme-dark) .composer-tool-popover button,
+html:not(.theme-dark):not(.studio-theme-dark) .composer-api-settings-popover button,
+html:not(.theme-dark):not(.studio-theme-dark) .smart-popover button,
+html:not(.theme-dark):not(.studio-theme-dark) .asset-panel button {
+    font-weight: 400 !important;
+}html:not(.theme-dark):not(.studio-theme-dark) .create-menu button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .create-menu button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .composer-footer button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .composer-footer button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .smart-popover button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .smart-popover button:focus-visible{
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .create-menu button.active,
+html:not(.theme-dark):not(.studio-theme-dark) .composer-footer button.active,
+html:not(.theme-dark):not(.studio-theme-dark) .smart-popover button.active,
+html:not(.theme-dark):not(.studio-theme-dark) .smart-control.pinned > .smart-pill {
+    font-weight: 445 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .composer-card .prompt-input {
+    color: var(--text-main) !important;
+    font-weight: 400 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .composer-card .prompt-input:empty::before {
+    color: var(--faint) !important;
+    font-weight: 400 !important;
+}
+
+/* Right conversation rail: same hierarchy, with calm stable surfaces. */
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .chat-shell {
+    color: var(--text);
+    background-color: #fff !important;
+    background-image: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .topbar {
+    color: var(--text);
+    background: #fff !important;
+    border-color: var(--vs-glass-border) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .title-block h1 {
+    color: var(--text-main) !important;
+    font-weight: 445 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .title-block p {
+    color: var(--faint) !important;
+    font-weight: 400 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .bubble {
+    color: var(--text);
+    font-weight: 400 !important;
+    box-shadow: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .bubble.assistant {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.88) !important;
+    border-color: var(--vs-glass-border) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .bubble.user {
+    color: var(--text-main) !important;
+    background: var(--ui-hover) !important;
+    border: 1px solid rgba(255, 255, 255, 0.88) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .composer-wrap {
+    background: linear-gradient(to top, #f8f9fb 82%, rgba(248, 249, 251, 0)) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .composer {
+    background: var(--vs-glass-bg) !important;
+    border-color: var(--vs-glass-border) !important;
+    box-shadow: 0 10px 30px rgba(103, 116, 134, 0.10) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .composer-body {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.82) !important;
+    border-color: var(--vs-glass-border) !important;
+}
+
+/*
+ * Right chat composer:
+ * keep a rounded white input card with a soft shadow (aligned with canvas feel).
+ */
+html:not(.theme-dark):not(.studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .composer {
+    background-color: #fff !important;
+    background-image: none !important;
+    border: 1px solid rgba(230, 234, 239, 0.95) !important;
+    border-radius: 22px !important;
+    outline: 0 !important;
+    box-shadow:
+        0 8px 24px rgba(103, 116, 134, 0.10),
+        0 2px 6px rgba(103, 116, 134, 0.04) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .composer-wrap {
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+}
+
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .composer-body {
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .composer textarea {
+    color: var(--text-main) !important;
+    font-weight: 400 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .composer textarea::placeholder {
+    color: var(--faint) !important;
+    font-weight: 400 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .action-btn,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .attach-btn,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-api-btn,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-context-pct {
+    color: #50565e !important;
+    font-size: 13px !important;
+    font-weight:400 !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .attach-btn :is(svg, i),
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-api-btn :is(svg, i) {
+    width: 16px !important;
+    height: 16px !important;
+    color: #50565e !important;
+    stroke: #50565e !important;
+    stroke-width: 1.5 !important;
+}html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .action-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .action-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .attach-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .attach-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-api-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-api-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-api-btn.open{
+    background: #f9fafb !important;
+    border: 1px solid rgba(148, 163, 184, .44) !important;
+    box-shadow: none !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-api-btn.open{color: #50565e !important;}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .history-popover,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-api-panel {
+    color: var(--text);
+    background: var(--vs-glass-bg) !important;
+    border-color: var(--vs-glass-border) !important;
+    box-shadow: var(--vs-glass-shadow), var(--vs-glass-inset) !important;
+    -webkit-backdrop-filter: var(--vs-glass-blur) !important;
+    backdrop-filter: var(--vs-glass-blur) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .thread-row {
+    background: var(--card-solid) !important;
+    border-color: var(--vs-glass-border) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .thread-row:hover {
+    border-color: var(--vs-accent-ring) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .thread-row:has(.thread-item.active) {
+    border-color: var(--ui-accent) !important;
+    box-shadow: 0 0 0 1px var(--ui-accent) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .thread-item,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .thread-item > div:first-child {
+    color: #50565e !important;
+    font-weight: 600 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .thread-item > div:last-child {
+    color: #9aa0a9 !important;
+    font-weight: 445 !important;
+}html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .thread-item:hover,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .thread-item.active{
+    background: transparent !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .thread-item.active{color: #50565e !important;}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-api-panel button,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-api-panel select {
+    color: var(--muted) !important;
+    font-weight: 400 !important;
+}html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .thread-item:hover,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-api-panel button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-api-panel button.active{
+    background: var(--card-solid) !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-api-panel button.active{color: var(--text-main) !important;}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .send-btn:not(.is-stopping),
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .send-btn:not(.is-stopping):disabled {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    padding: 0 !important;
+    border: 1px solid rgba(255, 255, 255, .94) !important;
+    border-radius: 999px !important;
+    background: linear-gradient(145deg, #fff, #f2f3f5) !important;
+    color: #5f6670 !important;
+    font-weight: 445 !important;
+    box-shadow:
+        5px 7px 15px rgba(145, 150, 158, .17),
+        -4px -4px 11px rgba(255, 255, 255, .96),
+        inset 0 1px 0 #fff !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .send-btn:not(.is-stopping) :is(svg, i) {
+    width: 17px !important;
+    height: 17px !important;
+    color: #5f6670 !important;
+    stroke: #5f6670 !important;
+    stroke-width: 1.55 !important;
+    opacity: 1 !important;
+}html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .send-btn:not(.is-stopping):hover:not(:disabled),
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .send-btn:not(.is-stopping):focus-visible{
+    background: var(--ui-accent) !important;
+    border: 0 !important;
+    box-shadow: 0 6px 14px rgba(var(--ui-accent-rgb), .24) !important;
+    transform: translateY(-1px);
+}html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .send-btn:not(.is-stopping):hover:not(:disabled) :is(svg, i),
+html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .send-btn:not(.is-stopping):focus-visible :is(svg, i){
+    stroke: #fff !important;
+}
+
+/* ============================================================
+   Unified visual system pass (2026-07-24)
+   Goal: one token set, one accent, one glass recipe, one motion
+   family, one type scale — anchored to the account-menu aesthetic.
+   Still fully reversible: remove the stylesheet link to restore.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   A. Canonical design tokens (shared variables remapped).
+   This file loads last, so these win over earlier :root blocks
+   in smart-canvas.css / canvas.css / api-settings.css / shell.
+   ------------------------------------------------------------ */
+:root {
+    /* Accent: single blue family derived from the account menu. */
+    --vs-accent: var(--ui-accent);
+    --vs-accent-deep: var(--ui-accent);
+    --vs-accent-grad: linear-gradient(145deg, var(--ui-accent), var(--ui-accent));
+    --vs-accent-shadow: 0 6px 14px rgba(var(--ui-accent-rgb), .24), inset 0 1px 0 rgba(255, 255, 255, .30);
+    --vs-accent-ring: rgba(var(--ui-accent-rgb), .42);
+
+    /* Light neutrals → 统一映射 --ui-surface-*（M5 灰阶双轨合并） */
+    --page: var(--ui-surface-canvas);
+    --bg: var(--ui-surface-chrome);
+    --bg-base: var(--ui-surface-chrome);
+    --grid: rgba(120, 126, 136, .14);
+    --panel: var(--ui-surface-chrome);
+    --card: var(--ui-surface-card);
+    --card-solid: var(--ui-surface-card);
+    --soft: var(--ui-surface-chrome);
+    --soft-2: #eff1f4;
+    --line: var(--ui-border);
+    --line-2: var(--ui-border-strong);
+    --line-strong: var(--ui-border-strong);
+    --text: var(--ui-text);
+    --text-main: var(--ui-text);
+    --muted: var(--ui-text-secondary);
+    --faint: var(--ui-text-muted);
+    --shadow: rgba(55, 65, 81, .12);
+    --strong: var(--ui-accent);
+    --strong-text: #ffffff;
+    --accent: var(--ui-accent);
+
+    /* Glass material recipes (light) → M5 材质定案:扁平实色,无 blur 无高光 */
+    --vs-glass-bg: var(--ui-surface-chrome);
+    --vs-glass-border: var(--ui-border);
+    --vs-glass-blur: none;
+    --vs-glass-shadow: var(--ui-shadow-pop);
+    --vs-glass-inset: none;
+
+    /* Motion: single spring family from the account menu. */
+    --vs-ease-spring: cubic-bezier(.22, .75, .3, 1);
+    --vs-dur-fast: .15s;
+    --vs-dur-med: .18s;
+    --vs-dur-slow: .24s;
+}
+
+/* Dark tokens: derived from the same system (account-menu dark). */
+html.theme-dark,
+html.studio-theme-dark {
+    --page: var(--ui-surface-canvas);
+    --bg: var(--ui-surface-canvas);
+    --bg-base: var(--ui-surface-canvas);
+    --grid: rgba(255, 255, 255, .08);
+    --panel: var(--ui-surface-chrome);
+    --card: var(--ui-surface-card);
+    --card-solid: var(--ui-surface-card);
+    --soft: var(--ui-hover);
+    --soft-2: rgba(255, 255, 255, .08);
+    --line: var(--ui-border);
+    --line-2: var(--ui-border-strong);
+    --line-strong: var(--ui-border-strong);
+    --text: var(--ui-text);
+    --text-main: var(--ui-text);
+    --muted: var(--ui-text-secondary);
+    --faint: var(--ui-text-muted);
+    --shadow: rgba(0, 0, 0, .38);
+    --strong: var(--ui-accent);
+    --strong-text: #ffffff;
+    --accent: var(--ui-accent);
+
+    --vs-glass-bg: var(--ui-surface-chrome);
+    --vs-glass-border: var(--ui-border);
+    --vs-glass-blur: none;
+    --vs-glass-shadow: var(--ui-shadow-pop);
+    --vs-glass-inset: none;
+}
+
+/* theme.css defines variables at body level; override at the same
+   specificity so the unified set wins (this file loads later). */
+body.studio-theme-dark,
+html.studio-theme-dark body,
+html.theme-dark body {
+    --accent: var(--ui-accent);
+    --bg: var(--ui-surface-canvas);
+    --bg-base: var(--ui-surface-canvas);
+    --card: var(--ui-surface-card);
+    --text-main: var(--ui-text);
+}
+
+/* ------------------------------------------------------------
+   C. One glass recipe for floating chrome (light + dark).
+   Panels that already use var(--panel) get the account-menu
+   material: 28px blur, bright rim border, soft deep shadow.
+   ------------------------------------------------------------ */
+html:not(.theme-dark):not(.studio-theme-dark) .smart-back,
+html:not(.theme-dark):not(.studio-theme-dark) .smart-log-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .smart-shortcut-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .canvas-history-panel,
+html:not(.theme-dark):not(.studio-theme-dark) .smart-minimap,
+html:not(.theme-dark):not(.studio-theme-dark) .topbar .panel,
+html:not(.theme-dark):not(.studio-theme-dark) .canvas-nav {
+    background: var(--vs-glass-bg) !important;
+    border-color: var(--vs-glass-border) !important;
+    box-shadow: var(--vs-glass-shadow) !important;
+    -webkit-backdrop-filter: var(--vs-glass-blur) !important;
+    backdrop-filter: var(--vs-glass-blur) !important;
+}
+
+html.theme-dark .smart-back,
+html.theme-dark .smart-log-toggle,
+html.theme-dark .smart-shortcut-toggle,
+html.theme-dark .canvas-history-panel,
+html.theme-dark .smart-minimap,
+html.studio-theme-dark .smart-back,
+html.studio-theme-dark .smart-log-toggle,
+html.studio-theme-dark .smart-shortcut-toggle,
+html.studio-theme-dark .canvas-history-panel,
+html.studio-theme-dark .smart-minimap,
+html.studio-theme-dark .topbar .panel,
+html.studio-theme-dark .canvas-nav {
+    background: var(--vs-glass-bg) !important;
+    border-color: var(--vs-glass-border) !important;
+    box-shadow: var(--vs-glass-shadow) !important;
+    -webkit-backdrop-filter: var(--vs-glass-blur) !important;
+    backdrop-filter: var(--vs-glass-blur) !important;
+}
+
+/* Inset top highlight shared by glass surfaces. */
+html:not(.theme-dark):not(.studio-theme-dark) .canvas-history-panel,
+html:not(.theme-dark):not(.studio-theme-dark) .smart-minimap {
+    box-shadow: var(--vs-glass-shadow), var(--vs-glass-inset) !important;
+}/* ------------------------------------------------------------
+   D. One accent recipe. Replaces the var(--ui-accent) / #087cff / #168dff
+   variants with the canonical gradient and dark solid.
+   ------------------------------------------------------------ */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button.active,
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button[aria-pressed="true"],
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-main-button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-main-button:focus-visible{
+    background: var(--vs-accent-grad) !important;
+    border-color: transparent !important;
+    box-shadow: var(--vs-accent-shadow) !important;
+}
+/* ------------------------------------------------------------
+   D. One accent recipe. Replaces the var(--ui-accent) / #087cff / #168dff
+   variants with the canonical gradient and dark solid.
+   ------------------------------------------------------------ */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button.active,
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button[aria-pressed="true"]{color: #ffffff !important;}
+
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button,
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-main-button,
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar-divider {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Apple System Blue
+   All functional canvas blues share one hue. Motion, timing and geometry stay
+   component-owned; this layer only normalizes the visual accent. */
+:root {
+    --vs-accent: var(--ui-accent);
+    --vs-accent-deep: var(--ui-accent);
+    --vs-accent-grad: linear-gradient(145deg, var(--ui-accent), var(--ui-accent));
+    --strong: var(--ui-accent);
+    --accent: var(--ui-accent);
+}
+
+html.theme-dark,
+html.studio-theme-dark {
+    --strong: var(--ui-accent);
+    --accent: var(--ui-accent);
+}
+
+.smart-guide-line {
+    stroke: var(--ui-accent) !important;
+}
+
+.selection-multi-connect-port,
+.node-port.is-active,
+.node-port.is-magnet-near {
+    background-color: var(--ui-accent) !important;
+    border-color: var(--ui-accent) !important;
+}
+
+/* Left rail primary canvas action: keep it on the same solid system blue in
+   idle, hover and focus states. Do not let legacy gradients shift the hue. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button[data-canvas-main="1"].active,
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button[data-canvas-main="1"].active:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button[data-canvas-main="1"].active:focus-visible,
+html.theme-dark .floating-toolbar .tool-button[data-canvas-main="1"].active,
+html.theme-dark .floating-toolbar .tool-button[data-canvas-main="1"].active:hover,
+html.theme-dark .floating-toolbar .tool-button[data-canvas-main="1"].active:focus-visible,
+html.studio-theme-dark .floating-toolbar .tool-button[data-canvas-main="1"].active,
+html.studio-theme-dark .floating-toolbar .tool-button[data-canvas-main="1"].active:hover,
+html.studio-theme-dark .floating-toolbar .tool-button[data-canvas-main="1"].active:focus-visible {
+    background: var(--ui-accent) !important;
+    background-image: none !important;
+    box-shadow:
+        0 6px 14px rgba(103, 116, 134, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.30) !important;
+}
+
+html.theme-dark .floating-toolbar .tool-button[data-canvas-main="1"].active,
+html.theme-dark .floating-toolbar .tool-button[data-canvas-main="1"].active:hover,
+html.theme-dark .floating-toolbar .tool-button[data-canvas-main="1"].active:focus-visible,
+html.studio-theme-dark .floating-toolbar .tool-button[data-canvas-main="1"].active,
+html.studio-theme-dark .floating-toolbar .tool-button[data-canvas-main="1"].active:hover,
+html.studio-theme-dark .floating-toolbar .tool-button[data-canvas-main="1"].active:focus-visible {
+    box-shadow: none !important;
+}
+
+/* Asset library + canvas history: use the same left-to-right entrance as the
+   shell user menu. Keep their existing content, size, and close behavior. */
+html.is-shell-embedded .shell .asset-panel {
+    right: 16px !important;
+    left: auto !important;
+    transform: translateX(8px) scale(.985) !important;
+    transform-origin: right bottom !important;
+    transition:
+        opacity .18s ease, transform .24s cubic-bezier(.22, .75, .3, 1), visibility .18s ease !important;
+}
+
+html.is-shell-embedded .shell .asset-panel.open {
+    transform: translateX(0) scale(1) !important;
+}
+
+html.is-shell-asset-peek .shell .asset-panel {
+    right: 16px !important;
+    left: auto !important;
+    transform: translateX(8px) scale(.985) !important;
+    transform-origin: right bottom !important;
+    transition:
+        opacity .18s ease, transform .24s cubic-bezier(.22, .75, .3, 1), visibility .18s ease !important;
+}
+
+html.is-shell-asset-peek .shell .asset-panel.open {
+    transform: translateX(0) scale(1) !important;
+}
+
+html.is-shell-embedded .shell .canvas-history-panel {
+    transform: translateX(8px) translateY(-50%) scale(.985) !important;
+    transform-origin: right bottom !important;
+    transition:
+        opacity .18s ease, transform .24s cubic-bezier(.22, .75, .3, 1), visibility .18s ease !important;
+}
+
+html.is-shell-embedded .shell .canvas-history-panel.open.open {
+    transform: translateX(0) translateY(-50%) scale(1) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .canvas-bottom-capsule-btn.active,
+html:not(.theme-dark):not(.studio-theme-dark) .canvas-bottom-capsule-btn[aria-pressed="true"] {
+    color: #ffffff !important;
+    background: var(--ui-accent) !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+html.theme-dark .canvas-bottom-capsule-btn.active,
+html.theme-dark .canvas-bottom-capsule-btn[aria-pressed="true"],
+html.studio-theme-dark .canvas-bottom-capsule-btn.active,
+html.studio-theme-dark .canvas-bottom-capsule-btn[aria-pressed="true"] {
+    color: #ffffff !important;
+    background: var(--ui-accent) !important;
+    border-color: transparent !important;
+}
+
+/* Bottom-left canvas controls never show a blue focus/selection ring. */
+.shell .canvas-bottom-capsule-btn,
+.shell .canvas-bottom-capsule-btn:hover,
+.shell .canvas-bottom-capsule-btn:focus,
+.shell .canvas-bottom-capsule-btn:focus-visible,
+.shell .canvas-bottom-capsule-btn:active,
+.shell .canvas-bottom-capsule-btn.active,
+.shell .canvas-bottom-capsule-btn[aria-pressed="true"] {
+    border-color: transparent !important;
+    outline: none !important;
+}/* Standalone "new canvas" FAB hover. */
+.shell .canvas-new-fab.is-standalone-only:not(:disabled):hover,
+.shell .canvas-new-fab.is-standalone-only:not(:disabled):focus-visible{
+    background: var(--vs-accent-grad) !important;
+    border-color: var(--vs-accent) !important;
+    box-shadow: var(--vs-accent-shadow) !important;
+}html.theme-dark .shell .canvas-new-fab.is-standalone-only:not(:disabled):hover,
+html.theme-dark .shell .canvas-new-fab.is-standalone-only:not(:disabled):focus-visible,
+html.studio-theme-dark .shell .canvas-new-fab.is-standalone-only:not(:disabled):hover,
+html.studio-theme-dark .shell .canvas-new-fab.is-standalone-only:not(:disabled):focus-visible{
+    background: var(--ui-accent) !important;
+    border-color: var(--ui-accent) !important;
+}/* Dock open button (dark hover variants in index-shell). */
+html.theme-dark .dock-open-btn:not(:disabled):hover,
+html.studio-theme-dark .dock-open-btn:not(:disabled):hover,
+html.theme-dark .dock-open-btn:not(:disabled):focus-visible,
+html.studio-theme-dark .dock-open-btn:not(:disabled):focus-visible{
+    background: var(--ui-accent) !important;
+    border-color: var(--ui-accent) !important;
+}
+
+/* Co-create toggle dot. */
+html:not(.theme-dark):not(.studio-theme-dark) .co-create-toggle-dot,
+html:not(.theme-dark):not(.studio-theme-dark) .smart-switch-knob {
+    background: var(--vs-accent-grad) !important;
+}
+
+/* Selection and focus rings: route every blue to the canonical hue. */
+html:not(.theme-dark):not(.studio-theme-dark) .canvas-history-item:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .asset-prompt-main:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .asset-item:hover {
+    border-color: var(--vs-accent-ring) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .image-node.empty-node:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-node.prompt-smart-node:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-node.loop-smart-node:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-node.group-node:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-node.empty-node.selected,
+html:not(.theme-dark):not(.studio-theme-dark) .image-node.prompt-smart-node.selected,
+html:not(.theme-dark):not(.studio-theme-dark) .image-node.loop-smart-node.selected,
+html:not(.theme-dark):not(.studio-theme-dark) .image-node.group-node.selected {
+    border-color: rgba(var(--ui-accent-rgb), .68) !important;
+}
+
+/* ------------------------------------------------------------
+   F. Type weight normalization: 400 body / 500 label / 600 title.
+   ------------------------------------------------------------ */
+.current-canvas-title,
+.canvas-card-title,
+.smart-back,
+.empty-hint-chip,
+.canvas-history-head > div,
+.canvas-history-title,
+.image-edit-btn,
+.create-card-title {
+    font-weight: 600 !important;
+}
+
+.smart-title,
+.smart-log-toggle,
+.smart-shortcut-toggle,
+.canvas-history-meta,
+.canvas-history-empty,
+.canvas-history-rename-input {
+    font-weight: var(--ui-weight-medium) !important;
+}
+
+/* api-settings page type scale. */
+.page-head .title {
+    font-weight: 600 !important;
+    letter-spacing: -.01em !important;
+}
+
+.provider-name,
+.picker-row.has-sel .picker-model-name,
+.recommend-name {
+    font-weight: 600 !important;
+}
+
+.page-head .status,
+.label,
+.picker-other-tag,
+.recommend-tag,
+.recommend-badge,
+.recommend-cap-icons span,
+.recommend-setup-title {
+    font-weight: 445 !important;
+}
+
+/* ------------------------------------------------------------
+   G. Motion: spring easing on chrome transitions that currently
+   use mixed curves (hover lifts, capsule moves, menu entries).
+   ------------------------------------------------------------ */
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-item,
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button,
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-main-button,
+html:not(.theme-dark):not(.studio-theme-dark) .canvas-bottom-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .canvas-history-item {
+    transition-timing-function: var(--vs-ease-spring) !important;
+}
+
+/* ------------------------------------------------------------
+   H. Glass tier system (2026-07-24 pass 2)
+   Tiers, now applied across the original stylesheets:
+     L1  page-level floating rail : blur(24px) saturate(60%) brightness(1.04)
+     L2  floating panels/popovers : blur(28px) saturate(115%)  (canonical)
+     L2d dark floating panels     : blur(28px) saturate(105%)
+     L3  in-canvas node shells    : blur(18px) saturate(125%)
+     FX  functional micro blur    : blur(<=8px) on labels over media
+   Solid surfaces (no glass): form controls, media content,
+   panels on flat pages (api-settings), dense list rows.
+   ------------------------------------------------------------ */
+
+/* Form controls never carry their own blur; the panel behind
+   them provides the material. Keeps text crisp and cheap. */
+.shell input,
+.shell textarea,
+.shell select,
+.composer-card .prompt-input,
+.prompt-node-card-unified-llm .prompt-node-text {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/* Type scale reference (applied to original stylesheets):
+   weights  400 body / 500 label / 600 title
+   sizes    9-10 caption, 10.5-11.5 dense controls, 12-13 body,
+            14-15 section title, 16-18 card title, 20-26 page title */
+
+/* ------------------------------------------------------------
+   B01 image quick toolbar: restrained hover hop.
+   Keep the existing icon treatment and sliding glider intact.
+   ------------------------------------------------------------ */
+@keyframes vs-iqt-item-hop {
+    0% { translate: 0 0; }
+    46% { translate: 0 -2px; }
+    74% { translate: 0 .5px; }
+    100% { translate: 0 0; }
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar > button:not(:disabled):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar > button:not(:disabled):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar > .iqt-dropdown-wrap > .iqt-dropdown-toggle:not(:disabled):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar > .iqt-dropdown-wrap > .iqt-dropdown-toggle:not(:disabled):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar > .selection-capsule-btn:not(:disabled):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar > .selection-capsule-btn:not(:disabled):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar > .selection-capsule-asset-wrap > .selection-capsule-btn:not(:disabled):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar > .selection-capsule-asset-wrap > .selection-capsule-btn:not(:disabled):focus-visible {
+    animation: vs-iqt-item-hop .30s cubic-bezier(.22, .75, .3, 1) both !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar > button,
+    html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar > .iqt-dropdown-wrap > .iqt-dropdown-toggle,
+    html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn {
+        animation: none !important;
+    }
+}
+
+/* Dark theme uses the exact image-toolbar surface without altering layout. */
+html.theme-dark .selection-capsule-bar,
+html.studio-theme-dark .selection-capsule-bar {
+    background: var(--ui-surface-chrome) !important;
+    border: 1px solid var(--ui-border) !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}/* Stable hover typography -------------------------------------------------
+   Hover may move the white glider and run the existing hop animation,
+but it
+   must not make labels darker/bolder or thicken icons. Selected/active states
+   remain component-owned so users can still identify the current action. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not(.active):not([aria-pressed="true"]):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not(.active):not([aria-pressed="true"]):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-main-button:not(.active):not([aria-pressed="true"]):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-main-button:not(.active):not([aria-pressed="true"]):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-item:not(.is-current):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-item:not(.is-current):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:not([aria-pressed="true"]):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:not([aria-pressed="true"]):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn:not(.open):not([aria-pressed="true"]):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn:not(.open):not([aria-pressed="true"]):focus-visible{
+}
+/* Stable hover typography -------------------------------------------------
+   Hover may move the white glider and run the existing hop animation{color: #747b85 !important;}html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not(.active):not([aria-pressed="true"]):is(:hover, :focus-visible) svg,
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-main-button:not(.active):not([aria-pressed="true"]):is(:hover, :focus-visible) svg{
+    stroke: currentColor !important;
+    stroke-width: 1.35 !important;
+}html:not(.theme-dark):not(.studio-theme-dark) .shell-user-menu-item:not(.is-current):is(:hover, :focus-visible) svg,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:not([aria-pressed="true"]):is(:hover, :focus-visible) svg:not(.iqt-dropdown-chevron),
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:not([aria-pressed="true"]):is(:hover, :focus-visible) .iqt-dropdown-chevron,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:not([aria-pressed="true"]):is(:hover, :focus-visible) .image-action-hd-icon rect,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-btn:not(.open):not([aria-pressed="true"]):is(:hover, :focus-visible) svg{
+    stroke: currentColor !important;
+    stroke-width: 1.55 !important;
+}
+
+html.theme-dark :is(.floating-toolbar .tool-button:not(.active):not([aria-pressed="true"]), .floating-toolbar .tool-main-button:not(.active):not([aria-pressed="true"]), .shell-user-menu-item:not(.is-current), .image-quick-toolbar button:not([aria-pressed="true"]), .selection-capsule-btn:not(.open):not([aria-pressed="true"])):is(:hover, :focus-visible),
+html.studio-theme-dark :is(.floating-toolbar .tool-button:not(.active):not([aria-pressed="true"]), .floating-toolbar .tool-main-button:not(.active):not([aria-pressed="true"]), .shell-user-menu-item:not(.is-current), .image-quick-toolbar button:not([aria-pressed="true"]), .selection-capsule-btn:not(.open):not([aria-pressed="true"])):is(:hover, :focus-visible){
+}/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:active,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:active,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:active,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:active,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:active,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:active,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:active,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:active,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open,
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:active,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open{
+    transition-property: transform, background, border-color, box-shadow !important;
+}
+/* Unified primary toolbar ink. Keep the canvas action's Apple-blue active state intact. */
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]):active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button:active,
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar .iqt-dropdown-wrap.is-open .iqt-dropdown-toggle,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn:active,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn.open{color: #50565e !important;}
+
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button,
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn {
+    transition-property: transform, background, border-color, box-shadow !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .floating-toolbar .tool-button:not([data-canvas-main="1"]) :is(svg, i),
+html:not(.theme-dark):not(.studio-theme-dark) .image-quick-toolbar button :is(svg, i),
+html:not(.theme-dark):not(.studio-theme-dark) .selection-capsule-bar .selection-capsule-btn :is(svg, i) {
+    color: #50565e !important;
+    stroke: #50565e !important;
+}
+
+/* Left rail: override the older per-button ink tokens without touching the canvas action. */
+html.studio-page-canvas .floating-toolbar #shellNewCanvasBtn,
+html.studio-page-canvas .floating-toolbar #toolbarAssetBtn,
+html.studio-page-canvas .floating-toolbar #toolbarCanvasHistoryBtn,
+html.studio-page-canvas .floating-toolbar #toolbarSettingsBtn {
+    color: #50565e !important;
+}/* Asset/history are open drawers,
+not the primary canvas action. Their open
+   state keeps the same white capsule and dark icon used at rest. */
+html.studio-page-canvas .floating-toolbar #toolbarAssetBtn:is(.active, [aria-pressed="true"]),
+html.studio-page-canvas .floating-toolbar #toolbarAssetBtn:is(.active, [aria-pressed="true"]):is(:hover, :focus-visible),
+html.studio-page-canvas .floating-toolbar #toolbarCanvasHistoryBtn.active,
+html.studio-page-canvas .floating-toolbar #toolbarCanvasHistoryBtn.active:is(:hover, :focus-visible){
+    background: #ffffff !important;
+    background-image: none !important;
+    border-color: rgba(255, 255, 255, 1) !important;
+    box-shadow: 0 6px 14px rgba(103, 116, 134, .12) !important;
+}
+/* Asset/history are open drawers,
+not the primary canvas action. Their open
+   state keeps the same white capsule and dark icon used at rest. */
+html.studio-page-canvas .floating-toolbar #toolbarAssetBtn:is(.active, [aria-pressed="true"]),
+html.studio-page-canvas .floating-toolbar #toolbarCanvasHistoryBtn.active{color: #50565e !important;}
+
+html.studio-page-canvas .floating-toolbar #toolbarAssetBtn:is(.active, [aria-pressed="true"]) :is(svg, i),
+html.studio-page-canvas .floating-toolbar #toolbarCanvasHistoryBtn.active :is(svg, i) {
+    color: #50565e !important;
+    stroke: #50565e !important;
+}html:not(.theme-dark):not(.studio-theme-dark) #selectionBoxCapsule .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) #selectionBoxCapsule .selection-capsule-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) #selectionBoxCapsule .selection-capsule-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) #selectionBoxCapsule .selection-capsule-btn:active,
+html:not(.theme-dark):not(.studio-theme-dark) #selectionBoxCapsule .selection-capsule-btn.open{
+    transition-property: transform, background, border-color, box-shadow !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) #selectionBoxCapsule .selection-capsule-btn,
+html:not(.theme-dark):not(.studio-theme-dark) #selectionBoxCapsule .selection-capsule-btn:active,
+html:not(.theme-dark):not(.studio-theme-dark) #selectionBoxCapsule .selection-capsule-btn.open{color: #50565e !important;}
+
+html:not(.theme-dark):not(.studio-theme-dark) #selectionBoxCapsule .selection-capsule-btn :is(svg, i) {
+    color: #50565e !important;
+    stroke: #50565e !important;
+}

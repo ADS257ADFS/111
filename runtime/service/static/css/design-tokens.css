@@ -1,0 +1,329 @@
+/*
+ * 光盒 Design Tokens —— 全站唯一视觉值来源
+ * ================================================================
+ * 规则（详见 docs/DESIGN_SYSTEM.md）：
+ *   1. 所有新增/修改的 UI 一律消费 --ui-* 变量，禁止硬编码
+ *      颜色 / 字号 / 圆角 / 阴影 / 间距 / z-index / 动效时长。
+ *   2. 需要新视觉值时：先在本文件登记语义 token，再由 feature 消费。
+ *   3. 本文件只声明变量，不写任何组件规则；加载于各入口样式链早期。
+ *   4. 深浅主题切换只靠本文件的两个作用域，feature 不得自己写
+ *      theme-dark 分支来改颜色（几何值深浅共用）。
+ *
+ * 视觉基准：MiniMax Design 风格（2026-08 定稿）
+ *   深色 = 近黑画布 #101010 + 中性深灰面板 #1b1b1b + 扁平（无玻璃拟态）
+ *   浅色 = 近白画布 #fcfcfc + 浅灰窗框 #f7f7f8 + 历史 iOS 蓝强调色
+ */
+
+/* ================================================================
+ * 1. 语义颜色 —— 浅色（默认）
+ * ================================================================ */
+:root {
+    /* 表面 */
+    --ui-surface-canvas: #fcfcfc;        /* 画布底 */
+    --ui-surface-chrome: #f7f7f8;        /* 窗口栏 / 侧栏 / 全局面板 */
+    --ui-surface-shell: #fafafb;         /* 顶部窗口栏 / 左侧主导航 */
+    --ui-surface-card: #ffffff;          /* 卡片 / 面板内容底 */
+    --ui-surface-elevated: #ffffff;      /* 菜单 / 弹层 */
+    --ui-surface-input: #ffffff;         /* 输入框 */
+    --ui-surface-composer: #ffffff;      /* 画布底部输入卡片 */
+    --ui-surface-composer-topbar: rgba(243, 245, 247, .62);
+
+    /* 交互态叠层 */
+    --ui-hover: #f3f3f4;
+    --ui-active: rgba(0, 0, 0, .08);
+    --ui-pressed: rgba(0, 0, 0, .11);
+    --ui-selected: rgba(var(--ui-accent-rgb), .10);
+    --ui-focus-ring: rgba(var(--ui-accent-rgb), .30);
+    --ui-danger-hover: rgba(var(--ui-danger-rgb), .10);
+    --ui-backdrop: rgba(0, 0, 0, .40);
+    --ui-disabled-opacity: .45;
+
+    /* 边框 */
+    --ui-border: rgba(0, 0, 0, .10);
+    --ui-border-strong: rgba(0, 0, 0, .16);
+    --ui-shell-divider: rgba(0, 0, 0, .07);
+    --ui-shell-divider-size: 1px;
+    --ui-border-focus: var(--ui-accent);
+    --ui-border-danger: var(--ui-danger);
+
+    /* 文字 */
+    --ui-text: #41444a;
+    --ui-text-secondary: #697077;
+    --ui-text-muted: #9299a2;
+    --ui-text-disabled: rgba(146, 153, 162, .46);
+    --ui-text-on-accent: #ffffff;
+
+    /* 强调与状态 */
+    --ui-accent: #0a84ff;
+    --ui-accent-rgb: 10, 132, 255;   /* rgba(var(--ui-accent-rgb), α) 半透明通道 */
+    --ui-accent-hover: #339dff;
+    --ui-danger: #ff453a;
+    --ui-danger-rgb: 255, 69, 58;
+    --ui-success: #3dd68c;
+    /* 状态反馈文字色（深浅同值,取存量现值） */
+    --ui-success-text: #15803d;
+    --ui-warning-text: #b45309;
+
+    /* 软件内容区保持纯平面；整窗投影由桌面宿主单独绘制。 */
+    --ui-shadow-pop: none;
+    --ui-shadow-dialog: none;
+    /* M76：指定浮层表面（底部输入白面/媒体与选区工具栏/引用与右键面板/用户面板）专用投影 */
+    --ui-shadow-float: 0 4px 14px rgba(0, 0, 0, .05), 0 1px 4px rgba(0, 0, 0, .03);
+}
+
+/* ================================================================
+ * 2. 语义颜色 —— 深色覆盖（theme-dark / studio-theme-dark 同义并存）
+ * ================================================================ */
+html.theme-dark,
+html.studio-theme-dark,
+body.theme-dark,
+body.studio-theme-dark {
+    --ui-surface-canvas: #101010;
+    --ui-surface-chrome: #1b1b1b;
+    --ui-surface-shell: #181818;
+    --ui-surface-card: #212121;
+    --ui-surface-elevated: #232323;
+    --ui-surface-input: #1e1e1e;
+    --ui-surface-composer: #181818;
+    --ui-surface-composer-topbar: rgba(255, 255, 255, .04);
+
+    --ui-hover: rgba(255, 255, 255, .07);
+    --ui-active: rgba(255, 255, 255, .11);
+    --ui-pressed: rgba(255, 255, 255, .15);
+    --ui-selected: rgba(var(--ui-accent-rgb), .16);
+    --ui-focus-ring: rgba(var(--ui-accent-rgb), .38);
+    --ui-danger-hover: rgba(var(--ui-danger-rgb), .14);
+    --ui-backdrop: rgba(0, 0, 0, .55);
+
+    --ui-border: rgba(255, 255, 255, .08);
+    --ui-border-strong: rgba(255, 255, 255, .14);
+    --ui-shell-divider: rgba(255, 255, 255, .08);
+
+    --ui-text: #d1d3d6;
+    --ui-text-secondary: #9c9c9c;
+    --ui-text-muted: #6e6e6e;
+    --ui-text-disabled: rgba(133, 140, 150, .46);
+
+    /* 深浅同用 iOS 蓝（2026-08 用户定稿：深色不用紫蓝） */
+    --ui-accent: #0a84ff;
+    --ui-accent-rgb: 10, 132, 255;
+    --ui-accent-hover: #339dff;
+    --ui-danger: #ff5c5c;
+    --ui-danger-rgb: 255, 92, 92;
+    --ui-success: #3dd68c;
+
+    --ui-shadow-pop: none;
+    --ui-shadow-dialog: none;
+    --ui-shadow-float: 0 4px 14px rgba(0, 0, 0, .26), 0 1px 4px rgba(0, 0, 0, .16);
+}
+
+/* ================================================================
+ * 3. 字体与字阶（深浅共用）
+ * ================================================================ */
+/* MiSans Variable 作为中文与完整字符集后备；可变字重由 100 连续覆盖到 900。
+   字体文件与许可协议均来自小米 MiSans 官方下载包。 */
+@font-face {
+    font-family: "MiSans Variable";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("/static/fonts/misans-variable.ttf?v=2026.08.23.1") format("truetype");
+}
+
+/* 英文与数字使用实际 350 字形，并以 350 参与字体匹配。 */
+@font-face {
+    font-family: "MiSans Latin 350";
+    font-style: normal;
+    font-weight: 350;
+    font-display: swap;
+    src: url("/static/fonts/misans-latin-350.ttf?v=2026.08.23.1") format("truetype");
+    unicode-range: U+0000-024F, U+1E00-1EFF, U+2000-206F, U+20A0-20CF,
+        U+2100-214F, U+FF10-FF19, U+FF21-FF3A, U+FF41-FF5A;
+}
+
+/* 11px / 16px 中文保持实际 380；以 350 参与匹配，避免改变英文数字的
+   computed font-weight，也避免全局 350 连带压细中文。 */
+@font-face {
+    font-family: "MiSans CJK 380";
+    font-style: normal;
+    font-weight: 350;
+    font-display: swap;
+    src: url("/static/fonts/misans-cjk-380.ttf?v=2026.08.23.1") format("truetype");
+    unicode-range: U+2E80-2FFF, U+3000-303F, U+31C0-31EF, U+3400-4DBF,
+        U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF, U+20000-2FA1F;
+}
+
+/* 14px / 12.5px 中文继续使用固定 330 字形；同样以 350 参与匹配。 */
+@font-face {
+    font-family: "MiSans CJK Body 330";
+    font-style: normal;
+    font-weight: 350;
+    font-display: swap;
+    src: url("/static/fonts/misans-cjk-body-330.ttf?v=2026.08.23.1") format("truetype");
+    unicode-range: U+2E80-2FFF, U+3000-303F, U+31C0-31EF, U+3400-4DBF,
+        U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF, U+20000-2FA1F;
+}
+
+:root {
+    --ui-font-variable: "MiSans Variable", "Microsoft YaHei UI", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    --ui-font: "MiSans Latin 350", "MiSans CJK 380", "MiSans Variable", "Microsoft YaHei UI", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    --ui-font-body-cjk: "MiSans CJK Body 330", var(--ui-font);
+    --ui-font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+
+    --ui-type-display: 16px;   /* 展示标题与页级标题统一 */
+    --ui-type-page: 16px;      /* 页级标题 */
+    --ui-type-panel: 14px;     /* 面板标题 */
+    --ui-type-section: 14px;   /* 分区标题 / 菜单项 */
+    --ui-type-body: 14px;      /* 正文 */
+    --ui-type-control: 14px;   /* 控件文字 */
+    --ui-type-compact-label: 12.5px; /* 项目名 / 画布底栏 / 对象工具栏 */
+    --ui-type-project-title: var(--ui-type-compact-label); /* 左侧最近创作项目名称 */
+    --ui-type-meta: 11px;      /* 次要信息 */
+    --ui-type-micro: 11px;     /* 徽标 / 角标 */
+
+    --ui-weight-regular: 380;
+    --ui-weight-medium: 380;
+    --ui-weight-menu-strong: 380;
+    --ui-weight-semibold: 380;
+    --ui-weight-latin: 350; /* computed 与实际拉丁字形均为 350；中文由固定实例保留原字重 */
+    --ui-weight-dock-body: 300;
+    --ui-weight-placeholder: 250; /* 底部输入栏与右侧对话栏占位说明；走可变轴，避开 350 固定实例 */
+
+    --ui-sidebar-nav-icon-size: 15px;
+    --ui-sidebar-nav-icon-stroke: 1.8;
+
+    --ui-leading-control: 1;     /* 单行控件 / 菜单项 */
+    --ui-leading-tight: 1.2;     /* 标题 / 卡片名 */
+    --ui-leading-body: 1.5;      /* 正文 / 多行说明 */
+    --ui-tracking-title: -0.01em; /* 仅页级/展示标题 */
+
+    --ui-icon-lg: 18px;
+    --ui-icon: 16px;
+    --ui-icon-sm: 14px;
+    --ui-icon-xs: 12px;
+    --ui-icon-stroke: 1.5;
+
+    /* 右侧对话栏：最大化保持现有宽度，窗口化时连续收窄。 */
+    --ui-chat-dock-width-min: 360px;
+    --ui-chat-dock-width-max: 488px;
+    --ui-chat-dock-width-base: 221px;
+    --ui-chat-dock-width-ratio: .126;
+}
+
+/* ================================================================
+ * 4. 间距（4 的倍数，特例 2/6）
+ * ================================================================ */
+:root {
+    --ui-space-1: 2px;
+    --ui-space-2: 4px;
+    --ui-space-3: 6px;
+    --ui-space-4: 8px;
+    --ui-space-5: 12px;
+    --ui-space-6: 16px;
+    --ui-space-7: 20px;
+    --ui-space-8: 24px;
+    --ui-space-9: 32px;
+}
+
+/* ================================================================
+ * 5. 圆角
+ * ================================================================ */
+:root {
+    --ui-radius-control: 6px;  /* 按钮 / 输入框 / 菜单项 */
+    --ui-radius-card: 8px;     /* 卡片 / 菜单容器 */
+    --ui-radius-panel: 10px;   /* 面板 / 对话框 */
+    --ui-radius-pill: 6px;     /* 长条控件统一为小圆角矩形，不再使用胶囊轮廓 */
+    --ui-radius-round: 50%;    /* 圆点 / 头像 */
+}
+
+/* ================================================================
+ * 6. z-index 阶（新代码必须取这里的档位，不许写裸数字）
+ * ================================================================ */
+:root {
+    --ui-z-raised: 10;         /* 画布内浮起元素（角标 / 手柄） */
+    --ui-z-toolbar: 60;        /* 工具条 / 底栏 */
+    --ui-z-overlay: 120;       /* 页内遮罩 / 资产条 */
+    --ui-z-panel: 160;         /* 入坞面板（资产 / 历史） */
+    --ui-z-menu: 200;          /* 右键菜单 / 下拉 / popover */
+    --ui-z-sidebar: 300;       /* 全局左侧栏 */
+    --ui-z-dialog: 400;        /* 模态对话框 */
+    --ui-z-chrome: 500;        /* 窗框 / 标题栏 */
+    --ui-z-top: 10000;         /* 拖拽 ghost / toast / 下载中心 */
+}
+
+/* ================================================================
+ * 7. 动效
+ * ================================================================ */
+:root {
+    --ui-motion-fast: 140ms;      /* hover / 颜色 */
+    --ui-motion-base: 180ms;      /* 控件开合 */
+    --ui-motion-surface: 240ms;   /* 弹层 / composer 显隐 */
+    --ui-motion-panel: 340ms;     /* 面板滑入滑出 */
+    --ui-ease: ease;
+    --ui-ease-panel: cubic-bezier(.3, 0, 0, 1);
+    --ui-ease-emphasized: cubic-bezier(.22, .75, .3, 1);
+}
+
+/* ================================================================
+ * 8. 应用级 UI 尺寸
+ * ================================================================ */
+:root {
+    --ui-titlebar-h: 28px;
+    --ui-sidebar-w: 208px;
+    --ui-sidebar-logo-h: 9.333px;
+    --ui-dock-w: 460px;
+    --ui-composer-w: 760px;
+    --ui-composer-surface-h: 174px;
+    --ui-composer-surface-side-inset: 7px;
+    --ui-composer-surface-bottom-gap: 15px;
+    --ui-composer-topbar-h: 30px;
+    --ui-composer-topbar-growth: -10px;
+    --ui-composer-topbar-content-inset: 1px;
+    --ui-composer-topbar-filter: blur(14px) saturate(120%);
+    --ui-composer-topbar-radius: calc(var(--ui-radius-panel) + var(--ui-space-2));
+    --ui-composer-surface-top: var(--ui-composer-topbar-h);
+    --ui-composer-prompt-padding-top: var(--ui-space-7);
+    --ui-control-h: 28px;      /* 常规控件高度 */
+    --ui-control-h-sm: 24px;   /* 小号（标题栏 / 工具条内） */
+    --ui-control-h-lg: 32px;   /* 菜单项 / 强操作行 */
+    --ui-menu-item-h: 32px;
+    --ui-hit-target: 28px;     /* 紧凑桌面端最小点击区域 */
+    --ui-canvas-nav-control-size: var(--ui-control-h);
+    --ui-canvas-nav-icon-size: var(--ui-icon-xs);
+    --ui-canvas-nav-radius: var(--ui-radius-panel);
+    --ui-canvas-zoom-value-w: 32px;
+    --ui-canvas-zoom-menu-w: 180px;
+    --ui-canvas-zoom-value-type: 11px;
+    --ui-canvas-zoom-menu-type: 11px;
+    --ui-canvas-zoom-shortcut-type: 11px;
+    --ui-shell-top-control-h: var(--ui-control-h);
+    --ui-shell-top-control-radius: var(--ui-radius-panel);
+    --ui-shell-agent-control-w: auto;
+    --ui-user-menu-w: 208px;
+}
+
+/* ================================================================
+ * 9. 画布专用 tokens
+ * ================================================================ */
+:root {
+    --ui-canvas-grid-dot: rgba(0, 0, 0, .11);
+    --ui-canvas-grid-size: 18px;
+    --ui-canvas-selection: var(--ui-accent);
+    --ui-canvas-selection-fill: rgba(var(--ui-accent-rgb), .08);
+    --ui-canvas-node-border-size: 1px;
+    --ui-canvas-node-selected-border-size: 1.5px;
+    --ui-canvas-guide: var(--ui-accent);
+    --ui-canvas-port: var(--ui-text-secondary);
+    --ui-canvas-port-active: var(--ui-accent);
+    --ui-canvas-connection: rgba(0, 0, 0, .28);
+    --ui-canvas-connection-active: var(--ui-accent);
+}
+
+html.theme-dark,
+html.studio-theme-dark,
+body.theme-dark,
+body.studio-theme-dark {
+    --ui-canvas-grid-dot: rgba(255, 255, 255, .055);
+    --ui-canvas-selection-fill: rgba(var(--ui-accent-rgb), .12);
+    --ui-canvas-connection: rgba(255, 255, 255, .24);
+}

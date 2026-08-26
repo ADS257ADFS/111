@@ -1,0 +1,758 @@
+/* Canvas project chrome: replaces the former vertical rail. */
+
+:root {
+    --canvas-shell-control-height: 36px;
+    --canvas-shell-control-radius: 999px;
+    --canvas-shell-bottom-size: 29.52px;
+}
+
+.shell-canvas-project-cluster {
+    position: fixed;
+    top: 22px;
+    left: 16px;
+    z-index: 245;
+    height: var(--canvas-shell-control-height);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    pointer-events: auto;
+}
+
+.shell-canvas-project-capsule {
+    box-sizing: border-box;
+    width: 190px;
+    height: var(--canvas-shell-control-height);
+    display: inline-flex;
+    align-items: center;
+    padding: 0 5px;
+    border: 1px solid var(--ui-border);
+    border-radius: var(--canvas-shell-control-radius);
+    background: var(--ui-surface-elevated);
+    color: var(--ui-text-secondary);
+    box-shadow: var(--ui-shadow-pop);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+.shell-canvas-project-new,
+.shell-canvas-project-menu-btn,
+.shell-bottom-asset-btn {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 0;
+    color: inherit;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+}
+
+.shell-canvas-project-new {
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--ui-border);
+    border-radius: 999px;
+    background: var(--ui-surface-chrome);
+    box-shadow: none;
+    transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.shell-canvas-project-new svg,
+.shell-canvas-project-new i {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1.9;
+}
+
+.shell-canvas-project-divider {
+    width: 1px;
+    height: 18px;
+    flex: 0 0 1px;
+    margin: 0 4px;
+    background: rgba(93, 102, 114, .18);
+}
+
+.shell-canvas-project-menu-btn {
+    min-width: 0;
+    height: 30px;
+    flex: 1 1 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 9px;
+    padding: 0 7px 0 8px;
+    border-radius: 999px;
+    color: inherit;
+    border: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    animation: none !important;
+    filter: none !important;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 180ms ease, transform 180ms ease;
+}
+
+#shellCanvasProjectTitle {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight:600;
+    line-height: 1;
+    letter-spacing: -.01em;
+}
+
+.shell-canvas-project-chevron {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
+    stroke-width: 1.8;
+    opacity: .72;
+    transition: transform 220ms cubic-bezier(.22, .75, .3, 1);
+}
+
+.shell-canvas-project-menu-btn[aria-expanded="true"] .shell-canvas-project-chevron {
+    transform: rotate(180deg);
+}.shell-canvas-project-new:hover,
+.shell-canvas-project-new:focus-visible,
+.shell-canvas-project-menu-btn:hover,
+.shell-canvas-project-menu-btn:focus-visible,
+.shell-canvas-project-menu-btn[aria-expanded="true"]{
+    background: rgba(255, 255, 255, .68);
+    outline: none;
+}
+.shell-canvas-project-menu-btn[aria-expanded="true"]{color: var(--ui-text);}
+
+.shell-canvas-project-menu-btn:hover,
+.shell-canvas-project-menu-btn:focus,
+.shell-canvas-project-menu-btn:focus-visible,
+.shell-canvas-project-menu-btn[aria-expanded="true"] {
+    border-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 999px !important;
+}
+
+html body .app-shell .shell-canvas-project-menu-btn:hover,
+html body .app-shell .shell-canvas-project-menu-btn:focus,
+html body .app-shell .shell-canvas-project-menu-btn:focus-visible,
+html body .app-shell .shell-canvas-project-menu-btn[aria-expanded="true"] {
+    border-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 999px !important;
+}
+
+.shell-canvas-project-new:hover,
+.shell-canvas-project-new:focus-visible {
+    background: rgba(255, 255, 255, .82);
+    border-color: rgba(255, 255, 255, .92);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .86),
+        0 5px 12px rgba(55, 65, 81, .13);
+}
+
+.shell-canvas-project-new:active,
+.shell-canvas-project-menu-btn:active {
+    transform: scale(.96);
+}
+
+/* The points control is part of the project cluster, so its position no longer
+   follows the right dock. All three top controls share exactly the same height. */
+.shell-canvas-project-cluster .top-user-btn,
+html.gpt-dock-collapsed:not(.studio-hide-gpt-dock) .shell-canvas-project-cluster .top-user-btn,
+html.studio-hide-gpt-dock .shell-canvas-project-cluster .top-user-btn {
+    position: static !important;
+    inset: auto !important;
+    z-index: auto;
+    min-width: 70px;
+    height: var(--canvas-shell-control-height);
+    flex: 0 0 auto;
+    border-radius: var(--canvas-shell-control-radius);
+}
+
+html.studio-page-canvas .dock-open-btn {
+    border-radius: var(--canvas-shell-control-radius) !important;
+}
+
+.shell-bottom-asset-btn {
+    position: fixed;
+    left: 16px;
+    bottom: 16px;
+    z-index: 245;
+    box-sizing: border-box;
+    width: var(--canvas-shell-bottom-size);
+    height: var(--canvas-shell-bottom-size);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    color: var(--ui-text-secondary);
+    background: transparent;
+    box-shadow: none;
+    transition:
+        background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.shell-bottom-asset-btn svg,
+.shell-bottom-asset-btn i {
+    width: 13.94px;
+    height: 13.94px;
+    stroke-width: 1.85;
+}.shell-bottom-asset-btn:hover,
+.shell-bottom-asset-btn:focus-visible{
+    background: rgba(255, 255, 255, .9);
+    border-color: rgba(255, 255, 255, .96);
+    box-shadow: 0 4px 12px rgba(103, 116, 134, .12);
+    transform: translateY(-1px);
+    outline: none;
+}
+
+.shell-bottom-asset-btn.active,
+.shell-bottom-asset-btn[aria-pressed="true"] {
+    color: var(--ui-text-on-accent);
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+    box-shadow: 0 6px 14px rgba(var(--ui-accent-rgb), .22);
+}
+
+html:is(.theme-dark, .studio-theme-dark) .shell-canvas-project-capsule {
+    border-color: rgba(255, 255, 255, .14);
+    background: rgba(38, 39, 43, .68);
+    color: var(--ui-text-secondary);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .08),
+        0 9px 22px rgba(0, 0, 0, .32);
+}
+
+html:is(.theme-dark, .studio-theme-dark) .shell-canvas-project-divider {
+    background: rgba(255, 255, 255, .12);
+}
+
+html:is(.theme-dark, .studio-theme-dark) .shell-canvas-project-new {
+    border-color: rgba(255, 255, 255, .14);
+    background: rgba(255, 255, 255, .1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
+}html:is(.theme-dark, .studio-theme-dark) .shell-canvas-project-new:hover,
+html:is(.theme-dark, .studio-theme-dark) .shell-canvas-project-new:focus-visible,
+html:is(.theme-dark, .studio-theme-dark) .shell-canvas-project-menu-btn:hover,
+html:is(.theme-dark, .studio-theme-dark) .shell-canvas-project-menu-btn:focus-visible,
+html:is(.theme-dark, .studio-theme-dark) .shell-canvas-project-menu-btn[aria-expanded="true"]{
+    background: rgba(255, 255, 255, .1);
+}
+html:is(.theme-dark, .studio-theme-dark) .shell-canvas-project-menu-btn[aria-expanded="true"]{color: var(--ui-text);}
+
+html:is(.theme-dark, .studio-theme-dark) .shell-canvas-project-new:hover,
+html:is(.theme-dark, .studio-theme-dark) .shell-canvas-project-new:focus-visible {
+    background: rgba(255, 255, 255, .16);
+    border-color: rgba(255, 255, 255, .2);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .16),
+        0 6px 14px rgba(0, 0, 0, .24);
+}
+
+html:is(.theme-dark, .studio-theme-dark) .shell-bottom-asset-btn {
+    color: var(--ui-text-secondary);
+}html:is(.theme-dark, .studio-theme-dark) .shell-bottom-asset-btn:hover,
+html:is(.theme-dark, .studio-theme-dark) .shell-bottom-asset-btn:focus-visible{
+    background: rgba(48, 49, 54, .92);
+    border-color: rgba(255, 255, 255, .12);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .28);
+}
+
+html:is(.theme-dark, .studio-theme-dark) .shell-bottom-asset-btn.active,
+html:is(.theme-dark, .studio-theme-dark) .shell-bottom-asset-btn[aria-pressed="true"] {
+    color: var(--ui-text-on-accent);
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+    box-shadow: none;
+}
+
+html:not(.studio-page-canvas) .shell-canvas-project-cluster,
+html:not(.studio-page-canvas) .shell-bottom-asset-btn {
+    display: none;
+}
+
+/* The asset drawer is the topmost left surface while open. */
+html.shell-asset-library-open .shell-canvas-project-cluster,
+html.shell-asset-library-open .shell-bottom-asset-btn {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.studio-page-canvas.shell-asset-library-open .shell-primary-rail {
+    transform: translateX(calc(-100% - 24px)) scale(.95);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        transform .42s cubic-bezier(.22,.75,.3,1), opacity .36s ease, visibility 0s linear .42s;
+}
+
+html.shell-history-open .shell-canvas-project-cluster,
+html.shell-history-open .shell-bottom-asset-btn {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.studio-page-canvas.shell-history-open .shell-primary-rail {
+    transform: translateX(calc(-100% - 24px)) scale(.95);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        transform .42s cubic-bezier(.22,.75,.3,1), opacity .36s ease, visibility 0s linear .42s;
+}/* New-canvas is the single permanent accent in the project capsule. */
+html body .app-shell .shell-canvas-project-new,
+html body .app-shell .shell-canvas-project-new:hover,
+html body .app-shell .shell-canvas-project-new:focus,
+html body .app-shell .shell-canvas-project-new:focus-visible,
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-canvas-project-new,
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-canvas-project-new:hover,
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-canvas-project-new:focus-visible{
+    background: var(--ui-accent) !important;
+    border-color: var(--ui-accent) !important;
+    box-shadow: none !important;
+}
+/* New-canvas is the single permanent accent in the project capsule. */
+html body .app-shell .shell-canvas-project-new,
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-canvas-project-new{color: var(--ui-text-on-accent) !important;}
+
+/* Safety net for stale cached markup: the retired rail can never reappear. */
+html.studio-page-canvas .floating-toolbar {
+    display: none !important;
+}
+
+@media (max-width: 720px) {
+    .shell-canvas-project-capsule { width: 184px; }
+}
+
+
+/* Primary shell navigation: icon-only rail matching the canvas reference. */
+@property --shell-rail-outline-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: -165deg;
+}
+
+@property --shell-rail-material-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: -135deg;
+}
+
+.shell-primary-rail {
+    position: fixed;
+    left: 16px;
+    top: calc(50% - 119px);
+    z-index: 245;
+    width: 50px;
+    padding: 11px 6px 9px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    transform: scale(.95);
+    transform-origin: top center;
+    box-sizing: border-box;
+    border: 1px solid var(--ui-border);
+    border-radius: 999px;
+    background: var(--ui-surface-elevated);
+    box-shadow: var(--ui-shadow-pop);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell-primary-rail {
+    --border-width: clamp(1px, .0625em, 4px);
+    --anim--hover-time: 400ms;
+    --anim--hover-ease: cubic-bezier(.25, 1, .5, 1);
+    --shell-rail-outline-angle: -165deg;
+    --shell-rail-material-angle: -135deg;
+    isolation: isolate;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell-primary-rail::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    display: block;
+    box-sizing: border-box;
+    border-radius: inherit;
+    overflow: clip;
+    pointer-events: none;
+    background: var(--ui-surface-elevated);
+    border: 1px solid var(--ui-border);
+    box-shadow: var(--ui-shadow-pop);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    scale: 1;
+    rotate: 0deg;
+    transition:
+        scale var(--anim--hover-time) var(--anim--hover-ease), rotate var(--anim--hover-time) var(--anim--hover-ease);
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell-primary-rail::after {
+    content: none;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .shell-primary-rail:hover::before,
+html:not(.theme-dark):not(.studio-theme-dark) .shell-primary-rail:focus-within::before {
+    scale: .975;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: var(--ui-shadow-pop);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) .shell-primary-rail {
+    border-color: var(--ui-border);
+    background: var(--ui-surface-chrome);
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+.shell-primary-rail-item,
+.shell-primary-rail .shell-canvas-project-new,
+.shell-primary-rail .shell-canvas-project-menu-btn,
+.shell-primary-rail .shell-bottom-asset-btn {
+    position: relative !important;
+    inset: auto !important;
+    width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    flex: 0 0 36px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    border: 1px solid transparent !important;
+    border-radius: 999px !important;
+    background: transparent !important;
+    color: var(--ui-text-secondary) !important;
+    box-shadow: none !important;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease !important;
+}
+
+.shell-primary-rail-item svg,
+.shell-primary-rail-item i {
+    width: 17px !important;
+    height: 17px !important;
+    flex: 0 0 17px;
+    stroke-width: 1.4;
+}.shell-primary-rail-item:hover,
+.shell-primary-rail-item:focus-visible{
+    background: rgba(148, 163, 184, .12) !important;
+    border-color: rgba(148, 163, 184, .16) !important;
+    transform: scale(1.04);
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item {
+    color: var(--ui-text-secondary) !important;
+}html:not(.theme-dark):not(.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item:not(.active):not([data-shell-primary-active="true"]):not([aria-pressed="true"]):is(:hover, :focus-visible){
+    background: #fff !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item :is(svg, i, i > svg) {
+    color: currentColor !important;
+    stroke: currentColor !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(
+    .shell-primary-rail-item,
+    .shell-primary-rail .shell-canvas-project-new,
+    .shell-primary-rail .shell-canvas-project-menu-btn,
+    .shell-primary-rail .shell-bottom-asset-btn
+) {
+    color: var(--ui-text-secondary) !important;
+    transition:
+        transform .18s cubic-bezier(.2, .8, .2, 1), background .18s, border-color .18s, box-shadow .18s !important;
+}:is(html.theme-dark, html.studio-theme-dark) :is(
+    .shell-primary-rail-item:not(.active):not([data-shell-primary-active="true"]):not([aria-pressed="true"]):hover,
+    .shell-primary-rail-item:not(.active):not([data-shell-primary-active="true"]):not([aria-pressed="true"]):focus-visible
+){
+    background: radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;
+    border-color: rgba(255, 255, 255, .08) !important;
+    box-shadow:
+        inset 0 0 10px rgba(255, 255, 255, .10),
+        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+    transform: none !important;
+}
+
+.shell-primary-rail-item[data-shell-primary-active="true"],
+.shell-primary-rail-item.active,
+.shell-primary-rail-item[aria-pressed="true"] {
+    color: var(--ui-text-on-accent) !important;
+    background: var(--ui-accent) !important;
+    border-color: var(--ui-accent) !important;
+}
+
+html.shell-asset-library-open .shell-primary-rail .shell-bottom-asset-btn {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}html body .app-shell .shell-primary-rail .shell-primary-new,
+html body .app-shell .shell-primary-rail .shell-primary-new:hover,
+html body .app-shell .shell-primary-rail .shell-primary-new:focus-visible{
+    background: #fff !important;
+    border-color: transparent !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .04) !important;
+    transform: translateY(-4px) !important;
+}
+html body .app-shell .shell-primary-rail .shell-primary-new{color: var(--ui-text-secondary) !important;}html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-new,
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-new:focus-visible{
+    background: rgba(255, 255, 255, .065) !important;
+    border-color: rgba(255, 255, 255, .08) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035) !important;
+}
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-new{color: var(--ui-text-secondary) !important;}
+
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-new:hover {
+    background: rgba(255, 255, 255, .10) !important;
+    border-color: rgba(255, 255, 255, .10) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035) !important;
+    transform: translateY(-4px) !important;
+}
+
+.shell-primary-rail-divider {
+    width: 20px;
+    height: 1px;
+    flex: 0 0 1px;
+    border-radius: 999px;
+    background: rgba(102, 108, 116, .24);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) .shell-primary-rail-divider {
+    background: rgba(255, 255, 255, .14);
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user {
+    color: var(--ui-text-secondary) !important;
+    background: var(--ui-surface-chrome) !important;
+    border-color: var(--ui-border) !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}html:not(.theme-dark):not(.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:is(:hover, :focus-visible){
+    background: rgba(255, 255, 255, .50) !important;
+    border-color: rgba(255, 255, 255, .50) !important;
+}html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user,
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:hover,
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:focus-visible{
+    background: rgba(0, 0, 0, .34) !important;
+    border-color: rgba(255, 255, 255, .08) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 4px 12px rgba(0, 0, 0, .16) !important;
+}
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user{color: var(--ui-text-secondary) !important;}html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:hover,
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:focus-visible{
+    background: radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;
+    border-color: rgba(255, 255, 255, .08) !important;
+    box-shadow:
+        inset 0 0 10px rgba(255, 255, 255, .10),
+        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+    transform: none !important;
+}html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item,
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item:is(:hover, :focus-visible){
+}
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item{color: var(--ui-text-secondary) !important;}
+
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item :is(svg, i, i > svg) {
+    color: currentColor !important;
+    stroke: currentColor !important;
+}
+
+html body .app-shell .shell-primary-rail .shell-primary-rail-item:is(
+    [data-shell-primary-active="true"],
+    .active,
+    [aria-pressed="true"]
+) {
+    color: var(--ui-text-on-accent) !important;
+    background: var(--ui-accent) !important;
+    border-color: var(--ui-accent) !important;
+}
+
+html body .app-shell .shell-primary-rail .shell-primary-rail-item:is(
+    [data-shell-primary-active="true"],
+    .active,
+    [aria-pressed="true"]
+) :is(svg, i, i > svg) {
+    color: var(--ui-text-on-accent) !important;
+    stroke: #fff !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item[data-shell-primary-active="true"],
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item.active,
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item[aria-pressed="true"] {
+    color: var(--ui-text-on-accent) !important;
+    background: var(--ui-accent) !important;
+    border-color: var(--ui-accent) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item[data-shell-primary-active="true"] :is(svg, i, i > svg),
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item.active :is(svg, i, i > svg),
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item[aria-pressed="true"] :is(svg, i, i > svg) {
+    color: var(--ui-text-on-accent) !important;
+    stroke: #fff !important;
+}
+
+.shell-primary-rail > * {
+    position: relative !important;
+    z-index: 2;
+    top: 2px !important;
+}
+
+/* Light canvas chrome uses the same directional liquid-glass shell as the
+   reference-node panel. Geometry and dark-theme materials remain untouched. */
+@property --shell-top-outline-flow-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: -165deg;
+}
+
+@property --shell-top-dark-flow-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: -135deg;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell :is(.top-user-btn, .dock-open-btn) {
+    --border-width: clamp(1px, .0625em, 4px);
+    --anim--hover-time: 400ms;
+    --anim--hover-ease: cubic-bezier(.25, 1, .5, 1);
+    --shell-top-outline-flow-angle: -165deg;
+    --shell-top-dark-flow-angle: -135deg;
+    isolation: isolate;
+    border: 0 !important;
+    background: transparent !important;
+    color: var(--ui-text-secondary);
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell :is(.top-user-btn, .dock-open-btn) > * {
+    position: relative;
+    z-index: 3;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell :is(.top-user-btn, .dock-open-btn)::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    display: block;
+    box-sizing: border-box;
+    border-radius: inherit;
+    overflow: clip;
+    pointer-events: none;
+    background: var(--ui-surface-elevated);
+    border: 1px solid var(--ui-border);
+    box-shadow: var(--ui-shadow-pop);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    scale: 1;
+    rotate: 0deg;
+    transition:
+        scale var(--anim--hover-time) var(--anim--hover-ease), rotate var(--anim--hover-time) var(--anim--hover-ease);
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell :is(.top-user-btn, .dock-open-btn)::after {
+    content: none;
+}html:not(.theme-dark):not(.studio-theme-dark) body .app-shell :is(.top-user-btn, .dock-open-btn):is(:hover, :focus-within){
+    transform: none;
+    outline: none;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell :is(.top-user-btn, .dock-open-btn):is(:hover, :focus-within)::before {
+    scale: .975;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: var(--ui-shadow-pop);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html:not(.theme-dark):not(.studio-theme-dark) body .app-shell :is(.top-user-btn, .dock-open-btn)::before,
+    html:not(.theme-dark):not(.studio-theme-dark) body .app-shell :is(.top-user-btn, .dock-open-btn)::after {
+        transition: none;
+    }
+}
+
+.shell-primary-rail > .shell-primary-rail-divider {
+    top: 1px !important;
+}:is(html.theme-dark, html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item,
+:is(html.theme-dark, html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item:is(:hover, :focus-visible){
+}
+:is(html.theme-dark, html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item{color: var(--ui-text-secondary) !important;}
+
+:is(html.theme-dark, html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item :is(svg, i, i > svg) {
+    color: var(--ui-text-secondary) !important;
+    stroke: #fff !important;
+}
+
+.shell-visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* Keep the account control immediately to the left of Agent 对话. */
+.top-user-btn,
+html.gpt-dock-collapsed:not(.studio-hide-gpt-dock) .top-user-btn {
+    top: 22px !important;
+    right: 126px !important;
+    left: auto !important;
+    min-width: 78px;
+    height: var(--canvas-shell-control-height);
+    z-index: 170;
+    border-radius: var(--canvas-shell-control-radius);
+}
+
+/* 隐藏 Agent 对话时，积分按钮滑到其位置。 */
+html.studio-hide-gpt-dock .top-user-btn {
+    top: 22px !important;
+    right: 14px !important;
+    left: auto !important;
+    min-width: 78px;
+    height: var(--canvas-shell-control-height);
+    z-index: 170;
+    border-radius: var(--canvas-shell-control-radius);
+}
+
+/* 画布按钮常态即选中：蓝底白图标。 */
+.shell-primary-rail .shell-primary-rail-item[data-shell-primary-nav="canvas"][data-shell-primary-active="true"] {
+    color: var(--ui-text-on-accent) !important;
+    background: var(--ui-accent) !important;
+    border-color: transparent !important;
+    box-shadow: 0 5px 14px rgba(var(--ui-accent-rgb), .22) !important;
+}
+
+.shell-primary-rail .shell-primary-rail-item[data-shell-primary-nav="canvas"][data-shell-primary-active="true"] :is(svg, i, i > svg) {
+    color: var(--ui-text-on-accent) !important;
+    stroke: #fff !important;
+}

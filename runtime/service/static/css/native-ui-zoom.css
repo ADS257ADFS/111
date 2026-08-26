@@ -1,0 +1,9 @@
+/* Keep the 20px canvas dot grid at its intended physical size under 110% native UI zoom. */
+html.lightbox-native-ui-zoom :is(#shell.shell, .stage, .board, .canvas-gate) {
+    background-size: var(--lightbox-native-grid-size, 18.1818182px) var(--lightbox-native-grid-size, 18.1818182px) !important;
+}
+
+html.lightbox-native-ui-zoom:not(.theme-dark):not(.studio-theme-dark):not(.canvas-empty-dot-grid-active)
+    :is(#shell.shell, .stage, .board, .canvas-gate) {
+    background-image: radial-gradient(var(--grid) var(--lightbox-native-grid-dot, .9090909px), transparent var(--lightbox-native-grid-dot, .9090909px)) !important;
+}

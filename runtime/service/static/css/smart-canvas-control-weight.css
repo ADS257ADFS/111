@@ -1,0 +1,55 @@
+/* Canvas composer and contextual toolbars: medium text with matching icons. */
+
+html body #shell#shell#shell.shell #composer#composer#composer.composer,
+html body #shell#shell#shell.shell #composer#composer#composer.composer * {
+    font-weight: var(--ui-weight-medium) !important;
+}
+
+html body #shell#shell#shell.shell #composer#composer#composer.composer .prompt-input,
+html body #shell#shell#shell.shell #composer#composer#composer.composer #promptInput {
+    font-weight: var(--ui-weight-regular) !important;
+}
+
+html body #shell#shell#shell.shell #composer#composer#composer.composer :is(input, textarea)::placeholder,
+html body #shell#shell#shell.shell #composer#composer#composer.composer [contenteditable]::before {
+    font-weight: var(--ui-weight-medium) !important;
+}
+
+html body #imageQuickToolbar#imageQuickToolbar#imageQuickToolbar#imageQuickToolbar.image-quick-toolbar,
+html body #imageQuickToolbar#imageQuickToolbar#imageQuickToolbar#imageQuickToolbar.image-quick-toolbar *,
+html body #selectionBoxCapsule#selectionBoxCapsule#selectionBoxCapsule#selectionBoxCapsule,
+html body #selectionBoxCapsule#selectionBoxCapsule#selectionBoxCapsule#selectionBoxCapsule *,
+html body #shell#shell#shell#shell.shell .smart-group-toolbar.smart-group-toolbar,
+html body #shell#shell#shell#shell.shell .smart-group-toolbar.smart-group-toolbar * {
+    font-weight: var(--ui-weight-medium) !important;
+}
+
+html body #shell#shell#shell.shell #composer#composer#composer.composer :is(svg, i, i > svg),
+html body #imageQuickToolbar#imageQuickToolbar#imageQuickToolbar#imageQuickToolbar.image-quick-toolbar :is(svg, i, i > svg),
+html body #selectionBoxCapsule#selectionBoxCapsule#selectionBoxCapsule#selectionBoxCapsule :is(svg, i, i > svg),
+html body #shell#shell#shell#shell.shell .smart-group-toolbar.smart-group-toolbar :is(svg, i, i > svg) {
+    stroke-width: 1.8 !important;
+}
+
+html body #imageQuickToolbar#imageQuickToolbar#imageQuickToolbar#imageQuickToolbar.image-quick-toolbar .image-action-hd-icon rect {
+    stroke-width: 1.8 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell#shell#shell#shell.shell #composer#composer#composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn > .composer-tool-caret {
+    color: #575757 !important;
+    stroke: #575757 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell#shell#shell#shell.shell #composer#composer#composer.composer
+    .composer-card .prompt-row,
+:is(html.theme-dark, html.studio-theme-dark) body #shell#shell#shell#shell.shell #composer#composer#composer.composer
+    .composer-card #promptInput.prompt-input,
+:is(html.theme-dark, html.studio-theme-dark) body #shell#shell#shell#shell.shell #composer#composer#composer.composer
+    .composer-card #promptInput.prompt-input:focus {
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}

@@ -1,0 +1,37 @@
+/* Port magnet — transform driven by JS (--port-magnet-x/y on each .node-port) */
+
+.node-port {
+    transition: opacity .15s ease, background .15s ease, box-shadow .18s ease !important;
+    transform: translateY(-50%) translate(var(--port-magnet-x, 0px), var(--port-magnet-y, 0px)) !important;
+}
+
+.node-port:hover,
+.node-port.is-active {
+    transform: translateY(-50%) translate(var(--port-magnet-x, 0px), var(--port-magnet-y, 0px)) scale(1.22) !important;
+}
+
+.node-port.is-magnet-near {
+    box-shadow:
+        0 calc(4px / var(--world-scale, 1)) calc(12px / var(--world-scale, 1)) rgba(var(--ui-accent-rgb), 0.24),
+        0 0 0 calc(3px / var(--world-scale, 1)) rgba(var(--ui-accent-rgb), 0.1);
+}
+
+/* Reveal out port within 25px magnet zone (even before node hover) */
+.image-node.port-magnet-out-zone .node-port.port-out {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.image-node.port-magnet-out-zone:not(:hover):not(.selected):not(.port-hover) .node-port.port-out {
+    opacity: 0.82;
+}
+
+.theme-dark .image-node.port-magnet-out-zone:not(:hover):not(.selected):not(.port-hover) .node-port.port-out {
+    opacity: 0.88;
+}
+
+.theme-dark .node-port.is-magnet-near {
+    box-shadow:
+        0 calc(4px / var(--world-scale, 1)) calc(12px / var(--world-scale, 1)) rgba(var(--ui-accent-rgb), 0.28),
+        0 0 0 calc(3px / var(--world-scale, 1)) rgba(var(--ui-accent-rgb), 0.12);
+}

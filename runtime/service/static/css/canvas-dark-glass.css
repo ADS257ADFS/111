@@ -1,0 +1,1934 @@
+/*
+ * SuperCmd glass skin for Lightbox / Infinite Canvas.
+ * Dark visuals only; structure, hit areas and behavior are unchanged.
+ */
+
+html.theme-dark,
+html.studio-theme-dark {
+    --canvas-glass-bg: var(--sc-glass) !important;
+    --canvas-glass-text: var(--sc-text-secondary) !important;
+    --canvas-glass-shadow: var(--sc-shadow-raised) !important;
+    --canvas-glass-radius: var(--sc-radius) !important;
+    --canvas-glass-blur: var(--sc-blur) !important;
+    --canvas-glass-glider-bg: var(--sc-selected) !important;
+    --canvas-glass-glider-shadow: inset 0 1px 0 rgba(255, 255, 255, .10) !important;
+}
+
+/* Canvas atmosphere ------------------------------------------------------- */
+
+:is(html.theme-dark, html.studio-theme-dark) :is(.stage, .board, #shell.shell, .shell) {
+    background-color: #090909 !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12.5' cy='12.5' r='.35' fill='%238f8f8f'/%3E%3C/svg%3E") !important;
+    background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
+    background-position: 0 0 !important;
+}
+
+.empty-canvas-dot-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+:is(html.theme-dark, html.studio-theme-dark).canvas-empty-dot-grid-active #shell.shell {
+    background-color: #090909 !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12.5' cy='12.5' r='.35' fill='%238f8f8f'/%3E%3C/svg%3E") !important;
+    background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
+    background-position: 0 0 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shell.shell {
+    background-image: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(.conn-line, .connection-line) {
+    opacity: .62;
+    filter: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) .connection-layer :is(
+    .conn-pending,
+    .conn-cascade-active,
+    .port-drag-temp,
+    .port-link-pending-line,
+    .selection-multi-port-line.conn-pending
+) {
+    stroke: transparent !important;
+    stroke-opacity: 0 !important;
+    animation: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+.canvas-dynamic-line-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 51;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.canvas-dynamic-line-overlay.visible {
+    opacity: 1;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) .canvas-dynamic-line-overlay .canvas-dynamic-line {
+    stroke: var(--ui-accent) !important;
+    stroke-width: .5 !important;
+    stroke-dasharray: 6 4 !important;
+    stroke-linecap: round !important;
+    vector-effect: non-scaling-stroke !important;
+    shape-rendering: geometricPrecision !important;
+    animation: smart-guide-flow .9s linear infinite !important;
+    stroke-opacity: 1 !important;
+    opacity: 1 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(.selection-box, .drop-overlay) {
+    border-color: rgba(var(--ui-accent-rgb), .62) !important;
+    background: rgba(var(--ui-accent-rgb), .08) !important;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .04) !important;
+}
+
+/* Shared SuperCmd surfaces ------------------------------------------------ */
+
+:is(html.theme-dark, html.studio-theme-dark) :is(
+    .dock-open-btn,
+    .shell-user-menu,
+    .shell-project-history-dialog,
+    .shell-settings-dialog,
+    .shell-settings-panes,
+    .shell-settings-embed-frame,
+    .canvas-history-panel,
+    .asset-panel,
+    .prompt-asset-panel,
+    .create-menu,
+    .mention-picker,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .composer-hd-popover,
+    .smart-popover,
+    .port-link-pick-shell,
+    .port-link-menu,
+    .image-quick-toolbar,
+    .image-quick-toolbar .iqt-dropdown-menu,
+    .selection-capsule-bar,
+    .asset-library-dialog,
+    .asset-prompt-dialog,
+    .co-create-popover
+) {
+    color: var(--sc-text) !important;
+    border: 1px solid var(--sc-border-panel) !important;
+    background: var(--sc-glass) !important;
+    box-shadow: var(--sc-shadow-raised) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .floating-toolbar::before {
+    color: var(--sc-text) !important;
+    border: 1px solid var(--sc-border-panel) !important;
+    background: var(--sc-glass) !important;
+    box-shadow: 0 18px 46px rgba(var(--sc-shadow-rgb), .13), inset 0 1px 0 rgba(255, 255, 255, .10) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(
+    .dock-open-btn,
+    .shell-user-menu,
+    .canvas-history-panel,
+    .asset-panel,
+    .create-menu,
+    .mention-picker,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .composer-hd-popover,
+    .smart-popover,
+    .port-link-menu
+) {
+    border-radius: var(--sc-radius-lg) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(
+    .image-quick-toolbar,
+    .selection-capsule-bar
+) {
+    border-radius: 999px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .floating-toolbar::before {
+    border-radius: 999px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #imageQuickToolbar.image-quick-toolbar,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #selectionBoxCapsule .selection-capsule-bar {
+    border-radius: 999px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .floating-toolbar .floating-toolbar-highlight-trail {
+    position: absolute !important;
+    display: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #imageQuickToolbar.image-quick-toolbar {
+    padding-left: 10.5px !important;
+    padding-right: 10.5px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(
+    .canvas-history-panel,
+    .asset-panel,
+    .create-menu,
+    .mention-picker,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .composer-hd-popover,
+    .smart-popover,
+    .port-link-menu,
+    .image-quick-toolbar .iqt-dropdown-menu
+)::before {
+    /* M5 扁平定案:顶部高光渐变已拆除 */
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: none;
+    box-shadow: none;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(
+    .canvas-history-panel,
+    .asset-panel,
+    .create-menu,
+    .mention-picker,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .composer-hd-popover,
+    .smart-popover,
+    .port-link-pick-shell,
+    .port-link-menu,
+    .image-quick-toolbar .iqt-dropdown-menu
+) > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Object-toolbar dropdowns use the same opaque dark sheet as the composer's
+   lower-left popovers. Keep menu geometry and entry transitions unchanged. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #imageQuickToolbar.image-quick-toolbar .iqt-dropdown-menu {
+    background: #1d1e21 !important;
+    background-color: #1d1e21 !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #imageQuickToolbar.image-quick-toolbar .iqt-dropdown-menu::before,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #imageQuickToolbar.image-quick-toolbar .iqt-dropdown-menu::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* Main composer ----------------------------------------------------------- */
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card {
+    isolation: isolate;
+    color: var(--sc-text) !important;
+    border: 0 !important;
+    border-radius: 22px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card::before {
+    content: none !important;
+    display: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card::after {
+    content: none !important;
+    display: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card .composer-card-material {
+    position: absolute;
+    z-index: 0;
+    inset: -5px 0 0;
+    display: block;
+    box-sizing: border-box;
+    overflow: clip;
+    border: 1px solid var(--sc-border-panel);
+    border-radius: inherit;
+    pointer-events: none;
+    background: var(--ui-surface-elevated);
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card .composer-card-surface {
+    position: absolute;
+    z-index: 1;
+    inset: 40px 10px 10px;
+    display: block;
+    border: 1px solid var(--sc-border);
+    border-radius: 18px;
+    pointer-events: none;
+    background: #0e0e0e !important;
+    background-image: none !important;
+    opacity: 1 !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card > :not(.composer-card-material):not(.composer-card-surface):not(.composer-card-topbar) {
+    position: relative;
+    z-index: 2;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card :is(.prompt-input, .prompt-row) {
+    color: var(--sc-text) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer .composer-card .prompt-input {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer .composer-card .prompt-input:focus {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card .prompt-input:empty::before {
+    color: var(--sc-text-muted) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer .composer-footer .composer-footer-bar {
+    position: relative;
+    isolation: isolate;
+    overflow: visible !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .composer-tool-btn,
+    .composer-api-settings-btn,
+    .composer-template-btn,
+    .composer-hd-btn,
+    .composer-asset-shortcut
+) {
+    color: var(--sc-text-secondary) !important;
+    border: 1px solid var(--sc-border) !important;
+    background: var(--sc-surface-soft) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .045) !important;
+}:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .composer-tool-btn,
+    .composer-api-settings-btn,
+    .composer-template-btn,
+    .composer-hd-btn,
+    .composer-asset-shortcut
+):hover,
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell .composer-tool-wrap.open > .composer-tool-btn{
+    border-color: var(--sc-border-panel) !important;
+    background: var(--sc-hover) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07) !important;
+    transform: translateY(-1px);
+}
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell .composer-tool-wrap.open > .composer-tool-btn{color: var(--sc-text) !important;}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcut.co-create-switch:is(.is-on, [aria-pressed="true"]) {
+    color: #fff !important;
+    border-color: var(--sc-accent) !important;
+    background: var(--sc-accent) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22) !important;
+    transform: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcut.co-create-switch:not(.is-on):not([aria-pressed="true"]) {
+    color: var(--sc-text-secondary) !important;
+    border: 1px solid var(--sc-border) !important;
+    background: var(--sc-surface-soft) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .045) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell .composer-actions :is(.run-btn, .cascade-run-btn) {
+    color: #fff !important;
+    border: 1px solid rgba(255, 255, 255, .14) !important;
+    background: var(--sc-accent) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell .composer-actions :is(.run-btn, .cascade-run-btn):hover:not(:disabled) {
+    background: var(--sc-accent-hover) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .26) !important;
+    transform: translateY(-1px);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell .composer-actions .run-btn:not(.is-stop),
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell .composer-actions .run-btn:disabled:not(.is-stop) {
+    color:#fff !important;
+    border-color:var(--ui-accent) !important;
+    background:var(--ui-accent) !important;
+    box-shadow:none !important;
+    opacity:1 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell .composer-actions .run-btn:not(.is-stop) :is(svg, i) {
+    color:#fff !important;
+    stroke:#fff !important;
+    opacity:1 !important;
+}
+
+/* Segmented controls ------------------------------------------------------ */
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .composer-kind-toggle,
+    .has-size-choice-glider,
+    .composer-radio-group,
+    .mode-switch,
+    .provider-switch
+) {
+    border: 1px solid var(--sc-border) !important;
+    background: rgba(255, 255, 255, .03) !important;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, .24) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .composer-footer-glider,
+    .composer-mode-glider,
+    .size-choice-glider,
+    .iqt-glass-glider,
+    .iqt-menu-glass-glider,
+    .selection-capsule-glider,
+    .port-link-pick-glider
+) {
+    border: 1px solid rgba(255, 255, 255, .08) !important;
+    background: var(--sc-selected) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .10) !important;
+}
+
+/* The port-link picker is mounted on body, outside #shell. Keep its moving
+   highlight dark and remove the light-mode blurred duplicate underneath. */
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-glider {
+    border: 1px solid rgba(255, 255, 255, .08) !important;
+    background: var(--sc-selected) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-glider::after {
+    content: none !important;
+    display: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    filter: none !important;
+    opacity: 0 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .composer-kind-toggle button,
+    .has-size-choice-glider > button,
+    .image-quick-toolbar button,
+    .selection-capsule-bar button,
+    .port-link-pick-shell button
+) {
+    position: relative;
+    z-index: 2;
+    color: var(--sc-text-secondary) !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .composer-kind-toggle button,
+    .has-size-choice-glider > button,
+    .image-quick-toolbar button,
+    .selection-capsule-bar button,
+    .port-link-pick-shell button
+):hover,
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .composer-kind-toggle button.active,
+    .has-size-choice-glider > button.active,
+    .selection-capsule-bar button.active,
+    .port-link-pick-shell button.active
+){
+}
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .composer-kind-toggle button.active,
+    .has-size-choice-glider > button.active,
+    .selection-capsule-bar button.active,
+    .port-link-pick-shell button.active
+){color: var(--sc-text) !important;}
+
+/* Primary canvas tool hover material ------------------------------------- */
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #imageQuickToolbar.image-quick-toolbar > button:not([data-add-to-chat])::before,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #imageQuickToolbar.image-quick-toolbar > .iqt-dropdown-wrap::before {
+    content: none !important;
+    display: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+    #imageQuickToolbar.image-quick-toolbar .iqt-glass-glider,
+    #selectionBoxCapsule .selection-capsule-glider
+) {
+    border: 1px solid rgba(255, 255, 255, .08) !important;
+    background: radial-gradient(ellipse at 50% 42%, rgba(9, 11, 15, .94) 0 58%, rgba(31, 34, 39, .82) 100%) !important;
+    box-shadow:
+        inset 0 0 10px rgba(255, 255, 255, .10),
+        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+    #imageQuickToolbar.image-quick-toolbar button:not(.active):not(.open):not([aria-pressed="true"]),
+    #selectionBoxCapsule .selection-capsule-btn:not(.active):not(.open):not([aria-pressed="true"])
+),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+    #imageQuickToolbar.image-quick-toolbar button:not(.active):not(.open):not([aria-pressed="true"]),
+    #selectionBoxCapsule .selection-capsule-btn:not(.active):not(.open):not([aria-pressed="true"])
+):is(:hover, :focus-visible){
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+    #imageQuickToolbar.image-quick-toolbar button:not(.active):not(.open):not([aria-pressed="true"]),
+    #selectionBoxCapsule .selection-capsule-btn:not(.active):not(.open):not([aria-pressed="true"])
+){font-weight: 400 !important;}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+    #imageQuickToolbar.image-quick-toolbar button:not(.active):not(.open):not([aria-pressed="true"]),
+    #selectionBoxCapsule .selection-capsule-btn:not(.active):not(.open):not([aria-pressed="true"])
+){color: rgba(236, 240, 246, .74) !important;}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+    #imageQuickToolbar.image-quick-toolbar button,
+    #selectionBoxCapsule .selection-capsule-btn
+) :is(svg, i, i > svg),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+    #imageQuickToolbar.image-quick-toolbar button,
+    #selectionBoxCapsule .selection-capsule-btn
+):is(:hover, :focus-visible) :is(svg, i, i > svg){
+    stroke: currentColor !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+    #imageQuickToolbar.image-quick-toolbar button,
+    #selectionBoxCapsule .selection-capsule-btn
+) :is(svg, i, i > svg){color: currentColor !important;}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #imageQuickToolbar.image-quick-toolbar button:is(:hover, :focus-visible) {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    animation: none !important;
+}
+
+/* Match the bottom-left canvas chrome to the object toolbar material. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+    .canvas-bottom-capsule,
+    .canvas-bottom-help-btn
+) {
+    border: 1px solid var(--ui-border) !important;
+    background: var(--ui-surface-chrome) !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+    .canvas-bottom-capsule-btn,
+    .canvas-bottom-help-btn
+) {
+    color: rgba(241, 241, 241, .74) !important;
+    transition:
+        transform .18s cubic-bezier(.2, .8, .2, 1), background .18s, border-color .18s, box-shadow .18s !important;
+}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+    .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]),
+    .canvas-bottom-help-btn
+):is(:hover, :focus-visible){
+    border-color: transparent !important;
+    background: var(--ui-active) !important;
+    box-shadow: none !important;
+    transform: none !important;
+    animation: none !important;
+    outline: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]) {
+    color: rgba(241, 241, 241, .74) !important;
+}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]):is(:hover, :focus-visible){
+    border-color: transparent !important;
+    background: var(--ui-active) !important;
+    box-shadow: none !important;
+    transform: none !important;
+    animation: none !important;
+    outline: none !important;
+}
+
+/* Smart-guide magnet stays visually quiet when enabled: its persistent state
+   uses exactly the same material and icon tone as the dark hover state. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #canvasSmartGuidesToggle[aria-pressed="true"] {
+    color: var(--ui-text) !important;
+    border-color: transparent !important;
+    background: var(--ui-active) !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #canvasSmartGuidesToggle[aria-pressed="true"] :is(svg, i) {
+    color: currentColor !important;
+    stroke: currentColor !important;
+}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]) :is(svg, i),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]):is(:hover, :focus-visible) :is(svg, i){
+    stroke: currentColor !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]) :is(svg, i){color: currentColor !important;}
+
+/* Nodes and cards --------------------------------------------------------- */
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .image-node.empty-node,
+    .image-node.loop-smart-node,
+    .media-video-card,
+    .smart-node-input-thumb,
+    .canvas-history-item,
+    .asset-item,
+    .asset-prompt-main,
+    .create-card
+) {
+    color: var(--sc-text) !important;
+    border: 1px solid var(--sc-border-panel) !important;
+    background: var(--sc-glass) !important;
+    box-shadow: var(--sc-shadow) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/* Blank Audio, Image and Video panels use the composer's translucent outer material. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .image-node.typed-placeholder-node {
+    overflow: visible !important;
+    color: var(--sc-text) !important;
+    border: 1px solid var(--sc-border-panel) !important;
+    border-radius: 22px !important;
+    background: var(--ui-surface-elevated) !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/* Text, audio and PSD panels share the composer's outer material and opaque inner surface. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+    .image-node.prompt-smart-node,
+    .image-node.audio-media-node,
+    .image-node.psd-media-node
+) {
+    color: var(--sc-text) !important;
+    border: 1px solid var(--sc-border-panel) !important;
+    background: var(--ui-surface-elevated) !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .image-node.prompt-smart-node .prompt-node-text,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .image-node.prompt-smart-node .prompt-node-text:hover,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .image-node.prompt-smart-node .prompt-node-text:focus,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .image-node.prompt-smart-node .prompt-node-text:focus-visible,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .image-node.audio-media-node .media-audio-card::before,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .image-node.psd-media-node .media-psd-preview {
+    border: 1px solid var(--sc-border) !important;
+    border-radius: 18px !important;
+    background: #121418 !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .image-node.empty-node,
+    .image-node.loop-smart-node,
+    .canvas-history-item,
+    .asset-item,
+    .asset-prompt-main,
+    .create-card
+):hover {
+    border-color: var(--sc-border-strong) !important;
+    background: var(--sc-glass-strong) !important;
+    box-shadow: var(--sc-shadow-raised) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .image-node.empty-node,
+    .image-node.loop-smart-node
+).selected {
+    border-color: rgba(78, 162, 255, .58) !important;
+    box-shadow: 0 0 0 1px rgba(var(--ui-accent-rgb), .24) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+    .image-node.prompt-smart-node,
+    .image-node.audio-media-node,
+    .image-node.psd-media-node,
+    .image-node.typed-placeholder-node
+).selected {
+    border-color: rgba(78, 162, 255, .58) !important;
+    box-shadow: 0 0 0 1px rgba(var(--ui-accent-rgb), .24) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .loop-smart-text,
+    .loop-smart-panel,
+    .loop-smart-upstream,
+    .prompt-node-llm textarea,
+    .prompt-node-llm select,
+    .composer-api-tree,
+    .composer-text-select,
+    .composer-text-field textarea,
+    .prompt-node-resize-preview
+) {
+    color: var(--sc-text) !important;
+    border: 1px solid var(--sc-border) !important;
+    background: var(--sc-input) !important;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, .28) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .prompt-node-copy,
+    .loop-smart-count,
+    .loop-smart-seg,
+    .loop-smart-toggle,
+    .loop-smart-token,
+    .prompt-node-pill,
+    .smart-pill,
+    .mini-x
+) {
+    color: var(--sc-text-secondary) !important;
+    border-color: var(--sc-border) !important;
+    background: var(--sc-surface-soft) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .size-picker-option,
+    .count-cell,
+    .mode-model-choice,
+    .composer-api-models button,
+    .composer-hd-scales button,
+    .composer-hd-actions button,
+    .iqt-menu-action,
+    .iqt-menu-item,
+    .port-link-pick-option
+) {
+    color: var(--sc-text-secondary) !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .size-picker-option,
+    .count-cell,
+    .mode-model-choice,
+    .composer-api-models button,
+    .composer-hd-scales button,
+    .composer-hd-actions button,
+    .iqt-menu-action,
+    .iqt-menu-item,
+    .port-link-pick-option
+):hover{
+    border-color: var(--sc-border) !important;
+    background: var(--sc-hover) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .size-picker-option.active,
+    .count-cell.active,
+    .mode-model-choice.active,
+    .composer-api-models button.active,
+    .composer-hd-scales button.active,
+    .port-link-pick-option.active
+) {
+    color: var(--sc-text) !important;
+    border-color: var(--sc-border-panel) !important;
+    background: var(--sc-selected) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .09) !important;
+}:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+    .prompt-node-copy,
+    .loop-smart-count,
+    .loop-smart-seg,
+    .loop-smart-toggle,
+    .loop-smart-token,
+    .prompt-node-pill,
+    .smart-pill
+):hover{
+    border-color: var(--sc-border-panel) !important;
+    background: var(--sc-hover) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(.node-head, .node-hint, .image-resolution-badge) {
+    color: var(--sc-text-secondary) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell .image-node:not(.typed-placeholder-node) .node-type-label {
+    color: var(--sc-text-secondary) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell .image-node.typed-placeholder-node .node-type-label {
+    color: rgba(var(--sc-on-surface-rgb), .48) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(.image-wrap img, img.node-img, video.node-img) {
+    border-color: var(--sc-border-panel) !important;
+    box-shadow: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell .image-node.selected :is(.image-wrap img, img.node-img, video.node-img) {
+    border-color: rgba(78, 162, 255, .58) !important;
+    box-shadow: 0 0 0 1px rgba(var(--ui-accent-rgb), .2) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(.node-port, .port-dot, .port-magnet) {
+    border-color: rgba(255, 255, 255, .5) !important;
+    background: var(--sc-accent) !important;
+    box-shadow: 0 0 0 3px rgba(var(--sc-shadow-rgb), .14) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell .smart-video-play {
+    box-shadow: none !important;
+}
+
+/* Shell chrome ------------------------------------------------------------ */
+
+:is(html.theme-dark, html.studio-theme-dark) :is(.floating-toolbar, .dock-open-btn, .dock-chrome) {
+    color: var(--sc-text-secondary) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) .floating-toolbar .tool-button {
+    position: relative;
+    z-index: 2;
+    color: var(--sc-text-secondary) !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}:is(html.theme-dark, html.studio-theme-dark) .floating-toolbar .tool-button:hover:not(:disabled){
+    border-color: var(--sc-border) !important;
+    background: var(--sc-hover) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) .floating-toolbar .tool-button:is(.active, [aria-pressed="true"]) {
+    color: var(--sc-text) !important;
+    border-color: var(--sc-border-panel) !important;
+    background: var(--sc-selected) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .09) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .app-shell.app-shell .floating-toolbar.floating-toolbar .tool-button.tool-button:not([data-canvas-main="1"]) {
+    color: rgba(236, 240, 246, .74) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .app-shell.app-shell .floating-toolbar.floating-toolbar :is(#shellNewCanvasBtn, #toolbarAssetBtn, #toolbarCanvasHistoryBtn, #toolbarSettingsBtn) {
+    color: rgba(236, 240, 246, .74) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .app-shell.app-shell .floating-toolbar.floating-toolbar .tool-button.tool-button :is(svg, i, i > svg) {
+    color: currentColor !important;
+    stroke: currentColor !important;
+    stroke-width: 1.6px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .app-shell.app-shell .floating-toolbar.floating-toolbar :is(#shellNewCanvasBtn, #toolbarAssetBtn, #toolbarCanvasHistoryBtn, #toolbarSettingsBtn) :is(svg, i, i > svg) {
+    color: rgba(236, 240, 246, .74) !important;
+    stroke: rgba(236, 240, 246, .74) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .app-shell.app-shell .floating-toolbar.floating-toolbar .tool-button.tool-button.shell-new-canvas-tool {
+    color: rgba(236, 240, 246, .74) !important;
+    border-color: rgba(255, 255, 255, .08) !important;
+    background: rgba(255, 255, 255, .065) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035) !important;
+}:is(html.theme-dark, html.studio-theme-dark) body .app-shell.app-shell .floating-toolbar.floating-toolbar .tool-button.tool-button.shell-new-canvas-tool:is(:hover, :focus-visible){
+    border-color: rgba(255, 255, 255, .10) !important;
+    background: rgba(255, 255, 255, .10) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .app-shell.app-shell .floating-toolbar.floating-toolbar .floating-toolbar-divider {
+    background: rgba(0, 0, 0, .34) !important;
+    box-shadow: none !important;
+}:is(html.theme-dark, html.studio-theme-dark) body .app-shell.app-shell .floating-toolbar.floating-toolbar .tool-button.tool-button[data-canvas-main="1"].active,
+:is(html.theme-dark, html.studio-theme-dark) body .app-shell.app-shell .floating-toolbar.floating-toolbar .tool-button.tool-button[data-canvas-main="1"].active:is(:hover, :focus-visible){
+    border-color: rgba(255, 255, 255, .12) !important;
+    background: var(--ui-accent) !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body .app-shell.app-shell .floating-toolbar.floating-toolbar .tool-button.tool-button[data-canvas-main="1"].active{color: #fff !important;}
+
+:is(html.theme-dark, html.studio-theme-dark) body .app-shell.app-shell .floating-toolbar.floating-toolbar .tool-button.tool-button[data-canvas-main="1"].active :is(svg, i, i > svg) {
+    color: #fff !important;
+    stroke: #fff !important;
+}:is(html.theme-dark, html.studio-theme-dark) .dock-open-btn:hover:not(:disabled){
+    border-color: var(--sc-border-panel) !important;
+    background: var(--sc-glass-strong) !important;
+    box-shadow: var(--sc-shadow) !important;
+    transform: translateY(-1px);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) .shell-user-menu {
+    border-radius: var(--ui-radius-panel) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(.shell-user-avatar, .shell-user-points, .shell-user-menu-item, .shell-settings-nav-item, .shell-settings-info-card, .shell-account-card, .shell-usage-grid article) {
+    color: var(--sc-text-secondary) !important;
+    border-color: var(--sc-border) !important;
+    background: var(--sc-surface-soft) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035) !important;
+}:is(html.theme-dark, html.studio-theme-dark) :is(.shell-user-menu-item, .shell-settings-nav-item):hover,
+:is(html.theme-dark, html.studio-theme-dark) :is(.shell-user-menu-item, .shell-settings-nav-item).is-current{
+    border-color: var(--sc-border-panel) !important;
+    background: var(--sc-selected) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07) !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) :is(.shell-user-menu-item, .shell-settings-nav-item).is-current{color: var(--sc-text) !important;}
+
+:is(html.theme-dark, html.studio-theme-dark) .shell-user-theme-switch {
+    border: 1px solid var(--sc-border-panel) !important;
+    background: rgba(255, 255, 255, .06) !important;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, .24) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) .shell-user-menu-item[aria-pressed="true"] .shell-user-theme-switch {
+    border-color: rgba(78, 162, 255, .42) !important;
+    background: var(--sc-accent) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) .shell-user-theme-switch span {
+    background: #f4f7fb !important;
+    box-shadow: none !important;
+}
+
+/* User menu: one quiet surface, without stacked plates or accent shadows. */
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu {
+    background: #202124 !important;
+    background-image: none !important;
+    border-color: #3a3b40 !important;
+    box-shadow: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-menu-card {
+    background: transparent !important;
+    background-image: none !important;
+    border-color: #36373b !important;
+    box-shadow: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-points {
+    background: #292a2e !important;
+    background-image: none !important;
+    border-color: #3b3c41 !important;
+    box-shadow: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-menu-item {
+    background: transparent !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-menu-item:is(:hover, :focus-visible),
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-menu-item.is-current {
+    background: #303135 !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-menu-item-icon,
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-menu-item:is(:hover, :focus-visible) .shell-user-menu-item-icon,
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-menu-item.is-current .shell-user-menu-item-icon {
+    background: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Classic canvas ---------------------------------------------------------- */
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(.topbar .panel, .gate-panel, .node-card, .node, .create-menu) {
+    color: var(--sc-text) !important;
+    border-color: var(--sc-border-panel) !important;
+    background: var(--sc-glass) !important;
+    box-shadow: var(--sc-shadow) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(.menu-btn, .create-menu button, .gate-card) {
+    color: var(--sc-text-secondary) !important;
+    border-color: var(--sc-border) !important;
+    background: var(--sc-surface-soft) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035) !important;
+}:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(.menu-btn, .create-menu button, .gate-card):hover{
+    border-color: var(--sc-border-panel) !important;
+    background: var(--sc-hover) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07) !important;
+}
+
+/* Accessibility and motion ----------------------------------------------- */
+
+:is(html.theme-dark, html.studio-theme-dark) :is(button, [role="button"], input, select, textarea, [contenteditable="true"]):focus-visible {
+    outline: none !important;
+    box-shadow: var(--sc-focus) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(button, [role="button"]):disabled {
+    opacity: .42;
+    filter: saturate(.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :is(html.theme-dark, html.studio-theme-dark) :is(
+        .composer-card,
+        .floating-toolbar,
+        .image-quick-toolbar,
+        .selection-capsule-bar,
+        .composer-footer-glider,
+        .composer-mode-glider,
+        .size-choice-glider,
+        .iqt-glass-glider,
+        .iqt-menu-glass-glider,
+        .selection-capsule-glider,
+        .port-link-pick-glider
+    ) {
+        transition: none !important;
+        animation: none !important;
+    }
+}/* Nested menu rows need their own static hover surface. The toolbar-wide
+   transparent-button guard must not erase dropdown or composer submenu
+   feedback,
+and these rows must not depend on a travelling glider. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #imageQuickToolbar.image-quick-toolbar .iqt-dropdown-menu
+    :is(.iqt-menu-action, .iqt-menu-item):not(:disabled):is(:hover, :focus-visible),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsPopover,
+        #composerVideoReferencePopover,
+        #composerKindPopover,
+        #composerSizePopover
+    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){
+    border: 1px solid rgba(255, 255, 255, .08) !important;
+    background: radial-gradient(
+        ellipse at 50% 42%,
+        rgba(9, 11, 15, .94) 0 58%,
+        rgba(31, 34, 39, .82) 100%
+    ) !important;
+    background-image: radial-gradient(
+        ellipse at 50% 42%,
+        rgba(9, 11, 15, .94) 0 58%,
+        rgba(31, 34, 39, .82) 100%
+    ) !important;
+    box-shadow:
+        inset 0 0 10px rgba(255, 255, 255, .10),
+        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+    outline: none !important;
+    transform: none !important;
+    animation: none !important;
+}
+/* Nested menu rows need their own static hover surface. The toolbar-wide
+   transparent-button guard must not erase dropdown or composer submenu
+   feedback{color: var(--sc-text) !important;}
+
+/* Dark composer footer: keep the dark palette while matching the light
+   theme's control geometry, typography and static hover treatment. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-footer-glider {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn {
+    height: 36px !important;
+    min-height: 36px !important;
+    font-family: var(--ui-font) !important;
+    font-size: 13px !important;
+    font-weight:400 !important;
+    font-style: normal !important;
+    line-height: 20px !important;
+    letter-spacing: 0 !important;
+    font-synthesis: none !important;
+    font-variant-numeric: tabular-nums !important;
+    color: var(--sc-text-secondary) !important;
+    border: 1px solid transparent !important;
+    border-radius: 13px !important;
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+    animation: none !important;
+    transition: background-color 140ms ease, border-color 140ms ease !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn > span,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn .composer-size-summary,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn .composer-size-summary > span {
+    font: inherit !important;
+    line-height: inherit !important;
+    letter-spacing: inherit !important;
+    color: inherit !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn > :is(svg, i):not(.composer-tool-caret) {
+    width: 16px !important;
+    height: 16px !important;
+    flex: 0 0 16px !important;
+    color: currentColor !important;
+    stroke: currentColor !important;
+    stroke-width: 1.5px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn > .composer-tool-caret {
+    width: 10px !important;
+    height: 10px !important;
+    flex: 0 0 10px !important;
+    stroke-width: 1.25px !important;
+}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:hover,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:focus-visible,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:active,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap.open > .composer-tool-btn,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn[aria-expanded="true"]{
+    border: 1px solid var(--sc-border-panel) !important;
+    border-radius: 13px !important;
+    background: var(--sc-hover) !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+    animation: none !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:active,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap.open > .composer-tool-btn,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn[aria-expanded="true"]{color: var(--sc-text) !important;}
+
+/* The four footer popovers retain dark colors but share the light theme's
+   type scale, spacing and corner geometry. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsPopover,
+        #composerVideoReferencePopover,
+        #composerKindPopover,
+        #composerSizePopover
+    ) {
+    border-radius: 12px !important;
+    font-family: "Inter", "Segoe UI", "ui-cjk", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif !important;
+    font-style: normal !important;
+    letter-spacing: 0 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-submenu-label {
+    display: block !important;
+    visibility: visible !important;
+    margin: 0 0 4px !important;
+    padding: 0 2px !important;
+    font-size:10px !important;
+    font-weight: 445 !important;
+    line-height: 1.2 !important;
+    letter-spacing: .04em !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover :is(
+        .size-picker-option,
+        .video-flat-choice,
+        #composerQualityPanel .quality-choice-grid button,
+        #composerCountPanel .count-cell,
+        #composerVideoSizeMenu .count-cell,
+        .video-flat-segments button
+    ) {
+    font-family: "Inter", "Segoe UI", "ui-cjk", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    line-height: 1 !important;
+    letter-spacing: 0 !important;
+    font-synthesis: none !important;
+    font-variant-numeric: tabular-nums !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindPopover .composer-kind-toggle button {
+    height: 34px !important;
+    padding: 0 12px !important;
+    border-radius: 9px !important;
+    font-family: "Inter", "Segoe UI", "ui-cjk", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 445 !important;
+    line-height: 1 !important;
+    letter-spacing: 0 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerVideoReferencePopover .video-reference-option strong {
+    font-size:11px !important;
+    font-weight: 445 !important;
+    line-height: 1.2 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerVideoReferencePopover .video-reference-option small {
+    font-size:10px !important;
+    font-weight: 400 !important;
+    line-height: 1.2 !important;
+}
+
+/* Opening a left-rail panel must not leave its trigger painted. Match the
+   light theme: the asset, history and user buttons return to rest after the
+   pointer leaves, while hover/focus keeps a dark-only feedback surface. */
+:is(html.theme-dark, html.studio-theme-dark).studio-page-canvas body
+    .app-shell.app-shell .floating-toolbar.floating-toolbar
+    :is(
+        #toolbarAssetBtn.active,
+        #toolbarAssetBtn[aria-pressed="true"],
+        #toolbarCanvasHistoryBtn.active,
+        #toolbarSettingsBtn[aria-expanded="true"]
+    ):not(:hover):not(:focus-visible) {
+    color: var(--sc-text-secondary) !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+    animation: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsPopover,
+        #composerVideoReferencePopover,
+        #composerKindPopover,
+        #composerSizePopover
+    ) {
+    border: 0 !important;
+    box-shadow: inset 0 0 0 .4px rgba(255, 255, 255, .18) !important;
+}:is(html.theme-dark, html.studio-theme-dark).studio-page-canvas body
+    .app-shell.app-shell .floating-toolbar.floating-toolbar
+    :is(
+        #toolbarAssetBtn.active,
+        #toolbarAssetBtn[aria-pressed="true"],
+        #toolbarCanvasHistoryBtn.active,
+        #toolbarSettingsBtn[aria-expanded="true"]
+    ):is(:hover, :focus-visible){
+    border-color: var(--sc-border) !important;
+    background: var(--sc-hover) !important;
+    background-image: none !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05) !important;
+    transform: none !important;
+    animation: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark).studio-page-canvas body
+    .app-shell.app-shell .floating-toolbar.floating-toolbar
+    :is(
+        #toolbarAssetBtn.active,
+        #toolbarAssetBtn[aria-pressed="true"],
+        #toolbarCanvasHistoryBtn.active,
+        #toolbarSettingsBtn[aria-expanded="true"]
+    ) :is(svg, i, i > svg) {
+    color: currentColor !important;
+    stroke: currentColor !important;
+}
+
+/* Dark object toolbars need a complete outline. Reinforce the lower inside
+   edge as well as the outer border so it remains visible over black media. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+    #imageQuickToolbar.image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar
+) {
+    border: 1px solid transparent !important;
+    box-shadow:
+        inset 0 0 0 .5px rgba(255, 255, 255, .18),
+        inset 0 1px 0 rgba(255, 255, 255, .04),
+        inset 0 -1px 0 rgba(255, 255, 255, .05) !important;
+}
+
+/* Keep Add to chat visually anchored with the same dark surface used by the
+   first left-rail plus button. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #imageQuickToolbar.image-quick-toolbar > button[data-add-to-chat] {
+    color: rgba(236, 240, 246, .74) !important;
+    border: 1px solid rgba(255, 255, 255, .08) !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, .065) !important;
+    background-image: none !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035) !important;
+}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #imageQuickToolbar.image-quick-toolbar > button[data-add-to-chat]:is(:hover, :focus-visible){
+    border-color: rgba(255, 255, 255, .10) !important;
+    background: rgba(255, 255, 255, .10) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035) !important;
+}
+
+/* Reuse the object-toolbar hover material on the three lower rail triggers
+   and every first-level composer menu without restoring moving gliders. */
+:is(html.theme-dark, html.studio-theme-dark).studio-page-canvas body
+    .app-shell.app-shell .floating-toolbar.floating-toolbar
+    :is(#toolbarAssetBtn, #toolbarCanvasHistoryBtn, #toolbarSettingsBtn):is(:hover, :focus-visible),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:is(:hover, :focus-visible) {
+    border-color: rgba(255, 255, 255, .08) !important;
+    background: radial-gradient(
+        ellipse at 50% 42%,
+        rgba(9, 11, 15, .94) 0 58%,
+        rgba(31, 34, 39, .82) 100%
+    ) !important;
+    background-image: radial-gradient(
+        ellipse at 50% 42%,
+        rgba(9, 11, 15, .94) 0 58%,
+        rgba(31, 34, 39, .82) 100%
+    ) !important;
+    box-shadow:
+        inset 0 0 10px rgba(255, 255, 255, .10),
+        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+}
+
+/* Port-link picker: keep the left-rail glass, without the extra top sheen or
+   a highlight layer travelling between rows. */
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-shell {
+    padding: calc(var(--ui-space-4) + 2px) var(--ui-space-4) var(--ui-space-4) !important;
+    background: var(--sc-glass) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-menu {
+    width: 232px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-shell::before,
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-shell::after {
+    content: none !important;
+    display: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-menu.open.is-entering {
+    animation: dark-port-link-menu-in .16s cubic-bezier(.22, .74, .28, 1) both !important;
+}
+
+@keyframes dark-port-link-menu-in {
+    from {
+        opacity: .58;
+        transform: translate3d(0, 6px, 0) scale(.985);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-glider,
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-glider::after {
+    display: none !important;
+    opacity: 0 !important;
+    animation: none !important;
+    transition: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-item:not(:disabled) {
+    padding: var(--ui-space-2) var(--ui-space-3) var(--ui-space-2) var(--ui-space-2) !important;
+    transform: none !important;
+    animation: none !important;
+    transition: background-color .12s ease, border-color .12s ease, box-shadow .12s ease !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-inner {
+    gap: var(--ui-space-1);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-list {
+    gap: var(--ui-space-1);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-divider {
+    margin-block: var(--ui-space-1);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-icon {
+    min-height: 32px;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-copy {
+    position: relative;
+    justify-content: center;
+    gap: 0;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-title-row {
+    transform: translateY(0);
+    transition: transform .16s ease !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-desc {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    margin-top: 2px;
+    overflow: hidden;
+    color: rgba(236, 240, 246, .46) !important;
+    opacity: 0;
+    transform: translateY(4px);
+    pointer-events: none;
+    transition: opacity .14s ease, transform .16s ease !important;
+}:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled):hover,
+:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled):focus-visible,
+:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled).is-hover{
+    border-color: rgba(255, 255, 255, .08) !important;
+    background: radial-gradient(
+        ellipse at 50% 42%,
+        rgba(9, 11, 15, .94) 0 58%,
+        rgba(31, 34, 39, .82) 100%
+    ) !important;
+    box-shadow:
+        inset 0 0 10px rgba(255, 255, 255, .10),
+        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+    transform: none !important;
+    animation: none !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled).is-hover{color: rgba(236, 240, 246, .74) !important;}:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled):hover
+    .port-link-pick-icon,
+:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled):focus-visible
+    .port-link-pick-icon,
+:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled).is-hover
+    .port-link-pick-icon{
+    background: var(--ui-accent) !important;
+    border-color: var(--ui-accent) !important;
+    box-shadow: none !important;
+    animation: dark-port-link-icon-hop .32s cubic-bezier(.22, .75, .3, 1) both !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled).is-hover
+    .port-link-pick-icon{color: #fff !important;}
+
+:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled):is(:hover, :focus-visible, .is-hover)
+    .port-link-pick-title-row {
+    transform: translateY(-7px);
+}:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled):hover
+    .port-link-pick-desc,
+:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled):focus-visible
+    .port-link-pick-desc,
+:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled).is-hover
+    .port-link-pick-desc{
+    opacity: 1;
+    transform: translateY(0);
+}
+:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled).is-hover
+    .port-link-pick-desc{color: rgba(236, 240, 246, .46) !important;}
+
+@keyframes dark-port-link-icon-hop {
+    0% { transform: translateY(0) scale(1); }
+    45% { transform: translateY(-3px) scale(1.06); }
+    72% { transform: translateY(1px) scale(.98); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-menu.open.is-entering {
+        animation: none !important;
+    }
+
+    :is(html.theme-dark, html.studio-theme-dark) body
+        .port-link-pick-item:not(:disabled):is(:hover, :focus-visible, .is-hover)
+        .port-link-pick-icon {
+        animation: none !important;
+    }
+}
+
+/* Dark composer controls follow the light theme's final geometry and type
+   metrics. Keep dark materials, but do not change label weight on hover. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn {
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 var(--ui-space-2) !important;
+    gap: 6px !important;
+    border: 1px solid transparent !important;
+    border-radius: 13px !important;
+    font-size: 13px !important;
+    font-weight:400 !important;
+    line-height: 20px !important;
+    transform: none !important;
+    animation: none !important;
+    transition: background-color .14s ease, border-color .14s ease, box-shadow .14s ease !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn > span:not(.composer-size-summary),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-size-summary > span:not(.composer-size-summary-divider) {
+    padding-top: 1px !important;
+    padding-bottom: 2px !important;
+    font-size: inherit !important;
+    font-weight:400 !important;
+    line-height: 20px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn > :is(svg, i):not(.composer-tool-caret) {
+    width: 16px !important;
+    height: 16px !important;
+    flex: 0 0 16px !important;
+    stroke-width: 1.5px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn > .composer-tool-caret {
+    width: 10px !important;
+    height: 10px !important;
+    flex: 0 0 10px !important;
+    stroke-width: 1.25px !important;
+}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:hover,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:focus-visible,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:active,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap.open > .composer-tool-btn,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn[aria-expanded="true"]{
+    border-color: rgba(255, 255, 255, .08) !important;
+    border-radius: 13px !important;
+    background: radial-gradient(
+        ellipse at 50% 42%,
+        rgba(9, 11, 15, .94) 0 58%,
+        rgba(31, 34, 39, .82) 100%
+    ) !important;
+    box-shadow:
+        inset 0 0 10px rgba(255, 255, 255, .10),
+        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+    transform: none !important;
+    animation: none !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:active,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap.open > .composer-tool-btn,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn[aria-expanded="true"]{color: var(--sc-text) !important; font-weight:400 !important;}
+
+/* Composer secondary menus mirror the light theme's compact layout. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover:has(.composer-model-menu) {
+    width: max-content !important;
+    min-width: 200px !important;
+    max-width: min(340px, calc(100vw - 64px)) !important;
+    padding: 11px !important;
+    gap: 0 !important;
+    overflow: visible !important;
+    max-height: none !important;
+    border-radius: 14px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover {
+    width: min(268px, calc(100vw - 64px)) !important;
+    min-width: 0 !important;
+    gap: 0 !important;
+    padding: 7px !important;
+    border-radius: 14px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover .composer-submenu-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    min-width: 0 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover .composer-submenu-section {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover .composer-submenu-section + .composer-submenu-section {
+    margin-top: 8px !important;
+    padding-top: 0 !important;
+    border-top: 0 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    :is(#composerApiSettingsPopover, #composerSizePopover) .composer-submenu-label {
+    display: block !important;
+    visibility: visible !important;
+    margin: 0 0 4px !important;
+    padding: 0 2px !important;
+    font-size:10px !important;
+    font-weight: 445 !important;
+    line-height: 1.2 !important;
+    letter-spacing: .04em !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover :is(.size-picker-list, .quality-choice-grid, .count-grid, .video-flat-grid) {
+    gap: 4px !important;
+    padding: 2px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover .size-picker-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    max-height: none !important;
+    overflow: visible !important;
+    scrollbar-width: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover :is(.size-picker-resolution-list, .video-flat-resolution, .video-flat-count) {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover :is(.size-choice-glider.is-soft, .size-choice-glider.is-strong) {
+    display: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list {
+    gap: 4px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover :is(
+        .composer-api-branch summary,
+        .composer-api-models button,
+        .composer-mode-model-list .mode-model-choice
+    ),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover :is(
+        .size-picker-option,
+        .video-flat-choice,
+        #composerQualityPanel .quality-choice-grid button,
+        #composerCountPanel .count-cell,
+        #composerVideoSizeMenu .count-cell,
+        .video-flat-segments button
+    ) {
+    box-sizing: border-box !important;
+    border: 1px solid rgba(255, 255, 255, .08) !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, .025) !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice {
+    min-height: 28px !important;
+    padding: 2px 10px !important;
+    font-size: 10px !important;
+    font-weight: 400 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover .size-picker-option {
+    min-height: 34px !important;
+    padding: 3px 1px !important;
+    gap: 3px !important;
+    font-size: 12px !important;
+    font-weight: 445 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover .size-picker-ratio-list .size-picker-option {
+    min-height: 34px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover .size-picker-option span {
+    font-size: 10px !important;
+    font-weight: 400 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover #composerCountPanel .count-cell {
+    min-height: 26px !important;
+    padding: 2px 1px !important;
+    font-size: 10px !important;
+    font-weight: 400 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsPopover,
+        #composerVideoReferencePopover,
+        #composerKindPopover,
+        #composerSizePopover
+    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible) {
+    border: 1px solid rgba(255, 255, 255, .08) !important;
+    border-radius: 8px !important;
+}
+
+/* The shared typography layer targets these controls by ID. Match that
+   specificity so dark mode keeps the same light-mode metrics and open-state
+   capsule instead of falling back to the heavier legacy rule. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ) {
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 12px !important;
+    gap: 6px !important;
+    color: var(--sc-text-secondary) !important;
+    border: 1px solid transparent !important;
+    border-radius: 13px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 13px !important;
+    font-weight:400 !important;
+    line-height: 20px !important;
+    transform: none !important;
+    animation: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ) > :is(svg, i):not(.composer-tool-caret) {
+    width: 16px !important;
+    height: 16px !important;
+    flex: 0 0 16px !important;
+    color: currentColor !important;
+    stroke: currentColor !important;
+    stroke-width: 1.5px !important;
+}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ):hover,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ):focus-visible,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ):active,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsWrap,
+        #composerSizeWrap,
+        #composerVideoReferenceWrap,
+        #composerKindWrap
+    ).open > :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ){
+    border: 1px solid rgba(255, 255, 255, .08) !important;
+    border-radius: 13px !important;
+    background: radial-gradient(
+        ellipse at 50% 42%,
+        rgba(9, 11, 15, .94) 0 58%,
+        rgba(31, 34, 39, .82) 100%
+    ) !important;
+    box-shadow:
+        inset 0 0 10px rgba(255, 255, 255, .10),
+        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+    transform: none !important;
+    animation: none !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ):active,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsWrap,
+        #composerSizeWrap,
+        #composerVideoReferenceWrap,
+        #composerKindWrap
+    ).open > :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ){color: var(--sc-text) !important; font-weight:400 !important;}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer #composerSizePopover {
+    border-radius: 14px !important;
+}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ):hover > :is(svg, i):not(.composer-tool-caret),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ):focus-visible > :is(svg, i):not(.composer-tool-caret),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ):active > :is(svg, i):not(.composer-tool-caret),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsWrap,
+        #composerSizeWrap,
+        #composerVideoReferenceWrap,
+        #composerKindWrap
+    ).open > :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ) > :is(svg, i):not(.composer-tool-caret){
+    width: 16px !important;
+    height: 16px !important;
+    flex: 0 0 16px !important;
+    stroke: currentColor !important;
+    stroke-width: 1.5px !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ):active > :is(svg, i):not(.composer-tool-caret),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsWrap,
+        #composerSizeWrap,
+        #composerVideoReferenceWrap,
+        #composerKindWrap
+    ).open > :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ) > :is(svg, i):not(.composer-tool-caret){color: currentColor !important;}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn
+    ) > .composer-tool-caret {
+    width: 16px !important;
+    height: 16px !important;
+    flex: 0 0 16px !important;
+    stroke-width: 1.5px !important;
+}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsPopover,
+        #composerVideoReferencePopover,
+        #composerKindPopover,
+        #composerSizePopover
+    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){
+    border: 1px solid rgba(255, 255, 255, .08) !important;
+    border-radius: 8px !important;
+    background: radial-gradient(
+        ellipse at 50% 42%,
+        rgba(9, 11, 15, .94) 0 58%,
+        rgba(31, 34, 39, .82) 100%
+    ) !important;
+    box-shadow:
+        inset 0 0 10px rgba(255, 255, 255, .10),
+        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+    outline: none !important;
+    transform: none !important;
+    animation: none !important;
+}

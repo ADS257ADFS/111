@@ -1,0 +1,310 @@
+.canvas-bottom-capsule-btn {
+    position: relative;
+}
+
+.canvas-download-center-badge {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 6px;
+    min-width: 6px;
+    height: 6px;
+    padding: 0;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ui-accent);
+    box-shadow: 0 0 0 1.5px rgba(255,255,255,.82);
+}
+
+.canvas-download-center-badge[hidden] {
+    display: none !important;
+}
+
+.canvas-download-center-panel {
+    position: fixed;
+    /* 跟随右上角画布导航条，在 Agent 左侧向下展开。 */
+    right: var(--shell-agent-control-reserve, 120px);
+    left: auto;
+    top: 52px;
+    bottom: auto;
+    z-index: 118;
+    width: min(370px, calc(100vw - 32px));
+    max-height: min(520px, calc(100vh - 90px));
+    overflow: hidden;
+    border: 1px solid var(--ui-border);
+    border-radius: 18px;
+    background: var(--ui-surface-elevated);
+    box-shadow: var(--ui-shadow-pop);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    transform-origin: calc(100% - 24px) 0;
+    animation: canvas-download-panel-in .2s cubic-bezier(.2,.8,.25,1);
+}
+
+.canvas-download-center-panel[hidden] {
+    display: none;
+}
+
+@keyframes canvas-download-panel-in {
+    from { opacity: 0; transform: translateY(-8px) scale(.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 720px) {
+    .canvas-download-center-panel {
+        right: 14px;
+        top: 54px;
+    }
+}
+
+.canvas-download-center-head {
+    height: 48px;
+    padding: 0 12px 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(122, 132, 145, .13);
+}
+
+.canvas-download-center-head > div {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #505761;
+}
+
+.canvas-download-center-head svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1.6;
+}
+
+.canvas-download-center-head strong {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.canvas-download-center-head span {
+    color: #8a929e;
+    font-size: 11px;
+    font-weight: 445;
+}
+
+.canvas-download-center-head button,
+.canvas-download-item-actions button {
+    appearance: none;
+    border: 0;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #7b838f;
+    background: transparent;
+    cursor: pointer;
+}
+
+.canvas-download-center-head button {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+}.canvas-download-center-head button:hover,
+.canvas-download-item-actions button:hover{
+    background: rgba(255,255,255,.72);
+}
+
+.canvas-download-center-list {
+    max-height: calc(min(520px, calc(100vh - 90px)) - 48px);
+    padding: 10px;
+    overflow: auto;
+    overscroll-behavior: contain;
+}
+
+.canvas-download-center-empty {
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    color: #929aa6;
+    font-size: 12px;
+    font-weight: 445;
+}
+
+.canvas-download-center-empty svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 1.35;
+}
+
+.canvas-download-item {
+    min-height: 60px;
+    padding: 8px 9px;
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    color: #4f5660;
+    background: rgba(255,255,255,.58);
+    transition: background .16s ease, transform .16s ease;
+}
+
+.canvas-download-item + .canvas-download-item {
+    margin-top: 6px;
+}
+
+.canvas-download-item:hover {
+    background: rgba(255,255,255,.86);
+}
+
+.canvas-download-item.is-missing {
+    opacity: .56;
+}
+
+.canvas-download-item-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #68717d;
+    background: rgba(238,241,245,.92);
+    border: 1px solid rgba(125,137,151,.13);
+}
+
+.canvas-download-item-icon svg {
+    width: 19px;
+    height: 19px;
+    stroke-width: 1.45;
+}
+
+.canvas-download-item-copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.canvas-download-item-copy strong {
+    overflow: hidden;
+    color: inherit;
+    font-size: 12px;
+    font-weight:445;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.canvas-download-item-copy span {
+    color: #8b939e;
+    font-size: 10px;
+    font-weight: 445;
+}
+
+.canvas-download-item-actions {
+    display: inline-flex;
+    gap: 3px;
+    opacity: 0;
+    transform: translateX(4px);
+    pointer-events: none;
+    transition: opacity .15s ease, transform .15s ease;
+}
+
+.canvas-download-item:hover .canvas-download-item-actions,
+.canvas-download-item:focus-within .canvas-download-item-actions {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.canvas-download-item-actions button {
+    width: 27px;
+    height: 27px;
+    border-radius: 8px;
+}
+
+.canvas-download-item-actions svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 1.55;
+}.canvas-download-item-actions .is-delete:hover{
+}
+
+.canvas-download-flight {
+    position: fixed;
+    z-index: 10000;
+    margin: 0;
+    object-fit: cover;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 14px 34px rgba(0,0,0,.22);
+    transition: transform .46s cubic-bezier(.55,.02,.3,1), opacity .42s ease, border-radius .42s ease, filter .42s ease;
+    will-change: transform, opacity;
+}
+
+.canvas-download-center-hit {
+    animation: canvas-download-center-hit .42s ease;
+}
+
+@keyframes canvas-download-center-hit {
+    0%,100% { transform: scale(1); }
+    48% { transform: scale(.82); color: #fff; background: var(--ui-accent); }
+}
+
+.theme-dark .canvas-download-center-badge {
+    box-shadow: 0 0 0 2px rgba(31,32,35,.92);
+}
+
+.theme-dark .canvas-download-center-panel {
+    border-color: rgba(255,255,255,.11);
+    background: rgba(35,36,39,.86);
+    box-shadow: 0 22px 60px rgba(0,0,0,.42);
+}
+
+.theme-dark .canvas-download-center-head {
+    border-bottom-color: rgba(255,255,255,.08);
+}
+
+.theme-dark .canvas-download-center-head > div,
+.theme-dark .canvas-download-item {
+    color: #d5d7dc;
+}
+
+.theme-dark .canvas-download-center-head button,
+.theme-dark .canvas-download-item-actions button {
+    color: #aeb3bb;
+}.theme-dark .canvas-download-center-head button:hover,
+.theme-dark .canvas-download-item-actions button:hover{
+    background: rgba(255,255,255,.11);
+}
+
+.theme-dark .canvas-download-item {
+    background: rgba(255,255,255,.055);
+}
+
+.theme-dark .canvas-download-item:hover {
+    background: rgba(255,255,255,.095);
+}
+
+.theme-dark .canvas-download-item-icon {
+    color: #b8bdc5;
+    background: rgba(255,255,255,.065);
+    border-color: rgba(255,255,255,.08);
+}
+
+.theme-dark .canvas-download-item-copy span,
+.theme-dark .canvas-download-center-empty,
+.theme-dark .canvas-download-center-head span {
+    color: #8f959e;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .canvas-download-flight { display: none; }
+    .canvas-download-center-panel { animation: none; }
+}

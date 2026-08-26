@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D导演台</title>
+    <script>
+        (function(){
+            try {
+                var theme = localStorage.getItem('studio_theme') || localStorage.getItem('canvas_theme') || 'light';
+                if(theme === 'dark') document.documentElement.classList.add('theme-dark');
+            } catch(e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/static/css/director3d.css?v=2026.07.26.rollback1">
+    <link rel="stylesheet" href="/static/css/visual-system-preview.css?v=2026.08.09.98">
+<link rel="stylesheet" href="/static/css/dark-desaturated/director3d-index.css?v=2026.08.09.99">
+<link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.24.87">
+<link rel="stylesheet" href="/static/css/ui-primitives.css?v=2026.08.23.2">
+<link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.24.87">
+</head>
+<body>
+    <div id="director3dApp" class="director3d-app" data-director3d-app>
+        <main class="director3d-main">
+            <aside class="director3d-panel">
+                <h2>模型</h2>
+                <div id="director3dMannequinPanel" class="director3d-library-panel"></div>
+            </aside>
+            <section id="director3dViewport" class="director3d-viewport" data-director3d-viewport>
+                <div class="director3d-viewport-placeholder">
+                    <span>独立导演台已隔离</span>
+                    <strong>下一步接入 3D 视口</strong>
+                </div>
+            </section>
+            <aside class="director3d-panel">
+                <h2>机位</h2>
+                <div id="director3dShotPanel" class="director3d-shot-panel"></div>
+                <h2>对象</h2>
+                <div id="director3dObjectPanel" class="director3d-object-panel"></div>
+            </aside>
+        </main>
+        <section id="director3dTimeline" class="director3d-timeline" aria-label="时间轴"></section>
+    </div>
+    <script src="/static/js/director3d/core/schema.js?v=2026.07.11.3"></script>
+    <script src="/static/js/director3d/core/store.js?v=2026.07.05.2"></script>
+    <script src="/static/js/director3d/core/scene-actions.js?v=2026.07.10.2"></script>
+    <script src="/static/js/director3d/outliner/outliner-store.js?v=2026.07.10.2"></script>
+    <script src="/static/js/director3d/timeline/timeline-store.js?v=2026.07.11.3"></script>
+    <script src="/static/js/director3d/timeline/auto-keyframe.js?v=2026.07.11.1"></script>
+    <script src="/static/js/director3d/core/history.js?v=2026.07.05.3"></script>
+    <script src="/static/js/director3d/core/command-bus.js?v=2026.07.05.3"></script>
+    <script src="/static/js/director3d/core/tool-catalog.js?v=2026.07.05.3"></script>
+    <script src="/static/js/director3d/camera/aspect-ratio.js?v=2026.07.05.4"></script>
+    <script src="/static/js/director3d/camera/shot-store.js?v=2026.07.11.1"></script>
+    <script src="/static/js/director3d/viewport/layout.js?v=2026.07.05.19"></script>
+    <script src="/static/js/director3d/viewport/cameras.js?v=2026.07.07.1"></script>
+    <script src="/static/js/director3d/viewport/overlay.js?v=2026.07.10.1"></script>
+    <script src="/static/js/director3d/viewport/camera-icons.js?v=2026.07.10.1"></script>
+    <script src="/static/js/director3d/viewport/camera-targets.js?v=2026.07.11.2"></script>
+    <script src="/static/js/director3d/viewport/scene-objects.js?v=2026.07.10.3"></script>
+    <script src="/static/js/director3d/viewport/transform-gizmo.js?v=2026.07.10.1"></script>
+    <script src="/static/js/director3d/viewport/stage.js?v=2026.07.11.2"></script>
+    <script src="/static/js/director3d/export/animation-exporter.js?v=2026.07.11.1"></script>
+    <script src="/static/js/director3d/export/animation-export-settings.js?v=2026.07.10.1"></script>
+    <script src="/static/js/director3d/bridge/iframe-client.js?v=2026.07.10.2"></script>
+    <script src="/static/js/director3d/assets/primitive-catalog.js?v=2026.07.10.1"></script>
+    <script src="/static/js/director3d/tools/built-in-tools.js?v=2026.07.06.6"></script>
+    <script src="/static/js/director3d/ui/transform-field-math.js?v=2026.07.10.1"></script>
+    <script src="/static/js/director3d/ui/panels.js?v=2026.07.11.1"></script>
+    <script src="/static/js/director3d/timeline/timeline-ui.js?v=2026.07.11.8"></script>
+    <script src="/static/js/director3d/export/animation-export-ui.js?v=2026.07.11.1"></script>
+    <script src="/static/js/director3d/ui/app.js?v=2026.07.11.2"></script>
+</body>
+</html>
+
+

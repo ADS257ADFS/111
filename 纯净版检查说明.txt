@@ -1,0 +1,8 @@
+光盒 Windows 轻量版检查说明
+
+1. 不从废弃的 Infinite-Canvas-main 项目读取或复制任何文件。
+2. 不包含旧用户的画布、素材、对话、API 密钥、数据库或日志。
+3. 不读取桌面原“光盒”或 macOS 版文件夹中的用户数据。
+4. 本地服务仅监听 127.0.0.1，默认从 9532 端口开始。
+5. 默认使用独立数据目录：%LOCALAPPDATA%\Lightbox-Windows-Clean\UserData。
+6. 运行时为 Windows x64 版，不包含 macOS 可执行文件或 dylib 依赖。

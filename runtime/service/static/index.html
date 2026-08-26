@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+    <title>AI Studio</title>
+    <script>
+        (function(){
+            document.documentElement.classList.add('canvas-empty-chrome-recessed');
+            try {
+                if (new URLSearchParams(location.search).get('desktop') === '1') {
+                    document.documentElement.classList.add('lightbox-desktop-native');
+                }
+                var hour = new Date().getHours();
+                var theme = hour >= 6 && hour < 18 ? 'light' : 'dark';
+                localStorage.setItem('studio_theme', theme);
+                localStorage.setItem('canvas_theme', theme);
+                if(theme === 'dark') {
+                    document.documentElement.classList.add('studio-theme-dark');
+                    document.documentElement.classList.add('theme-dark');
+                }
+                document.documentElement.classList.add('studio-route-booting');
+                localStorage.removeItem('studio_gpt_dock_offset');
+                // Every new page load starts with the conversation dock recessed.
+                // Manual expansion remains available for the current session only.
+                localStorage.setItem('studio_gpt_dock_collapsed', '1');
+                document.documentElement.classList.add('gpt-dock-collapsed');
+                localStorage.setItem('studio_lang', 'zh');
+            } catch(e) {}
+        })();
+    </script>
+    <script src="/static/vendor/js/mutation-observer-guard.js?v=2026.08.11.82"></script>
+    <script src="/static/vendor/js/lucide.js?v=2026.08.11.82"></script>
+    <script src="/static/js/theme.js?v=2026.08.11.82"></script>
+    <link rel="stylesheet" href="/static/css/studio-theme-dark.css?v=2026.08.11.82">
+    <script src="/static/js/i18n.js?v=2026.08.11.82"></script>
+    <script src="/static/js/shell/icons.js?v=2026.08.11.82"></script>
+    <link rel="stylesheet" href="/static/css/shell/storage-location.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/shell/index-shell.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/shell/user-menu.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/visual-system-preview.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/shell/gpt-dock-liquid-frame.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/visual-typography-system.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/canvas-dark-glass.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/shell/settings.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/canvas-clear-glass.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/shell/layout-refinement.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/shell/canvas-project-chrome.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/shell/history.css?v=2026.08.11.82">
+    <script src="/static/js/shell/history.js?v=2026.08.11.82" defer></script>
+    <script src="/static/js/shell/storage-location.js?v=2026.08.11.82" defer></script>
+    <script src="/static/js/shell/settings.js?v=2026.08.11.82" defer></script>
+    <script src="/static/js/shell/user-menu.js?v=2026.08.11.82" defer></script>
+    <script src="/static/js/shell/index-boot.js?v=2026.08.11.82"></script>
+    <script src="/static/js/shell/index-shell.js?v=2026.08.11.82" defer></script>
+<link rel="stylesheet" href="/static/css/dark-desaturated/index.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/shell/desktop-window-frame.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/dark-desaturated/panel-polish.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/ui-primitives.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/shell/mm-sidebar.css?v=2026.08.11.82">
+<!-- 最高优先级内联CSS：桌面模式画布大圆角 -->
+<style id="desktop-stage-radius">
+html.lightbox-desktop-native .stage,
+html.lightbox-desktop-native .stage.stage,
+html.lightbox-desktop-native #canvas.stage {
+    border-radius: 32px !important;
+    -webkit-border-radius: 32px !important;
+    overflow: hidden !important;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.32), 0 10px 28px rgba(0, 0, 0, 0.16), 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    transition: none !important;
+    -webkit-transition: none !important;
+    animation: none !important;
+    -webkit-animation: none !important;
+}
+html.lightbox-desktop-native .stage > iframe,
+html.lightbox-desktop-native .stage.stage > iframe {
+    border-radius: 32px !important;
+    -webkit-border-radius: 32px !important;
+    overflow: hidden !important;
+    transition: none !important;
+    -webkit-transition: none !important;
+}
+</style>
+<script src="/static/js/shell/mm-sidebar.js?v=2026.08.11.82" defer></script>
+</head>
+
+<body>
+    <div class="lightbox-native-resize-handle" data-native-window-resize="top"></div>
+    <div class="lightbox-native-resize-handle" data-native-window-resize="right"></div>
+    <div class="lightbox-native-resize-handle" data-native-window-resize="bottom"></div>
+    <div class="lightbox-native-resize-handle" data-native-window-resize="left"></div>
+    <div class="lightbox-native-resize-handle" data-native-window-resize="top-left"></div>
+    <div class="lightbox-native-resize-handle" data-native-window-resize="top-right"></div>
+    <div class="lightbox-native-resize-handle" data-native-window-resize="bottom-left"></div>
+    <div class="lightbox-native-resize-handle" data-native-window-resize="bottom-right"></div>
+    <header class="lightbox-native-titlebar" aria-label="光盒窗口">
+        <div class="lightbox-native-titlebar-drag">
+        </div>
+        <div class="lightbox-native-topbar-cluster" aria-label="顶栏工具区">
+            <div class="lightbox-native-topbar-tools" aria-label="快捷工具">
+                <input class="lightbox-native-search" type="text" placeholder="搜索画布内节点与功能" aria-label="搜索画布内节点与功能">
+                <button type="button" id="lightboxNativeUserToolBtn" class="lightbox-native-group-tool-btn" title="用户中心" aria-label="用户中心">
+                    <i data-lucide="user-round"></i>
+                </button>
+                <!-- 画布历史/项目菜单按钮（从左侧栏移入） -->
+                <button id="shellCanvasProjectMenuBtn" class="shell-primary-rail-item shell-canvas-project-menu-btn" type="button" title="历史记录" aria-label="历史记录" aria-haspopup="dialog" aria-expanded="false" aria-controls="shellProjectHistoryModal" data-shell-primary-nav="history">
+                    <i data-lucide="history"></i>
+                    <span id="shellCanvasProjectTitle" class="shell-visually-hidden">未命名画布</span>
+                </button>
+            </div>
+            <button type="button" id="titlebarThemeToggle" class="titlebar-theme-toggle" title="切换日间 / 夜间模式" aria-label="切换日间 / 夜间模式">
+                <span class="tt-sky tt-sky-day" aria-hidden="true"></span>
+                <span class="tt-sky tt-sky-night" aria-hidden="true">
+                    <span class="tt-star tt-star-1"></span>
+                    <span class="tt-star tt-star-2"></span>
+                    <span class="tt-star tt-star-3"></span>
+                </span>
+                <span class="tt-knob" aria-hidden="true">
+                    <span class="tt-face tt-sun"></span>
+                    <span class="tt-face tt-moon">
+                        <span class="tt-crater tt-crater-1"></span>
+                        <span class="tt-crater tt-crater-2"></span>
+                    </span>
+                </span>
+            </button>
+            <div class="lightbox-native-window-controls">
+                <button type="button" tabindex="-1" class="lightbox-compact-btn" data-native-window-action="compact" title="精简模式" aria-label="精简模式"><i data-lucide="picture-in-picture-2"></i></button>
+                <button type="button" tabindex="-1" data-native-window-action="minimize" aria-label="最小化"><span></span></button>
+                <button type="button" tabindex="-1" data-native-window-action="maximize" aria-label="还原或最大化"><span></span></button>
+                <button type="button" tabindex="-1" data-native-window-action="close" aria-label="关闭"><span></span></button>
+            </div>
+        </div>
+        <div class="lightbox-compact-controls" aria-label="精简模式控制">
+            <button type="button" tabindex="-1" data-compact-pin title="置顶" aria-label="窗口置顶"><i data-lucide="pin"></i></button>
+            <button type="button" tabindex="-1" data-compact-restore title="回归" aria-label="回归完整窗口"><i data-lucide="expand"></i></button>
+        </div>
+    </header>
+
+    <aside class="mm-sidebar" id="mmSidebar" aria-label="全局导航">
+        <div class="mm-sidebar-head">
+            <img class="mm-sidebar-logo" src="/static/images/gonvox-logo.png?v=2026.08.11.82" alt="Welcome to 光盒" draggable="false">
+            <button id="mmSidebarToggle" class="mm-sidebar-collapse" type="button" title="收起侧栏" aria-label="收起侧栏"><i data-lucide="panel-left"></i></button>
+        </div>
+        <div class="mm-sidebar-nav">
+            <button id="mmSideNewCanvas" type="button"><i data-lucide="plus"></i><span>新建画布</span></button>
+            <div id="mmAssetTree" class="mm-asset-tree is-collapsed">
+                <button id="mmSideAssets" class="mm-asset-tree-root" type="button" aria-expanded="false" aria-controls="mmAssetTreeFolders">
+                    <i data-lucide="folder-open"></i><span>资产中心</span><i class="mm-asset-tree-chevron" data-lucide="chevron-down"></i>
+                </button>
+                <div id="mmAssetTreeFolders" class="mm-asset-tree-folders">
+
+                    <div class="mm-asset-tree-folder" data-asset-kind="image">
+                        <div class="mm-asset-tree-folder-row"><span class="mm-asset-tree-folder-label"><i class="mm-asset-folder-chevron" data-lucide="chevron-down"></i><span>图片资产</span></span></div>
+                    </div>
+                    <div class="mm-asset-tree-folder" data-asset-kind="prompt">
+                        <div class="mm-asset-tree-folder-row"><span class="mm-asset-tree-folder-label"><i class="mm-asset-folder-chevron" data-lucide="chevron-down"></i><span>提示词</span></span></div>
+                    </div>
+                    <div class="mm-asset-tree-folder" data-asset-kind="video">
+                        <div class="mm-asset-tree-folder-row"><span class="mm-asset-tree-folder-label"><i class="mm-asset-folder-chevron" data-lucide="chevron-down"></i><span>视频资产</span></span></div>
+                    </div>
+                    <div class="mm-asset-tree-folder" data-asset-kind="audio">
+                        <div class="mm-asset-tree-folder-row"><span class="mm-asset-tree-folder-label"><i class="mm-asset-folder-chevron" data-lucide="chevron-down"></i><span>音频资产</span></span></div>
+                    </div>
+                </div>
+            </div>
+            <button id="mmSideSkill" type="button"><i data-lucide="sparkles"></i><span>Skill</span></button>
+            <button id="mmSideAll" type="button"><i data-lucide="layout-grid"></i><span>全部创作</span></button>
+        </div>
+        <div class="mm-sidebar-recent">
+            <div class="mm-sidebar-recent-list" id="mmSidebarRecentList" aria-label="最近创作"></div>
+        </div>
+        <div class="mm-sidebar-footer">
+            <button id="shellSidebarUserBtn" class="mm-sidebar-user" type="button" aria-haspopup="menu" aria-expanded="false" title="用户">
+                <span class="mm-sidebar-avatar" id="mmSidebarAvatar"><img alt="用户头像" hidden><i data-lucide="user-round"></i></span>
+                <span class="mm-sidebar-username" id="mmSidebarUserName">用户</span>
+            </button>
+            <button id="mmSideSettings" class="mm-sidebar-gear" type="button" title="帮助中心" aria-label="帮助中心"><i data-lucide="circle-help"></i></button>
+        </div>
+    </aside>
+    <button id="mmSidebarReopen" class="mm-sidebar-reopen" type="button" title="展开侧栏" aria-label="展开侧栏"><i data-lucide="panel-left"></i></button>
+
+    <div class="app-shell">
+        <aside class="sidebar" id="studioSidebar">
+            <button class="logo-ring mb-12" id="sidebarLogoToggle" type="button" onclick="toggleSidebarPinned(event)" aria-pressed="false" title="固定导航">
+                <div class="w-1.5 h-1.5" id="logo-dot"></div>
+            </button>
+
+            <nav>
+                <!-- Image generation -->
+                <div style="width:32px;height:1px;margin:8px auto;"></div>
+                <div class="nav-item" onclick="switchUI(this, 'agent-chat')">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.38-1 1.72v.78h3c1.1 0 2 .9 2 2v7c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2V8.5c0-1.1.9-2 2-2h3v-.78c-.6-.34-1-.98-1-1.72a2 2 0 0 1 2-2zM7 16v3h10v-3"></path>
+                        <circle cx="9" cy="9" r="1"></circle>
+                        <circle cx="15" cy="9" r="1"></circle>
+                    </svg>
+                    <span class="nav-text" data-i18n="nav.agent">Coding Agent</span>
+                </div>
+                <div class="nav-item" onclick="switchUI(this, 'gpt-chat')">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span class="nav-text" data-i18n="nav.gpt">GPT 对话</span>
+                </div>
+                <div class="nav-item" onclick="switchUI(this, 'canvas')">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    <span class="nav-text" data-i18n="nav.canvas">无限画布</span>
+                </div>
+            </nav>
+
+            <div class="side-actions">
+                <button class="side-pill" onclick="switchUI(this, 'api-settings')" type="button" title="API 设置">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 7h3a5 5 0 0 1 0 10h-3"></path>
+                        <path d="M9 17H6A5 5 0 0 1 6 7h3"></path>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                    <span class="side-pill-text" data-i18n="common.apiSettings">API 设置</span>
+                </button>
+                <button class="side-pill" onclick="switchUI(this, 'runninghub-settings')" type="button" title="RunningHub 设置">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="6" cy="12" r="3"></circle>
+                        <circle cx="18" cy="6" r="3"></circle>
+                        <circle cx="18" cy="18" r="3"></circle>
+                        <path d="m8.7 10.7 6.6-3.4M8.7 13.3l6.6 3.4"></path>
+                    </svg>
+                    <span class="side-pill-text" data-i18n="common.runninghubSettings">RunningHub</span>
+                </button>
+                <div id="project-version-badge" class="project-version-badge" title="当前版本">v-</div>
+            </div>
+        </aside>
+
+        <nav class="shell-primary-rail" aria-label="主导航">
+            <button id="shellNewCanvasBtn" class="shell-primary-rail-item shell-canvas-project-new shell-primary-new" type="button" title="新建" aria-label="新建">
+                <i data-lucide="plus"></i>
+            </button>
+            <span class="shell-primary-rail-divider" aria-hidden="true"></span>
+            <button class="shell-primary-rail-item" type="button" title="画布" aria-label="画布" data-shell-primary-nav="canvas" data-shell-primary-active="true">
+                <i data-lucide="panels-top-left"></i>
+            </button>
+            <button id="shellRailUserBtn" class="shell-primary-rail-item shell-primary-user" type="button" title="用户中心" aria-label="用户中心">
+                <i data-lucide="user-round"></i>
+            </button>
+        </nav>
+        <button class="top-user-btn lightbox-native-points-capsule" type="button" id="topUserBtn" aria-label="积分与用户中心" title="积分与用户中心" aria-haspopup="dialog" aria-expanded="false" aria-controls="shellSettingsModal">
+            <span class="top-user-energy" aria-hidden="true"><i data-lucide="zap"></i></span>
+            <span class="top-user-points" id="topUserPoints">2365</span>
+        </button>
+        <aside id="shellUserMenu" class="shell-user-menu" role="menu" aria-label="用户中心" aria-hidden="true" hidden>
+            <div class="shell-user-menu-profile">
+                <button id="shellUserAvatarBtn" class="shell-user-avatar" type="button" title="更换头像" aria-label="更换头像">
+                    <img id="shellUserAvatarImage" alt="用户头像" hidden>
+                    <i id="shellUserAvatarFallback" data-lucide="user-round"></i>
+                    <span class="shell-user-avatar-edit" aria-hidden="true"><i data-lucide="camera"></i></span>
+                </button>
+                <label class="shell-user-name-field">
+                    <span class="shell-user-name-caption">用户名</span>
+                    <span class="shell-user-name-row">
+                        <input id="shellUserNameInput" type="text" value="用户" maxlength="32" autocomplete="nickname" spellcheck="false" aria-label="用户名">
+                        <i data-lucide="pencil-line" aria-hidden="true"></i>
+                    </span>
+                </label>
+                <input id="shellUserAvatarInput" type="file" accept="image/*" hidden>
+            </div>
+
+            <div class="shell-user-menu-card">
+                <button type="button" class="shell-user-points" data-shell-user-action="recharge" aria-label="充值积分" aria-haspopup="dialog" aria-controls="shellSettingsModal">
+                    <div class="shell-user-points-head">
+                        <span><i data-lucide="coins"></i><strong>充值</strong></span>
+                        <strong id="shellUserPointsValue">2365</strong>
+                    </div>
+                    <div class="shell-user-points-track" aria-hidden="true"><span></span></div>
+                    <div class="shell-user-points-meta"><span>当前积分</span><span>待接入</span></div>
+                </button>
+
+                <nav class="shell-user-menu-list" aria-label="用户功能">
+                    <button class="shell-user-menu-item" type="button" role="menuitem" data-shell-user-action="profile" aria-haspopup="dialog" aria-controls="shellSettingsModal">
+                        <span class="shell-user-menu-item-icon"><i data-lucide="house"></i></span>
+                        <span>个人主页</span>
+                    </button>
+                    <button class="shell-user-menu-item" type="button" role="menuitem" data-shell-user-action="theme" aria-pressed="false">
+                        <span class="shell-user-menu-item-icon"><i data-lucide="sun-moon"></i></span>
+                        <span>主题</span>
+                        <small id="shellUserThemeLabel">浅色</small>
+                        <span class="shell-user-theme-switch" aria-hidden="true"><span></span></span>
+                    </button>
+                    <button class="shell-user-menu-item" type="button" role="menuitem" data-shell-user-action="memory">
+                        <span class="shell-user-menu-item-icon"><i data-lucide="brain"></i></span>
+                        <span>记忆管理</span>
+                        <i class="shell-user-menu-chevron" data-lucide="chevron-right"></i>
+                    </button>
+                    <button class="shell-user-menu-item" type="button" role="menuitemcheckbox" data-shell-user-action="smart-guides" aria-pressed="true" aria-checked="true">
+                        <span class="shell-user-menu-item-icon"><i data-lucide="magnet"></i></span>
+                        <span>智能参考对齐</span>
+                        <small id="shellUserSmartGuidesLabel">开启</small>
+                        <span class="shell-user-theme-switch" aria-hidden="true"><span></span></span>
+                    </button>
+                    <button class="shell-user-menu-item" type="button" role="menuitem" data-shell-user-action="settings" aria-haspopup="dialog" aria-controls="shellSettingsModal">
+                        <span class="shell-user-menu-item-icon"><i data-lucide="settings"></i></span>
+                        <span>设置</span>
+                        <i class="shell-user-menu-chevron" data-lucide="chevron-right"></i>
+                    </button>
+                    <button class="shell-user-menu-item" type="button" role="menuitem" data-shell-user-action="tutorial" aria-haspopup="dialog" aria-controls="shellSettingsModal">
+                        <span class="shell-user-menu-item-icon"><i data-lucide="graduation-cap"></i></span>
+                        <span>教程</span>
+                        <i class="shell-user-menu-chevron" data-lucide="chevron-right"></i>
+                    </button>
+                    <button class="shell-user-menu-item" type="button" role="menuitem" data-shell-user-action="updates">
+                        <span class="shell-user-menu-item-icon"><i data-lucide="scroll-text"></i></span>
+                        <span>版本更新</span>
+                        <i class="shell-user-menu-chevron" data-lucide="chevron-right"></i>
+                    </button>
+                    <button class="shell-user-menu-item" type="button" role="menuitem" data-shell-user-action="cooperation" aria-haspopup="dialog" aria-controls="shellSettingsModal">
+                        <span class="shell-user-menu-item-icon"><i data-lucide="handshake"></i></span>
+                        <span>合作中心</span>
+                        <i class="shell-user-menu-chevron" data-lucide="chevron-right"></i>
+                    </button>
+                    <button class="shell-user-menu-item shell-user-menu-logout" type="button" role="menuitem" data-shell-user-action="logout">
+                        <span class="shell-user-menu-item-icon"><i data-lucide="log-out"></i></span>
+                        <span>退出账号</span>
+                    </button>
+                </nav>
+                <div id="shellUserMenuStatus" class="shell-user-menu-status" role="status" aria-live="polite"></div>
+            </div>
+        </aside>
+        <div id="shellSettingsModal" class="shell-settings-modal" hidden aria-hidden="true">
+            <div class="shell-settings-backdrop" data-shell-settings-close></div>
+            <div class="shell-settings-dialog" role="dialog" aria-modal="true" aria-label="设置中心">
+                <button class="shell-settings-close-btn" type="button" data-shell-settings-close aria-label="关闭设置" title="关闭">
+                    <i data-lucide="x"></i>
+                </button>
+                <div class="shell-settings-body">
+                    <nav class="shell-settings-nav" aria-label="设置选项">
+                        <div class="shell-settings-nav-main">
+                        <button class="shell-settings-nav-btn" type="button" data-shell-settings-pane="account">
+                            <i data-lucide="user-round"></i><span>用户中心</span>
+                        </button>
+                        <button class="shell-settings-nav-btn" type="button" data-shell-settings-pane="usage">
+                            <i data-lucide="chart-no-axes-column-increasing"></i><span>用量看板</span>
+                        </button>
+                        <button class="shell-settings-nav-btn" type="button" data-shell-settings-pane="history">
+                            <i data-lucide="history"></i><span>历史记录</span>
+                        </button>
+                        <button class="shell-settings-nav-btn" type="button" data-shell-settings-pane="api" data-shell-settings-api-trigger>
+                            <i data-lucide="sliders-horizontal"></i><span data-i18n="common.apiSettings">API 设置</span>
+                        </button>
+                        <button class="shell-settings-nav-btn" type="button" data-shell-settings-pane="runninghub">
+                            <i data-lucide="workflow"></i><span data-i18n="common.runninghubSettings">RunningHub</span>
+                        </button>
+                        <button class="shell-settings-nav-btn" type="button" data-shell-settings-pane="workflow">
+                            <i data-lucide="git-branch"></i><span>工作流设置</span>
+                        </button>
+                        <button class="shell-settings-nav-btn" type="button" data-shell-settings-pane="storage">
+                            <i data-lucide="folder-cog"></i><span>存储位置</span>
+                        </button>
+                        <button class="shell-settings-nav-btn" type="button" data-shell-settings-pane="cooperation">
+                            <i data-lucide="handshake"></i><span>合作中心</span>
+                        </button>
+                        <button class="shell-settings-nav-btn" type="button" data-shell-settings-pane="help">
+                            <i data-lucide="circle-help"></i><span>帮助中心</span>
+                        </button>
+                        </div>
+                        <button class="shell-settings-nav-btn shell-settings-logout-btn" type="button" data-shell-settings-logout>
+                            <i data-lucide="log-out"></i><span>登出账号</span>
+                        </button>
+                    </nav>
+                    <div class="shell-settings-panes">
+                        <section class="shell-settings-pane shell-settings-account-pane" data-shell-settings-pane="account" aria-label="用户中心">
+                            <header class="shell-settings-section-head">
+                                <h2>用户中心</h2>
+                                <p>查看账户与可用积分，按需完成充值。</p>
+                            </header>
+
+                            <section class="shell-account-overview" aria-label="账户概览">
+                                <div class="shell-account-identity">
+                                    <span class="shell-account-avatar">
+                                        <img id="shellSettingsAccountAvatar" alt="用户头像" hidden>
+                                        <i data-lucide="user-round"></i>
+                                    </span>
+                                    <div class="shell-account-identity-meta">
+                                        <strong id="shellSettingsAccountName">用户</strong>
+                                        <span>光盒个人账户</span>
+                                    </div>
+                                </div>
+                                <div class="shell-account-balance" aria-label="可用积分">
+                                    <small>可用积分</small>
+                                    <div class="shell-account-balance-value">
+                                        <strong id="shellSettingsAccountPoints">0</strong>
+                                        <span>积分</span>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="shell-account-card shell-recharge-card" aria-labelledby="shellRechargeTitle">
+                                <div class="shell-account-card-head">
+                                    <div>
+                                        <h3 id="shellRechargeTitle">充值积分</h3>
+                                        <p>先选数量，再确认明细后支付。</p>
+                                    </div>
+                                    <span class="shell-account-status">支付服务待接入</span>
+                                </div>
+                                <div class="shell-recharge-layout">
+                                    <div class="shell-recharge-select">
+                                        <div class="shell-recharge-step">
+                                            <div class="shell-recharge-step-label">
+                                                <span class="shell-recharge-step-index" aria-hidden="true">1</span>
+                                                <label id="shellRechargePresetLabel">选择充值数量</label>
+                                            </div>
+                                            <div class="shell-recharge-presets" role="group" aria-labelledby="shellRechargePresetLabel">
+                                                <button type="button" data-recharge-value="1000">1,000</button>
+                                                <button type="button" data-recharge-value="2000">2,000</button>
+                                                <button class="active" type="button" data-recharge-value="3000">3,000</button>
+                                                <button type="button" data-recharge-value="5000">5,000</button>
+                                                <button type="button" data-recharge-value="10000">10,000</button>
+                                            </div>
+                                        </div>
+                                        <div class="shell-recharge-step shell-recharge-step-slider">
+                                            <div class="shell-recharge-step-label">
+                                                <span class="shell-recharge-step-index shell-recharge-step-index-muted" aria-hidden="true">·</span>
+                                                <label for="shellRechargeRange">自定义调整</label>
+                                            </div>
+                                            <input id="shellRechargeRange" type="range" min="1000" max="10000" step="1000" value="3000" aria-valuemin="1000" aria-valuemax="10000" aria-valuenow="3000">
+                                            <div class="shell-recharge-scale" aria-hidden="true"><span>1,000</span><span>10,000</span></div>
+                                        </div>
+                                    </div>
+                                    <aside class="shell-recharge-summary" aria-label="确认充值">
+                                        <div class="shell-recharge-step-label">
+                                            <span class="shell-recharge-step-index" aria-hidden="true">2</span>
+                                            <h4>确认并支付</h4>
+                                        </div>
+                                        <div class="shell-recharge-summary-hero">
+                                            <span>本次到账</span>
+                                            <div class="shell-recharge-summary-amount">
+                                                <strong id="shellRechargeAmount">3,000</strong>
+                                                <span>积分</span>
+                                            </div>
+                                            <strong id="shellRechargeSummary" class="shell-recharge-summary-sr" hidden>3,000</strong>
+                                        </div>
+                                        <dl class="shell-recharge-summary-meta">
+                                            <div>
+                                                <dt>当前余额</dt>
+                                                <dd><b id="shellRechargeBalance">0</b><span>积分</span></dd>
+                                            </div>
+                                            <div>
+                                                <dt>充值后预计</dt>
+                                                <dd><b id="shellRechargeAfter">3,000</b><span>积分</span></dd>
+                                            </div>
+                                        </dl>
+                                        <button type="button" data-shell-recharge-action>立即充值</button>
+                                        <small id="shellRechargeStatus" role="status" aria-live="polite"></small>
+                                    </aside>
+                                </div>
+                            </section>
+
+                            <section class="shell-account-services" aria-label="账户服务">
+                                <div class="shell-account-services-head">
+                                    <h3>账户服务</h3>
+                                    <p>安全、账单与支持入口</p>
+                                </div>
+                                <div class="shell-account-quick-list" role="list">
+                                    <article class="shell-account-quick-item is-disabled" role="listitem" aria-disabled="true">
+                                        <span class="shell-account-quick-icon"><i data-lucide="shield-check"></i></span>
+                                        <div class="shell-account-quick-copy">
+                                            <strong>账户安全</strong>
+                                            <span>登录方式与安全校验</span>
+                                        </div>
+                                        <em>即将开放</em>
+                                    </article>
+                                    <article class="shell-account-quick-item is-disabled" role="listitem" aria-disabled="true">
+                                        <span class="shell-account-quick-icon"><i data-lucide="receipt-text"></i></span>
+                                        <div class="shell-account-quick-copy">
+                                            <strong>账单记录</strong>
+                                            <span>充值与消费明细</span>
+                                        </div>
+                                        <em>即将开放</em>
+                                    </article>
+                                    <button type="button" class="shell-account-quick-item shell-account-quick-action" role="listitem" data-shell-settings-pane-jump="help">
+                                        <span class="shell-account-quick-icon"><i data-lucide="badge-help"></i></span>
+                                        <div class="shell-account-quick-copy">
+                                            <strong>账户支持</strong>
+                                            <span>前往帮助中心获取协助</span>
+                                        </div>
+                                        <i data-lucide="chevron-right" class="shell-account-quick-chevron" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </section>
+                        </section>
+                        <section class="shell-settings-pane" data-shell-settings-pane="usage" aria-label="用量看板">
+                            <div class="shell-settings-section-head"><h2>用量看板</h2><p>统一查看画布生成、对话任务与本地存储的使用情况。</p></div>
+                            <div class="shell-usage-grid">
+                                <article><span>本月生成任务</span><strong>0</strong><small>统计服务待接入</small></article>
+                                <article><span>对话任务</span><strong>0</strong><small>统计服务待接入</small></article>
+                                <article><span>当前积分</span><strong id="shellSettingsUsagePoints">0</strong><small>账户余额</small></article>
+                            </div>
+                            <section class="shell-settings-info-card"><h3>用量明细</h3><p>按模型、日期和任务类型的详细统计将在服务接入后显示在这里。</p></section>
+                        </section>
+                        <section id="shellProjectHistoryModal" class="shell-project-history-modal" aria-label="历史记录" aria-hidden="true" hidden>
+                            <div class="shell-project-history-backdrop" data-project-history-close aria-hidden="true"></div>
+                            <div class="shell-project-history-dialog" aria-labelledby="shellProjectHistoryTitle">
+                                <header class="shell-project-history-head">
+                                    <div>
+                                        <h2 id="shellProjectHistoryTitle">历史记录</h2>
+                                        <span id="shellProjectHistoryCount">0 条记录</span>
+                                    </div>
+                                    <button class="shell-project-history-close" type="button" data-project-history-close title="关闭" aria-label="关闭历史记录"><i data-lucide="x"></i></button>
+                                </header>
+                                <div class="shell-project-history-tools">
+                                    <nav class="shell-project-history-filters" aria-label="历史类型">
+                                        <button class="active" type="button" data-project-filter="all">全部</button>
+                                        <button type="button" data-project-filter="general">通用画布</button>
+                                    </nav>
+                                    <div class="shell-project-history-controls">
+                                        <label class="shell-project-history-search">
+                                            <i data-lucide="search"></i>
+                                            <input id="shellProjectHistorySearch" type="search" placeholder="搜索历史记录" autocomplete="off" aria-label="搜索历史记录">
+                                        </label>
+                                        <select id="shellProjectHistorySort" class="shell-project-history-sort" aria-label="历史排序">
+                                            <option value="updated-desc">最近修改</option>
+                                            <option value="created-desc">最新创建</option>
+                                            <option value="created-asc">最早创建</option>
+                                            <option value="title-asc">名称 A–Z</option>
+                                            <option value="title-desc">名称 Z–A</option>
+                                        </select>
+                                        <div class="shell-project-history-view-toggle" role="group" aria-label="历史项目视图">
+                                            <button class="active" type="button" data-project-view="grid" title="卡片视图" aria-label="卡片视图" aria-pressed="true">
+                                                <i data-lucide="layout-grid"></i>
+                                            </button>
+                                            <button type="button" data-project-view="list" title="列表视图" aria-label="列表视图" aria-pressed="false">
+                                                <i data-lucide="list"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="shellProjectHistoryError" class="shell-project-history-error" hidden></div>
+                                <div id="shellProjectHistoryList" class="shell-project-history-list" aria-live="polite"></div>
+                            </div>
+                        </section>
+                        <section class="shell-settings-pane" data-shell-settings-pane="help" aria-label="帮助中心">
+                            <div class="shell-settings-section-head"><h2>帮助中心</h2><p>常用操作与快捷键。</p></div>
+                            <div class="shell-settings-shortcut-list">
+                                <div class="shell-settings-shortcut-item"><span class="shell-settings-shortcut-keys"><kbd>Ctrl</kbd></span><span data-i18n="smart.shortcutBoxSelect">按住并拖拽框选节点</span></div>
+                                <div class="shell-settings-shortcut-item"><span class="shell-settings-shortcut-keys"><kbd>Ctrl</kbd><kbd>G</kbd></span><span data-i18n="smart.shortcutGroup">合并选中的图片为组</span></div>
+                                <div class="shell-settings-shortcut-item"><span class="shell-settings-shortcut-keys"><kbd>Ctrl</kbd><kbd>Z</kbd></span><span data-i18n="smart.shortcutUndo">撤销上一步操作</span></div>
+                                <div class="shell-settings-shortcut-item"><span class="shell-settings-shortcut-keys"><kbd>Ctrl</kbd><kbd>C</kbd></span><span data-i18n="smart.shortcutCopy">复制选中的节点</span></div>
+                                <div class="shell-settings-shortcut-item"><span class="shell-settings-shortcut-keys"><kbd>Ctrl</kbd><kbd>V</kbd></span><span data-i18n="smart.shortcutPaste">粘贴节点或剪贴板图片</span></div>
+                                <div class="shell-settings-shortcut-item"><span class="shell-settings-shortcut-keys"><kbd>A</kbd></span><span data-i18n="smart.shortcutAssets">打开/关闭资产库</span></div>
+                                <div class="shell-settings-shortcut-item"><span class="shell-settings-shortcut-keys"><kbd>Z</kbd></span><span data-i18n="smart.shortcutOverview">缩小画布视图</span></div>
+                                <div class="shell-settings-shortcut-item"><span class="shell-settings-shortcut-keys"><kbd>双击</kbd></span><span data-i18n="smart.shortcutCreateMenu">打开快捷菜单</span></div>
+                                <div class="shell-settings-shortcut-item"><span class="shell-settings-shortcut-keys"><kbd>空白处</kbd></span><span data-i18n="smart.shortcutPan">拖动画布</span></div>
+                                <div class="shell-settings-shortcut-item"><span class="shell-settings-shortcut-keys"><kbd>滚轮</kbd></span><span data-i18n="smart.shortcutZoom">缩放画布或预览图片</span></div>
+                                <div class="shell-settings-shortcut-item"><span class="shell-settings-shortcut-keys"><kbd>Del</kbd></span><span data-i18n="smart.shortcutDelete">删除选中节点</span></div>
+                            </div>
+                        </section>
+                        <section class="shell-settings-pane" data-shell-settings-pane="workflow" aria-label="工作流设置">
+                            <div class="shell-settings-section-head"><h2>工作流设置</h2><p>管理画布工作流、节点模板和自动化执行方式。</p></div>
+                            <section class="shell-settings-empty-state"><i data-lucide="git-branch"></i><h3>工作流设置入口已保留</h3><p>现有画布工作流功能不受影响；独立管理服务接入后将在这里显示。</p></section>
+                        </section>
+                        <section class="shell-settings-pane" data-shell-settings-pane="cooperation" aria-label="合作中心">
+                            <div class="shell-settings-section-head"><h2>合作中心</h2><p>团队协作、项目共享与成员权限。</p></div>
+                            <section class="shell-settings-empty-state"><i data-lucide="handshake"></i><h3>合作功能待接入</h3><p>入口已按统一设置中心保留，后续可直接接入团队与协作服务。</p></section>
+                        </section>
+                        <section class="shell-settings-pane" data-shell-settings-pane="api" aria-label="API 设置">
+                            <iframe class="shell-settings-embed-frame" title="API 设置" data-shell-settings-frame data-src="/static/api-settings.html?v=2026.08.11.82" scrolling="yes"></iframe>
+                        </section>
+                        <section class="shell-settings-pane" data-shell-settings-pane="runninghub" aria-label="RunningHub 设置">
+                            <iframe class="shell-settings-embed-frame" title="RunningHub 设置" data-shell-settings-frame data-src="/static/apps/runninghub-settings/index.html#embedded" scrolling="yes"></iframe>
+                        </section>
+                        <section class="shell-settings-pane storage-location-pane" data-shell-settings-pane="storage" aria-label="存储位置">
+                            <div class="storage-location-head">
+                                <div>
+                                    <h3>用户数据保存位置</h3>
+                                    <p>画布、素材、历史记录和个人设置会保存在这里，不再让软件目录随使用不断变大。</p>
+                                </div>
+                                <span class="storage-location-size" id="storageLocationSize">读取中</span>
+                            </div>
+                            <div class="storage-location-current">
+                                <span>当前正在使用</span>
+                                <strong id="storageLocationCurrent">读取中</strong>
+                                <small id="storageLocationCurrentHint"></small>
+                            </div>
+                            <label class="storage-location-field" for="storageLocationPath">
+                                <span>新的保存文件夹</span>
+                                <input id="storageLocationPath" type="text" spellcheck="false" autocomplete="off" placeholder="请选择软件目录之外的文件夹">
+                            </label>
+                            <div class="storage-location-actions">
+                                <button id="storageLocationBrowse" class="storage-location-btn primary" type="button"><i data-lucide="folder-open"></i>选择文件夹</button>
+                                <button id="storageLocationRecommended" class="storage-location-btn" type="button">使用推荐位置</button>
+                            </div>
+                            <label class="storage-location-copy">
+                                <input id="storageLocationCopyExisting" type="checkbox" checked>
+                                <span><strong>复制现有数据到新位置</strong><small>推荐开启。复制成功后原文件仍会保留，不会自动删除。</small></span>
+                            </label>
+                            <div class="storage-location-note"><i data-lucide="shield-check"></i><span>保存后请关闭并重新运行光盒。启动时会再同步一次关闭前的最新数据，然后才切换。</span></div>
+                            <div class="storage-location-submit-row">
+                                <span id="storageLocationStatus" class="storage-location-status" role="status" aria-live="polite"></span>
+                                <button id="storageLocationSave" class="storage-location-save" type="button">保存并准备切换</button>
+                            </div>
+                            <div class="storage-location-divider"></div>
+                            <div class="storage-location-head storage-location-document-head">
+                                <div>
+                                    <h3>上传文档与智能任务保存位置</h3>
+                                    <p>PDF、Word、PPT、Excel 等上传原件，以及右侧对话生成的各种成果文件和任务记录，会独立保存在这里。</p>
+                                </div>
+                                <span class="storage-location-size" id="documentStorageLocationSize">读取中</span>
+                            </div>
+                            <div class="storage-location-current">
+                                <span>当前文档目录</span>
+                                <strong id="documentStorageLocationCurrent">读取中</strong>
+                                <small>只影响新上传的文档和新任务；不会移动或删除已有文件。</small>
+                            </div>
+                            <label class="storage-location-field" for="documentStorageLocationPath">
+                                <span>文档保存文件夹</span>
+                                <input id="documentStorageLocationPath" type="text" spellcheck="false" autocomplete="off" placeholder="请选择软件目录之外的文件夹">
+                            </label>
+                            <div class="storage-location-actions">
+                                <button id="documentStorageLocationBrowse" class="storage-location-btn primary" type="button"><i data-lucide="folder-open"></i>选择文件夹</button>
+                                <button id="documentStorageLocationRecommended" class="storage-location-btn" type="button">使用推荐位置</button>
+                            </div>
+                            <div class="storage-location-note"><i data-lucide="file-archive"></i><span>保存后立即生效，无需重启。任务采用独立文件夹，输入、过程文件、成果和检查记录互不混放。</span></div>
+                            <div class="storage-location-submit-row">
+                                <span id="documentStorageLocationStatus" class="storage-location-status" role="status" aria-live="polite"></span>
+                                <button id="documentStorageLocationSave" class="storage-location-save" type="button">保存文档路径</button>
+                            </div>
+                            <div class="storage-location-divider"></div>
+                            <div class="storage-location-head storage-location-document-head">
+                                <div>
+                                    <h3>下载文件保存位置</h3>
+                                    <p>画布中下载的图片、视频、音频和打包文件会保存在这里。</p>
+                                </div>
+                                <span class="storage-location-size" id="downloadStorageLocationCount">读取中</span>
+                            </div>
+                            <div class="storage-location-current">
+                                <span>当前下载目录</span>
+                                <strong id="downloadStorageLocationCurrent">读取中</strong>
+                                <small>修改后立即生效，不会移动已下载的文件。</small>
+                            </div>
+                            <label class="storage-location-field" for="downloadStorageLocationPath">
+                                <span>下载保存文件夹</span>
+                                <input id="downloadStorageLocationPath" type="text" spellcheck="false" autocomplete="off" placeholder="请选择下载文件夹">
+                            </label>
+                            <div class="storage-location-actions">
+                                <button id="downloadStorageLocationBrowse" class="storage-location-btn primary" type="button"><i data-lucide="folder-open"></i>选择文件夹</button>
+                                <button id="downloadStorageLocationRecommended" class="storage-location-btn" type="button">使用推荐位置</button>
+                            </div>
+                            <div class="storage-location-note"><i data-lucide="download"></i><span>保存后立即用于新的下载，左下角下载中心会持续保留记录。</span></div>
+                            <div class="storage-location-submit-row">
+                                <span id="downloadStorageLocationStatus" class="storage-location-status" role="status" aria-live="polite"></span>
+                                <button id="downloadStorageLocationSave" class="storage-location-save" type="button">保存下载路径</button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <main class="stage">
+            <iframe id="frame-gpt-chat" data-src="/static/apps/gpt-dock/gpt-chat.html?v=2026.08.11.82" scrolling="yes"></iframe>
+            <iframe id="frame-agent-chat" data-src="/static/apps/studio-coding/agent-chat.html?v=2026.08.11.82" scrolling="yes"></iframe>
+            <iframe id="frame-canvas" src="/static/smart-canvas.html?v=2026.08.11.82" data-src="/static/smart-canvas.html?v=2026.08.11.82" class="active" scrolling="no"></iframe>
+            <iframe id="frame-api-settings" data-src="/static/api-settings.html?v=2026.08.11.82" scrolling="yes"></iframe>
+            <iframe id="frame-runninghub-settings" data-src="/static/apps/runninghub-settings/index.html?v=2026.08.11.82" scrolling="yes"></iframe>
+
+            <div class="nano-monitor" id="nano-monitor">
+                <div class="stat-group">
+                    <div class="pulse-dot"></div>
+                    <div class="spinner-nano"></div>
+                    <span class="label-nano">ONLINE</span>
+                    <span id="online-val">1</span>
+                </div>
+                <div class="divider"></div>
+                <div class="stat-group">
+                    <span class="label-nano">QUEUE</span>
+                    <span id="queue-val">0</span>
+                </div>
+            </div>
+        </main>
+        <aside class="gpt-dock" aria-label="GPT 对话">
+            <div class="dock-chrome">
+                <div class="dock-chrome-title-group">
+                    <button class="dock-chrome-title-row dock-chrome-title-trigger" type="button" id="dockShellTitleMenuBtn" aria-label="对话菜单" aria-haspopup="menu" aria-expanded="false" aria-controls="dockShellTitleMenu">
+                        <span class="dock-chrome-title" id="dockShellChatTitle">未命名对话</span>
+                        <i class="dock-chrome-title-trigger-icon" data-lucide="chevron-down"></i>
+                    </button>
+                    <div class="dock-chrome-title-menu" id="dockShellTitleMenu" role="menu" hidden>
+                        <button class="dock-chrome-menu-new" type="button" id="dockShellMenuNewBtn" role="menuitem">
+                            <span>＋&nbsp; 新建对话</span>
+                        </button>
+                        <div class="dock-chrome-menu-list" id="dockShellMenuHistoryList" role="group" aria-label="历史对话"></div>
+                    </div>
+                </div>
+                <div class="dock-chrome-spacer" aria-hidden="true"></div>
+                <div class="dock-chrome-actions">
+                    <button class="dock-chrome-btn dock-close-btn" type="button" id="gptDockCloseBtn" title="收起对话栏" aria-label="收起对话栏" aria-expanded="true">
+                        <i data-lucide="panel-right-close"></i>
+                    </button>
+                </div>
+            </div>
+            <iframe id="frame-gpt-dock" data-src="/static/apps/gpt-dock/gpt-chat.html?dock=1&v=2026.08.11.82" title="GPT 对话" scrolling="yes"></iframe>
+        </aside>
+        <div class="dock-resizer" id="gptDockResizer" aria-hidden="true"></div>
+        <button class="dock-open-btn" id="gptDockOpenBtn" type="button" onclick="openGptDock()" aria-label="对话" title="对话" aria-expanded="false">
+            <svg class="dock-open-agent-icon" viewBox="0 0 16 16" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M3.25 2.25h9.5A2.25 2.25 0 0 1 15 4.5v4A2.25 2.25 0 0 1 12.75 10.75H8.9L5 13.5v-2.75H3.25A2.25 2.25 0 0 1 1 8.5v-4a2.25 2.25 0 0 1 2.25-2.25Z" fill="currentColor"/>
+                <circle cx="5.5" cy="6.5" r=".7" fill="#fff"/>
+                <circle cx="8" cy="6.5" r=".7" fill="#fff"/>
+                <circle cx="10.5" cy="6.5" r=".7" fill="#fff"/>
+            </svg>
+            <span class="dock-open-label">对话</span>
+        </button>
+    </div>
+    <script src="/static/js/shell/desktop-window-frame.js?v=2026.08.11.82"></script>
+</body>
+
+</html>

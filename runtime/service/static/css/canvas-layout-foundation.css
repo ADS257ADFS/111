@@ -1,0 +1,21 @@
+/*
+ * Functional layout foundation retained after the visual reset.
+ * This file contains positioning only; it intentionally contains no visual
+ * material, colour, typography, shadow, highlight, transition or animation.
+ */
+
+.world {
+    transform-origin: 0 0;
+}
+
+html.is-shell-embedded .shell .asset-panel,
+html.is-shell-asset-peek .shell .asset-panel {
+    right: 16px !important;
+    left: auto !important;
+    transform: translateX(0) !important;
+}
+
+html.is-shell-embedded .shell .canvas-history-panel,
+html.is-shell-embedded .shell .canvas-history-panel.open.open {
+    transform: translateY(-50%) !important;
+}

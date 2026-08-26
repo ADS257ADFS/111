@@ -1,0 +1,1098 @@
+/* Shell project history dialog: canvas and Coding Agent records share one view only. */
+.shell-project-history-modal[hidden] {
+    display: none !important;
+}
+
+.shell-project-history-modal:not(.shell-project-history-embedded) {
+    position: fixed;
+    inset: 0;
+    z-index: var(--ui-z-dialog);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--ui-space-8);
+    pointer-events: none;
+}
+
+.shell-project-history-modal:not(.shell-project-history-embedded).open {
+    pointer-events: auto;
+}
+
+.shell-project-history-modal:not(.shell-project-history-embedded) .shell-project-history-backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--ui-backdrop);
+    pointer-events: auto;
+}
+
+.shell-project-history-embedded .shell-project-history-backdrop {
+    display: none;
+}
+
+.shell-project-history-modal:not(.shell-project-history-embedded) .shell-project-history-dialog {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    z-index: 1;
+    width: min(880px, calc(100vw - var(--ui-space-9) * 2));
+    height: min(80vh, 720px);
+    max-height: calc(100vh - var(--ui-space-9) * 2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-panel);
+    background: var(--ui-surface-card);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: var(--ui-shadow-dialog);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(.98);
+    transform-origin: center center;
+    animation: none;
+    transition:
+        opacity var(--ui-motion-surface) var(--ui-ease),
+        transform var(--ui-motion-surface) var(--ui-ease),
+        visibility var(--ui-motion-surface) var(--ui-ease);
+}
+
+.shell-project-history-modal:not(.shell-project-history-embedded).open .shell-project-history-dialog {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+}
+
+html.theme-dark .shell-project-history-dialog,
+html.studio-theme-dark .shell-project-history-dialog {
+    border-color: rgba(255, 255, 255, .13);
+    background: rgba(35, 35, 37, .88);
+    box-shadow:
+        0 24px 62px rgba(0, 0, 0, .38),
+        inset 0 1px 0 rgba(255, 255, 255, .08);
+}
+
+.shell-project-history-head {
+    min-height: 72px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.shell-project-history-head > div {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.shell-project-history-head h2 {
+    margin: 0;
+    color: var(--ui-text);
+    font-size:14px;
+    font-weight: 600;
+    letter-spacing: .01em;
+}
+
+.shell-project-history-head span {
+    color: var(--ui-text-muted);
+    font-size: 12px;
+    font-weight: 445;
+}
+
+.shell-project-history-close {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ui-text-secondary);
+    cursor: pointer;
+}.shell-project-history-close:hover,
+.shell-project-history-close:focus-visible{
+    border-color: var(--border);
+    background: var(--nav-hover-bg);
+    outline: none;
+}
+
+.shell-project-history-close svg {
+    width: 18px;
+    height: 18px;
+}
+
+.shell-project-history-tools {
+    padding: 10px 20px 16px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+    gap: 10px;
+}
+
+.shell-project-history-filters,
+.shell-project-history-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.shell-project-history-filters {
+    width: 100%;
+    min-width: 0;
+    overflow: visible;
+}
+
+.shell-project-history-controls {
+    width: 100%;
+    min-width: 0;
+}
+
+.shell-project-history-filters button {
+    flex: 0 0 auto;
+    min-height: 34px;
+    padding: 0 10px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ui-text-secondary);
+    font-size:12px;
+    font-weight: 445;
+    line-height: 1;
+    white-space: nowrap;
+    word-break: keep-all;
+    cursor: pointer;
+}.shell-project-history-filters button:hover{
+    background: var(--nav-hover-bg);
+}
+
+.shell-project-history-filters button.active {
+    border-color: var(--ui-accent);
+    background: var(--ui-accent);
+    color: var(--ui-text-on-accent);
+}
+
+.shell-project-history-search {
+    width: auto;
+    min-width: 0;
+    flex: 1 1 auto;
+    min-height: 38px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--sidebar-bg);
+    color: var(--ui-text-secondary);
+}
+
+.shell-project-history-search:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(var(--ui-accent-rgb), 0.1);
+}
+
+.shell-project-history-search svg {
+    width: 15px;
+    height: 15px;
+    flex: 0 0 auto;
+}
+
+.shell-project-history-search input {
+    min-width: 0;
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--ui-text);
+    font: inherit;
+    font-size:12px;
+    font-weight: 400;
+}
+
+.shell-project-history-search input::placeholder {
+    color: var(--ui-text-muted);
+    font-weight: 400;
+    opacity: 1;
+}
+
+.shell-project-history-sort {
+    width: 118px;
+    flex: 0 0 118px;
+    min-height: 38px;
+    padding: 0 34px 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--sidebar-bg);
+    color: var(--ui-text);
+    font-size:12px;
+    font-weight: 445;
+    cursor: pointer;
+}
+
+.shell-project-history-view-toggle {
+    flex: 0 0 auto;
+    height: 38px;
+    padding: 3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #f7f9fa;
+}
+
+.shell-project-history-view-toggle button {
+    width: 31px;
+    height: 30px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--ui-text-secondary);
+    cursor: pointer;
+    transition: background .16s ease;
+}.shell-project-history-view-toggle button:hover,
+.shell-project-history-view-toggle button:focus-visible{
+    background: rgba(255, 255, 255, .78);
+    outline: none;
+}
+
+.shell-project-history-view-toggle button.active {
+    background: #fff;
+    color: var(--ui-accent);
+}
+
+.shell-project-history-view-toggle svg {
+    width: 15px;
+    height: 15px;
+    stroke-width: 1.7;
+}
+
+.shell-project-history-error {
+    margin: 0 24px 12px;
+    padding: 9px 12px;
+    border: 1px solid rgba(245, 158, 11, 0.32);
+    border-radius: 11px;
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--ui-warning-text);
+    font-size: 11px;
+    font-weight: 445;
+}
+
+.shell-project-history-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-content: start;
+    gap: 10px;
+    padding: 4px 14px 18px;
+}
+
+.shell-project-history-list[data-view="list"] {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 7px;
+}
+
+.shell-project-history-list[data-view="list"] .shell-project-card {
+    min-height: 72px;
+    border-radius: 14px;
+}
+
+.shell-project-history-list[data-view="list"] .shell-project-card:hover {
+    transform: none;
+}
+
+.shell-project-history-list[data-view="list"] .shell-project-card-open {
+    min-height: 72px;
+    padding: 10px 78px 10px 12px;
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+}
+
+.shell-project-history-list[data-view="list"] .shell-project-card-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+}
+
+.shell-project-history-list[data-view="list"] .shell-project-card-copy {
+    position: relative;
+    min-width: 0;
+    min-height: 42px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    padding-right: 68px;
+}
+
+.shell-project-history-list[data-view="list"] .shell-project-card-title {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    font-size:13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.shell-project-history-list[data-view="list"] .shell-project-card-detail {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.shell-project-history-list[data-view="list"] .shell-project-card-time {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: auto;
+    max-width: 78px;
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.shell-project-history-list[data-view="list"] .shell-project-card-pinned {
+    display: none;
+}
+
+.shell-project-history-list[data-view="list"] .shell-project-card-actions {
+    top: 50%;
+    right: 9px;
+    transform: translateY(-50%);
+}
+
+.shell-project-card {
+    position: relative;
+    min-width: 0;
+    min-height: 142px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: rgba(148, 163, 184, 0.07);
+    transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.shell-project-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(var(--ui-accent-rgb), 0.45);
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.1);
+}
+
+.shell-project-card.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+}
+
+.shell-project-card-open {
+    width: 100%;
+    height: 100%;
+    min-height: 142px;
+    padding: 10px 9px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    border: 0;
+    background: transparent;
+    color: var(--ui-text);
+    text-align: left;
+    cursor: pointer;
+}
+
+.shell-project-card-open:focus-visible {
+    outline: 3px solid rgba(var(--ui-accent-rgb), 0.25);
+    outline-offset: -3px;
+}
+
+.shell-project-card-actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    display: inline-flex;
+    gap: 3px;
+    opacity: .62;
+    transition: opacity .16s ease;
+}
+
+.shell-project-card:hover .shell-project-card-actions,
+.shell-project-card:focus-within .shell-project-card-actions {
+    opacity: 1;
+}
+
+.shell-project-card-action {
+    width: 25px;
+    height: 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .72);
+    color: var(--ui-text-secondary);
+    cursor: pointer;
+    transition: border-color .16s ease, background .16s ease;
+}.shell-project-card-action:hover,
+.shell-project-card-action:focus-visible{
+    border-color: rgba(var(--ui-accent-rgb), 0.4);
+    background: var(--sidebar-bg);
+    outline: none;
+}.shell-project-card-delete:hover,
+.shell-project-card-delete:focus-visible{
+    border-color: rgba(var(--ui-danger-rgb), .26);
+    background: #fff;
+}
+
+.shell-project-card-action:disabled {
+    cursor: wait;
+    opacity: .45;
+}
+
+.shell-project-card-action svg {
+    width: 13px;
+    height: 13px;
+}
+
+.shell-project-card-rename-form {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px;
+    border-radius: inherit;
+    background: #fff;
+}
+
+.shell-project-card-rename-form label {
+    color: var(--ui-text-secondary);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.shell-project-card-rename-form .shell-project-card-rename-input {
+    height: 40px;
+}
+
+.shell-project-card-rename-form > div {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.shell-project-card-rename-form button {
+    height: 32px;
+    padding: 0 13px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: transparent;
+    color: var(--ui-text);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.shell-project-card-rename-form button.primary {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--ui-text-on-accent);
+}
+
+.shell-project-card-rename-form button:disabled {
+    cursor: wait;
+    opacity: 0.55;
+}
+
+html.theme-dark .shell-project-card-rename-form,
+html.studio-theme-dark .shell-project-card-rename-form {
+    background: var(--sidebar-bg);
+}
+
+.shell-project-card-icon {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    color: var(--ui-accent);
+    background: rgba(var(--ui-accent-rgb), 0.1);
+}
+
+.shell-project-card-icon--agent {
+    color: #7c3aed;
+    background: rgba(124, 58, 237, 0.1);
+}
+
+.shell-project-card-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.shell-project-card-copy {
+    min-width: 0;
+    width: 100%;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.shell-project-card-type,
+.shell-project-card-pinned {
+    margin-bottom: 4px;
+    color: var(--ui-text-muted);
+    font-size:10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.shell-project-card-pinned {
+    letter-spacing: 0.04em;
+    text-transform: none;
+}
+
+.shell-project-card-title,
+.shell-project-card-detail,
+.shell-project-card-time {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.shell-project-card-title {
+    color: var(--ui-text);
+    font-size:13px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.shell-project-card-detail {
+    margin-top: 6px;
+    color: var(--ui-text-muted);
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+.shell-project-card-time {
+    margin-top: auto;
+    padding-top: 8px;
+    color: var(--ui-text-muted);
+    font-size: 11px;
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+}
+
+.shell-project-history-empty {
+    grid-column: 1 / -1;
+    min-height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px dashed var(--border);
+    border-radius: 18px;
+    background: rgba(148, 163, 184, 0.04);
+    color: var(--ui-text-muted);
+    font-size:12px;
+    font-weight: 445;
+}
+
+.shell-project-history-empty svg {
+    width: 22px;
+    height: 22px;
+}
+
+.shell-project-history-spinner {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: shell-project-history-spin 0.8s linear infinite;
+}
+
+@keyframes shell-project-history-spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 760px) {
+    .shell-project-history-modal:not(.shell-project-history-embedded) .shell-project-history-dialog {
+        width: calc(100vw - var(--ui-space-8) * 2);
+        height: calc(100vh - var(--ui-space-8) * 2);
+        max-height: none;
+    }
+    .shell-project-history-head { min-height: 62px; padding: 0 16px; }
+    .shell-project-history-head h2 { font-size: 16px; }
+    .shell-project-history-tools {
+        padding: 12px 16px;
+    }
+    .shell-project-history-filters { overflow-x: auto; }
+    .shell-project-history-controls { width: 100%; }
+    .shell-project-history-search { width: auto; flex: 1 1 auto; }
+    .shell-project-history-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        padding: 4px 16px 16px;
+    }
+}
+
+@media (max-width: 520px) {
+    .shell-project-history-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 360px) {
+    .shell-project-history-list {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+/* Standalone history is an opaque centered dialog; surface tokens stay here. */
+.shell-project-history-dialog {
+    background: #fff !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+html:is(.theme-dark, .studio-theme-dark) .shell-project-history-dialog {
+    background: #1b1b1b !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+.shell-project-history-head {
+    min-height: 66px;
+    padding: 0 20px;
+}
+.shell-project-history-head > div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+.shell-project-history-head h2 {
+    font-size:14px;
+    font-weight:600;
+}
+.shell-project-history-head span {
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+}
+.shell-project-history-tools {
+    padding: 6px 16px 14px;
+    gap: 10px;
+}
+.shell-project-history-filters {
+    gap: 6px;
+}
+.shell-project-history-filters button {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0 7px;
+}
+.shell-project-history-controls {
+    gap: 7px;
+}
+.shell-project-history-sort {
+    width: 104px;
+    flex-basis: 104px;
+}
+.shell-project-history-list,
+.shell-project-history-list[data-view="grid"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    padding: 4px 16px 18px;
+}
+.shell-project-card {
+    min-height: 154px;
+    border-radius: 16px;
+    background: rgba(148, 163, 184, .055);
+}
+.shell-project-card-open {
+    min-height: 154px;
+    padding: 14px 13px 12px;
+    gap: 10px;
+}
+.shell-project-card-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+}
+.shell-project-card-icon--ecommerce {
+    color: var(--ui-accent);
+    background: rgba(var(--ui-accent-rgb), .10);
+}
+.shell-project-card-icon--film-comic {
+    color: #8b5cf6;
+    background: rgba(139, 92, 246, .10);
+}
+.shell-project-card-copy {
+    gap: 6px;
+}
+.shell-project-card-category {
+    color: var(--ui-text-muted);
+    font-size: 11px;
+    font-weight: 445;
+}
+.shell-project-card-title {
+    padding-right: 42px;
+    font-size:13px;
+    font-weight: 600;
+}
+.shell-project-card-meta {
+    width: 100%;
+    margin-top: auto;
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    color: var(--ui-text-muted);
+}
+.shell-project-card-nodes {
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 445;
+    white-space: nowrap;
+}
+.shell-project-card-nodes svg {
+    width: 12px;
+    height: 12px;
+    stroke-width: 1.6;
+}
+.shell-project-card-time {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+}
+.shell-project-history-list[data-view="list"] .shell-project-card-open {
+    padding-right: 78px;
+}
+.shell-project-history-list[data-view="list"] .shell-project-card-copy {
+    gap: 3px;
+    padding-right: 0;
+}
+.shell-project-history-list[data-view="list"] .shell-project-card-category {
+    display: none;
+}
+.shell-project-history-list[data-view="list"] .shell-project-card-meta {
+    margin: 0;
+    padding: 0;
+}
+.shell-project-history-list[data-view="list"] .shell-project-card-time {
+    position: static;
+    transform: none;
+    max-width: none;
+}
+.shell-project-history-list[data-view="list"] .shell-project-card-nodes {
+    font-size: 11px;
+}
+html:is(.theme-dark, .studio-theme-dark) .shell-project-card {
+    background: rgba(255, 255, 255, .045);
+}
+
+/* History uses an opaque panel; open/close opacity is owned by the overlay rules. */
+.shell-project-history-dialog,
+.shell-project-history-modal.open .shell-project-history-dialog {
+    border-color: #e3e7ec !important;
+    background: rgb(255, 255, 255) !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    isolation: isolate;
+    box-shadow: var(--ui-shadow-dialog) !important;
+    background-clip: border-box !important;
+}
+.shell-project-history-dialog::before,
+.shell-project-history-dialog::after {
+    display: none !important;
+    content: none !important;
+}
+html:is(.theme-dark, .studio-theme-dark) .shell-project-history-dialog,
+html:is(.theme-dark, .studio-theme-dark) .shell-project-history-modal.open .shell-project-history-dialog {
+    border-color: #303238 !important;
+    background: #1b1b1b !important;
+    background-color: #1b1b1b !important;
+}
+/* Card borders stay neutral; the canvas kind is signalled by the icon chip
+   and by the accent ring on the active card only. */
+.shell-project-card[data-project-kind="general"].active {
+    border-color: var(--ui-accent);
+    box-shadow: 0 0 0 1px rgba(var(--ui-accent-rgb), .22);
+}
+.shell-project-card[data-project-kind="ecommerce"].active {
+    border-color: #22a06b;
+    box-shadow: 0 0 0 1px rgba(34, 160, 107, .22);
+}
+.shell-project-card[data-project-kind="film-comic"].active {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 1px rgba(139, 92, 246, .22);
+}
+.shell-project-card-icon--ecommerce {
+    color: #168456;
+    background: rgba(34, 160, 107, .11);
+}
+.shell-project-card-icon--film-comic {
+    color: #7c3aed;
+    background: rgba(139, 92, 246, .11);
+}
+@media (max-width: 520px) {
+    .shell-project-history-list,
+    .shell-project-history-list[data-view="grid"] {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/*
+ * Light mode — opaque professional surface.
+ * The modal is reparented to <body> when it opens, so these selectors are
+ * body-scoped on purpose. They intentionally out-rank the ID-based overrides
+ * in visual-typography-system.css (same specificity, later stylesheet).
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-dialog {
+    border-color: #e4e8ee !important;
+    background: #fff !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    box-shadow:
+        0 24px 56px -16px rgba(15, 23, 42, .16),
+        0 2px 8px rgba(15, 23, 42, .05) !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-dialog::before,
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-dialog::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* Header */
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-head {
+    border-bottom: 1px solid #eef1f5;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-head h2 {
+    color: var(--ui-text) !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-head span {
+    color: var(--ui-text-muted) !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-close {
+    color: var(--ui-text-secondary);
+}html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-close:hover,
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-close:focus-visible{
+    border-color: transparent;
+    background: #f2f4f7;
+}
+
+/* Filter pills */
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-filters button {
+    color: var(--ui-text-secondary) !important;
+}html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-filters button:hover{
+    background: #f2f4f7 !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-filters button.active {
+    border-color: var(--ui-accent) !important;
+    background: var(--ui-accent) !important;
+    color: var(--ui-text-on-accent) !important;
+}
+
+/* Search, sort and view toggle share one quiet control surface. */
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal :is(
+        .shell-project-history-search,
+        .shell-project-history-sort,
+        .shell-project-history-view-toggle
+    ) {
+    border-color: #e4e8ee !important;
+    background: #f7f8fa !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-search:focus-within {
+    border-color: var(--ui-accent) !important;
+    background: #fff !important;
+    box-shadow: 0 0 0 3px rgba(var(--ui-accent-rgb), .12) !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal :is(
+        .shell-project-history-search input,
+        .shell-project-history-sort
+    ) {
+    color: var(--ui-text) !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-search input::placeholder {
+    color: var(--ui-text-muted) !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-view-toggle button.active {
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, .08);
+}
+
+/* Cards */
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-card {
+    border-color: #e7eaef;
+    background: #fafbfc;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-card:hover {
+    border-color: #d5dbe3;
+    background: #fff;
+    box-shadow: 0 10px 24px -8px rgba(15, 23, 42, .12);
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-card-category {
+    color: var(--ui-text-muted) !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-card-title {
+    color: var(--ui-text) !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal :is(
+        .shell-project-card-nodes,
+        .shell-project-card-time
+    ) {
+    color: var(--ui-text-muted) !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-card-action {
+    border-color: #e4e8ee;
+    background: rgba(255, 255, 255, .92);
+    color: var(--ui-text-secondary);
+}
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-empty {
+    border-color: #dde2e9;
+    background: #fafbfc;
+    color: var(--ui-text-muted);
+}
+
+/*
+ * M82: standalone history is a centered dialog with a blocking blurred
+ * scrim. Settings embed flattens the same DOM in place and is excluded.
+ */
+html body #shellProjectHistoryModal:not(.shell-project-history-embedded) {
+    position: fixed;
+    inset: 0;
+    z-index: var(--ui-z-dialog);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--ui-space-8);
+    pointer-events: none;
+}
+html body #shellProjectHistoryModal:not(.shell-project-history-embedded).open {
+    pointer-events: auto;
+}
+html body #shellProjectHistoryModal:not(.shell-project-history-embedded)
+    .shell-project-history-backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--ui-backdrop);
+    pointer-events: auto;
+}
+html body #shellProjectHistoryModal:not(.shell-project-history-embedded)
+    .shell-project-history-dialog,
+html body #shellProjectHistoryModal:not(.shell-project-history-embedded).open
+    .shell-project-history-dialog {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    width: min(880px, calc(100vw - var(--ui-space-9) * 2));
+    height: min(80vh, 720px);
+    max-height: calc(100vh - var(--ui-space-9) * 2);
+    border-radius: var(--ui-radius-panel);
+    transform-origin: center center;
+    animation: none;
+    transition:
+        opacity var(--ui-motion-surface) var(--ui-ease),
+        transform var(--ui-motion-surface) var(--ui-ease),
+        visibility var(--ui-motion-surface) var(--ui-ease);
+}
+html body #shellProjectHistoryModal:not(.shell-project-history-embedded)
+    .shell-project-history-dialog {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(.98);
+}
+html body #shellProjectHistoryModal:not(.shell-project-history-embedded).open
+    .shell-project-history-dialog {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+}
+@media (max-width: 760px) {
+    html body #shellProjectHistoryModal:not(.shell-project-history-embedded)
+        .shell-project-history-dialog,
+    html body #shellProjectHistoryModal:not(.shell-project-history-embedded).open
+        .shell-project-history-dialog {
+        width: calc(100vw - var(--ui-space-8) * 2);
+        height: calc(100vh - var(--ui-space-8) * 2);
+        max-height: none;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    html body #shellProjectHistoryModal:not(.shell-project-history-embedded)
+        .shell-project-history-dialog,
+    html body #shellProjectHistoryModal:not(.shell-project-history-embedded).open
+        .shell-project-history-dialog {
+        transition: none;
+        transform: none;
+    }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "电商主图与详情页设计"
+  short_description: "组合排版模块并分离调性参考，生成商品主图与模块化详情页"
+  default_prompt: "Use $ecommerce-design to create a product main image or modular detail page from my product assets, layout needs, and mood references."

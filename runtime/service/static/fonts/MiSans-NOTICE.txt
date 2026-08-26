@@ -1,0 +1,10 @@
+MiSans font notice
+
+This software uses the MiSans Variable font provided by Xiaomi.
+Official source: https://hyperos.mi.com/font/zh/download/
+
+The original font file is embedded without modification as:
+misans-variable.ttf
+
+The official MiSans Font Intellectual Property License Agreement is included as:
+MiSans-License.pdf

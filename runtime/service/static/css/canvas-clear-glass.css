@@ -1,0 +1,5 @@
+/* M5 材质定案(2026-08):本文件原为浅色液态玻璃伪元素的材质皮肤。
+   全产品扁平后,其目标伪元素(composer-card-material、image-quick-toolbar/
+   selection-capsule-bar/port-link-pick-shell/节点玻璃的 ::before/::after、
+   floating-toolbar trail)已在各基础层拆除,本文件规则全部失效,故清空。
+   文件保留以维持 HTML 引用与加载顺序,待 M7 皮肤层拆除时一并移除。 */

@@ -1,0 +1,975 @@
+/* Canvas dock — smart agent mode */
+html.gpt-dock-canvas-mode .top-actions > .action-btn,
+body.gpt-dock-canvas-mode .top-actions > .action-btn {
+    display: none !important;
+}
+
+/* Shell 顶栏已接管新建/历史 — 隐藏 iframe 内「新对话」标题区 */
+html.gpt-dock-canvas-mode .topbar,
+body.gpt-dock-canvas-mode .topbar {
+    height: 0 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    overflow: visible !important;
+    backdrop-filter: none !important;
+}
+
+html.gpt-dock-canvas-mode .topbar-inner,
+body.gpt-dock-canvas-mode .topbar-inner {
+    height: 0;
+    min-height: 0;
+    padding: 0;
+    overflow: visible;
+}
+
+html.gpt-dock-canvas-mode .title-block,
+body.gpt-dock-canvas-mode .title-block {
+    display: none !important;
+}
+
+html.gpt-dock-canvas-mode .history-popover,
+body.gpt-dock-canvas-mode .history-popover {
+    position: fixed;
+    top: auto;
+    right: auto;
+    left: auto;
+    width: 290px;
+    max-height: min(520px, calc(100vh - 92px));
+    padding: 12px;
+    border-radius: 18px;
+    background: var(--ui-surface-elevated, #fff);
+    border: 1px solid var(--ui-border, rgba(158, 168, 180, 0.28));
+    box-shadow: var(--ui-shadow-pop, 0 22px 58px rgba(55, 65, 81, 0.16));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    z-index: 360;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+
+html.gpt-dock-canvas-mode .history-popover.open,
+body.gpt-dock-canvas-mode .history-popover.open {
+    display: flex;
+}
+
+html.gpt-dock-canvas-mode .history-popover > .flex,
+body.gpt-dock-canvas-mode .history-popover > .flex {
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 !important;
+    margin: 0;
+}
+
+html.gpt-dock-canvas-mode .history-popover > .flex > span,
+body.gpt-dock-canvas-mode .history-popover > .flex > span {
+    min-width: 0;
+    color: #50565e;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+html.gpt-dock-canvas-mode .history-popover > .flex > button,
+body.gpt-dock-canvas-mode .history-popover > .flex > button {
+    width: 27px;
+    height: 27px;
+    border: none;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #9aa0a9;
+    background: transparent;
+    opacity: 0.72;
+    transition: background-color .16s ease, opacity .16s ease;
+}html.gpt-dock-canvas-mode .history-popover > .flex > button:hover,
+body.gpt-dock-canvas-mode .history-popover > .flex > button:hover{
+    background: #f3f4f6;
+    opacity: 1;
+}
+
+html.gpt-dock-canvas-mode .thread-list,
+body.gpt-dock-canvas-mode .thread-list {
+    max-height: min(420px, calc(100vh - 180px));
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding-right: 3px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.42) transparent;
+}
+
+html.gpt-dock-canvas-mode .thread-row,
+body.gpt-dock-canvas-mode .thread-row {
+    position: relative;
+    display: block;
+    min-height: 54px;
+    border-radius: 13px;
+    background: #fff;
+    border: 1px solid rgba(158, 168, 180, 0.28);
+    overflow: hidden;
+    transition: border-color .16s ease, box-shadow .16s ease, transform .16s ease;
+}
+
+html.gpt-dock-canvas-mode .thread-row:hover,
+body.gpt-dock-canvas-mode .thread-row:hover {
+    border-color: #50565e;
+    transform: translateY(-1px);
+}
+
+html.gpt-dock-canvas-mode .thread-row:has(.thread-item.active),
+body.gpt-dock-canvas-mode .thread-row:has(.thread-item.active) {
+    border-color: var(--ui-accent);
+    box-shadow: 0 0 0 1px var(--ui-accent);
+    transform: none;
+}
+
+html.gpt-dock-canvas-mode .thread-item,
+body.gpt-dock-canvas-mode .thread-item {
+    width: 100%;
+    min-height: 54px;
+    padding: 9px 100px 9px 10px;
+    border: none;
+    border-radius: 0;
+    background: transparent !important;
+    color: #50565e !important;
+    box-shadow: none !important;
+    text-align: left;
+}html.gpt-dock-canvas-mode .thread-item:hover,
+body.gpt-dock-canvas-mode .thread-item:hover,
+html.gpt-dock-canvas-mode .thread-item.active,
+body.gpt-dock-canvas-mode .thread-item.active{
+    background: transparent !important;
+    box-shadow: none !important;
+}
+html.gpt-dock-canvas-mode .thread-item.active,
+body.gpt-dock-canvas-mode .thread-item.active{color: #50565e !important;}
+
+html.gpt-dock-canvas-mode .thread-item > div:first-child,
+body.gpt-dock-canvas-mode .thread-item > div:first-child {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+html.gpt-dock-canvas-mode .thread-item > div:last-child,
+body.gpt-dock-canvas-mode .thread-item > div:last-child {
+    margin-top: 4px;
+    color: #9aa0a9;
+    font-size: 10px;
+    font-weight: 445;
+    line-height: 1.3;
+    opacity: 1;
+}
+
+html.gpt-dock-canvas-mode .thread-action,
+html.gpt-dock-canvas-mode .thread-delete,
+body.gpt-dock-canvas-mode .thread-action,
+body.gpt-dock-canvas-mode .thread-delete {
+    position: absolute;
+    top: 50%;
+    width: 27px;
+    height: 27px;
+    border: none;
+    border-radius: 999px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9aa0a9;
+    background: transparent;
+    opacity: 0.72;
+    transition: background-color .16s ease, opacity .16s ease;
+}
+
+html.gpt-dock-canvas-mode .thread-row .thread-action:nth-of-type(1),
+body.gpt-dock-canvas-mode .thread-row .thread-action:nth-of-type(1) {
+    right: 69px;
+}
+
+html.gpt-dock-canvas-mode .thread-row .thread-action:nth-of-type(2),
+body.gpt-dock-canvas-mode .thread-row .thread-action:nth-of-type(2) {
+    right: 38px;
+}
+
+html.gpt-dock-canvas-mode .thread-delete,
+body.gpt-dock-canvas-mode .thread-delete {
+    right: 7px;
+}html.gpt-dock-canvas-mode .thread-action:hover,
+body.gpt-dock-canvas-mode .thread-action:hover{
+    background: #f3f4f6;
+    opacity: 1;
+}
+
+html.gpt-dock-canvas-mode .thread-action.active,
+body.gpt-dock-canvas-mode .thread-action.active {
+    background: rgba(var(--ui-accent-rgb),.08);
+    color: var(--ui-accent);
+    opacity: 1;
+}html.gpt-dock-canvas-mode .thread-delete:hover,
+body.gpt-dock-canvas-mode .thread-delete:hover{
+    background: #fee2e2;
+    opacity: 1;
+}
+
+html.gpt-dock-canvas-mode .thread-list > .px-3,
+body.gpt-dock-canvas-mode .thread-list > .px-3 {
+    min-height: 98px;
+    border: 1px dashed rgba(158, 168, 180, 0.28);
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9aa0a9;
+    font-size: 11px;
+    font-weight: 445;
+    text-transform: none;
+    letter-spacing: 0;
+    background: #f9fafb;
+}
+
+html.gpt-dock-canvas-mode .messages,
+body.gpt-dock-canvas-mode .messages {
+    padding-top: 20px;
+}
+
+html.gpt-dock-canvas-mode .composer-wrap,
+body.gpt-dock-canvas-mode .composer-wrap {
+    /* 输入区后面不要半透明模糊底条（视觉上像一块投影） */
+    background: transparent !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none !important;
+    box-sizing: border-box;
+    /* 输入区与上方内容区之间的浅灰分割线 */
+    border-top: 1px solid #e9eaec !important;
+    /* 可见输入框底边与画布底部统一保留 15px。 */
+    padding: calc(var(--ui-space-4) + var(--ui-space-1)) var(--ui-space-5)
+        var(--ui-composer-surface-bottom-gap) !important;
+}
+
+/* 输入卡片不要描边，只靠分割线区分区域 */
+html.gpt-dock-canvas-mode .chat-shell .composer,
+body.gpt-dock-canvas-mode .chat-shell .composer {
+    border: 0 !important;
+    box-shadow: none !important;
+    filter: none !important;
+}
+
+html.gpt-dock-canvas-mode .composer,
+body.gpt-dock-canvas-mode .composer {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: var(--ui-composer-surface-h) !important;
+    height: var(--ui-composer-surface-h) !important;
+    padding: 0 !important;
+}
+
+html.gpt-dock-canvas-mode .composer-body,
+body.gpt-dock-canvas-mode .composer-body {
+    flex: 1 1 auto !important;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 12px 12px 10px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+html.gpt-dock-canvas-mode .composer-body.skill-menu-open,
+body.gpt-dock-canvas-mode .composer-body.skill-menu-open,
+html.gpt-dock-canvas-mode .composer.skill-menu-open,
+body.gpt-dock-canvas-mode .composer.skill-menu-open,
+html.gpt-dock-canvas-mode .composer-wrap.skill-menu-open,
+body.gpt-dock-canvas-mode .composer-wrap.skill-menu-open {
+    overflow: visible !important;
+}
+
+html.gpt-dock-canvas-mode .skill-menu:not(.hidden),
+body.gpt-dock-canvas-mode .skill-menu:not(.hidden) {
+    z-index: 360;
+}
+
+html.gpt-dock-canvas-mode .composer-inside-foot,
+body.gpt-dock-canvas-mode .composer-inside-foot {
+    margin-top: auto !important;
+}
+
+html.gpt-dock-canvas-mode .ref-strip:not(:empty),
+body.gpt-dock-canvas-mode .ref-strip:not(:empty) {
+    flex: 0 0 54px;
+    min-height: 0;
+    max-height: 54px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    align-content: flex-start;
+    padding-right: 2px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, .42) transparent;
+}
+
+html.gpt-dock-canvas-mode .composer-body:has(.ref-strip:not(:empty)) #messageInput,
+body.gpt-dock-canvas-mode .composer-body:has(.ref-strip:not(:empty)) #messageInput {
+    flex: 1 1 auto !important;
+    min-height: 46px !important;
+    max-height: 64px !important;
+}
+
+html.gpt-dock-canvas-mode .mode-switch,
+html.gpt-dock-canvas-mode .image-controls,
+html.gpt-dock-canvas-mode #legacyInlineControls,
+html.gpt-dock-canvas-mode #providerSwitchWrap,
+body.gpt-dock-canvas-mode .mode-switch,
+body.gpt-dock-canvas-mode .image-controls,
+body.gpt-dock-canvas-mode #legacyInlineControls,
+body.gpt-dock-canvas-mode #providerSwitchWrap {
+    display: none !important;
+}
+
+html.gpt-dock-canvas-mode .dock-api-toolbar,
+html.gpt-dock-canvas-mode #dockModelToolbar,
+body.gpt-dock-canvas-mode .dock-api-toolbar,
+body.gpt-dock-canvas-mode #dockModelToolbar {
+    display: none !important;
+}
+
+body.gpt-dock-canvas-mode .composer-inside-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+body.gpt-dock-canvas-mode .composer-foot-left {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+body.gpt-dock-canvas-mode .composer-foot-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+    min-width: 0;
+    max-width: 100%;
+    margin-left: auto;
+    align-self: center;
+}
+
+body.gpt-dock-canvas-mode .composer-foot-right .send-btn {
+    align-self: center;
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+body.gpt-dock-canvas-mode .attach-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 13px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #50565e;
+    box-shadow: none;
+}body.gpt-dock-canvas-mode .attach-btn:hover,
+body.gpt-dock-canvas-mode .attach-btn:focus-visible{
+    background: #f9fafb;
+    border: 1px solid rgba(148, 163, 184, .44);
+    transform: none;
+}
+
+body.gpt-dock-canvas-mode #skillPicker.is-development {
+    position: relative;
+}
+
+body.gpt-dock-canvas-mode #skillPicker.is-development::after {
+    content: "开发中";
+    position: absolute;
+    right: -9px;
+    top: -7px;
+    min-width: 30px;
+    padding: 1px 4px;
+    border: 1px solid #d9dde3;
+    border-radius: 999px;
+    background: #f1f3f5;
+    color: #9aa0a8;
+    font-size:10px;
+    font-weight: 600;
+    line-height: 12px;
+    text-align: center;
+    pointer-events: none;
+}body.gpt-dock-canvas-mode #skillBtn:disabled,
+body.gpt-dock-canvas-mode #skillBtn:disabled:hover,
+body.gpt-dock-canvas-mode #skillBtn:disabled:focus-visible{
+    background: #f4f5f6;
+    border-color: #e3e6e9;
+    opacity: .72;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+body.gpt-dock-canvas-mode #skillBtn:disabled{color: #b3b8bf;}
+
+body.gpt-dock-canvas-mode .dock-api-toolbar {
+    display: none !important;
+}
+
+.dock-api-toolbar {
+    display: none;
+    align-items: center;
+}
+
+.dock-api-wrap {
+    position: relative;
+}
+
+.dock-api-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid transparent;
+    border-radius: 13px;
+    background: transparent;
+    color: #50565e;
+    font-family: "Inter", "Segoe UI", "ui-cjk", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+    font-size: 13px;
+    font-weight:400;
+    line-height: 20px;
+    cursor: pointer;
+    max-width: 168px;
+    box-shadow: none;
+    transition: background .16s ease, border-color .16s ease, box-shadow .16s ease;
+}
+
+.dock-api-btn span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.dock-api-icon,
+.dock-api-chevron {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    stroke-width: 1.5;
+}
+
+.dock-api-chevron {
+    opacity: .72;
+    transition: transform .16s ease;
+}.dock-api-btn:hover,
+.dock-api-btn.open,
+.dock-api-btn:focus-visible{
+    border: 1px solid rgba(148, 163, 184, .44);
+    background: #f9fafb;
+    box-shadow: none;
+    transform: none;
+}
+.dock-api-btn.open{color: #50565e;}
+
+.dock-api-btn.open .dock-api-chevron {
+    transform: rotate(180deg);
+}
+
+.dock-api-panel {
+    position: absolute;
+    right: 0;
+    left: auto;
+    bottom: calc(100% + 6px);
+    z-index: 40;
+    width: min(268px, calc(100vw - 24px));
+    padding: 8px 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.1);
+}
+
+.dock-api-panel.hidden {
+    display: none !important;
+}
+
+.dock-api-popover-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin-bottom: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    color: #9aa0a9;
+    text-transform: uppercase;
+}
+
+.dock-api-popover-head button {
+    width: 22px;
+    height: 22px;
+    border: 0;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9aa0a9;
+    background: transparent;
+    cursor: pointer;
+}.dock-api-popover-head button:hover{
+    background: #f3f4f6;
+}
+
+.dock-api-section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px 0;
+    border-top: 1px solid rgba(148, 163, 184, .16);
+}
+
+.dock-api-section:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.dock-api-section label {
+    font-size:10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    color: #747b85;
+}
+
+.dock-api-select-row {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: 6px;
+}
+
+.dock-api-select {
+    width: 100%;
+    height: 28px;
+    border: 1px solid #e8edf3;
+    border-radius: 8px;
+    background: #fff;
+    color: #17181b;
+    padding: 0 8px;
+    outline: none;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+body.gpt-dock-canvas-mode .send-btn {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, .94);
+    border-radius: 999px;
+    background: linear-gradient(145deg, #fff, #f2f3f5);
+    color: #5f6670;
+    box-shadow:
+        5px 7px 15px rgba(145, 150, 158, .17),
+        -4px -4px 11px rgba(255, 255, 255, .96),
+        inset 0 1px 0 #fff;
+    transition: transform .18s cubic-bezier(.2, .8, .2, 1), background .18s ease, box-shadow .18s ease;
+}
+
+body.gpt-dock-canvas-mode .send-btn :is(svg, i) {
+    width: 17px !important;
+    height: 17px !important;
+    color: #5f6670 !important;
+    stroke: #5f6670 !important;
+    stroke-width: 1.55 !important;
+    opacity: 1 !important;
+}body.gpt-dock-canvas-mode .send-btn:hover:not(:disabled):not(.is-stopping),
+body.gpt-dock-canvas-mode .send-btn:focus-visible:not(.is-stopping){
+    background: var(--ui-accent);
+    border: 0;
+    box-shadow: 0 6px 14px rgba(var(--ui-accent-rgb), .24);
+    transform: translateY(-1px);
+}body.gpt-dock-canvas-mode .send-btn:hover:not(:disabled):not(.is-stopping) :is(svg, i),
+body.gpt-dock-canvas-mode .send-btn:focus-visible:not(.is-stopping) :is(svg, i){
+    stroke: #fff !important;
+}
+
+body.gpt-dock-canvas-mode .send-btn:disabled:not(.is-stopping) {
+    opacity: .55;
+}
+
+.dock-canvas-generating-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    color: #747b85;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.dock-canvas-sync-thumbs {
+    margin-top: 10px;
+}
+
+.dock-reply-prefix,
+.dock-reply-final {
+    white-space: pre-wrap;
+}
+
+.dock-hourglass-spin {
+    display: inline-block;
+    line-height: 1;
+    animation: dockHourglassSpin 1.15s ease-in-out infinite;
+    transform-origin: center;
+}
+
+@keyframes dockHourglassSpin {
+    0% { transform: rotate(0deg) scale(1); opacity: 1; }
+    45% { transform: rotate(180deg) scale(1.05); opacity: 0.88; }
+    55% { transform: rotate(180deg) scale(1.05); opacity: 0.88; }
+    100% { transform: rotate(360deg) scale(1); opacity: 1; }
+}
+
+html.studio-theme-dark .dock-canvas-generating-line,
+body.studio-theme-dark .dock-canvas-generating-line {
+    color: #9aa0a9;
+}
+
+html.studio-theme-dark .dock-api-btn,
+body.studio-theme-dark .dock-api-btn {
+    background: #232327;
+    border-color: #2b2c30;
+    color: #9aa0a9;
+    box-shadow: none;
+}html.studio-theme-dark .dock-api-btn:hover,
+html.studio-theme-dark .dock-api-btn.open,
+body.studio-theme-dark .dock-api-btn:hover,
+body.studio-theme-dark .dock-api-btn.open{
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+}
+html.studio-theme-dark .dock-api-btn.open,
+body.studio-theme-dark .dock-api-btn.open{color: #fff;}
+
+html.studio-theme-dark .dock-api-panel,
+body.studio-theme-dark .dock-api-panel {
+    background: #232327;
+    border-color: #2b2c30;
+}
+
+html.studio-theme-dark .dock-api-select,
+body.studio-theme-dark .dock-api-select {
+    background: #333;
+    border-color: #2b2c30;
+    color: #e5e7eb;
+}
+
+html.studio-theme-dark body.gpt-dock-canvas-mode .attach-btn,
+body.studio-theme-dark.gpt-dock-canvas-mode .attach-btn,
+body.studio-theme-dark .gpt-dock-canvas-mode .attach-btn {
+    background: #232327;
+    border-color: #2b2c30;
+    color: #9aa0a9;
+    box-shadow: none;
+}
+
+html.studio-theme-dark body.gpt-dock-canvas-mode #skillBtn:disabled,
+body.studio-theme-dark.gpt-dock-canvas-mode #skillBtn:disabled,
+body.studio-theme-dark .gpt-dock-canvas-mode #skillBtn:disabled {
+    background: #292a2e;
+    border-color: #34353a;
+    color: #666b73;
+    opacity: .78;
+}
+
+html.studio-theme-dark body.gpt-dock-canvas-mode #skillPicker.is-development::after,
+body.studio-theme-dark.gpt-dock-canvas-mode #skillPicker.is-development::after,
+body.studio-theme-dark .gpt-dock-canvas-mode #skillPicker.is-development::after {
+    background: #292a2e;
+    border-color: #3a3b40;
+    color: #747a83;
+}
+
+/* Dock waiting — borderless row-level typewriter (white bubble only after reply) */
+.bubble-row.dock-is-thinking .bubble.assistant {
+    display: none !important;
+}
+
+.dock-thinking-stage {
+    width: min(780px, 92%);
+    max-width: 100%;
+    flex: 0 1 auto;
+}
+
+.bubble-row.assistant.dock-has-activity {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.bubble.assistant.dock-thinking {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0;
+    min-width: 0;
+}
+
+.bubble.assistant.dock-thinking.streaming::after {
+    display: none;
+}
+
+.bubble.assistant.dock-has-reply {
+    display: block !important;
+    background: #fff !important;
+    border: 1px solid #edf2f7 !important;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .03) !important;
+    padding: 15px 18px;
+    border-bottom-left-radius: 8px;
+    max-width: min(780px, 78%);
+}
+
+html.gpt-dock-canvas-mode .dock-turn-timing + .bubble-row.assistant,
+body.gpt-dock-canvas-mode .dock-turn-timing + .bubble-row.assistant {
+    margin-top: -10px;
+}
+
+html.gpt-dock-canvas-mode .dock-turn-timing + .bubble-row.assistant > .bubble.assistant,
+body.gpt-dock-canvas-mode .dock-turn-timing + .bubble-row.assistant > .bubble.assistant {
+    padding-top: 8px;
+}
+
+html.gpt-dock-canvas-mode .bubble.assistant.dock-image-only > img.generated,
+body.gpt-dock-canvas-mode .bubble.assistant.dock-image-only > img.generated {
+    margin-top: 0;
+}
+
+.dock-thinking-flow {
+    position: relative;
+    height: 96px;
+    overflow: hidden;
+    margin: 0;
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+}
+
+.dock-thinking-stream {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 5px;
+    padding: 0 0 2px;
+    pointer-events: none;
+}
+
+.dock-thinking-line {
+    position: relative;
+    overflow: hidden;
+    font-size: 10px;
+    line-height: 1.45;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: rgba(71, 85, 105, 0.88);
+    letter-spacing: 0.02em;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.42s ease, transform 0.42s ease;
+}
+
+.dock-thinking-line.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dock-thinking-line.is-typing {
+    color: rgba(71, 85, 105, 0.9);
+}
+
+.dock-thinking-line.is-typing .dock-thinking-text::after {
+    content: "";
+    display: inline-block;
+    width: 5px;
+    height: 1.1em;
+    margin-left: 2px;
+    border-radius: 999px;
+    background: rgba(100, 116, 139, 0.55);
+    vertical-align: -0.15em;
+    animation: dockThinkingCaret .85s steps(2, end) infinite;
+}
+
+.dock-thinking-line.is-leaving {
+    opacity: 0;
+    transform: translateY(-14px);
+}
+
+.dock-thinking-text {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+@keyframes dockThinkingCaret {
+    50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dock-thinking-line {
+        transition: none;
+        transform: none;
+    }
+    .dock-thinking-line.is-typing .dock-thinking-text::after {
+        animation: none;
+        opacity: .55;
+    }
+}
+
+html.studio-theme-dark .bubble.assistant.dock-has-reply,
+body.studio-theme-dark .bubble.assistant.dock-has-reply {
+    background: #1e1e1e !important;
+    border-color: #2b2c30 !important;
+}
+
+html.studio-theme-dark .dock-thinking-line,
+body.studio-theme-dark .dock-thinking-line {
+    color: rgba(148, 163, 184, 0.62);
+}
+
+html.studio-theme-dark .dock-thinking-line.is-typing,
+body.studio-theme-dark .dock-thinking-line.is-typing {
+    color: rgba(203, 213, 225, 0.88);
+}
+
+html.studio-theme-dark .dock-thinking-line.is-typing .dock-thinking-text::after,
+body.studio-theme-dark .dock-thinking-line.is-typing .dock-thinking-text::after {
+    background: rgba(148, 163, 184, 0.5);
+}
+
+html.studio-theme-dark.gpt-dock-canvas-mode body,
+html.studio-theme-dark .gpt-dock-canvas-mode body,
+body.studio-theme-dark.gpt-dock-canvas-mode {
+    background: #1e1f22 !important;
+}
+
+html.studio-theme-dark.gpt-dock-canvas-mode .chat-shell,
+html.studio-theme-dark .gpt-dock-canvas-mode .chat-shell,
+body.studio-theme-dark.gpt-dock-canvas-mode .chat-shell {
+    background: #1e1f22;
+}
+
+html.studio-theme-dark.gpt-dock-canvas-mode .messages,
+html.studio-theme-dark .gpt-dock-canvas-mode .messages,
+body.studio-theme-dark.gpt-dock-canvas-mode .messages {
+    background: var(--ui-surface-chrome, rgba(255, 255, 255, 0.08)) !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 -14px 32px rgba(0, 0, 0, 0.30);
+}
+
+/* One opaque dock backing surface. Keep its paint independent from the composer.
+   #1e1f22 = --lb-panel，与资产库/历史记录面板同色。 */
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode,
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode,
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell {
+    background: #1e1f22 !important;
+    background-image: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .messages {
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell :is(
+    .bubble.assistant,
+    .message-attachment-tray > .message-attachment-chip,
+    .bubble.assistant img.generated
+) {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Dark mode keeps the light-mode composer geometry, replacing paint only. */
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .composer-wrap {
+    background: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, .10) !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .composer {
+    color: rgba(238, 241, 246, .96) !important;
+    background: #0e0e0e !important;
+    background-image: none !important;
+    border: 0 !important;
+    border-radius: 22px !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .composer-body {
+    color: rgba(238, 241, 246, .96) !important;
+    background: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell #messageInput {
+    color: rgba(238, 241, 246, .96) !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell #messageInput::placeholder {
+    color: rgba(166, 174, 186, .68) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .send-btn {
+    color: #aab1bc !important;
+    background: rgba(255, 255, 255, .075) !important;
+    border-color: rgba(255, 255, 255, .12) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .send-btn :is(svg, i) {
+    color: #aab1bc !important;
+    stroke: #aab1bc !important;
+}html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .send-btn:hover:not(:disabled):not(.is-stopping),
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .send-btn:focus-visible:not(.is-stopping){
+    background: var(--ui-accent) !important;
+    border-color: var(--ui-accent) !important;
+    box-shadow: 0 8px 18px rgba(var(--ui-accent-rgb), .28) !important;
+}

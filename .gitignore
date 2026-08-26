@@ -3,4 +3,4 @@ Thumbs.db
 .env
 .env.*
 *.log
-node_modules/
+

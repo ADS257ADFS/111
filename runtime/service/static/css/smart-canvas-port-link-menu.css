@@ -1,0 +1,503 @@
+/* Port drag release — mirrors .prompt-smart-node shell + .create-card row language */
+
+@property --port-link-shell-outline-flow-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+
+@property --port-link-shell-dark-flow-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+
+@property --port-link-shell-highlight-half-span {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 14deg;
+}
+
+@property --port-link-shell-highlight-solid-span {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+
+@property --port-link-shell-left-highlight-alpha {
+    syntax: "<number>";
+    inherits: false;
+    initial-value: .36;
+}
+
+@property --port-link-shell-right-highlight-alpha {
+    syntax: "<number>";
+    inherits: false;
+    initial-value: .03;
+}
+
+@property --port-link-shell-dark-peak-alpha {
+    syntax: "<number>";
+    inherits: false;
+    initial-value: .22;
+}
+
+.port-link-pick-menu {
+    position: fixed;
+    z-index: 80;
+    display: none;
+    width: 244px;
+    padding: 0;
+    border: 0;
+    border-radius: 16px;
+    background: transparent;
+    box-shadow: none;
+    transform-origin: var(--port-link-origin-x, 24px) var(--port-link-origin-y, 24px);
+    opacity: 0;
+    transform: scale(0.92);
+    pointer-events: none;
+    font-family: "Inter", "Segoe UI", "ui-cjk", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+}
+
+.port-link-pick-menu.open {
+    display: block;
+    pointer-events: auto;
+    opacity: 1;
+    transform: scale(1);
+}
+
+.port-link-pick-menu.open.is-entering {
+    animation: port-link-menu-in 0.09s cubic-bezier(0.22, 0.92, 0.28, 1) both;
+}
+
+@keyframes port-link-menu-in {
+    from {
+        opacity: 0.88;
+        transform: scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Hide empty-canvas hint while the create picker is open */
+.shell.port-link-menu-open .canvas-empty-hint,
+.shell.port-link-menu-open .canvas-empty-hint.open {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+}
+
+/* M5 材质定案:port-link 液态玻璃壳(::before 流光层/::after conic 描边)拆除,改扁平实色 */
+.port-link-pick-shell {
+    padding: calc(var(--ui-space-4) + 2px) var(--ui-space-4) var(--ui-space-4);
+    border-radius: 16px;
+    background: var(--ui-surface-elevated);
+    border: 1px solid var(--ui-border);
+    box-shadow: var(--ui-shadow-pop);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-shell {
+    position: relative;
+    isolation: isolate;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-shell > * {
+    position: relative;
+    z-index: 1;
+}
+
+.port-link-pick-shell::before {
+    content: none !important;
+    display: none !important;
+}
+
+.port-link-pick-shell::after {
+    content: none !important;
+    display: none !important;
+}
+
+.port-link-pick-head,
+.port-link-pick-section-label {
+    padding: 0 2px var(--ui-space-2) 3px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: var(--ui-leading-tight);
+    color: #747b85;
+    letter-spacing: 0.01em;
+}
+
+.port-link-pick-section-label {
+    padding-top: var(--ui-space-1);
+}
+
+.port-link-pick-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-2);
+}
+
+.port-link-pick-glider {
+    display: none;
+}
+
+.port-link-pick-glider::after {
+    content:none;
+}
+
+.port-link-pick-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-2);
+}
+
+.port-link-pick-divider {
+    height: 0;
+    margin: var(--ui-space-1) 0;
+    border-top: 1px solid var(--ui-border);
+    background: none;
+    box-shadow: none;
+}
+
+.port-link-pick-list-bottom {
+    margin-top: 0;
+}
+
+.port-link-pick-list-assets {
+    margin-top: 0;
+}
+
+/* Row surface — 60% white, no inset shadow */
+.port-link-pick-item {
+    width: 100%;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    align-items: stretch;
+    column-gap: 9px;
+    padding: var(--ui-space-2) var(--ui-space-3) var(--ui-space-2) var(--ui-space-2);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition:
+        background 0.18s ease, border-color 0.18s ease, transform 0.24s cubic-bezier(0.18, 0.78, 0.26, 1), box-shadow 0.18s ease;
+}
+
+/* Icon box — flat glass, no inset shadow */
+.port-link-pick-icon {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    height: 100%;
+    aspect-ratio: 1;
+    width: auto;
+    min-height: 34px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--ui-text-secondary);
+    background: var(--ui-surface-chrome);
+    border: 1px solid var(--ui-border);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition:
+        border-color 0.18s ease, background 0.18s ease, transform 0.24s cubic-bezier(0.18, 0.78, 0.26, 1), box-shadow 0.18s ease;
+}
+
+.port-link-pick-icon::before {
+    display: none;
+}
+
+.port-link-pick-icon i,
+.port-link-pick-icon svg {
+    position: relative;
+    z-index: 1;
+    width: 15px;
+    height: 15px;
+    stroke-width: 2.15px;
+}
+
+.port-link-pick-copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    padding: 0;
+}
+
+.port-link-pick-title-row {
+    position: relative;
+    width: max-content;
+    max-width: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+}
+
+.port-link-pick-title {
+    font-size:12px;
+    font-weight: 600;
+    line-height: var(--ui-leading-tight);
+    color: var(--text);
+}
+
+.port-link-pick-alert {
+    position: absolute;
+    left: calc(100% + 2px);
+    top: -3px;
+    width: 10px;
+    height: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ui-danger);
+}
+
+.port-link-pick-alert :is(i, svg) {
+    width: 10px;
+    height: 10px;
+    stroke-width: 1.8;
+}
+
+.port-link-pick-desc {
+    font-size:10px;
+    font-weight: 445;
+    line-height: 1.35;
+    color: #9aa0a9;
+}.port-link-pick-item.is-hover,
+.port-link-pick-item:hover{
+    background: var(--gh-quiet-hover-surface);
+    border-color: var(--gh-quiet-hover-border);
+    transform: none;
+    box-shadow: none;
+    animation: none;
+}
+.port-link-pick-item.is-hover{color: var(--text);}
+.port-link-pick-item.is-hover .port-link-pick-title,
+.port-link-pick-item:hover .port-link-pick-title{
+}
+.port-link-pick-item.is-hover .port-link-pick-title{color: var(--text);}.port-link-pick-item.is-hover .port-link-pick-desc,
+.port-link-pick-item:hover .port-link-pick-desc{
+}
+.port-link-pick-item.is-hover .port-link-pick-desc{color: #747b85;}.port-link-pick-item.is-hover .port-link-pick-icon,
+.port-link-pick-item:hover .port-link-pick-icon{
+    background: var(--ui-surface-chrome);
+    border-color: var(--ui-border);
+    box-shadow: none;
+    animation: none;
+    transform: none;
+}
+.port-link-pick-item.is-hover .port-link-pick-icon{color: var(--ui-text-secondary);}
+
+.port-link-pick-item.is-disabled,
+.port-link-pick-item:disabled {
+    cursor: not-allowed;
+    opacity: 1;
+    transform: none;
+}
+
+.port-link-pick-item:is(.is-disabled, :disabled)
+    :is(.port-link-pick-icon, .port-link-pick-title, .port-link-pick-desc) {
+    opacity: var(--ui-disabled-opacity);
+}
+
+.port-link-pick-item:is(.is-disabled, :disabled) .port-link-pick-icon {
+    filter: grayscale(1);
+}
+
+.port-link-pick-item:is(.is-disabled, :disabled) .port-link-pick-alert {
+    opacity: 1;
+    color: var(--ui-danger);
+    filter: none;
+}
+
+.port-link-pick-item.is-disabled:hover,
+.port-link-pick-item:disabled:hover {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    animation: none;
+    transform: none;
+}
+
+.port-link-pick-item.is-disabled .port-link-pick-icon,
+.port-link-pick-item:disabled .port-link-pick-icon {
+    color: #9aa0a9;
+    background: rgba(241, 244, 248, 0.72);
+    border-color: rgba(226, 232, 240, 0.78);
+    box-shadow: none;
+}.port-link-pick-item.is-disabled:hover .port-link-pick-icon,
+.port-link-pick-item:disabled:hover .port-link-pick-icon{
+    background: rgba(241, 244, 248, 0.72);
+    border-color: rgba(226, 232, 240, 0.78);
+    box-shadow: none;
+    animation: none;
+    transform: none;
+}
+
+.port-link-pick-item.is-hover .port-link-pick-icon svg,
+.port-link-pick-item:hover .port-link-pick-icon svg,
+.port-link-pick-item.is-hover .port-link-pick-icon i,
+.port-link-pick-item:hover .port-link-pick-icon i{
+    stroke: currentColor;
+}
+.port-link-pick-item.is-hover .port-link-pick-icon svg,
+.port-link-pick-item.is-hover .port-link-pick-icon i{color: currentColor;}
+
+.port-link-pick-item:active {
+    animation: none;
+    transform: translateY(1px);
+    box-shadow: 0 4px 10px rgba(103, 116, 134, 0.08);
+}
+
+/* Pending dashed line while picker is open */
+.connection-layer .port-link-pending-line {
+    stroke: rgba(135, 145, 158, 0.68);
+    stroke-width: 1.15;
+    fill: none;
+    stroke-linecap: round;
+    stroke-dasharray: 5 4;
+    animation: dash 1.5s linear infinite;
+    pointer-events: none;
+}
+
+/* Dark theme — match .theme-dark .prompt-smart-node / .create-card */
+.theme-dark .port-link-pick-divider {
+    background: #2b2c30;
+    box-shadow: none;
+}
+
+.theme-dark .port-link-pick-shell {
+    background: #232327;
+    border: 1px solid #2b2c30;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.theme-dark .port-link-pick-head,
+.theme-dark .port-link-pick-section-label {
+    color: #9aa0a9;
+}
+
+.theme-dark .port-link-pick-item {
+    background: transparent;
+    border: 1px solid transparent;
+    box-shadow: none;
+    color: #f1f2f4;
+}
+
+.theme-dark .port-link-pick-icon {
+    background: #2e2f33;
+    border: 1px solid #2b2c30;
+    box-shadow: none;
+    color: #9aa0a9;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.theme-dark .port-link-pick-icon::before {
+    display: none;
+}
+
+.theme-dark .port-link-pick-title {
+    color: #f1f2f4;
+}
+
+.theme-dark .port-link-pick-desc {
+    color: #9aa0a9;
+}
+
+.theme-dark .port-link-pick-item.is-hover,
+.theme-dark .port-link-pick-item:hover{
+    background: #2e2f33;
+    border-color: #3a3b40;
+    box-shadow: none;
+}
+.theme-dark .port-link-pick-item.is-hover{color: #f1f2f4;}.theme-dark .port-link-pick-item.is-hover .port-link-pick-title,
+.theme-dark .port-link-pick-item:hover .port-link-pick-title{
+}
+.theme-dark .port-link-pick-item.is-hover .port-link-pick-title{color: #f1f2f4;}.theme-dark .port-link-pick-item.is-hover .port-link-pick-desc,
+.theme-dark .port-link-pick-item:hover .port-link-pick-desc{
+}
+.theme-dark .port-link-pick-item.is-hover .port-link-pick-desc{color: #9aa0a9;}.theme-dark .port-link-pick-item.is-hover .port-link-pick-icon,
+.theme-dark .port-link-pick-item:hover .port-link-pick-icon{
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+    box-shadow: none;
+}
+.theme-dark .port-link-pick-item.is-hover .port-link-pick-icon{color: #fff;}
+
+.theme-dark .port-link-pick-item.is-disabled,
+.theme-dark .port-link-pick-item:disabled {
+    opacity: 1;
+}
+
+.theme-dark .port-link-pick-item.is-disabled:hover,
+.theme-dark .port-link-pick-item:disabled:hover {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}.theme-dark .port-link-pick-item.is-disabled .port-link-pick-icon,
+.theme-dark .port-link-pick-item:disabled .port-link-pick-icon,
+.theme-dark .port-link-pick-item.is-disabled:hover .port-link-pick-icon,
+.theme-dark .port-link-pick-item:disabled:hover .port-link-pick-icon{
+    background: #343434;
+    border-color: #2b2c30;
+    box-shadow: none;
+}
+.theme-dark .port-link-pick-item.is-disabled .port-link-pick-icon,
+.theme-dark .port-link-pick-item:disabled .port-link-pick-icon{color: #777777;}
+
+.theme-dark .connection-layer .port-link-pending-line {
+    stroke: rgba(148, 163, 184, 0.72);
+}
+
+@media (prefers-reduced-motion:reduce) {
+    .port-link-pick-glider,
+    .port-link-pick-glider::after { transition:none !important; }
+}
+
+/* The canvas renderer enables this only for large documents. Avoid compositing
+   several live blur layers while the picker is entering or following hover. */
+html.canvas-performance-mode .port-link-pick-shell,
+html.canvas-performance-mode .port-link-pick-shell::before,
+html.canvas-performance-mode .port-link-pick-icon {
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+}
+
+html.canvas-performance-mode .port-link-pick-shell::after {
+    filter:none !important;
+    -webkit-filter:none !important;
+}
+
+html.canvas-performance-mode .port-link-pick-menu.open.is-entering {
+    animation-duration:.06s !important;
+}
+
+html.canvas-performance-mode :is(
+    .port-link-pick-shell,
+    .port-link-pick-glider,
+    .port-link-pick-item,
+    .port-link-pick-icon
+),
+html.canvas-performance-mode .port-link-pick-shell::before,
+html.canvas-performance-mode .port-link-pick-shell::after,
+html.canvas-performance-mode .port-link-pick-glider::after {
+    transition-duration:.08s !important;
+}

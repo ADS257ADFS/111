@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+    <title data-i18n="smart.title">智能画布</title>
+    <script>
+        (function(){
+            document.documentElement.classList.add('canvas-empty-chrome-recessed');
+            try {
+                var theme = localStorage.getItem('studio_theme') || localStorage.getItem('canvas_theme') || 'dark';
+                if(theme === 'dark') {
+                    document.documentElement.classList.add('theme-dark');
+                    document.documentElement.classList.add('studio-theme-dark');
+                }
+            } catch(e) {}
+        })();
+    </script>
+    <script src="/static/vendor/js/mutation-observer-guard.js?v=2026.08.11.82"></script>
+    <script src="/static/vendor/js/lucide.js?v=2026.08.11.82"></script>
+    <script src="/static/js/theme.js?v=2026.08.11.82"></script>
+    <script charset="utf-8" src="/static/js/i18n.js?v=2026.08.11.82"></script>
+<link rel="stylesheet" href="/static/css/smart-canvas.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/image-quick-toolbar.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/image-edit-overlay.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-image-lightbox.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-inline-brush.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-inline-image-tools.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-video-tools.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-multi-view.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-co-create.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-port-magnet.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-port-link-menu.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-selection-capsule.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-multi-select-compose.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-asset-prompt-ui.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-asset-library-ui.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-left-rail.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-bottom-chrome.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-download-center.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-connection-selection.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/studio-theme-dark.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/visual-system-preview.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/visual-typography-system.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/canvas-dark-glass.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/canvas-clear-glass.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-footer-previews.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-control-metrics.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-composer-topbar.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-shell-chrome.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-control-weight.css?v=2026.08.11.82">
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            if(window.lucide) window.lucide.createIcons();
+        });
+    </script>
+<link rel="stylesheet" href="/static/css/dark-desaturated/smart-canvas.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/dark-desaturated/panel-polish.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/native-ui-zoom.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.26.5">
+<link rel="stylesheet" href="/static/css/ui-primitives.css?v=2026.08.26.5">
+  <link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.26.5">
+  <style id="canvasZoomCompactType">
+    #shell.shell #canvasZoomMenuBtn.canvas-zoom-value-btn {
+      font-size: 11px !important;
+      font-family: var(--ui-font) !important;
+      font-weight: var(--ui-weight-latin, 350) !important;
+      color: var(--ui-text-muted) !important;
+      line-height: 1 !important;
+    }
+    #shell.shell #canvasZoomMenuBtn.canvas-zoom-value-btn #canvasZoomValue {
+      font-size: 11px !important;
+      line-height: 1 !important;
+    }
+    #shell.shell #canvasZoomMenuBtn.canvas-zoom-value-btn {
+      width: 32px !important;
+      min-width: 32px !important;
+      padding: 0 !important;
+      gap: 0 !important;
+    }
+    #shell.shell .canvas-zoom-step-btn {
+      width: 18px !important;
+      min-width: 18px !important;
+    }
+    #shell.shell .canvas-zoom-divider {
+      margin-inline: 1px !important;
+    }
+    #shell.shell .canvas-bottom-capsule {
+      gap: 0 !important;
+      padding-inline: 4px !important;
+    }
+    #shell.shell #canvasZoomMenu.canvas-zoom-menu .canvas-zoom-menu-item,
+    #shell.shell #canvasZoomMenu.canvas-zoom-menu .canvas-zoom-menu-item > span {
+      font-size: 11px !important;
+      font-family: var(--ui-font) !important;
+      font-weight: var(--ui-weight-latin, 350) !important;
+      line-height: 1.2 !important;
+    }
+    #shell.shell #canvasZoomMenu.canvas-zoom-menu .canvas-zoom-menu-item kbd {
+      font-size: 11px !important;
+      font-family: var(--ui-font) !important;
+      font-weight: var(--ui-weight-latin, 350) !important;
+      line-height: 1.2 !important;
+    }
+  </style>
+    </head>
+<body>
+    <div id="shell" class="shell" tabindex="-1">
+        <canvas id="emptyCanvasDotGrid" class="empty-canvas-dot-grid" aria-hidden="true"></canvas>
+        <div id="world" class="world"></div>
+        <div id="canvasEmptyHint" class="canvas-empty-hint empty-canvas-split-message" aria-label="双击开启无限创作模式">
+            <p data-empty-split-text="双击开启无限创作模式">双击开启无限创作模式</p>
+        </div>
+        <div id="composer" class="composer">
+                <div class="composer-card">
+                    <span class="composer-card-material" aria-hidden="true"></span>
+                    <span class="composer-card-surface" aria-hidden="true"></span>
+                    <div class="composer-card-topbar" aria-label="Generation mode and co-create mode">
+                        <div class="composer-card-topbar-left">
+                            <div class="composer-asset-shortcuts" aria-label="输入区功能快捷入口">
+                                <button class="composer-asset-shortcut" type="button" data-composer-asset-library aria-label="参考" title="打开参考素材"><i data-lucide="circle-plus"></i><span>参考</span></button>
+                            </div>
+                            <div id="composerCoCreateSlot" class="composer-co-create-slot"></div>
+                        </div>
+                        <div id="composerKindTopbar" class="composer-card-topbar-right"></div>
+                    </div>
+                    <div class="prompt-row">
+                        <div id="promptInput" class="prompt-input" contenteditable="true" data-i18n-placeholder="smart.promptPlaceholder" data-placeholder="描述你想生成或编辑的图片..."></div>
+                        <button id="composerHeightToggle" class="composer-height-toggle" type="button" aria-label="展开输入框" aria-pressed="false" title="展开输入框">
+                            <i class="composer-height-icon-expand" data-lucide="maximize-2"></i>
+                            <i class="composer-height-icon-collapse" data-lucide="minimize-2"></i>
+                        </button>
+                        <div id="mentionPicker" class="mention-picker"></div>
+                    </div>
+                    <div id="inputThumbsRow" class="input-thumbs-row"></div>
+                    <div id="inputPromptPreview" class="input-prompt-preview"></div>
+                    <div class="composer-footer">
+                        <div class="composer-footer-bar">
+                            <div class="composer-footer-tools">
+                                <div id="composerApiSettingsWrap" class="composer-tool-wrap">
+                                    <button id="composerApiSettingsBtn" class="composer-tool-btn" type="button" title="API设置" aria-label="API设置">
+                                        <span id="composerApiSettingsBtnIcon" class="composer-model-brand-icon" aria-hidden="true"><i data-lucide="settings-2"></i></span><span id="composerApiSettingsBtnLabel">API设置</span><i data-lucide="chevron-up" class="composer-tool-caret"></i>
+                                    </button>
+                                    <div id="composerApiSettingsPopover" class="composer-tool-popover">
+                                        <div id="composerHeadParams" class="composer-head-params"></div>
+                                        <div id="dynamicParams" class="dynamic-params composer-overflow-params"></div>
+                                    </div>
+                                </div>
+                                <div id="composerVideoReferenceWrap" class="composer-tool-wrap composer-video-reference-wrap" hidden>
+                                    <button id="composerVideoReferenceBtn" class="composer-tool-btn" type="button" title="参考模式" aria-label="参考模式" aria-expanded="false">
+                                        <i data-lucide="image-plus"></i><span id="composerVideoReferenceBtnLabel">参考</span><i data-lucide="chevron-up" class="composer-tool-caret"></i>
+                                    </button>
+                                    <div id="composerVideoReferencePopover" class="composer-tool-popover composer-video-reference-popover">
+                                        <div id="composerVideoReferencePanel" class="composer-video-reference-panel"></div>
+                                    </div>
+                                </div>
+                                <div id="composerKindWrap" class="composer-tool-wrap composer-kind-wrap">
+                                    <button id="composerKindBtn" class="composer-tool-btn" type="button" title="生成类型" aria-label="生成类型">
+                                        <i data-lucide="image"></i><span id="composerKindBtnLabel">图片</span><i data-lucide="chevron-up" class="composer-tool-caret"></i>
+                                    </button>
+                                    <div id="composerKindPopover" class="composer-tool-popover">
+                                        <div id="apiKindToggle" class="composer-kind-toggle" role="group" aria-label="生成类型">
+                                            <button type="button" data-kind="audio" title="音频" aria-label="音频"><i data-lucide="music-2"></i><span>音频</span></button>
+                                            <button type="button" data-kind="text" title="文本" aria-label="文本"><i data-lucide="message-square-text"></i><span>文本</span></button>
+                                            <button type="button" data-kind="image" class="active" title="图片" aria-label="图片"><i data-lucide="image"></i><span>图片</span></button>
+                                            <button type="button" data-kind="video" title="视频" aria-label="视频"><i data-lucide="film"></i><span>视频</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="composerSizeWrap" class="composer-tool-wrap">
+                                    <button id="composerSizeBtn" class="composer-tool-btn" type="button" title="尺寸" aria-label="尺寸">
+                                        <i data-lucide="scan-line"></i><span class="composer-size-summary"><span id="composerSizeBtnLabel">尺寸</span><span id="composerVideoAudioSummary" class="composer-video-audio-summary" hidden><i data-lucide="volume-2"></i></span><span class="composer-size-summary-divider"></span><span id="composerCountBtnLabel">1张</span></span><i data-lucide="chevron-up" class="composer-tool-caret"></i>
+                                    </button>
+                                    <div id="composerSizePopover" class="composer-tool-popover">
+                                        <div id="composerImageSizeMenu" class="composer-submenu-stack">
+                                            <div class="composer-submenu-section" data-composer-size-section="ratio">
+                                                <div class="composer-submenu-label">尺寸选择</div>
+                                                <div id="composerSizePanel" class="composer-size-panel"></div>
+                                            </div>
+                                            <div class="composer-submenu-section" data-composer-size-section="quality">
+                                                <div class="composer-submenu-label">质量选择</div>
+                                                <div id="composerQualityPanel" class="composer-quality-panel"></div>
+                                            </div>
+                                            <div class="composer-submenu-section" data-composer-size-section="count">
+                                                <div class="composer-submenu-label">张数选择</div>
+                                                <div id="composerCountPanel" class="composer-count-panel"></div>
+                                            </div>
+                                        </div>
+                                        <div id="composerVideoSizeMenu" class="composer-submenu-stack" hidden></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="composer-actions">
+                                <div class="composer-run-capsule" role="group" aria-label="预计消耗 5 积分">
+                                    <div class="composer-run-cost" title="预计消耗 5 积分" aria-hidden="true">
+                                        <i data-lucide="zap"></i>
+                                        <span id="composerModelCostValue">5</span>
+                                    </div>
+                                    <button id="runBtn" class="run-btn" type="button"><i data-lucide="arrow-up"></i><span data-i18n="smart.run">运行</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <button class="smart-back" type="button" onclick="backToCanvasList()"><i data-lucide="arrow-left"></i><span data-i18n="canvas.backToList">返回画布列表</span></button>
+        <div id="smartTitle" class="smart-title" data-i18n="smart.title">智能画布</div>
+        <input id="fileInput" type="file" accept="image/*,video/*,audio/*,.psd,application/vnd.adobe.photoshop,image/vnd.adobe.photoshop" multiple hidden>
+        <div id="minimap" class="smart-minimap" aria-hidden="true">
+            <div id="minimapContent" class="smart-minimap-content"></div>
+        </div>
+        <div id="canvasBottomChrome" class="canvas-bottom-chrome" aria-label="画布导航">
+            <div class="canvas-bottom-capsule" role="toolbar" aria-label="画布工具">
+                <button id="canvasArrangeAllBtn" class="canvas-bottom-capsule-btn" type="button" title="整理全局" aria-label="整理全局">
+                    <i data-lucide="layout-dashboard"></i>
+                </button>
+                <span class="canvas-zoom-divider" aria-hidden="true"></span>
+                <button id="canvasZoomOutBtn" class="canvas-bottom-capsule-btn canvas-zoom-step-btn" type="button" title="缩小 (Ctrl -)" aria-label="缩小">
+                    <i data-lucide="minus"></i>
+                </button>
+                <div class="canvas-zoom-menu-wrap">
+                    <button id="canvasZoomMenuBtn" class="canvas-zoom-value-btn" type="button" title="视角比例" aria-label="视角比例，当前 100%" aria-haspopup="menu" aria-expanded="false">
+                        <span id="canvasZoomValue">100%</span>
+                        <i data-lucide="chevron-down"></i>
+                    </button>
+                    <div id="canvasZoomMenu" class="canvas-zoom-menu ui-menu" role="menu" hidden>
+                        <button class="ui-menu-item canvas-zoom-menu-item" type="button" role="menuitem" data-zoom-action="out"><span>缩小</span><kbd>Ctrl -</kbd></button>
+                        <button class="ui-menu-item canvas-zoom-menu-item" type="button" role="menuitem" data-zoom-action="in"><span>放大</span><kbd>Ctrl +</kbd></button>
+                        <div class="ui-menu-divider" role="separator"></div>
+                        <button class="ui-menu-item canvas-zoom-menu-item" type="button" role="menuitem" data-zoom-action="fit"><span>适应视图</span><kbd>Shift 1</kbd></button>
+                        <div class="ui-menu-divider" role="separator"></div>
+                        <button class="ui-menu-item canvas-zoom-menu-item" type="button" role="menuitemradio" data-zoom-scale="0.5"><span>50%</span></button>
+                        <button class="ui-menu-item canvas-zoom-menu-item" type="button" role="menuitemradio" data-zoom-scale="1"><span>100%</span></button>
+                        <button class="ui-menu-item canvas-zoom-menu-item" type="button" role="menuitemradio" data-zoom-scale="2"><span>200%</span></button>
+                        <button class="ui-menu-item canvas-zoom-menu-item" type="button" role="menuitemradio" data-zoom-scale="3"><span>300%</span></button>
+                        <button class="ui-menu-item canvas-zoom-menu-item" type="button" role="menuitemradio" data-zoom-scale="4"><span>400%</span></button>
+                    </div>
+                </div>
+                <button id="canvasZoomInBtn" class="canvas-bottom-capsule-btn canvas-zoom-step-btn" type="button" title="放大 (Ctrl +)" aria-label="放大">
+                    <i data-lucide="plus"></i>
+                </button>
+                <button id="canvasDownloadCenterBtn" class="canvas-bottom-capsule-btn" type="button" title="下载记录" aria-label="下载记录" aria-expanded="false">
+                    <i data-lucide="download"></i>
+                    <span id="canvasDownloadCenterBadge" class="canvas-download-center-badge" hidden></span>
+                </button>
+                <button id="canvasMinimapToggle" class="canvas-bottom-capsule-btn" type="button" title="小地图" aria-label="小地图" aria-pressed="false">
+                    <i data-lucide="map"></i>
+                </button>
+                <button id="canvasFitViewBtn" class="canvas-bottom-capsule-btn" type="button" title="视角重置" aria-label="视角重置">
+                    <i data-lucide="scan"></i>
+                </button>
+            </div>
+        </div>
+        <aside id="canvasDownloadCenterPanel" class="canvas-download-center-panel" hidden aria-hidden="true" aria-label="下载记录">
+            <header class="canvas-download-center-head">
+                <div><i data-lucide="download"></i><strong>下载记录</strong><span id="canvasDownloadCenterCount">0</span></div>
+                <button id="canvasDownloadCenterClose" type="button" title="关闭" aria-label="关闭下载记录"><i data-lucide="x"></i></button>
+            </header>
+            <div id="canvasDownloadCenterList" class="canvas-download-center-list" aria-live="polite"></div>
+        </aside>
+        <button id="newCanvasBtn" class="canvas-new-fab is-standalone-only" type="button" title="新建画布" aria-label="新建画布"><i data-lucide="plus"></i></button>
+        <div id="imageQuickToolbar" class="image-quick-toolbar" hidden data-image-quick-toolbar></div>
+        <div id="imageHdPopover" class="image-hd-popover" style="position:absolute; z-index:87; display:none; padding:10px 12px; min-width:180px;">
+            <div style="margin-bottom:8px;">楂樻竻鍊嶇巼</div>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:10px;">
+                <button type="button" class="image-hd-scale-btn" data-hd-scale="1" style="height:32px; cursor:pointer;">1x</button>
+                <button type="button" class="image-hd-scale-btn" data-hd-scale="2" style="height:32px; cursor:pointer;">2x</button>
+                <button type="button" class="image-hd-scale-btn" data-hd-scale="4" style="height:32px; cursor:pointer;">4x</button>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:6px;">
+                <button id="imageHdCancel" type="button" style="height:28px; padding:0 10px; border-radius:8px; border:1px solid rgba(158,168,180,.22); background:transparent; font-size:11px; font-weight:600; cursor:pointer;">鍙栨秷</button>
+                <button id="imageHdApply" type="button" style="height:28px; padding:0 10px; border-radius:8px; border:1px solid var(--ui-accent); background:var(--ui-accent); color:#fff; font-size:11px; font-weight:600; cursor:pointer;">搴旂敤</button>
+            </div>
+        </div>
+        <div id="selectionBox" class="selection-box">
+            <div id="selectionBoxCapsule" class="selection-box-capsule" hidden></div>
+        </div>
+        <div id="smartLogModal" class="log-modal" onclick="closeSmartCanvasLog()">
+            <div class="log-panel" onclick="event.stopPropagation()">
+                <div class="log-head">
+                    <div class="log-title" data-i18n="canvas.generationLogs">鐢熸垚鏃ュ織</div>
+                    <button class="preview-icon-btn" type="button" onclick="closeSmartCanvasLog()" title="关闭" data-i18n-title="common.close"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+                <div id="smartLogList" class="log-list"></div>
+            </div>
+        </div>
+        <div id="smartShortcutModal" class="shortcut-modal" onclick="closeSmartCanvasShortcuts()">
+            <div class="shortcut-panel" onclick="event.stopPropagation()">
+                <div class="shortcut-head">
+                    <div class="shortcut-title"><i data-lucide="keyboard"></i><span data-i18n="smart.shortcuts">快捷键</span></div>
+                    <button class="preview-icon-btn" type="button" onclick="closeSmartCanvasShortcuts()" title="关闭" data-i18n-title="common.close"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+                <div class="shortcut-list">
+                    <div class="shortcut-item"><span class="shortcut-keys"><kbd>Ctrl</kbd></span><span data-i18n="smart.shortcutBoxSelect">按住并拖拽框选节点</span></div>
+                    <div class="shortcut-item"><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>G</kbd></span><span data-i18n="smart.shortcutGroup">合并选中的图片为组</span></div>
+                    <div class="shortcut-item"><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Z</kbd></span><span data-i18n="smart.shortcutUndo">撤销上一步操作</span></div>
+                    <div class="shortcut-item"><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>C</kbd></span><span data-i18n="smart.shortcutCopy">复制选中的节点</span></div>
+                    <div class="shortcut-item"><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>V</kbd></span><span data-i18n="smart.shortcutPaste">绮樿创鑺傜偣鎴栧壀璐存澘鍥剧墖</span></div>
+                    <div class="shortcut-item"><span class="shortcut-keys"><kbd>Z</kbd></span><span data-i18n="smart.shortcutOverview">缂╁皬鐢诲竷瑙嗗浘</span></div>
+                    <div class="shortcut-item"><span class="shortcut-keys"><kbd>鍙屽嚮</kbd></span><span data-i18n="smart.shortcutCreateMenu">鎵撳紑蹇嵎鑿滃崟</span></div>
+                    <div class="shortcut-item"><span class="shortcut-keys"><kbd>空白处</kbd></span><span data-i18n="smart.shortcutPan">拖动画布</span></div>
+                    <div class="shortcut-item"><span class="shortcut-keys"><kbd>滚轮</kbd></span><span data-i18n="smart.shortcutZoom">缩放画布或预览图片</span></div>
+                    <div class="shortcut-item"><span class="shortcut-keys"><kbd>Del</kbd></span><span data-i18n="smart.shortcutDelete">鍒犻櫎閫変腑鑺傜偣</span></div>
+                </div>
+            </div>
+        </div>
+        <div id="imageLightbox" class="image-lightbox" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="图片预览">
+            <div class="image-lightbox-topbar">
+                <div class="image-lightbox-meta">
+                    <strong id="imageLightboxTitle" class="image-lightbox-title">图片预览</strong>
+                    <span id="imageLightboxResolution" class="image-lightbox-resolution"></span>
+                </div>
+                <button id="imageLightboxClose" class="image-lightbox-icon-btn" type="button" title="关闭预览" aria-label="关闭预览"><i data-lucide="x"></i></button>
+            </div>
+            <button id="imageLightboxPrev" class="image-lightbox-nav prev" type="button" title="上一张" aria-label="上一张"><i data-lucide="chevron-left"></i></button>
+            <div id="imageLightboxStage" class="image-lightbox-stage">
+                <div id="imageLightboxMedia" class="image-lightbox-media">
+                    <img id="imageLightboxImage" class="image-lightbox-image" alt="预览图片" draggable="false">
+                </div>
+            </div>
+            <button id="imageLightboxNext" class="image-lightbox-nav next" type="button" title="下一张" aria-label="下一张"><i data-lucide="chevron-right"></i></button>
+            <div id="imageLightboxEditorHost" class="image-lightbox-editor-host" hidden></div>
+            <div class="image-lightbox-toolbar image-lightbox-view-toolbar" role="toolbar" aria-label="图片查看工具">
+                <button id="imageLightboxZoomOut" class="image-lightbox-tool-btn" type="button" title="缩小" aria-label="缩小"><i data-lucide="minus"></i></button>
+                <button id="imageLightboxZoomValue" class="image-lightbox-tool-btn image-lightbox-zoom-value" type="button" title="适应窗口" aria-label="当前缩放比例">100%</button>
+                <button id="imageLightboxZoomIn" class="image-lightbox-tool-btn" type="button" title="放大" aria-label="放大"><i data-lucide="plus"></i></button>
+                <span class="image-lightbox-divider" aria-hidden="true"></span>
+                <button id="imageLightboxFit" class="image-lightbox-tool-btn" type="button" title="适应窗口">适应</button>
+                <button id="imageLightboxActual" class="image-lightbox-tool-btn" type="button" title="原始大小">1:1</button>
+                <button id="imageLightboxDownload" class="image-lightbox-tool-btn" type="button" title="下载图片" aria-label="下载图片"><i data-lucide="download"></i></button>
+            </div>
+            <div class="image-lightbox-toolbar image-lightbox-mode-toolbar" role="toolbar" aria-label="图片编辑工具">
+                <button id="imageLightboxCrop" class="image-lightbox-tool-btn image-lightbox-mode-btn" type="button" data-image-lightbox-tool="crop" title="裁切图片"><i data-lucide="crop"></i><span>裁切</span></button>
+                <button id="imageLightboxOutpaint" class="image-lightbox-tool-btn image-lightbox-mode-btn" type="button" data-image-lightbox-tool="outpaint" title="扩展图片"><i data-lucide="expand"></i><span>扩图</span></button>
+                <button id="imageLightboxGrid" class="image-lightbox-tool-btn image-lightbox-mode-btn" type="button" data-image-lightbox-tool="grid" title="宫格切分"><i data-lucide="grid-3x3"></i><span>宫格切分</span></button>
+            </div>
+        </div>
+        <div id="imageEditModal" class="image-edit-modal">
+            <div class="image-edit-panel">
+                <div class="image-edit-head">
+                    <div>
+                        <div id="imageEditTitle" class="image-edit-title" data-i18n="canvas.editImage">缂栬緫鍥剧墖</div>
+                        <div id="imageEditSub" class="image-edit-sub" data-i18n="canvas.editImageSub">閫夋嫨瑁佸壀銆侀伄缃╂垨鐢荤瑪妯″紡</div>
+                    </div>
+                    <div class="image-edit-mode">
+                        <button type="button" data-image-edit-mode="preview" class="active"><i data-lucide="eye" class="w-3.5 h-3.5"></i><span data-i18n="smart.modePreview">棰勮</span></button>
+                        <button type="button" data-image-edit-mode="crop"><i data-lucide="crop" class="w-3.5 h-3.5"></i><span data-i18n="canvas.modeCrop">瑁佸壀</span></button>
+                        <button type="button" data-image-edit-mode="outpaint"><i data-lucide="expand" class="w-3.5 h-3.5"></i><span data-i18n="canvas.modeOutpaint">Expand</span></button>
+                        <button type="button" data-image-edit-mode="mask"><i data-lucide="brush" class="w-3.5 h-3.5"></i><span data-i18n="canvas.modeMask">閬僵</span></button>
+                        <button type="button" data-image-edit-mode="brush"><i data-lucide="paintbrush" class="w-3.5 h-3.5"></i><span data-i18n="canvas.modeBrush">鐢荤瑪</span></button>
+                        <button type="button" data-image-edit-mode="grid"><i data-lucide="grid-3x3" class="w-3.5 h-3.5"></i><span data-i18n="canvas.modeGrid">瀹牸鍒囧垎</span></button>
+                        <button type="button" data-image-edit-mode="cutout"><i data-lucide="wand-sparkles" class="w-3.5 h-3.5"></i><span>抠图</span></button>
+                    </div>
+                    <button class="preview-icon-btn" type="button" onclick="closeImageEditor()" title="关闭" data-i18n-title="common.close"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+                <div id="imagePreviewTools" class="image-edit-tools">
+                    <span id="previewMetaHint" class="image-edit-sub" style="margin-left:auto"></span>
+                    <div id="panoramaControls" class="panorama-controls" style="display:none">
+                        <div class="panorama-control-group">
+                            <div class="panorama-control-line">
+                                <span class="panorama-control-label" data-i18n="smart.panoramaRatio">鐢婚潰姣斾緥</span>
+                                <button type="button" data-panorama-ratio="square">1:1</button>
+                                <button type="button" data-panorama-ratio="portrait">2:3</button>
+                                <button type="button" data-panorama-ratio="landscape">3:2</button>
+                                <button type="button" data-panorama-ratio="portrait43">3:4</button>
+                                <button type="button" data-panorama-ratio="landscape43">4:3</button>
+                                <button type="button" data-panorama-ratio="story">9:16</button>
+                                <button type="button" data-panorama-ratio="wide" class="active">16:9</button>
+                                <button type="button" data-panorama-ratio="ultrawide">21:9</button>
+                                <button type="button" data-panorama-ratio="ultratall">9:21</button>
+                                <button type="button" data-panorama-ratio="custom" data-i18n="smart.custom">自定义</button>
+                                <label id="panoramaCustomRatio" class="panorama-custom-ratio" style="display:none">
+                                    <input id="panoramaRatioW" type="number" min="1" max="999" step="1" value="16" aria-label="ratio width">
+                                    <span>:</span>
+                                    <input id="panoramaRatioH" type="number" min="1" max="999" step="1" value="9" aria-label="ratio height">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="imageMaskTools" class="image-edit-tools">
+                    <label><span data-i18n="canvas.brushSize">绗斿埛澶у皬</span> <input id="maskBrushSize" type="range" min="4" max="160" value="42"></label>
+                    <button id="maskUndoBtn" class="image-edit-btn secondary" type="button" onclick="undoEditDrawing()" title="鎾ら攢"><i data-lucide="undo-2" class="w-4 h-4"></i></button>
+                    <button id="maskRedoBtn" class="image-edit-btn secondary" type="button" onclick="redoEditDrawing()" title="閲嶅仛"><i data-lucide="redo-2" class="w-4 h-4"></i></button>
+                    <button class="image-edit-btn secondary" type="button" onclick="clearEditDrawing()"><i data-lucide="eraser" class="w-4 h-4"></i><span data-i18n="canvas.clear">清除</span></button>
+                    <span class="image-edit-sub" data-i18n="canvas.maskHint">白色区域为要编辑的遮罩</span>
+                </div>
+                <div id="imageBrushTools" class="image-edit-tools">
+                    <button class="image-edit-btn primary" type="button" data-brush-tool="free" onclick="setBrushTool('free')" title="鑷敱鐢荤瑪"><i data-lucide="paintbrush" class="w-4 h-4"></i></button>
+                    <button class="image-edit-btn secondary" type="button" data-brush-tool="rect" onclick="setBrushTool('rect')" title="矩形"><i data-lucide="square" class="w-4 h-4"></i></button>
+                    <button class="image-edit-btn secondary" type="button" data-brush-tool="ellipse" onclick="setBrushTool('ellipse')" title="圆形"><i data-lucide="circle" class="w-4 h-4"></i></button>
+                    <button class="image-edit-btn secondary" type="button" data-brush-tool="label" onclick="setBrushTool('label')" title="缂栧彿鏍囩"><i data-lucide="list-ordered" class="w-4 h-4"></i></button>
+                    <button class="image-edit-btn secondary" type="button" data-brush-tool="text" onclick="setBrushTool('text')" title="鏂囧瓧鏍囩"><i data-lucide="type" class="w-4 h-4"></i></button>
+                    <label><span data-i18n="canvas.color">棰滆壊</span> <input id="paintBrushColor" type="color" value="#ff2d55"></label>
+                    <label><span data-i18n="canvas.brushSize">绗斿埛澶у皬</span> <input id="paintBrushSize" type="range" min="2" max="80" value="14"></label>
+                    <button id="brushUndoBtn" class="image-edit-btn secondary" type="button" onclick="undoEditDrawing()" title="鎾ら攢"><i data-lucide="undo-2" class="w-4 h-4"></i></button>
+                    <button id="brushRedoBtn" class="image-edit-btn secondary" type="button" onclick="redoEditDrawing()" title="閲嶅仛"><i data-lucide="redo-2" class="w-4 h-4"></i></button>
+                    <button class="image-edit-btn secondary" type="button" onclick="clearEditDrawing()"><i data-lucide="eraser" class="w-4 h-4"></i><span data-i18n="canvas.clear">清除</span></button>
+                </div>
+                <div id="imageGridTools" class="image-edit-tools">
+                    <button id="gridCustomToggle" class="image-edit-btn secondary" type="button" onclick="toggleGridCustomMode()" data-i18n="canvas.gridCustom" data-i18n-title="canvas.gridCustomTitle" title="自由放置切割线">自定义</button>
+                    <div class="grid-preset-row">
+                        <span class="image-edit-sub" data-i18n="canvas.gridPresets">棰勮</span>
+                        <button class="grid-preset-btn" type="button" onclick="applyGridPreset(1, 2)">1x2</button>
+                        <button class="grid-preset-btn" type="button" onclick="applyGridPreset(2, 1)">2x1</button>
+                        <button class="grid-preset-btn" type="button" onclick="applyGridPreset(2, 2)">2x2</button>
+                        <button class="grid-preset-btn" type="button" onclick="applyGridPreset(2, 3)">2x3</button>
+                        <button class="grid-preset-btn" type="button" onclick="applyGridPreset(3, 2)">3x2</button>
+                        <button class="grid-preset-btn" type="button" onclick="applyGridPreset(3, 3)">3x3</button>
+                    </div>
+                    <span id="gridRegularControls" style="display:contents">
+                        <label><span data-i18n="canvas.gridHLines">横向线</span> <input id="gridHorizontalLines" type="number" min="0" max="20" value="2"></label>
+                        <label><span data-i18n="canvas.gridVLines">竖向线</span> <input id="gridVerticalLines" type="number" min="0" max="20" value="2"></label>
+                    </span>
+                    <div id="gridCustomControls" style="display:none;align-items:center;gap:6px">
+                        <button id="gridOrientH" class="image-edit-btn primary" type="button" onclick="setGridCustomOrientation('h')" data-i18n="canvas.gridOrientH" data-i18n-title="canvas.gridOrientHTitle" title="点击图片放置水平线">水平</button>
+                        <button id="gridOrientV" class="image-edit-btn secondary" type="button" onclick="setGridCustomOrientation('v')" data-i18n="canvas.gridOrientV" data-i18n-title="canvas.gridOrientVTitle" title="点击图片放置垂直线">垂直</button>
+                        <button id="gridUndoBtn" class="image-edit-btn secondary" type="button" onclick="undoGridCustomLine()" data-i18n-title="canvas.gridUndo" title="鎾ら攢涓婁竴鏉＄嚎" disabled style="opacity:.4"><i data-lucide="undo-2" class="w-3.5 h-3.5"></i></button>
+                        <button class="image-edit-btn secondary" type="button" onclick="clearGridCustomLines()" data-i18n-title="canvas.gridClearLines" title="清除所有自定义线"><i data-lucide="eraser" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                    <label class="grid-gap-control"><span data-i18n="canvas.gridGap">闂撮殧(px)</span> <input id="gridGapSize" type="range" min="0" max="240" step="1" value="0"><span id="gridGapValue" class="grid-gap-value">0</span></label>
+                    <span id="gridSplitCount" class="image-edit-sub"></span>
+                </div>
+                <div id="imageCutoutTools" class="image-edit-tools">
+                    <label><span>瀹瑰樊</span> <input id="cutoutTolerance" type="range" min="0" max="255" step="1" value="32" oninput="refreshCutoutFromControls()"><span id="cutoutToleranceValue" class="grid-gap-value">32</span></label>
+                    <label class="cutout-toggle"><input id="cutoutContiguous" type="checkbox" checked onchange="refreshCutoutFromControls()"><span>杩炵画鍖哄煙</span></label>
+                    <button class="image-edit-btn secondary" type="button" onclick="invertCutoutSelection()"><i data-lucide="flip-horizontal-2" class="w-4 h-4"></i><span>反选</span></button>
+                    <button class="image-edit-btn secondary" type="button" onclick="clearCutoutSelection()"><i data-lucide="eraser" class="w-4 h-4"></i><span>清除</span></button>
+                    <span id="cutoutSelectionHint" class="image-edit-sub">鐐瑰嚮鍥剧墖閫夋嫨鐩歌繎棰滆壊鍖哄煙锛屾寜浣?Shift 鍙繛缁€夋嫨</span>
+                </div>
+                <div id="imageEditStage" class="image-edit-stage">
+                    <button id="previewPrevBtn" class="preview-nav-btn prev" type="button" onclick="navigatePreviewImage(-1)" title="上一张"><i data-lucide="chevron-left"></i></button>
+                    <button id="previewNextBtn" class="preview-nav-btn next" type="button" onclick="navigatePreviewImage(1)" title="下一张"><i data-lucide="chevron-right"></i></button>
+                    <div class="image-edit-stage-inner">
+                        <div id="previewStage" class="preview-stage" style="display:none">
+                            <div id="previewFrame" class="preview-frame">
+                                <img id="previewCurrentImage" class="preview-current" alt="current">
+                                <video id="previewCurrentVideo" class="preview-current preview-current-video" controls preload="metadata" crossorigin="anonymous" playsinline disablepictureinpicture controlslist="nodownload noplaybackrate noremoteplayback" style="display:none"></video>
+                                <div id="panoramaStage" class="panorama-stage" style="display:none">
+                                    <canvas id="panoramaCanvas"></canvas>
+                                    <div id="panoramaLoading" class="panorama-loading" data-i18n="smart.panoramaLoading">鍔犺浇涓?..</div>
+                                </div>
+                                <div id="previewCompareLayer" class="preview-compare-layer">
+                                    <img id="previewCompareImage" alt="original">
+                                </div>
+                                <div id="previewCompareHandle" class="preview-compare-handle" data-i18n-title="smart.compareDrag" title="鎷栧姩瀵规瘮"></div>
+                            </div>
+                        </div>
+                        <div id="cropCanvas" class="crop-canvas">
+                            <img id="cropImage" alt="crop source">
+                            <canvas id="editDrawCanvas" class="edit-draw-canvas"></canvas>
+                            <canvas id="editTextCanvas" class="edit-text-canvas"></canvas>
+                            <div id="cropBox" class="crop-box">
+                                <div id="cropHandle" class="crop-handle"></div>
+                            </div>
+                            <div id="outpaintFrame" class="outpaint-frame">
+                                <div class="outpaint-handle" data-outpaint-handle="top"></div>
+                                <div class="outpaint-handle" data-outpaint-handle="right"></div>
+                                <div class="outpaint-handle" data-outpaint-handle="bottom"></div>
+                                <div class="outpaint-handle" data-outpaint-handle="left"></div>
+                                <div class="outpaint-handle" data-outpaint-handle="corner"></div>
+                            </div>
+                            <div id="outpaintResolution" class="outpaint-resolution"></div>
+                        </div>
+                    </div>
+                    <div class="preview-download-overlay">
+                        <button id="previewDownloadBtn" class="compare-toggle" type="button" onclick="downloadPreviewImage()"><i data-lucide="download" class="w-4 h-4"></i><span data-i18n="canvas.download">Download</span></button>
+                        <button id="previewDownloadAllBtn" class="compare-toggle" type="button" onclick="downloadPreviewGroup()" style="display:none"><i data-lucide="archive" class="w-4 h-4"></i><span>涓嬭浇鍏ㄩ儴</span></button>
+                    </div>
+                    <div class="preview-tools-overlay">
+                        <div id="compareThumbs" class="compare-thumbs" style="display:none"></div>
+                        <div class="preview-action-row">
+                            <button id="panoramaToggleBtn" class="compare-toggle" type="button" onclick="togglePanoramaPreview()" style="display:none"><i data-lucide="globe-2" class="w-4 h-4"></i><span data-i18n="smart.panorama360">360鍏ㄦ櫙</span></button>
+                            <button id="panoramaExportBtn" class="compare-toggle" type="button" onclick="exportPanoramaFrame()" style="display:none"><i data-lucide="image-down" class="w-4 h-4"></i><span data-i18n="smart.panoramaExport">瀵煎嚭鐢婚潰</span></button>
+                            <button id="compareToggleBtn" class="compare-toggle" type="button" onclick="togglePreviewCompare()" style="display:none"><i data-lucide="columns-2" class="w-4 h-4"></i><span data-i18n="smart.compareSource">瀵规瘮鍘熷浘</span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="image-edit-actions">
+                    <span id="imageEditZoomLabel" style="color:#94a3b8;font-size:11px;font-weight:600;padding:0 4px;margin-right:auto;cursor:pointer;user-select:none" title="鍙屽嚮閲嶇疆缂╂斁" ondblclick="resetImageEditZoom()">100%</span>
+                    <div id="videoFrameTools" class="video-frame-tools" style="display:none">
+                        <button class="image-edit-btn secondary" type="button" onclick="exportVideoFrame('first')"><i data-lucide="skip-back" class="w-4 h-4"></i><span>瀵煎嚭棣栧抚</span></button>
+                        <button class="image-edit-btn primary" type="button" onclick="exportVideoFrame('current')"><i data-lucide="image-down" class="w-4 h-4"></i><span>导出当前帧</span></button>
+                        <button class="image-edit-btn secondary" type="button" onclick="exportVideoFrame('last')"><i data-lucide="skip-forward" class="w-4 h-4"></i><span>瀵煎嚭灏惧抚</span></button>
+                    </div>
+                    <button id="imageEditCancelBtn" class="image-edit-btn secondary" type="button" onclick="closeImageEditor()" data-i18n="common.cancel">鍙栨秷</button>
+                    <button id="imageEditApplyBtn" class="image-edit-btn primary" type="button" onclick="applyImageEdit()"><i data-lucide="crop" class="w-4 h-4"></i><span data-i18n="canvas.applyCrop">搴旂敤瑁佸壀</span></button>
+                </div>
+            </div>
+        </div>
+        <div id="toast" class="toast"></div>
+        <div id="mentionPreview" class="mention-preview"><img alt="preview"></div>
+    </div>
+    <script src="/static/js/smart-canvas-core.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-empty-dot-grid.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-canvas-hint.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-ui-feedback.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-string-utils.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-undo.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-providers.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-mode-bindings.js?v=2026.08.11.82"></script>
+  <script src="/static/js/smart-canvas-provider-selection.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-config-loader.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-smart-media-refs.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-settings-recent.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-settings-storage.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-composer-settings.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-composer-text.js?v=2026.08.11.82"></script>
+<script src="/static/js/smart-canvas-node-merge.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-persistence.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-history.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-composer.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-composer-input-thumbs.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-music.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-runninghub.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-comfy-params.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-run-state.js?v=2026.08.11.82"></script>
+    <script src="/static/js/model-brand-icons.js?v=2026.08.11.82"></script>
+  <script src="/static/js/smart-canvas-composer-params.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-prompt-templates.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-ui-chrome.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-composer-resize.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-overlay-chrome.js?v=2026.08.11.82"></script>
+    <script src="/static/js/image-quick-toolbar.js?v=2026.08.11.82"></script>
+    <script src="/static/js/composer-footer-glider.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-smart-guides.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-ui-canvas.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-asset-open-guard.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-ui-bindings.js?v=2026.08.11.82"></script>
+    <script src="/static/js/magic-wand.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-co-create-render.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-co-create.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-image-lightbox.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-dblclick-viewport.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-port-magnet.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-port-link-menu.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-smart-group-membership.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-empty-node-chrome.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-asset-library.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-asset-prompt-ui.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-asset-library-ui.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-isolated-features.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-selection-capsule-shared.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-selection-capsule-selection.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-selection-capsule-group.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-selection-capsule-disconnect.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-selection-capsule-arrange.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-selection-capsule-asset.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-selection-capsule-download.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-selection-capsule-delete.js?v=2026.08.11.82"></script>
+    <script src="/static/js/shell/icons.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-selection-capsule.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-left-rail.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-bottom-chrome.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-download-center.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-theme-capsule.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-image-draw.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-image-edit.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-inline-brush.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-inline-image-tools.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-video-tools.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-image-preview.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-image-grid-join.js?v=2026.08.11.82"></script>
+        <script src="/static/js/smart-canvas-mention-picker.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-prompt-input.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-prompt-llm.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-prompt-draft.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-canvas-nav.js?v=2026.08.11.82"></script>
+            <script src="/static/js/smart-canvas-smart-loop.js?v=2026.08.11.82"></script>
+<script src="/static/js/smart-canvas-prompt-layout.js?v=2026.08.11.82"></script>
+<script src="/static/js/smart-canvas-media-layout.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-media-download.js?v=2026.08.11.82"></script>
+        <script src="/static/js/smart-canvas-reference-images.js?v=2026.08.11.82"></script>
+<script src="/static/js/smart-canvas-prompt-request.js?v=2026.08.11.82"></script>
+        <script src="/static/js/smart-canvas-connection-graph.js?v=2026.08.11.82"></script>
+<script src="/static/js/smart-canvas-cascade.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-workflow-import.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-node-outputs.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-smart-group.js?v=2026.08.11.82"></script>
+        <script src="/static/js/smart-canvas-generation-log.js?v=2026.08.11.82"></script>
+  <script src="/static/js/smart-canvas-generation.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-multi-view.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-upload.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-ui-context.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-agent-actions.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-node-delete.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-node-events.js?v=2026.08.11.82"></script>
+                <script src="/static/js/smart-canvas-node-selection.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-node-model.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-node-factory.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-node-toolbar.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-node-clipboard.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-node-meta.js?v=2026.08.11.82"></script>
+<script src="/static/js/smart-canvas-selection-box.js?v=2026.08.11.82"></script>
+<script src="/static/js/smart-canvas-multi-select-compose.js?v=2026.08.11.82"></script>
+<script src="/static/js/smart-canvas-viewport.js?v=2026.08.11.82"></script>
+<script src="/static/js/smart-canvas-nodes-render.js?v=2026.08.11.82"></script>
+  <script src="/static/js/smart-canvas.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-footer-previews.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-connection-selection.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-director3d-bridge.js?v=2026.08.11.82"></script>
+</body>
+</html>

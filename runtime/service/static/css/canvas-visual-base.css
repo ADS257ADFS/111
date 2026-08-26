@@ -1,0 +1,1069 @@
+/*
+ * 光盒统一视觉基础层
+ * 只负责颜色、材质、字体、描边、阴影和克制动效。
+ * 尺寸、位置、布局、层级与业务交互仍由原组件样式和脚本负责。
+ */
+
+/* ──────────────────────────────────────────────────────────────────────────
+   01. Design tokens
+   ────────────────────────────────────────────────────────────────────────── */
+:root {
+    color-scheme: light;
+    --gh-canvas: #f1f2f4;
+    --gh-grid: #e0e2e6;
+    --gh-accent: var(--ui-accent);
+    --gh-accent-deep: #004eea;
+    --gh-accent-pressed: #0077ed;
+    --gh-danger: #ff453a;
+
+    /* M5 材质定案:扁平实色配方(原白玻璃 rgba 34%–94% 四级 + blur40 已拆除) */
+    --gh-glass-rgb: 255, 255, 255;
+    --gh-glass-fill: var(--ui-surface-elevated);
+    --gh-glass-secondary: var(--ui-surface-elevated);
+    --gh-glass-tertiary: var(--ui-surface-input);
+    --gh-glass-modal: var(--ui-surface-elevated);
+    --gh-glass-solid: var(--ui-surface-elevated);
+    --gh-glass-blur: 0px;
+    --gh-glass-line: var(--ui-border);
+    --gh-glass-line-strong: var(--ui-border-strong);
+    --gh-glass-shadow-color: rgba(60, 68, 78, 0.05);
+    --gh-glass-shadow-soft-color: rgba(60, 68, 78, 0.0325);
+    --gh-glass-shadow: var(--ui-shadow-pop);
+    --gh-glass-shadow-secondary: var(--ui-shadow-pop);
+    --gh-glass-inset: 0 0 0 0 transparent;
+
+    --gh-text-key: #343a40;
+    --gh-text-main: #697077;
+    --gh-text-muted: #9299a2;
+    --gh-text-disabled: rgba(146, 153, 162, 0.42);
+    --gh-icon-stroke: 1.3;
+
+    --gh-radius-panel: 24px;
+    --gh-radius-node: 18px;
+    --gh-radius-popover: 18px;
+    --gh-radius-control: 12px;
+    --gh-radius-capsule: 999px;
+
+    --gh-ease: cubic-bezier(0.22, 0.75, 0.3, 1);
+    --gh-fast: 180ms;
+    --gh-surface-motion: 240ms;
+    --gh-panel-motion: 340ms;
+
+    /* Compatibility tokens used by existing canvas components. */
+    --canvas-outer-frame-shadow: var(--gh-glass-shadow);
+    --canvas-foreground-color: var(--gh-text-main);
+    --accent: var(--gh-accent);
+    --strong: var(--gh-accent);
+    --blue: var(--gh-accent);
+}
+
+html.theme-dark,
+html.studio-theme-dark,
+body.theme-dark,
+body.studio-theme-dark {
+    color-scheme: dark;
+    --gh-canvas: #101217;
+    --gh-grid: rgba(255, 255, 255, 0.09);
+    --gh-glass-rgb: 36, 39, 46;
+    --gh-glass-fill: var(--ui-surface-chrome);
+    --gh-glass-secondary: var(--ui-surface-elevated);
+    --gh-glass-tertiary: var(--ui-surface-input);
+    --gh-glass-modal: var(--ui-surface-elevated);
+    --gh-glass-solid: var(--ui-surface-elevated);
+    --gh-glass-line: var(--ui-border);
+    --gh-glass-line-strong: var(--ui-border-strong);
+    --gh-glass-shadow-color: rgba(0, 0, 0, 0.18);
+    --gh-glass-shadow-soft-color: rgba(0, 0, 0, 0.10);
+    --gh-glass-shadow: var(--ui-shadow-pop);
+    --gh-glass-shadow-secondary: var(--ui-shadow-pop);
+    --gh-glass-inset: 0 0 0 0 transparent;
+    --gh-text-key: #f4f5f7;
+    --gh-text-main: #c5cad0;
+    --gh-text-muted: #858c96;
+    --gh-text-disabled: rgba(133, 140, 150, 0.44);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   02. Canvas, typography and icons
+   ────────────────────────────────────────────────────────────────────────── */
+#shell,
+.app-shell {
+    color: var(--gh-text-main);
+    background-color: var(--gh-canvas);
+    background-image: radial-gradient(circle, var(--gh-grid) 1px, transparent 1.15px);
+}
+
+:where(
+    #shell,
+    .floating-toolbar,
+    .shell-user-menu,
+    .shell-settings-dialog,
+    .shell-project-history-dialog,
+    .asset-panel,
+    .composer-card,
+    .port-link-pick-menu,
+    .image-quick-toolbar,
+    .selection-capsule-bar,
+    .smart-popover,
+    .image-node,
+    .gpt-dock,
+    .chat-shell
+) {
+    font-family:
+        "Inter",
+        "Segoe UI",
+        "Microsoft YaHei UI",
+        "Microsoft YaHei",
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-synthesis: none;
+    text-rendering: geometricPrecision;
+}
+
+#shell :where(
+    button,
+    input,
+    textarea,
+    select,
+    [role="button"],
+    [role="menuitem"],
+    [role="tab"]
+) {
+    color: var(--gh-text-main);
+}
+
+#shell :where(h1, h2, h3, strong, .node-title, .panel-title, .menu-title, [class*="-title"]) {
+    color: var(--gh-text-key);
+    font-weight: 600;
+}
+
+#shell :where(
+    .lucide,
+    [data-lucide],
+    button svg,
+    [role="button"] svg,
+    [role="menuitem"] svg,
+    [role="tab"] svg,
+    [class*="-icon"] svg
+) {
+    color: currentColor;
+    stroke: currentColor;
+    stroke-width: var(--gh-icon-stroke);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+#shell :where(input, textarea)::placeholder,
+.chat-shell :where(input, textarea)::placeholder {
+    color: var(--gh-text-muted);
+    opacity: 0.78;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   03. Porcelain liquid-glass material hierarchy
+   ────────────────────────────────────────────────────────────────────────── */
+:where(
+    .floating-toolbar,
+    .shell-user-menu,
+    .shell-settings-dialog,
+    .canvas-history-panel,
+    .asset-panel,
+    .composer-card,
+    .image-quick-toolbar,
+    .selection-capsule-bar,
+    .canvas-bottom-capsule,
+    .log-panel,
+    .shortcut-panel,
+    .image-edit-panel,
+    .image-node:not(.smart-group-node)
+) {
+    isolation: isolate;
+    color: var(--gh-text-main);
+    border: 1px solid var(--gh-glass-line);
+    background: var(--gh-glass-fill);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: var(--gh-glass-shadow);
+}
+
+/* M5:原玻璃高光 ::before 与 hover shimmer ::after 装饰已拆除(扁平定案) */
+
+/* Secondary surfaces: popovers and compact nested menus. */
+:where(
+    .create-menu,
+    .port-link-pick-shell,
+    .prompt-preset-panel,
+    .prompt-template-panel,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .composer-hd-popover,
+    .image-hd-popover,
+    .smart-popover,
+    .loop-number-popover,
+    .mention-picker,
+    .history-popover
+) {
+    isolation: isolate;
+    color: var(--gh-text-main);
+    border: 1px solid var(--gh-glass-line-strong);
+    border-radius: var(--gh-radius-popover);
+    background: var(--gh-glass-secondary);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: var(--gh-glass-shadow-secondary);
+}
+
+/* Tertiary surfaces: inputs and contained working areas. */
+:where(
+    .composer-card input,
+    .composer-card textarea,
+    .composer-card select,
+    .asset-panel input,
+    .asset-panel textarea,
+    .asset-panel select,
+    .shell-project-history-dialog input,
+    .shell-project-history-dialog select,
+    .chat-shell .provider-select,
+    .chat-shell .model-select,
+    .chat-shell .ref-chip
+) {
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+    color: var(--gh-text-main);
+    border: 1px solid var(--ui-border);
+    border-radius: 14px;
+    background: var(--gh-glass-tertiary);
+    box-shadow: none;
+    font-family: inherit;
+}
+
+/* Modal surfaces have the strongest optical isolation. */
+:where(
+    .shell-project-history-dialog,
+    .asset-dialog,
+    .log-modal .log-panel,
+    .shortcut-modal .shortcut-panel,
+    .image-edit-modal .image-edit-panel
+) {
+    color: var(--gh-text-main);
+    border: 1px solid var(--gh-glass-line-strong);
+    background: var(--gh-glass-modal);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: var(--ui-shadow-dialog);
+}
+
+.shell-user-menu,
+.shell-settings-dialog,
+.shell-project-history-dialog,
+.canvas-history-panel,
+.asset-panel,
+.composer-card,
+.log-panel,
+.shortcut-panel,
+.image-edit-panel {
+    border-radius: var(--gh-radius-panel);
+}
+
+.image-quick-toolbar,
+.selection-capsule-bar,
+.canvas-bottom-capsule,
+.floating-toolbar {
+    border-radius: var(--gh-radius-capsule);
+}
+
+.image-node:not(.smart-group-node) {
+    border-radius: var(--gh-radius-node);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   04. Controls, hover, selection and focus
+   ────────────────────────────────────────────────────────────────────────── */
+:where(
+    .floating-toolbar,
+    .shell-user-menu,
+    .shell-settings-dialog,
+    .shell-project-history-dialog,
+    .canvas-history-panel,
+    .canvas-bottom-capsule,
+    .asset-panel,
+    .composer-card,
+    .create-menu,
+    .port-link-pick-menu,
+    .image-quick-toolbar,
+    .selection-capsule-bar,
+    .prompt-preset-panel,
+    .prompt-template-panel,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .composer-hd-popover,
+    .image-hd-popover,
+    .smart-popover,
+    .loop-number-popover,
+    .mention-picker,
+    .log-panel,
+    .shortcut-panel,
+    .image-edit-panel
+) :where(button, [role="button"], [role="menuitem"], [role="tab"]) {
+    box-sizing: border-box;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    color: var(--gh-text-main);
+    border: 1px solid transparent !important;
+    border-radius: var(--gh-radius-control);
+    background: transparent !important;
+    box-shadow: none !important;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 445;
+    line-height: 1.25;
+    text-decoration: none;
+    transition:
+        background-color var(--gh-fast) ease, border-color var(--gh-fast) ease, box-shadow var(--gh-fast) ease, transform var(--gh-fast) var(--gh-ease);
+}:where(
+    .floating-toolbar,
+    .shell-user-menu,
+    .shell-settings-dialog,
+    .shell-project-history-dialog,
+    .canvas-history-panel,
+    .canvas-bottom-capsule,
+    .asset-panel,
+    .composer-card,
+    .create-menu,
+    .port-link-pick-menu,
+    .image-quick-toolbar,
+    .selection-capsule-bar,
+    .prompt-preset-panel,
+    .prompt-template-panel,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .composer-hd-popover,
+    .image-hd-popover,
+    .smart-popover,
+    .loop-number-popover,
+    .mention-picker
+) :where(button, [role="button"], [role="menuitem"], [role="tab"]):not(:disabled):hover{
+    border-color: rgba(255, 255, 255, 0.56) !important;
+    background: var(--gh-glass-solid) !important;
+    box-shadow: 0 5px 14px rgba(60, 68, 78, 0.06) !important;
+    transform: translateY(-1px);
+}
+
+:where(
+    .floating-toolbar,
+    .shell-user-menu,
+    .asset-panel,
+    .composer-card,
+    .create-menu,
+    .port-link-pick-menu,
+    .image-quick-toolbar,
+    .selection-capsule-bar,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .composer-hd-popover,
+    .image-hd-popover,
+    .smart-popover
+) :where(
+    button.active,
+    button.is-active,
+    button.selected,
+    button.is-selected,
+    [role="button"][aria-pressed="true"],
+    [role="tab"][aria-selected="true"],
+    [aria-current="page"]
+) {
+    color: var(--gh-text-key) !important;
+    border-color: rgba(255, 255, 255, 0.56) !important;
+    background: var(--gh-glass-solid) !important;
+    box-shadow:
+        0 4px 12px rgba(60, 68, 78, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.68) !important;
+    font-weight: 600;
+}
+
+:where(
+    .floating-toolbar,
+    .shell-user-menu,
+    .asset-panel,
+    .composer-card,
+    .create-menu,
+    .port-link-pick-menu,
+    .image-quick-toolbar,
+    .selection-capsule-bar,
+    .smart-popover
+) :where(button, [role="button"], [role="menuitem"], [role="tab"]):not(:disabled):active {
+    transform: translateY(1px) scale(0.99);
+    box-shadow:
+        0 3px 10px rgba(60, 68, 78, 0.07),
+        inset 0 1px 2px rgba(60, 68, 78, 0.08) !important;
+}
+
+:where(
+    .floating-toolbar,
+    .shell-user-menu,
+    .asset-panel,
+    .composer-card,
+    .create-menu,
+    .port-link-pick-menu,
+    .image-quick-toolbar,
+    .selection-capsule-bar,
+    .smart-popover
+) :where(button, [role="button"], [role="menuitem"], [role="tab"]):disabled {
+    color: var(--gh-text-disabled) !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+:where(
+    .floating-toolbar,
+    .shell-user-menu,
+    .shell-settings-dialog,
+    .shell-project-history-dialog,
+    .asset-panel,
+    .composer-card,
+    .port-link-pick-menu,
+    .image-quick-toolbar,
+    .selection-capsule-bar,
+    .smart-popover,
+    .image-node
+) :where(h1, h2, h3, strong, .title, [class*="-title"]) {
+    color: var(--gh-text-key);
+    font-weight: 600;
+}
+
+:where(
+    .shell-user-menu,
+    .shell-settings-dialog,
+    .shell-project-history-dialog,
+    .asset-panel,
+    .composer-card,
+    .port-link-pick-menu,
+    .image-quick-toolbar,
+    .selection-capsule-bar,
+    .smart-popover,
+    .image-node
+) :where(small, .muted, [class*="-meta"], [class*="-caption"], [class*="-description"], [class*="-subtitle"]) {
+    color: var(--gh-text-muted);
+    font-weight: 400;
+}
+
+:where(input, textarea, select):focus-visible {
+    border-color: rgba(var(--ui-accent-rgb), 0.38) !important;
+    outline: none !important;
+    box-shadow:
+        0 0 0 3px rgba(var(--ui-accent-rgb), 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.58) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   05. Component-specific surfaces
+   ────────────────────────────────────────────────────────────────────────── */
+.floating-toolbar {
+    overflow: hidden;
+}
+
+.floating-toolbar .tool-button.active[data-canvas-main="1"] {
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.42) !important;
+    border-radius: 50%;
+    background:
+        linear-gradient(145deg, var(--gh-accent-deep), var(--gh-accent)) !important;
+    box-shadow:
+        0 8px 18px rgba(var(--ui-accent-rgb), 0.23),
+        inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+}
+
+.floating-toolbar .tool-button.active[data-canvas-main="1"] :where(svg, i) {
+    color: #ffffff;
+    stroke: #ffffff;
+}
+
+.floating-toolbar .shell-new-canvas-tool {
+    color: var(--gh-text-main);
+    border-radius: 50%;
+    background: var(--gh-glass-solid) !important;
+    opacity: 1;
+}
+
+#shell :where(.accent-button, .primary-button, .send-button, #runBtn):not(:disabled) {
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.42) !important;
+    background:
+        linear-gradient(145deg, var(--gh-accent-deep), var(--gh-accent)) !important;
+    box-shadow:
+        0 8px 18px rgba(var(--ui-accent-rgb), 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.44) !important;
+}
+
+.image-quick-toolbar > button,
+.image-quick-toolbar > .iqt-dropdown,
+.selection-capsule-bar > button,
+.canvas-bottom-capsule > button,
+.composer-card-topbar button {
+    border-radius: var(--gh-radius-capsule);
+}
+
+.port-link-pick-inner,
+.port-link-pick-list {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.port-link-pick-item {
+    font-size: 13px;
+    font-weight: 445;
+}
+
+.port-link-pick-item :where(small, [class*="-description"], [class*="-subtitle"]) {
+    color: var(--gh-text-muted);
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.image-node :where(.mini-x, .node-delete, .image-delete),
+.text-node :where(.mini-x, .node-delete),
+.video-node :where(.mini-x, .node-delete),
+.audio-node :where(.mini-x, .node-delete) {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    color: var(--gh-text-main) !important;
+    border: 1px solid transparent !important;
+    border-radius: 999px !important;
+    background: var(--gh-glass-secondary) !important;
+    box-shadow: none !important;
+}.image-node :where(.mini-x, .node-delete, .image-delete):hover,
+.text-node :where(.mini-x, .node-delete):hover,
+.video-node :where(.mini-x, .node-delete):hover,
+.audio-node :where(.mini-x, .node-delete):hover{
+    background: var(--gh-glass-solid) !important;
+}/* Prompt remains a clean solid writing surface. */
+#composer .composer-card .prompt-row > #promptInput.prompt-input,
+#composer .composer-card .prompt-row > #promptInput.prompt-input:hover,
+#composer .composer-card .prompt-row > #promptInput.prompt-input:focus,
+#composer .composer-card .prompt-row > #promptInput.prompt-input:focus-visible{
+    border: 0 !important;
+    background: var(--gh-glass-solid) !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+}
+/* Prompt remains a clean solid writing surface. */
+#composer .composer-card .prompt-row > #promptInput.prompt-input{color: var(--gh-text-main);}
+
+#composerResizeHandle {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+}
+
+#composerResizeHandle::before {
+    content: "";
+    width: 34px;
+    height: 3px;
+    border-radius: var(--gh-radius-capsule);
+    background: rgba(126, 133, 144, 0.42);
+    transition:
+        width var(--gh-fast) var(--gh-ease), height var(--gh-fast) var(--gh-ease), background-color var(--gh-fast) ease;
+}
+
+#composerResizeHandle:hover::before,
+#composerResizeHandle:focus-visible::before,
+#composerResizeHandle.is-dragging::before {
+    width: 42px;
+    height: 4px;
+    background: rgba(96, 104, 116, 0.68);
+}
+
+/* Group frame is deliberately quieter than interactive glass. */
+.smart-group-frame-hit,
+.smart-group-node .smart-group-frame-hit {
+    border: .5px solid rgba(255, 255, 255, .32);
+    background: rgba(255, 255, 255, 0.30);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+    transition: none;
+}
+
+/* User center editing keeps its normal state clean. */
+.shell-user-name-row input {
+    color: var(--gh-text-key) !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.shell-user-name-row input:hover {
+    background: rgba(255, 255, 255, 0.34) !important;
+}
+
+.shell-user-name-row input:focus {
+    border-color: var(--gh-glass-line-strong) !important;
+    background: var(--gh-glass-solid) !important;
+    box-shadow: 0 4px 12px rgba(60, 68, 78, 0.05) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   06. Canvas functional feedback
+   ────────────────────────────────────────────────────────────────────────── */
+.selection-box {
+    border: 1.5px dashed var(--gh-accent);
+    border-radius: 14px;
+    background: rgba(var(--ui-accent-rgb), 0.06);
+}
+
+.selection-box.is-dragging {
+    background: rgba(var(--ui-accent-rgb), 0.08);
+}
+
+.selection-box.is-settled {
+    background: rgba(var(--ui-accent-rgb), 0.04);
+}
+
+.node-port {
+    box-sizing: border-box;
+    border: calc(1.2px / var(--world-scale, 1)) solid rgba(135, 145, 158, 0.68);
+    border-radius: 50%;
+    background: var(--gh-glass-solid);
+    transition:
+        opacity 150ms ease, background-color 150ms ease, border-color 150ms ease, box-shadow 180ms ease;
+}
+
+.node-port::before {
+    content: "";
+    position: absolute;
+    inset: calc(-8px / var(--world-scale, 1));
+    border-radius: 50%;
+}
+
+.node-port:hover,
+.node-port.is-active {
+    border-color: #ffffff;
+    background: var(--gh-accent);
+    transform:
+        translateY(-50%)
+        translate(var(--port-magnet-x, 0px), var(--port-magnet-y, 0px))
+        scale(1.22) !important;
+}
+
+.node-port.is-magnet-near {
+    box-shadow:
+        0 calc(4px / var(--world-scale, 1)) calc(12px / var(--world-scale, 1)) rgba(var(--ui-accent-rgb), 0.22),
+        0 0 0 calc(3px / var(--world-scale, 1)) rgba(var(--ui-accent-rgb), 0.10);
+}
+
+.connection-layer .conn-line {
+    stroke: rgba(105, 112, 119, 0.52);
+}
+
+.connection-layer .conn-pending,
+.connection-layer .port-drag-temp,
+.connection-layer .port-link-pending-line,
+.selection-multi-port-line.conn-pending {
+    stroke: var(--gh-accent);
+    stroke-width: 0.7;
+    stroke-dasharray: 5 8;
+    animation: gh-connection-flow 1.1s linear infinite;
+}
+
+.connection-layer .conn-cascade-wait,
+.connection-layer .conn-cascade-active {
+    stroke-dasharray: 5 8;
+}
+
+.connection-layer .conn-cascade-active {
+    stroke: var(--gh-accent);
+    animation: gh-connection-flow 0.72s linear infinite;
+}
+
+.smart-guide-line {
+    stroke: var(--gh-accent);
+    stroke-width: 0.5px;
+    stroke-dasharray: 5 7;
+    vector-effect: non-scaling-stroke;
+    animation: gh-guide-flow 0.9s linear infinite;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   07. Right conversation dock
+   ────────────────────────────────────────────────────────────────────────── */
+.stage {
+    transition: right var(--gh-panel-motion) var(--gh-ease);
+}
+
+.gpt-dock {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: var(--chat-dock-width);
+    box-sizing: border-box;
+    padding: 12px;
+    border: 0;
+    border-radius: 0;
+    color: var(--gh-text-main);
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+    isolation: isolate;
+    opacity: 1;
+    transform: translateX(0);
+    transition:
+        transform var(--gh-panel-motion) var(--gh-ease), opacity 220ms ease;
+}
+
+.gpt-dock > * {
+    position: relative;
+    z-index: 1;
+}
+
+.gpt-dock .dock-chrome {
+    color: var(--gh-text-main);
+    border-bottom: 1px solid rgba(146, 153, 162, 0.12);
+    border-radius: 28px 28px 0 0;
+    background: transparent;
+}
+
+.gpt-dock .dock-chrome-title {
+    color: #50565e;
+    font-size:14px;
+    font-weight: 600;
+}
+
+.gpt-dock .dock-chrome-btn,
+.dock-open-btn {
+    -webkit-appearance: none;
+    appearance: none;
+    color: #747b85;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    box-shadow: none;
+    font-size: 13px;
+    font-weight: 400;
+    transition:
+        background-color var(--gh-fast) ease, border-color var(--gh-fast) ease;
+}.gpt-dock .dock-chrome-btn:hover,
+.dock-open-btn:hover{
+    background: #f9fafb;
+    border-color: rgba(148, 163, 184, .44);
+    transform: none;
+}
+
+.gpt-dock iframe {
+    border: 0;
+    border-radius: 0 0 28px 28px;
+    background: transparent;
+    overflow: hidden;
+}
+
+html.gpt-dock-collapsed .gpt-dock {
+    opacity: 0;
+    pointer-events: none !important;
+    visibility: hidden;
+    transform: translateX(calc(100% + 28px));
+}
+
+html.gpt-dock-collapsed .gpt-dock iframe {
+    pointer-events: none !important;
+}
+
+html.gpt-dock-collapsed:not(.studio-hide-gpt-dock) .dock-open-btn {
+    right: 14px;
+}
+
+html.gpt-dock-canvas-mode,
+html.gpt-dock-canvas-mode body,
+body.gpt-dock-canvas-mode,
+html.gpt-dock-canvas-mode .chat-shell,
+body.gpt-dock-canvas-mode .chat-shell,
+html.gpt-dock-canvas-mode .messages,
+body.gpt-dock-canvas-mode .messages,
+html.gpt-dock-canvas-mode .composer-wrap,
+body.gpt-dock-canvas-mode .composer-wrap {
+    background: transparent !important;
+}
+
+html.gpt-dock-canvas-mode .chat-shell,
+body.gpt-dock-canvas-mode .chat-shell {
+    color: var(--gh-text-main) !important;
+    font-family:
+        "Inter",
+        "Segoe UI",
+        "Microsoft YaHei UI",
+        "Microsoft YaHei",
+        sans-serif !important;
+}
+
+html.gpt-dock-canvas-mode .chat-shell :where(.bubble.assistant, .composer),
+body.gpt-dock-canvas-mode .chat-shell :where(.bubble.assistant, .composer) {
+    color: var(--gh-text-main) !important;
+    border: 1px solid var(--gh-glass-line) !important;
+    background: var(--gh-glass-fill) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    box-shadow: var(--gh-glass-shadow), var(--gh-glass-inset) !important;
+}
+
+html.gpt-dock-canvas-mode .chat-shell :where(.history-popover),
+body.gpt-dock-canvas-mode .chat-shell :where(.history-popover) {
+    color: var(--gh-text-main) !important;
+    border: 1px solid var(--gh-glass-line-strong) !important;
+    border-radius: var(--gh-radius-popover) !important;
+    background: var(--gh-glass-secondary) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    box-shadow:
+        var(--gh-glass-shadow-secondary),
+        inset 0 1px 0 rgba(255, 255, 255, 0.86) !important;
+}
+
+html.gpt-dock-canvas-mode .chat-shell :where(
+    button,
+    [role="button"],
+    [role="menuitem"],
+    [role="tab"],
+    select
+),
+body.gpt-dock-canvas-mode .chat-shell :where(
+    button,
+    [role="button"],
+    [role="menuitem"],
+    [role="tab"],
+    select
+) {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    color: var(--gh-text-main) !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-family: inherit !important;
+    font-weight: 400 !important;
+    transition:
+        background-color var(--gh-fast) ease, transform var(--gh-fast) var(--gh-ease) !important;
+}html.gpt-dock-canvas-mode .chat-shell :where(
+    button,
+    [role="button"],
+    [role="menuitem"],
+    [role="tab"],
+    select
+):not(:disabled):hover,
+body.gpt-dock-canvas-mode .chat-shell :where(
+    button,
+    [role="button"],
+    [role="menuitem"],
+    [role="tab"],
+    select
+):not(:disabled):hover{
+    border-color: var(--gh-glass-line-strong) !important;
+    background: var(--gh-glass-solid) !important;
+    box-shadow: 0 5px 14px rgba(60, 68, 78, 0.06) !important;
+    transform: translateY(-1px);
+}
+
+html.gpt-dock-canvas-mode .chat-shell :where(
+    .thread-item.active,
+    .thread-action.active,
+    [aria-selected="true"]
+),
+body.gpt-dock-canvas-mode .chat-shell :where(
+    .thread-item.active,
+    .thread-action.active,
+    [aria-selected="true"]
+) {
+    color: var(--gh-text-key) !important;
+    border-color: var(--gh-glass-line-strong) !important;
+    background: var(--gh-glass-solid) !important;
+    box-shadow: 0 5px 14px rgba(60, 68, 78, 0.05) !important;
+    font-weight: 600 !important;
+}
+
+html.gpt-dock-canvas-mode .chat-shell .bubble.user,
+body.gpt-dock-canvas-mode .chat-shell .bubble.user {
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.28) !important;
+    background:
+        linear-gradient(145deg, var(--gh-accent-deep), var(--gh-accent)) !important;
+    box-shadow:
+        0 10px 22px rgba(var(--ui-accent-rgb), 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28) !important;
+}
+
+html.gpt-dock-canvas-mode .chat-shell :where(.provider-select, .model-select, .ref-chip),
+body.gpt-dock-canvas-mode .chat-shell :where(.provider-select, .model-select, .ref-chip) {
+    color: var(--gh-text-main) !important;
+    border: 1px solid var(--gh-glass-line) !important;
+    background: var(--gh-glass-tertiary) !important;
+    box-shadow: none !important;
+}
+
+html.gpt-dock-canvas-mode .chat-shell .send-btn,
+body.gpt-dock-canvas-mode .chat-shell .send-btn {
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.38) !important;
+    background:
+        linear-gradient(145deg, var(--gh-accent-deep), var(--gh-accent)) !important;
+    box-shadow:
+        0 8px 18px rgba(var(--ui-accent-rgb), 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.32) !important;
+}
+
+html.gpt-dock-canvas-mode .chat-shell :where(textarea, input),
+body.gpt-dock-canvas-mode .chat-shell :where(textarea, input) {
+    color: var(--gh-text-main) !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    font-family: inherit !important;
+    font-weight: 400 !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   08. Entry motion and visibility
+   ────────────────────────────────────────────────────────────────────────── */
+.shell-user-menu:not([hidden]),
+.asset-panel.open,
+.asset-panel.is-open {
+    animation: gh-panel-enter-left var(--gh-panel-motion) var(--gh-ease) both;
+}
+
+.shell-project-history-dialog:not([hidden]),
+.shell-settings-dialog:not([hidden]) {
+    animation: gh-panel-enter var(--gh-panel-motion) var(--gh-ease) both;
+}
+
+.shell-user-menu[hidden],
+#shellProjectHistoryModal[hidden],
+[hidden] {
+    display: none !important;
+}
+
+@keyframes gh-panel-enter-left {
+    from {
+        opacity: 0;
+        transform: translateX(-14px) scale(0.99);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes gh-panel-enter {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.99);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes gh-connection-flow {
+    to {
+        stroke-dashoffset: -26;
+    }
+}
+
+@keyframes gh-guide-flow {
+    to {
+        stroke-dashoffset: -24;
+    }
+}
+
+/* Legacy component files use higher-specificity paint declarations.
+ * These contracts keep the final computed material identical across frames.
+ */
+.floating-toolbar,
+.shell-user-menu,
+.shell-settings-dialog,
+.canvas-history-panel,
+.asset-panel,
+.composer-card,
+.image-quick-toolbar,
+.selection-capsule-bar,
+.canvas-bottom-capsule,
+.log-panel,
+.shortcut-panel,
+.image-edit-panel,
+.image-node:not(.smart-group-node) {
+    color: var(--gh-text-main) !important;
+    border: 1px solid var(--gh-glass-line) !important;
+    background-color: var(--gh-glass-fill) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    box-shadow: var(--gh-glass-shadow), var(--gh-glass-inset) !important;
+}
+
+.create-menu,
+.port-link-pick-shell,
+.prompt-preset-panel,
+.prompt-template-panel,
+.composer-tool-popover,
+.composer-api-settings-popover,
+.composer-hd-popover,
+.image-hd-popover,
+.smart-popover,
+.loop-number-popover,
+.mention-picker {
+    color: var(--gh-text-main) !important;
+    border: 1px solid var(--gh-glass-line-strong) !important;
+    background-color: var(--gh-glass-secondary) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    box-shadow:
+        var(--gh-glass-shadow-secondary),
+        inset 0 1px 0 rgba(255, 255, 255, 0.86) !important;
+}
+
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .composer,
+body.gpt-dock-canvas-mode .chat-shell .composer {
+    color: var(--gh-text-main) !important;
+    border: 1px solid var(--gh-glass-line) !important;
+    background-color: var(--gh-glass-fill) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    box-shadow: var(--gh-glass-shadow), var(--gh-glass-inset) !important;
+}
+
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .bubble.assistant,
+body.gpt-dock-canvas-mode .chat-shell .bubble.assistant {
+    color: var(--gh-text-main) !important;
+    border: 1px solid var(--gh-glass-line) !important;
+    background-color: var(--gh-glass-fill) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    box-shadow: var(--gh-glass-shadow), var(--gh-glass-inset) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+    }
+
+    .connection-layer .conn-pending,
+    .connection-layer .port-drag-temp,
+    .connection-layer .port-link-pending-line,
+    .selection-multi-port-line.conn-pending,
+    .smart-guide-line {
+        animation: none !important;
+    }
+
+    .stage,
+    .gpt-dock,
+    .shell-user-menu,
+    .asset-panel,
+    .shell-project-history-dialog,
+    .shell-settings-dialog {
+        transition-duration: 1ms !important;
+        animation-duration: 1ms !important;
+    }
+}

@@ -1,0 +1,479 @@
+/* Dark-mode panel polish: asset library, history, and right chat dock.
+   Deliberately does NOT restyle the bottom composer / input area. */
+
+html:is(.theme-dark, .studio-theme-dark) {
+    --lb-panel: #1e1f22;
+    --lb-panel-raised: #26272b;
+    --lb-panel-soft: rgba(255, 255, 255, .055);
+    --lb-panel-hover: rgba(255, 255, 255, .08);
+    --lb-panel-active: rgba(255, 255, 255, .12);
+    --lb-panel-border: rgba(255, 255, 255, .11);
+    --lb-panel-border-soft: rgba(255, 255, 255, .08);
+    --lb-panel-text: #ececee;
+    --lb-panel-text-secondary: #b4b4ba;
+    --lb-panel-text-muted: #8c8c94;
+    --lb-panel-input: #161719;
+    --lb-panel-shadow: 0 22px 54px rgba(0, 0, 0, .42), inset 0 1px 0 rgba(255, 255, 255, .06);
+}
+
+/* ------------------------------------------------------------------ */
+/* Asset library                                                      */
+/* ------------------------------------------------------------------ */
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    body #shell.shell #assetPanel.asset-panel,
+    body #assetPanel.asset-panel,
+    .shell .asset-panel,
+    .asset-panel
+) {
+    color: var(--lb-panel-text) !important;
+    border: 1px solid var(--lb-panel-border) !important;
+    background: var(--lb-panel) !important;
+    background-color: var(--lb-panel) !important;
+    background-image: none !important;
+    box-shadow: var(--lb-panel-shadow) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    body #shell.shell #assetPanel.asset-panel,
+    body #assetPanel.asset-panel,
+    .asset-panel
+)::before {
+    border-color: var(--lb-panel-border-soft) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .asset-panel .asset-head {
+    border-bottom: 1px solid var(--lb-panel-border-soft);
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .asset-panel .asset-title,
+    body #assetPanel.asset-panel .asset-title
+) {
+    color: var(--lb-panel-text) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .asset-panel .asset-title :is(i, svg) {
+    color: var(--lb-panel-text-secondary) !important;
+    stroke: var(--lb-panel-text-secondary) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .asset-panel .asset-head .asset-mini-btn {
+    color: var(--lb-panel-text-muted) !important;
+    border-color: transparent !important;
+    background: transparent !important;
+}html:is(.theme-dark, .studio-theme-dark) .asset-panel .asset-head .asset-mini-btn:is(:hover, :focus-visible){
+    background: var(--lb-panel-hover) !important;
+    border-color: var(--lb-panel-border-soft) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .asset-panel .asset-tab {
+    color: var(--lb-panel-text-muted) !important;
+    border-color: transparent !important;
+    background: transparent !important;
+}html:is(.theme-dark, .studio-theme-dark) .asset-panel .asset-tab:hover{
+    background: var(--lb-panel-soft) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .asset-panel .asset-tab.active {
+    color: var(--lb-panel-text) !important;
+    border-color: var(--lb-panel-border) !important;
+    background: var(--lb-panel-active) !important;
+    box-shadow: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .asset-category-trigger,
+    .asset-image-add-category,
+    .asset-folder-search-wrap,
+    .asset-folder-action-btn,
+    .asset-folder-action-icon-btn,
+    .asset-drop-zone,
+    .asset-image-drop-zone
+) {
+    color: var(--lb-panel-text-secondary) !important;
+    border-color: var(--lb-panel-border) !important;
+    background: var(--lb-panel-input) !important;
+}html:is(.theme-dark, .studio-theme-dark) :is(
+    .asset-category-trigger:hover,
+    .asset-image-add-category:hover,
+    .asset-folder-action-btn:hover,
+    .asset-folder-action-icon-btn:hover
+){
+    background: var(--lb-panel-raised) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .asset-category-menu {
+    color: var(--lb-panel-text) !important;
+    border: 1px solid var(--lb-panel-border) !important;
+    background: var(--lb-panel-raised) !important;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, .4) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .asset-folder-card,
+    .asset-inline-grid .asset-item,
+    .asset-simple-grid .asset-item,
+    .asset-grid .asset-item
+) {
+    color: var(--lb-panel-text) !important;
+    border-color: var(--lb-panel-border-soft) !important;
+    background: var(--lb-panel-soft) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .asset-folder-card:hover,
+    .asset-inline-grid .asset-item:hover,
+    .asset-simple-grid .asset-item:hover,
+    .asset-grid .asset-item:hover
+) {
+    border-color: var(--lb-panel-border) !important;
+    background: var(--lb-panel-hover) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .asset-folder-card-name,
+    .asset-folder-current-name,
+    .asset-folder-section-title,
+    .asset-meta,
+    .asset-inline-grid .asset-meta
+) {
+    color: var(--lb-panel-text-secondary) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .asset-panel :is(input, select, textarea) {
+    color: var(--lb-panel-text) !important;
+    border-color: var(--lb-panel-border) !important;
+    background: var(--lb-panel-input) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .asset-panel :is(input, textarea)::placeholder {
+    color: var(--lb-panel-text-muted) !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* Canvas history panel + project history dialog                      */
+/* ------------------------------------------------------------------ */
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .canvas-history-panel,
+    body #shell.shell .canvas-history-panel,
+    #shellProjectHistoryModal .shell-project-history-dialog,
+    .shell-project-history-dialog
+) {
+    color: var(--lb-panel-text) !important;
+    border: 1px solid var(--lb-panel-border) !important;
+    background: var(--lb-panel) !important;
+    background-color: var(--lb-panel) !important;
+    box-shadow: var(--lb-panel-shadow) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .canvas-history-panel,
+    #shellProjectHistoryModal .shell-project-history-dialog,
+    .shell-project-history-dialog
+)::before {
+    border-color: var(--lb-panel-border-soft) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .canvas-history-head > div,
+    .canvas-history-title,
+    .shell-project-history-head h2,
+    body #shellProjectHistoryModal .shell-project-history-head h2
+) {
+    color: var(--lb-panel-text) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .shell-project-history-head span,
+    .canvas-history-meta,
+    .canvas-history-empty,
+    .shell-project-history-empty
+) {
+    color: var(--lb-panel-text-muted) !important;
+    background: transparent !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .shell-project-history-close,
+    .canvas-history-close,
+    .canvas-history-rename-btn,
+    .canvas-history-delete
+) {
+    color: var(--lb-panel-text-muted) !important;
+    background: transparent !important;
+    border-color: transparent !important;
+}html:is(.theme-dark, .studio-theme-dark) :is(
+    .shell-project-history-close,
+    .canvas-history-close,
+    .canvas-history-rename-btn,
+    .canvas-history-delete
+):is(:hover, :focus-visible){
+    background: var(--lb-panel-hover) !important;
+    border-color: var(--lb-panel-border-soft) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .shell-project-history-filters button,
+    .shell-project-history-view-toggle button,
+    .shell-project-history-sort
+) {
+    color: var(--lb-panel-text-muted) !important;
+    border-color: transparent !important;
+    background: transparent !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .shell-project-history-view-toggle {
+    background: var(--lb-panel-input) !important;
+    border: 1px solid var(--lb-panel-border-soft) !important;
+}html:is(.theme-dark, .studio-theme-dark) :is(
+    .shell-project-history-filters button:hover,
+    .shell-project-history-view-toggle button:hover,
+    .shell-project-history-view-toggle button:focus-visible
+){
+    background: var(--lb-panel-hover) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .shell-project-history-filters button.active,
+    .shell-project-history-view-toggle button.active,
+    body #shellProjectHistoryModal .shell-project-history-filters button.active
+) {
+    color: #fff !important;
+    border-color: #0a84ff !important;
+    background: #0a84ff !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .shell-project-history-search,
+    body #shellProjectHistoryModal .shell-project-history-search
+) {
+    color: var(--lb-panel-text) !important;
+    border: 1px solid var(--lb-panel-border) !important;
+    background: var(--lb-panel-input) !important;
+    box-shadow: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .shell-project-history-search input,
+    body #shellProjectHistoryModal .shell-project-history-search input
+) {
+    color: var(--lb-panel-text) !important;
+    background: transparent !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .shell-project-history-search input::placeholder,
+    body #shellProjectHistoryModal .shell-project-history-search input::placeholder
+) {
+    color: var(--lb-panel-text-muted) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .canvas-history-item,
+    .shell-project-card
+) {
+    color: var(--lb-panel-text) !important;
+    border: 1px solid var(--lb-panel-border-soft) !important;
+    background: var(--lb-panel-soft) !important;
+    box-shadow: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .canvas-history-item:hover,
+    .shell-project-card:hover
+) {
+    border-color: var(--lb-panel-border) !important;
+    background: var(--lb-panel-hover) !important;
+    box-shadow: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .canvas-history-item.active {
+    border-color: rgba(10, 132, 255, .55) !important;
+    box-shadow: 0 0 0 1px rgba(10, 132, 255, .35) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .shell-project-card-title,
+    body #shellProjectHistoryModal .shell-project-card-title,
+    .canvas-history-item .canvas-history-title
+) {
+    color: var(--lb-panel-text) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .shell-project-card-detail,
+    .shell-project-card-time,
+    .shell-project-card-action
+) {
+    color: var(--lb-panel-text-muted) !important;
+    background: transparent !important;
+}html:is(.theme-dark, .studio-theme-dark) .shell-project-card-action:is(:hover, :focus-visible){
+    background: var(--lb-panel-hover) !important;
+    border-color: var(--lb-panel-border) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .shell-project-card-icon {
+    color: #7eb6ff !important;
+    background: rgba(10, 132, 255, .14) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .shell-project-card-rename-form {
+    color: var(--lb-panel-text) !important;
+    border-color: rgba(10, 132, 255, .45) !important;
+    background: var(--lb-panel-input) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .shell-project-history-error {
+    color: #ffb4b0 !important;
+    border-color: rgba(255, 120, 110, .28) !important;
+    background: rgba(255, 80, 70, .12) !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* Right chat dock panel (frame + conversation chrome)                */
+/* Bottom composer / input intentionally untouched.                   */
+/* ------------------------------------------------------------------ */
+
+html:is(.theme-dark, .studio-theme-dark) .gpt-dock::before {
+    border: 1px solid var(--lb-panel-border) !important;
+    background: var(--lb-panel) !important;
+    /* 1px 描边 + 轻投影 */
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .32) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .gpt-dock .dock-chrome {
+    color: var(--lb-panel-text) !important;
+    border-bottom: 1px solid transparent !important;
+    background: transparent !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .dock-chrome-title,
+    .gpt-dock .dock-chrome-title
+) {
+    color: var(--lb-panel-text) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .dock-chrome-btn,
+    .dock-chrome-title-chevron
+) {
+    color: var(--lb-panel-text-muted) !important;
+}html:is(.theme-dark, .studio-theme-dark) :is(
+    .dock-chrome-btn:not(:disabled):hover,
+    .dock-chrome-btn:not(:disabled):focus-visible,
+    .dock-chrome-title-chevron:hover,
+    .dock-chrome-title-chevron:focus-visible
+){
+    background: var(--lb-panel-hover) !important;
+    border-color: var(--lb-panel-border-soft) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .dock-chrome-title-menu {
+    color: var(--lb-panel-text) !important;
+    border: 1px solid var(--lb-panel-border) !important;
+    background: var(--lb-panel-raised) !important;
+    box-shadow: 0 22px 54px rgba(0, 0, 0, .4) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .dock-chrome-menu-new,
+    .dock-chrome-menu-item
+) {
+    color: var(--lb-panel-text) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .dock-chrome-menu-new:hover,
+    .dock-chrome-menu-item:hover,
+    .dock-chrome-menu-item:focus-within
+) {
+    background: var(--lb-panel-hover) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .dock-chrome-menu-item.is-active {
+    background: var(--lb-panel-active) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .dock-chrome-menu-item-time,
+    .dock-chrome-menu-empty,
+    .dock-chrome-menu-item-rename,
+    .dock-chrome-menu-item-delete
+) {
+    color: var(--lb-panel-text-muted) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .dock-chrome-menu-list {
+    border-top-color: var(--lb-panel-border-soft) !important;
+}
+
+/* Chat iframe surfaces (messages / chrome only). */
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode,
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode,
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell,
+html:is(.theme-dark, .studio-theme-dark) body.gpt-dock-canvas-mode,
+html:is(.theme-dark, .studio-theme-dark) body.gpt-dock-canvas-mode .chat-shell {
+    background: var(--lb-panel) !important;
+    color: var(--lb-panel-text) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    body.gpt-dock-canvas-mode .messages,
+    .gpt-dock-canvas-mode .messages,
+    .chat-shell .messages
+) {
+    background: transparent !important;
+    box-shadow: none !important;
+    color: var(--lb-panel-text) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .chat-shell .topbar,
+    body.gpt-dock-canvas-mode .topbar
+) {
+    color: var(--lb-panel-text) !important;
+    border-bottom-color: var(--lb-panel-border-soft) !important;
+    background: rgba(255, 255, 255, .03) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .chat-shell .bubble.assistant,
+    .chat-shell .bubble.assistant.dock-has-reply,
+    .history-popover,
+    .thread-item
+) {
+    color: var(--lb-panel-text) !important;
+    border-color: var(--lb-panel-border-soft) !important;
+    background: var(--lb-panel-raised) !important;
+    box-shadow: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .thread-item:is(:hover, .active, [aria-current="true"]) {
+    background: var(--lb-panel-hover) !important;
+    border-color: var(--lb-panel-border) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) :is(
+    .dock-turn-timing,
+    .dock-thinking-line,
+    .chat-shell .muted,
+    .chat-shell .meta
+) {
+    color: var(--lb-panel-text-muted) !important;
+    border-bottom-color: var(--lb-panel-border-soft) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .dock-thinking-line.is-typing {
+    color: var(--lb-panel-text-secondary) !important;
+}

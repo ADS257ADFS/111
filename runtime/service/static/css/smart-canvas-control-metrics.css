@@ -1,0 +1,246 @@
+/*
+ * Overlay menus (1st / 2nd / 3rd level) share one type + control scale.
+ * Nested pickers inherit the same tokens — do not invent a smaller private size.
+ */
+html body :is(
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .composer-submenu-stack,
+    .composer-submenu-section,
+    .smart-popover,
+    .size-picker-popover,
+    .iqt-dropdown-menu,
+    .selection-capsule-menu,
+    .selection-capsule-popover,
+    .selection-capsule-dropdown,
+    .node-context-menu,
+    .port-link-pick-menu,
+    .port-link-pick-shell,
+    .mention-picker,
+    .asset-category-menu,
+    .skill-menu,
+    .shell-user-menu,
+    .loop-number-popover,
+    .image-hd-popover,
+    .prompt-preset-panel,
+    .prompt-template-panel,
+    .video-reference-menu,
+    .create-menu,
+    .dock-chrome-menu,
+    .picker-modal
+) {
+    font-family: var(--ui-font) !important;
+    font-size: var(--ui-type-control) !important;
+    font-weight: var(--ui-weight-medium) !important;
+    line-height: var(--ui-leading-tight) !important;
+    letter-spacing: 0 !important;
+}
+
+html body :is(
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .composer-submenu-stack,
+    .smart-popover,
+    .size-picker-popover,
+    .iqt-dropdown-menu,
+    .selection-capsule-menu,
+    .selection-capsule-popover,
+    .node-context-menu,
+    .port-link-pick-menu,
+    .mention-picker,
+    .asset-category-menu,
+    .skill-menu,
+    .shell-user-menu,
+    .loop-number-popover,
+    .image-hd-popover,
+    .prompt-preset-panel,
+    .video-reference-menu,
+    .create-menu,
+    .dock-chrome-menu,
+    .picker-modal
+) :is(
+    button,
+    [role="menuitem"],
+    [role="option"],
+    .iqt-menu-action,
+    .iqt-menu-item,
+    .size-picker-option,
+    .direct-option,
+    .mode-model-choice,
+    .skill-menu-item,
+    .skill-menu-name,
+    .composer-submenu-label,
+    .smart-popover-title,
+    .create-card-title,
+    .shell-user-menu-item,
+    .dock-chrome-menu-item-open
+) {
+    font-family: inherit !important;
+    font-size: var(--ui-type-control) !important;
+    font-weight: var(--ui-weight-medium) !important;
+    line-height: var(--ui-leading-tight) !important;
+    letter-spacing: 0 !important;
+}
+
+html body :is(
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .smart-popover,
+    .iqt-dropdown-menu,
+    .skill-menu,
+    .create-menu,
+    .prompt-preset-panel
+) :is(.hint, small, .meta, .create-card-sub, .create-card-desc, .skill-menu-description, .size-picker-note, .skill-menu-state) {
+    font-size: var(--ui-type-meta) !important;
+    font-weight: var(--ui-weight-regular) !important;
+    line-height: var(--ui-leading-body) !important;
+}
+
+html body :is(
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .smart-popover,
+    .iqt-dropdown-menu,
+    .selection-capsule-menu,
+    .node-context-menu,
+    .skill-menu,
+    .shell-user-menu,
+    .mention-picker
+) :is(button, [role="menuitem"], .iqt-menu-action, .size-picker-option, .direct-option, .skill-menu-item, .shell-user-menu-item):is(:hover, :focus-visible):not(:disabled):not(.active):not(.selected):not(.is-current) {
+    background: var(--ui-hover);
+}
+
+html body :is(
+    #imageQuickToolbar.image-quick-toolbar button,
+    #imageQuickToolbar.image-quick-toolbar .iqt-menu-action,
+    #imageQuickToolbar.image-quick-toolbar .iqt-menu-item,
+    #selectionBoxCapsule .selection-capsule-btn,
+    #selectionBoxCapsule .selection-capsule-folder,
+    #selectionBoxCapsule .selection-capsule-menu button,
+    #selectionBoxCapsule .selection-capsule-popover button
+) {
+    font-family: var(--ui-font) !important;
+    font-size: var(--ui-type-control) !important;
+    font-weight: var(--ui-weight-medium) !important;
+    font-style: normal !important;
+    line-height: var(--ui-leading-tight) !important;
+    letter-spacing: 0 !important;
+    font-synthesis: none !important;
+    font-variant-numeric: tabular-nums !important;
+}
+
+html body :is(
+    #imageQuickToolbar.image-quick-toolbar button,
+    #imageQuickToolbar.image-quick-toolbar .iqt-menu-action,
+    #imageQuickToolbar.image-quick-toolbar .iqt-menu-item,
+    #selectionBoxCapsule .selection-capsule-btn,
+    #selectionBoxCapsule .selection-capsule-folder,
+    #selectionBoxCapsule .selection-capsule-menu button,
+    #selectionBoxCapsule .selection-capsule-popover button
+) > span {
+    font: inherit !important;
+    line-height: inherit !important;
+    letter-spacing: inherit !important;
+}
+
+html body :is(
+    #imageQuickToolbar.image-quick-toolbar button,
+    #imageQuickToolbar.image-quick-toolbar .iqt-menu-action,
+    #imageQuickToolbar.image-quick-toolbar .iqt-menu-item,
+    #selectionBoxCapsule .selection-capsule-btn,
+    #selectionBoxCapsule .selection-capsule-folder,
+    #selectionBoxCapsule .selection-capsule-menu button,
+    #selectionBoxCapsule .selection-capsule-popover button
+) :is(svg, i, i > svg):not(.iqt-dropdown-chevron) {
+    width: var(--ui-icon) !important;
+    height: var(--ui-icon) !important;
+    flex: 0 0 var(--ui-icon) !important;
+    color: currentColor !important;
+    stroke: currentColor !important;
+    stroke-width: var(--ui-icon-stroke) !important;
+}
+
+html body #imageQuickToolbar.image-quick-toolbar .image-action-hd-icon {
+    width: var(--ui-icon) !important;
+    height: var(--ui-icon) !important;
+    flex: 0 0 var(--ui-icon) !important;
+}
+
+/*
+ * Light port-link picker geometry and copy motion.
+ * Compact metrics and title/description choreography; colours stay tokenized.
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-menu {
+    width:232px !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-shell {
+    padding:calc(var(--ui-space-4) + 2px) var(--ui-space-4) var(--ui-space-4) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-item:not(:disabled) {
+    padding:var(--ui-space-2) var(--ui-space-3) var(--ui-space-2) var(--ui-space-2) !important;
+    transform:none !important;
+    animation:none !important;
+    transition:
+        background-color .12s ease, border-color .12s ease, box-shadow .12s ease !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-inner {
+    gap:var(--ui-space-1);
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-list {
+    gap:var(--ui-space-1);
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-divider {
+    margin-block:var(--ui-space-1);
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-icon {
+    min-height:32px;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-copy {
+    position:relative;
+    justify-content:center;
+    gap:0;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-title-row {
+    transform:translateY(0);
+    transition:transform .16s ease !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-desc {
+    position:absolute;
+    top:50%;
+    right:0;
+    left:0;
+    margin-top:2px;
+    overflow:hidden;
+    opacity:0;
+    transform:translateY(4px);
+    pointer-events:none;
+    transition:opacity .14s ease, transform .16s ease !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled):is(:hover, :focus-visible, .is-hover) {
+    transform:none !important;
+    animation:none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled):is(:hover, :focus-visible, .is-hover)
+    .port-link-pick-title-row {
+    transform:translateY(-7px);
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+    .port-link-pick-item:not(:disabled):is(:hover, :focus-visible, .is-hover)
+    .port-link-pick-desc {
+    opacity:1;
+    transform:translateY(0);
+}

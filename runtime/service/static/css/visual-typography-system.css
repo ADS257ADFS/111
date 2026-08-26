@@ -1,0 +1,3727 @@
+/*
+ * Guanghe typography and icon hierarchy
+ * Visual-only layer. It intentionally does not change component dimensions,
+ * positioning, DOM structure, interaction logic, or responsive layout.
+ */
+
+/* --gh-* 已别名化为 --ui-*（design-tokens.css 为唯一真相源，见 docs/DESIGN_SYSTEM.md §5） */
+:root {
+    --gh-font-ui: var(--ui-font);
+    --gh-font-mono: var(--ui-font-mono);
+
+    --gh-ink-strong: var(--ui-text);
+    --gh-ink-primary: var(--ui-text-secondary);
+    --gh-ink-secondary: var(--ui-text-muted);
+    --gh-ink-disabled: var(--ui-text-disabled);
+    --gh-ink-accent: var(--ui-accent);
+    --gh-ink-on-accent: var(--ui-text-on-accent);
+
+    --gh-type-display: var(--ui-type-display);
+    --gh-type-page: var(--ui-type-page);
+    --gh-type-panel: var(--ui-type-panel);
+    --gh-type-section: var(--ui-type-section);
+    --gh-type-body: var(--ui-type-body);
+    --gh-type-control: var(--ui-type-control);
+    --gh-type-meta: var(--ui-type-meta);
+    --gh-type-micro: var(--ui-type-micro);
+
+    --gh-weight-regular: var(--ui-weight-regular);
+    --gh-weight-medium: var(--ui-weight-medium);
+    --gh-weight-semibold: var(--ui-weight-semibold);
+
+    --gh-icon-primary: var(--ui-icon-lg);
+    --gh-icon-control: var(--ui-icon);
+    --gh-icon-meta: var(--ui-icon-sm);
+    --gh-icon-stroke: var(--ui-icon-stroke);
+}
+
+html.theme-dark,
+html.studio-theme-dark,
+body.theme-dark,
+body.studio-theme-dark {
+    --gh-ink-strong: var(--ui-text);
+    --gh-ink-primary: var(--ui-text-secondary);
+    --gh-ink-secondary: var(--ui-text-muted);
+    --gh-ink-disabled: var(--ui-text-disabled);
+}
+
+/* Shared font rendering -------------------------------------------------- */
+
+:where(
+    .app-shell,
+    #shell,
+    .chat-shell,
+    .page,
+    .shell-settings-dialog,
+    .shell-project-history-dialog,
+    .shell-user-menu,
+    .asset-panel
+) {
+    font-family: var(--gh-font-ui) !important;
+    color: var(--gh-ink-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+}/* Never change weight on hover: it causes text width and chrome to jump. */
+:where(
+    .floating-toolbar .tool-button,
+    .floating-toolbar .tool-main-button,
+    .composer-tool-btn,
+    .composer-kind-toggle button,
+    .shell-user-menu-item,
+    .asset-tab,
+    .asset-folder-action-btn,
+    .shell-project-history-filters button,
+    .shell-project-history-sort,
+    .action-btn,
+    .thread-item,
+    .attach-btn,
+    .skill-menu-item
+):hover,
+/* Never change weight on hover: it causes text width and chrome to jump. */
+:where(
+    .floating-toolbar .tool-button,
+    .floating-toolbar .tool-main-button,
+    .composer-tool-btn,
+    .composer-kind-toggle button,
+    .shell-user-menu-item,
+    .asset-tab,
+    .asset-folder-action-btn,
+    .shell-project-history-filters button,
+    .shell-project-history-sort,
+    .action-btn,
+    .thread-item,
+    .attach-btn,
+    .skill-menu-item
+):focus-visible,
+/* Never change weight on hover: it causes text width and chrome to jump. */
+:where(
+    .floating-toolbar .tool-button,
+    .floating-toolbar .tool-main-button,
+    .composer-tool-btn,
+    .composer-kind-toggle button,
+    .shell-user-menu-item,
+    .asset-tab,
+    .asset-folder-action-btn,
+    .shell-project-history-filters button,
+    .shell-project-history-sort,
+    .action-btn,
+    .thread-item,
+    .attach-btn,
+    .skill-menu-item
+):active{
+}
+/* Never change weight on hover: it causes text width and chrome to jump. */
+:where(
+    .floating-toolbar .tool-button,
+    .floating-toolbar .tool-main-button,
+    .composer-tool-btn,
+    .composer-kind-toggle button,
+    .shell-user-menu-item,
+    .asset-tab,
+    .asset-folder-action-btn,
+    .shell-project-history-filters button,
+    .shell-project-history-sort,
+    .action-btn,
+    .thread-item,
+    .attach-btn,
+    .skill-menu-item
+):active{font-weight: inherit !important;}
+
+/* Shared icon drawing ---------------------------------------------------- */
+
+:where(
+    .floating-toolbar,
+    .image-quick-toolbar,
+    .selection-capsule-bar,
+    .composer-card,
+    .create-menu,
+    .asset-panel,
+    .shell-user-menu,
+    .shell-project-history-dialog,
+    .shell-settings-dialog,
+    .chat-shell
+) :where(svg, [data-lucide]) {
+    color: currentColor;
+    stroke: currentColor;
+    stroke-width: var(--gh-icon-stroke);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* A02 — left primary toolbar -------------------------------------------- */
+
+.floating-toolbar :where(.tool-button, .tool-main-button) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+.floating-toolbar :where(.tool-button, .tool-main-button) > :where(svg, i) {
+    width: var(--gh-icon-primary) !important;
+    height: var(--gh-icon-primary) !important;
+    color: currentColor !important;
+    stroke: currentColor !important;
+}
+
+.floating-toolbar .tool-button[data-canvas-main="1"].active {
+    color: var(--gh-ink-on-accent) !important;
+}
+
+.floating-toolbar :where(.tool-button, .tool-main-button):disabled {
+    color: var(--gh-ink-disabled) !important;
+}
+
+/* B01/B02 — image and selection toolbar icons ---------------------------- */
+
+/*
+ * Keep both floating action toolbars on the browser's native control
+ * typography. This deliberately breaks inheritance from #shell's visual
+ * typography layer so the controls show their true default font metrics.
+ */
+:where(
+    #imageQuickToolbar button,
+    #imageQuickToolbar .iqt-menu-action,
+    #imageQuickToolbar .iqt-menu-item,
+    #selectionBoxCapsule .selection-capsule-btn,
+    #selectionBoxCapsule .selection-capsule-folder,
+    #selectionBoxCapsule .selection-capsule-menu button,
+    #selectionBoxCapsule .selection-capsule-popover button
+) {
+    font: revert !important;
+    letter-spacing: revert !important;
+    font-synthesis: revert !important;
+    text-rendering: revert !important;
+    -webkit-font-smoothing: revert !important;
+    -moz-osx-font-smoothing: revert !important;
+}
+
+:where(.image-quick-toolbar button, .selection-capsule-btn) :where(svg, i) {
+    width: var(--gh-icon-control) !important;
+    height: var(--gh-icon-control) !important;
+    color: currentColor !important;
+    stroke: currentColor !important;
+}
+
+/* C01–C09 — generation composer ----------------------------------------- */
+
+.composer-card {
+    color: var(--gh-ink-primary) !important;
+}
+
+.composer-card-topbar :where(button, .composer-kind-toggle button) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+.composer-card-topbar :where(button.active, button[aria-pressed="true"]) {
+    color: var(--gh-ink-strong) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}#composerKindTopbar #apiKindToggle.composer-kind-toggle button.active,
+#composerKindTopbar #apiKindToggle.composer-kind-toggle button.active:hover,
+#composerKindTopbar #apiKindToggle.composer-kind-toggle button.active:focus-visible{
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+    animation: none !important;
+}
+#composerKindTopbar #apiKindToggle.composer-kind-toggle button.active{color: #fff !important;}#composerKindTopbar #apiKindToggle.composer-kind-toggle button.active :is(i, svg),
+#composerKindTopbar #apiKindToggle.composer-kind-toggle button.active:hover :is(i, svg){
+    stroke: #fff !important;
+}
+#composerKindTopbar #apiKindToggle.composer-kind-toggle button.active :is(i, svg){color: #fff !important;}
+
+.composer-card .prompt-input {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-section) !important;
+    line-height: 1.65 !important;
+    font-weight: var(--gh-weight-regular) !important;
+    letter-spacing: 0 !important;
+}
+
+.composer-card .prompt-input:empty::before,
+.composer-card .prompt-input::placeholder {
+    color: var(--gh-ink-secondary) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+:where(
+    .composer-footer .composer-tool-btn,
+    .composer-footer button,
+    .composer-tool-popover button,
+    .composer-api-settings-popover button
+) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    line-height: 1.2 !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+:where(
+    .composer-footer .composer-tool-btn,
+    .composer-footer button,
+    .composer-tool-popover button,
+    .composer-api-settings-popover button
+) :where(svg, i) {
+    width: var(--gh-icon-control) !important;
+    height: var(--gh-icon-control) !important;
+}
+
+.composer-card :where(
+    .composer-size-panel,
+    .composer-quality-panel,
+    .composer-count-panel,
+    .composer-video-reference-panel
+) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+.composer-card :where(
+    .composer-param-title,
+    .composer-section-title,
+    .composer-tool-popover-title
+) {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+.composer-card :where(small, .hint, .meta, [class*="-hint"]) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-micro) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+.composer-card .run-btn {
+    color: var(--gh-ink-on-accent) !important;
+}
+
+/* B03/B04 — create menu and secondary menus ------------------------------ */
+
+.create-menu {
+    color: var(--gh-ink-primary) !important;
+}
+
+.create-menu :where(.create-menu-title, .create-section-title, .create-menu-kicker) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+.create-card-title {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-section) !important;
+    line-height: 1.25 !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+:where(.create-card-sub, .create-card-desc) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    line-height: var(--ui-leading-body) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+.create-card:disabled :where(.create-card-title, .create-card-sub, .create-card-desc, svg) {
+    color: var(--gh-ink-disabled) !important;
+    stroke: currentColor !important;
+}
+
+/* Overlay menus — 一级 / 二级 / 三级同一字阶，禁止私有 10.5px 半档 */
+:where(
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .composer-submenu-stack,
+    .smart-popover,
+    .size-picker-popover,
+    .iqt-dropdown-menu,
+    .selection-capsule-menu,
+    .selection-capsule-popover,
+    .node-context-menu,
+    .port-link-pick-menu,
+    .mention-picker,
+    .asset-category-menu,
+    .skill-menu,
+    .shell-user-menu,
+    .loop-number-popover,
+    .image-hd-popover,
+    .prompt-preset-panel,
+    .video-reference-menu,
+    .dock-chrome-menu,
+    .picker-modal
+) :where(
+    button,
+    [role="menuitem"],
+    [role="option"],
+    .iqt-menu-action,
+    .iqt-menu-item,
+    .size-picker-option,
+    .direct-option,
+    .mode-model-choice,
+    .skill-menu-item,
+    .skill-menu-name,
+    .composer-submenu-label,
+    .smart-popover-title,
+    .shell-user-menu-item,
+    .dock-chrome-menu-item-open
+) {
+    font-size: var(--ui-type-control) !important;
+    font-weight: var(--ui-weight-medium) !important;
+    line-height: var(--ui-leading-tight) !important;
+    letter-spacing: 0 !important;
+}
+
+:where(
+    .composer-tool-popover,
+    .smart-popover,
+    .skill-menu,
+    .create-menu,
+    .prompt-preset-panel,
+    .picker-modal
+) :where(.hint, small, .meta, .skill-menu-description, .size-picker-note, .skill-menu-state, .picker-count) {
+    font-size: var(--ui-type-meta) !important;
+    font-weight: var(--ui-weight-regular) !important;
+    line-height: var(--ui-leading-body) !important;
+}
+
+/* D01–D12 — canvas nodes ------------------------------------------------- */
+
+#shell :where(.node-title, .node-type-label, .node-kicker) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    line-height: 1.25 !important;
+    font-weight: var(--gh-weight-medium) !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+}
+
+#shell :where(.upload-node-title, .node-panel-title) {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-body) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+#shell :where(.upload-node-sub, .node-description, .node-meta) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+#shell .prompt-node-text {
+    color: var(--gh-ink-primary) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+#shell .prompt-node-text::placeholder {
+    color: var(--gh-ink-secondary) !important;
+}
+
+#shell :where(.prompt-node-pill, .prompt-node-run, .prompt-node-font-size-control) {
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+#shell :where(.prompt-node-pill, .prompt-node-font-size-control) {
+    color: var(--gh-ink-primary) !important;
+}
+
+#shell .prompt-node-run {
+    color: var(--gh-ink-on-accent) !important;
+}
+
+#shell .image-node :where(.node-empty-icon, .media-placeholder-icon, .empty-node-icon) svg {
+    stroke-width: var(--gh-icon-stroke) !important;
+}
+
+/* A04 — asset library ---------------------------------------------------- */
+
+.asset-panel .asset-title {
+    color: #50565e !important;
+    font-size:14px !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+.asset-panel .asset-title svg {
+    width: var(--gh-icon-primary) !important;
+    height: var(--gh-icon-primary) !important;
+}
+
+.asset-panel .asset-tab {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+.asset-panel .asset-tab.active {
+    color: var(--gh-ink-strong) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+.asset-panel :where(
+    .asset-folder-action-btn,
+    .asset-folder-back-btn,
+    .asset-grid-size-btn,
+    .asset-mini-btn
+) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+.asset-panel :where(
+    .asset-folder-name,
+    .asset-card-title,
+    .asset-prompt-main span,
+    .asset-dialog-title
+) {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+.asset-panel :where(
+    .asset-folder-meta,
+    .asset-card-meta,
+    .asset-prompt-main small,
+    .asset-hover-name,
+    .asset-drop-zone
+) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+.asset-panel :where(input, textarea, select) {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+.asset-panel :where(input, textarea)::placeholder {
+    color: var(--gh-ink-secondary) !important;
+}
+
+/* A03 — user center ------------------------------------------------------ */
+
+.shell-user-menu {
+    color: var(--gh-ink-primary) !important;
+}
+
+.shell-user-name-caption {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-micro) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+#shellUserNameInput {
+    color: var(--gh-ink-strong) !important;
+    font-size:14px !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+.shell-user-points-head {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-section) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+.shell-user-points-meta {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-micro) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+.shell-user-menu-item {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-body) !important;
+    line-height: 1.2 !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+.shell-user-menu-item.is-current {
+    color: var(--gh-ink-strong) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+.shell-user-menu-item :where(small, .shell-user-menu-chevron) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+.shell-user-menu-item-icon {
+    color: var(--gh-ink-primary) !important;
+}
+
+.shell-user-menu-item-icon svg {
+    width: var(--gh-icon-control) !important;
+    height: var(--gh-icon-control) !important;
+}
+
+/* A05 — history projects ------------------------------------------------- */
+
+.shell-project-history-head h2 {
+    color: #50565e !important;
+    font-size: 16px !important;
+    font-weight: var(--gh-weight-semibold) !important;
+    letter-spacing: 0 !important;
+}
+
+#shellProjectHistoryCount {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+:where(
+    .shell-project-history-filters button,
+    .shell-project-history-sort
+) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+.shell-project-history-search,
+.shell-project-history-search input {
+    color: var(--gh-ink-primary) !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+}
+
+.shell-project-history-search input::placeholder {
+    color: #9299a2 !important;
+    font-weight: 400 !important;
+    opacity: 1 !important;
+}
+
+.shell-project-history-filters button.active {
+    color: var(--gh-ink-strong) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+.shell-project-history-item :where(
+    .shell-project-history-item-title,
+    .shell-project-history-card-title,
+    h3
+) {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-body) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+.shell-project-history-item :where(
+    .shell-project-history-item-type,
+    .shell-project-history-item-meta,
+    .shell-project-history-card-meta,
+    small,
+    time
+) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+/* Settings and modal hierarchy ------------------------------------------ */
+
+:where(.shell-settings-title, .log-title, .shortcut-title, .image-edit-title) {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-panel) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+:where(
+    .shell-settings-nav-btn,
+    .shell-settings-cancel-btn,
+    .preview-icon-btn,
+    .image-edit-btn,
+    .shortcut-item,
+    .storage-location-btn
+) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html body .shell-settings-nav .shell-settings-nav-btn {
+    color: #697077 !important;
+    font-weight:445 !important;
+}
+
+html body .shell-settings-nav .shell-settings-nav-btn svg,
+html body .shell-settings-nav .shell-settings-nav-btn i {
+    color: inherit !important;
+}
+
+html body .shell-settings-nav .shell-settings-nav-btn.active {
+    color: var(--ui-accent) !important;
+    font-weight:445 !important;
+}
+
+html body .shell-settings-nav .shell-settings-logout-btn {
+    font-weight:445 !important;
+}
+
+:where(.image-edit-sub, .storage-location-size, .storage-location-status) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+/* Account center hierarchy ---------------------------------------------- */
+
+.shell-settings-account-pane .shell-settings-section-head h2 {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-panel) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+.shell-settings-account-pane .shell-settings-section-head p,
+.shell-settings-account-pane .shell-account-card-head p,
+.shell-settings-account-pane .shell-account-identity-meta span,
+.shell-settings-account-pane .shell-account-balance small,
+.shell-settings-account-pane .shell-account-balance-value span,
+.shell-settings-account-pane .shell-recharge-summary-hero > span,
+.shell-settings-account-pane .shell-recharge-summary-amount span,
+.shell-settings-account-pane .shell-recharge-summary-meta dt,
+.shell-settings-account-pane .shell-account-quick-copy span,
+.shell-settings-account-pane .shell-account-services-head p,
+.shell-settings-account-pane .shell-account-status,
+.shell-settings-account-pane .shell-recharge-summary > small {
+    color: var(--gh-ink-secondary) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+.shell-settings-account-pane .shell-account-identity-meta strong,
+.shell-settings-account-pane .shell-account-card-head h3,
+.shell-settings-account-pane .shell-account-balance-value strong,
+.shell-settings-account-pane .shell-recharge-summary-amount strong {
+    color: var(--gh-ink-strong) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+.shell-settings-account-pane .shell-recharge-step-label label,
+.shell-settings-account-pane .shell-recharge-step-label h4,
+.shell-settings-account-pane .shell-account-services-head h3,
+.shell-settings-account-pane .shell-account-quick-copy strong,
+.shell-settings-account-pane .shell-recharge-summary-meta dd,
+.shell-settings-account-pane .shell-recharge-presets button,
+.shell-settings-account-pane .shell-recharge-summary > button {
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+.shell-settings-account-pane .shell-recharge-step-label label,
+.shell-settings-account-pane .shell-recharge-step-label h4,
+.shell-settings-account-pane .shell-account-services-head h3,
+.shell-settings-account-pane .shell-recharge-presets button {
+    color: var(--gh-ink-primary) !important;
+}
+
+.shell-settings-account-pane .shell-recharge-presets button.active,
+.shell-settings-account-pane .shell-recharge-summary > button {
+    color: var(--gh-ink-on-accent) !important;
+}
+
+.shell-settings-account-pane .shell-recharge-presets button,
+.shell-settings-account-pane .shell-recharge-presets button.active,
+.shell-settings-account-pane .shell-recharge-summary > button,
+.shell-settings-account-pane .shell-account-quick-action,
+.shell-settings-account-pane .shell-account-quick-action:hover {
+    box-shadow: none !important;
+}
+
+/* API settings ----------------------------------------------------------- */
+
+.page .page-head .title {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-page) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+.page .page-head :where(.sub, .status) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+.page :where(.provider-name, .picker-model-name, .recommend-name) {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-body) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+.page :where(.label, .picker-other-tag, .recommend-tag, .recommend-badge) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+/* A07 — right conversation panel ---------------------------------------- */
+
+.chat-shell {
+    color: var(--gh-ink-primary) !important;
+}
+
+.chat-shell .title-block h1 {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-section) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+}
+
+.chat-shell .title-block p {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-micro) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+.chat-shell .action-btn {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+    letter-spacing: 0 !important;
+}
+
+.chat-shell .bubble {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-section) !important;
+    line-height: 1.72 !important;
+    font-weight: var(--gh-weight-regular) !important;
+    letter-spacing: 0 !important;
+}
+
+.chat-shell :where(
+    .dock-turn-timing-label,
+    .dock-message-sources-label,
+    .dock-message-source-chip
+) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+.chat-shell :where(.thread-item, .skill-menu-item) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+.chat-shell :where(.skill-menu-name, .thread-title) {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+.chat-shell :where(.skill-menu-description, .thread-meta, .skill-menu-head) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-micro) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+.chat-shell :where(
+    #messageInput,
+    .composer textarea,
+    .composer input
+) {
+    color: var(--gh-ink-strong) !important;
+    font-family: var(--gh-font-ui) !important;
+    font-size: var(--gh-type-body) !important;
+    line-height: 1.6 !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+.chat-shell :where(
+    #messageInput,
+    .composer textarea,
+    .composer input
+)::placeholder {
+    color: var(--gh-ink-secondary) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+.chat-shell :where(
+    .mode-switch button,
+    .provider-switch button,
+    .provider-select,
+    .mini-ratio button,
+    .resolution-option,
+    .dock-api-btn
+) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-micro) !important;
+    font-weight: var(--gh-weight-medium) !important;
+    letter-spacing: 0 !important;
+}
+
+.chat-shell :where(
+    .mode-switch button.active,
+    .provider-switch button.active,
+    .mini-ratio button.active,
+    .resolution-option.active
+) {
+    color: var(--gh-ink-strong) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+.chat-shell :where(.send-btn, .thread-item.active, .thread-action.active) {
+    color: var(--gh-ink-on-accent) !important;
+}
+
+/* Disabled state is deliberately quiet everywhere. */
+:where(
+    #shell,
+    .app-shell,
+    .chat-shell,
+    .page
+) :where(button, [role="button"], [role="menuitem"], [role="tab"]):disabled {
+    color: var(--gh-ink-disabled) !important;
+}
+
+/*
+ * Specificity bridge
+ * ------------------
+ * The application still contains several late legacy selectors with
+ * !important declarations.  These rules deliberately repeat the typography
+ * contract with stronger component scope so the values above are the actual
+ * computed values, not merely design tokens.
+ */
+
+html body .floating-toolbar.floating-toolbar :is(.tool-button, .tool-main-button) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html body .app-shell .floating-toolbar.floating-toolbar :is(.tool-button, .tool-main-button) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}html body .app-shell .floating-toolbar.floating-toolbar :is(
+    .tool-button,
+    .tool-main-button
+):hover,
+html body .app-shell .floating-toolbar.floating-toolbar :is(
+    .tool-button,
+    .tool-main-button
+):focus-visible,
+html body .app-shell .floating-toolbar.floating-toolbar :is(
+    .tool-button,
+    .tool-main-button
+):active,
+html body .app-shell .floating-toolbar.floating-toolbar :is(
+    .tool-button,
+    .tool-main-button
+)[aria-pressed="true"]{
+}
+html body .app-shell .floating-toolbar.floating-toolbar :is(
+    .tool-button,
+    .tool-main-button
+):active,
+html body .app-shell .floating-toolbar.floating-toolbar :is(
+    .tool-button,
+    .tool-main-button
+)[aria-pressed="true"]{font-weight: var(--gh-weight-medium) !important;}html body .floating-toolbar.floating-toolbar :is(.tool-button, .tool-main-button):hover,
+html body .floating-toolbar.floating-toolbar :is(.tool-button, .tool-main-button):focus-visible,
+html body .floating-toolbar.floating-toolbar :is(.tool-button, .tool-main-button):active,
+html body .floating-toolbar.floating-toolbar :is(.tool-button, .tool-main-button)[aria-pressed="true"]{
+}
+html body .floating-toolbar.floating-toolbar :is(.tool-button, .tool-main-button):active,
+html body .floating-toolbar.floating-toolbar :is(.tool-button, .tool-main-button)[aria-pressed="true"]{font-weight: var(--gh-weight-medium) !important;}
+
+html body #imageQuickToolbar.image-quick-toolbar button :is(svg, i),
+html body #selectionBoxCapsule .selection-capsule-btn :is(svg, i) {
+    width: var(--gh-icon-control) !important;
+    height: var(--gh-icon-control) !important;
+    color: currentColor !important;
+    stroke: currentColor !important;
+    stroke-width: 1.7 !important;
+}
+
+html body .shell #composer .composer-card-topbar button {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html body #shell.shell #composer .composer-card-topbar button {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}html body .shell #composer .composer-card-topbar button:hover,
+html body .shell #composer .composer-card-topbar button:focus-visible,
+html body .shell #composer .composer-card-topbar button:active,
+html body .shell #composer .composer-card-topbar button.active,
+html body .shell #composer .composer-card-topbar button[aria-pressed="true"]{
+}
+html body .shell #composer .composer-card-topbar button:active,
+html body .shell #composer .composer-card-topbar button.active,
+html body .shell #composer .composer-card-topbar button[aria-pressed="true"]{font-weight: var(--gh-weight-medium) !important;}
+html body .shell #composer .composer-card-topbar button:active,
+html body .shell #composer .composer-card-topbar button.active,
+html body .shell #composer .composer-card-topbar button[aria-pressed="true"]{color: var(--gh-ink-strong) !important;}
+
+html body .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover,
+html body .shell #composer .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active {
+    color: #fff !important;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+html body .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover),
+html body .shell #composer .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active {
+    color: #747b85 !important;
+    background: transparent !important;
+}
+
+html body .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover :is(i, svg, span),
+html body .shell #composer .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active :is(i, svg, span) {
+    color: #fff !important;
+}
+
+html body .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover :is(i, svg),
+html body .shell #composer .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active :is(i, svg) {
+    color: #fff !important;
+    stroke: #fff !important;
+}
+
+html body .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover) :is(i, svg, span),
+html body .shell #composer .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active :is(i, svg, span) {
+    color: #747b85 !important;
+}
+
+html body .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover) :is(i, svg),
+html body .shell #composer .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active :is(i, svg) {
+    color: #747b85 !important;
+    stroke: #747b85 !important;
+}
+
+html body .shell #composer .prompt-input {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-section) !important;
+    line-height: 1.65 !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+html body #shell.shell #composer .prompt-input {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-section) !important;
+    line-height: 1.65 !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+html body .shell #composer .composer-footer .composer-tool-btn,
+html body .shell #composer .composer-footer button:not(.run-btn) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html body #shell.shell #composer .composer-footer .composer-tool-btn,
+html body #shell.shell #composer .composer-footer button:not(.run-btn) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}html body .shell #composer .composer-footer :is(
+    .composer-tool-btn,
+    button:not(.run-btn)
+):hover,
+html body .shell #composer .composer-footer :is(
+    .composer-tool-btn,
+    button:not(.run-btn)
+):focus-visible,
+html body .shell #composer .composer-footer :is(
+    .composer-tool-btn,
+    button:not(.run-btn)
+):active,
+html body .shell #composer .composer-footer :is(
+    .composer-tool-btn,
+    button:not(.run-btn)
+).active,
+html body .shell #composer .composer-footer :is(
+    .composer-tool-btn,
+    button:not(.run-btn)
+)[aria-pressed="true"]{
+}
+html body .shell #composer .composer-footer :is(
+    .composer-tool-btn,
+    button:not(.run-btn)
+):active,
+html body .shell #composer .composer-footer :is(
+    .composer-tool-btn,
+    button:not(.run-btn)
+).active,
+html body .shell #composer .composer-footer :is(
+    .composer-tool-btn,
+    button:not(.run-btn)
+)[aria-pressed="true"]{font-weight: var(--gh-weight-medium) !important;}
+html body .shell #composer .composer-footer :is(
+    .composer-tool-btn,
+    button:not(.run-btn)
+):active,
+html body .shell #composer .composer-footer :is(
+    .composer-tool-btn,
+    button:not(.run-btn)
+).active,
+html body .shell #composer .composer-footer :is(
+    .composer-tool-btn,
+    button:not(.run-btn)
+)[aria-pressed="true"]{color: var(--gh-ink-strong) !important;}
+
+html body .shell #composer .composer-footer :is(
+    .composer-tool-btn,
+    button
+) :is(svg, i) {
+    width: var(--gh-icon-control) !important;
+    height: var(--gh-icon-control) !important;
+    stroke-width: var(--gh-icon-stroke) !important;
+}
+
+html body #assetPanel.asset-panel .asset-title {
+    color: #50565e !important;
+    font-size:14px !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+html body #assetPanel.asset-panel .asset-tab {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}html body #assetPanel.asset-panel .asset-tab:hover,
+html body #assetPanel.asset-panel .asset-tab:focus-visible,
+html body #assetPanel.asset-panel .asset-tab:active,
+html body #assetPanel.asset-panel .asset-tab.active,
+html body #assetPanel.asset-panel .asset-tab[aria-selected="true"]{
+}
+html body #assetPanel.asset-panel .asset-tab:active,
+html body #assetPanel.asset-panel .asset-tab.active,
+html body #assetPanel.asset-panel .asset-tab[aria-selected="true"]{font-weight: var(--gh-weight-semibold) !important;}
+html body #assetPanel.asset-panel .asset-tab:active,
+html body #assetPanel.asset-panel .asset-tab.active,
+html body #assetPanel.asset-panel .asset-tab[aria-selected="true"]{color: var(--gh-ink-strong) !important;}
+
+html body #assetPanel.asset-panel :is(
+    .asset-name,
+    .asset-prompt-main span,
+    .asset-dialog-title
+) {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+html body #assetPanel.asset-panel .asset-folder-card-name {
+    color: var(--gh-ink-primary) !important;
+    font-size: 12px !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html body #assetPanel.asset-panel :is(
+    .asset-folder-card-kicker,
+    .asset-folder-card-count,
+    .asset-card-kind,
+    .asset-prompt-main small,
+    .asset-folder-section-count,
+    .asset-drop-zone
+) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}html body #shellUserMenu.shell-user-menu .shell-user-menu-item,
+html body #shellUserMenu.shell-user-menu .shell-user-menu-item:hover,
+html body #shellUserMenu.shell-user-menu .shell-user-menu-item:focus-visible,
+html body #shellUserMenu.shell-user-menu .shell-user-menu-item:active,
+html body #shellUserMenu.shell-user-menu .shell-user-menu-item.is-current{
+    font-size: var(--gh-type-body) !important;
+}
+html body #shellUserMenu.shell-user-menu .shell-user-menu-item,
+html body #shellUserMenu.shell-user-menu .shell-user-menu-item:active,
+html body #shellUserMenu.shell-user-menu .shell-user-menu-item.is-current{color: var(--gh-ink-primary) !important; font-weight: var(--gh-weight-medium) !important;}
+
+html body #shellUserMenu.shell-user-menu .shell-user-menu-item.is-current {
+    color: var(--gh-ink-strong) !important;
+}
+
+html body #shellProjectHistoryModal .shell-project-history-head h2 {
+    color: var(--gh-ink-strong) !important;
+    font-size:14px !important;
+    font-weight: var(--gh-weight-semibold) !important;
+    line-height: 1.25 !important;
+    letter-spacing: .01em !important;
+}
+
+html body #shellProjectHistoryModal .shell-project-history-head span {
+    color: var(--gh-ink-secondary) !important;
+    font-size: 12px !important;
+    font-weight: var(--gh-weight-regular) !important;
+    line-height: 1.3 !important;
+    font-variant-numeric: tabular-nums !important;
+}
+
+html body #shellProjectHistoryModal :is(
+    .shell-project-history-filters button,
+    .shell-project-history-sort
+) {
+    color: var(--gh-ink-primary) !important;
+    font-size:12px !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html body #shellProjectHistoryModal .shell-project-history-search,
+html body #shellProjectHistoryModal .shell-project-history-search input {
+    color: var(--gh-ink-strong) !important;
+    font-size:12px !important;
+    font-weight: 400 !important;
+}
+
+html body #shellProjectHistoryModal .shell-project-history-search input::placeholder {
+    color: var(--gh-ink-secondary) !important;
+    font-weight: 400 !important;
+    opacity: 1 !important;
+}/* Hover keeps the resting weight so pill text never reflows. */
+html body #shellProjectHistoryModal .shell-project-history-filters button:hover,
+/* Hover keeps the resting weight so pill text never reflows. */
+html body #shellProjectHistoryModal .shell-project-history-filters button:focus-visible,
+/* Hover keeps the resting weight so pill text never reflows. */
+html body #shellProjectHistoryModal .shell-project-history-filters button:active{
+}
+/* Hover keeps the resting weight so pill text never reflows. */
+html body #shellProjectHistoryModal .shell-project-history-filters button:active{font-weight: var(--gh-weight-medium) !important;}
+/* Hover keeps the resting weight so pill text never reflows. */
+html body #shellProjectHistoryModal .shell-project-history-filters button:active{color: var(--gh-ink-strong) !important;}
+
+html body #shellProjectHistoryModal .shell-project-history-filters button.active {
+    color: #fff !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+html body #shellProjectHistoryModal .shell-project-card-title {
+    color: var(--gh-ink-strong) !important;
+    font-size:13px !important;
+    font-weight: var(--gh-weight-semibold) !important;
+    line-height: 1.4 !important;
+}
+
+html body #shellProjectHistoryModal :is(
+    .shell-project-card-category,
+    .shell-project-card-type,
+    .shell-project-card-detail,
+    .shell-project-card-time
+) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-regular) !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+}
+
+html body #shellProjectHistoryModal .shell-project-card-category {
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html body #shellProjectHistoryModal .shell-project-card-nodes {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html body #shellProjectHistoryModal :is(
+    .shell-project-card-time,
+    .shell-project-card-nodes
+) {
+    font-variant-numeric: tabular-nums !important;
+}
+
+html body #shell .node-type-label {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html body #shell :is(.upload-node-title, .node-panel-title) {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-body) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+html body #shell :is(.upload-node-sub, .node-description, .node-meta) {
+    color: var(--gh-ink-secondary) !important;
+    font-size: var(--gh-type-meta) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+html body.chat-shell .title-block h1 {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-section) !important;
+    font-weight: var(--gh-weight-semibold) !important;
+}
+
+html body.chat-shell .action-btn,
+html body .chat-shell .action-btn {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html body.chat-shell .bubble,
+html body .chat-shell .bubble {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-section) !important;
+    line-height: 1.72 !important;
+    font-weight: var(--gh-weight-regular) !important;
+}html body.chat-shell :is(.action-btn, .thread-item, .skill-menu-item):hover,
+html body.chat-shell :is(.action-btn, .thread-item, .skill-menu-item):focus-visible,
+html body.chat-shell :is(.action-btn, .thread-item, .skill-menu-item):active,
+html body.chat-shell :is(.action-btn, .thread-item, .skill-menu-item).active,
+html body .chat-shell :is(.action-btn, .thread-item, .skill-menu-item):hover,
+html body .chat-shell :is(.action-btn, .thread-item, .skill-menu-item):focus-visible,
+html body .chat-shell :is(.action-btn, .thread-item, .skill-menu-item):active,
+html body .chat-shell :is(.action-btn, .thread-item, .skill-menu-item).active{
+}
+html body.chat-shell :is(.action-btn, .thread-item, .skill-menu-item):active,
+html body.chat-shell :is(.action-btn, .thread-item, .skill-menu-item).active,
+html body .chat-shell :is(.action-btn, .thread-item, .skill-menu-item):active,
+html body .chat-shell :is(.action-btn, .thread-item, .skill-menu-item).active{font-weight: var(--gh-weight-medium) !important;}
+
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .action-btn {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .bubble {
+    color: var(--gh-ink-strong) !important;
+    font-size: var(--gh-type-section) !important;
+    line-height: 1.72 !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell :is(
+    .thread-item,
+    .skill-menu-item
+) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell :is(
+    .action-btn,
+    .thread-item,
+    .skill-menu-item
+):hover,
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell :is(
+    .action-btn,
+    .thread-item,
+    .skill-menu-item
+):focus-visible,
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell :is(
+    .action-btn,
+    .thread-item,
+    .skill-menu-item
+):active,
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell :is(
+    .action-btn,
+    .thread-item,
+    .skill-menu-item
+).active{
+}
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell :is(
+    .action-btn,
+    .thread-item,
+    .skill-menu-item
+):active,
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell :is(
+    .action-btn,
+    .thread-item,
+    .skill-menu-item
+).active{font-weight: var(--gh-weight-medium) !important;}
+
+/*
+ * Final cascade lock ------------------------------------------------------
+ * visual-system-preview.css still contains legacy high-specificity
+ * `!important` ink rules. These selectors intentionally outrank only those
+ * visual declarations; they do not change layout, dimensions, or behaviour.
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell.app-shell
+    .floating-toolbar.floating-toolbar
+    .tool-button.tool-button:not(.active):not([data-canvas-main="1"]),
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell.app-shell
+    .floating-toolbar.floating-toolbar
+    .tool-main-button.tool-main-button:not(.active):not([data-canvas-main="1"]) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell.app-shell
+    .floating-toolbar.floating-toolbar
+    :is(.tool-button.tool-button, .tool-main-button.tool-main-button)
+    :is(svg, i) {
+    color: currentColor !important;
+    stroke: currentColor !important;
+    stroke-width: var(--gh-icon-stroke) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body .app-shell.app-shell
+    .floating-toolbar.floating-toolbar
+    .tool-button.tool-button.active {
+    color: var(--gh-ink-on-accent) !important;
+}
+
+html.studio-page-canvas:not(.theme-dark):not(.studio-theme-dark) body
+    .app-shell.app-shell .floating-toolbar.floating-toolbar
+    :is(#shellNewCanvasBtn, #toolbarAssetBtn, #toolbarCanvasHistoryBtn, #toolbarSettingsBtn) {
+    color: #50565e !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html.studio-page-canvas:not(.theme-dark):not(.studio-theme-dark) body
+    .app-shell.app-shell .floating-toolbar.floating-toolbar
+    :is(#shellNewCanvasBtn, #toolbarAssetBtn, #toolbarCanvasHistoryBtn, #toolbarSettingsBtn)
+    :is(svg, i) {
+    color: currentColor !important;
+    stroke: currentColor !important;
+    stroke-width: 1.5 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    vector-effect: non-scaling-stroke;
+}
+
+/*
+ * Left rail open state is functional state, not a held-down button state.
+ * Keep the drawer/menu open, but release its trigger after pointer exit.
+ */
+html.studio-page-canvas:not(.theme-dark):not(.studio-theme-dark) body
+    .app-shell.app-shell .floating-toolbar.floating-toolbar
+    :is(
+        #toolbarAssetBtn.active,
+        #toolbarAssetBtn[aria-pressed="true"],
+        #toolbarCanvasHistoryBtn.active,
+        #toolbarSettingsBtn[aria-expanded="true"]
+    ):not(:hover):not(:focus-visible) {
+    color: #50565e !important;
+    background: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    transform: translateY(0) scale(1) !important;
+    animation: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell #composer.composer
+    .composer-card-topbar :is(button, .composer-kind-toggle button) {
+    color: var(--gh-ink-primary) !important;
+    font-size: 11.5px !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell #composer.composer
+    .composer-footer :is(button, .composer-tool-btn) {
+    color: var(--gh-ink-primary) !important;
+    font-size: var(--gh-type-control) !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell #composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:not(.active):not(.is-mode-hover) {
+    color: var(--gh-ink-primary) !important;
+    font-size: 11.5px !important;
+    font-weight: var(--gh-weight-medium) !important;
+}
+
+/* A03 — user center: glass shell + one continuous white content card. */
+html:not(.theme-dark):not(.studio-theme-dark) body #shellUserMenu.shell-user-menu {
+    background: var(--ui-surface-elevated) !important;
+    background-image: none !important;
+    border: 1px solid var(--ui-border) !important;
+    box-shadow: var(--ui-shadow-pop) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-menu-profile {
+    padding: var(--ui-space-2) var(--ui-space-2) var(--ui-space-4) !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-menu-card {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-points {
+    margin: 0 0 var(--ui-space-2) !important;
+    padding: var(--ui-space-3) var(--ui-space-4) !important;
+    border: 0 !important;
+    background: var(--ui-hover) !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-menu-list {
+    gap: 1px !important;
+    padding: var(--ui-space-2) 0 !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-menu-list-secondary {
+    padding-bottom: 1px !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-menu-item {
+    min-height: var(--ui-control-h-lg) !important;
+    padding: 0 var(--ui-space-2) !important;
+    grid-template-columns: var(--ui-control-h-sm) minmax(0, 1fr) auto auto !important;
+    gap: var(--ui-space-2) !important;
+    border-radius: var(--ui-radius-control) !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-menu-item-icon {
+    width: var(--ui-control-h-sm) !important;
+    height: var(--ui-control-h-sm) !important;
+    border-radius: var(--ui-radius-control) !important;
+    background: transparent !important;
+    background-image: none !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-menu-glider {
+    z-index: 0 !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-menu-item,
+html body #shellUserMenu.shell-user-menu .shell-user-menu-status {
+    position: relative;
+    z-index: 2;
+}
+
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu {
+    background: var(--ui-surface-elevated) !important;
+    border-color: var(--ui-border) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-menu-card {
+    border-color: transparent;
+    background: transparent;
+}
+
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-points,
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-menu-item-icon {
+    border-color: transparent;
+}
+
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-points {
+    background: var(--ui-hover) !important;
+}
+
+/*
+ * User center menu labels
+ * Keep every primary row label aligned with the "个人主页" type standard.
+ * Auxiliary status text, chevrons, switches and icons remain component-owned.
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body
+#shellUserMenu.shell-user-menu
+.shell-user-menu-item:not(.shell-user-menu-logout)
+> span:not(.shell-user-menu-item-icon):not(.shell-user-theme-switch) {
+    color: #697077 !important;
+    font-size: 13px !important;
+    font-weight: 445 !important;
+    line-height: 1.2 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+#shellUserMenu.shell-user-menu.is-pro-mode
+.shell-user-menu-item[data-shell-user-action="profile"]
+> span:not(.shell-user-menu-item-icon):not(.shell-user-theme-switch),
+html:not(.theme-dark):not(.studio-theme-dark) body
+#shellUserMenu.shell-user-menu.is-pro-mode
+.shell-user-menu-item[data-shell-user-action="profile"].is-current
+> span:not(.shell-user-menu-item-icon):not(.shell-user-theme-switch) {
+    color: #c5cad3 !important;
+    font-weight: 445 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+#shellUserMenu.shell-user-menu.is-pro-mode
+.shell-user-menu-item[data-shell-user-action="profile"],
+html:not(.theme-dark):not(.studio-theme-dark) body
+#shellUserMenu.shell-user-menu.is-pro-mode
+.shell-user-menu-item[data-shell-user-action="profile"].is-current {
+    color: #c5cad3 !important;
+}
+
+/*
+ * A04 — Asset library
+ * Match the user-center hierarchy without changing the component's
+ * dimensions, direct-child layout, or interaction hooks:
+ *   1. translucent glass shell
+ *   2. one continuous opaque content card
+ * A05 note: project history intentionally left this glass treatment.
+ * Its light-mode surface is a fully opaque white panel, owned by
+ * css/shell/history.css (loaded after this file).
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell #assetPanel.asset-panel {
+    isolation: isolate;
+    background: var(--ui-surface-elevated) !important;
+    background-image: none !important;
+    border: 1px solid var(--ui-border) !important;
+    box-shadow: var(--ui-shadow-pop) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell #assetPanel.asset-panel::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 72px 8px 8px;
+    pointer-events: none;
+    border: 1px solid rgba(236, 239, 243, .92);
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+html body #shell #assetPanel.asset-panel > :not(.asset-panel-resize-handle),
+html body #shellProjectHistoryModal .shell-project-history-dialog > * {
+    position: relative;
+    z-index: 1;
+}
+
+html:is(.theme-dark, .studio-theme-dark) body #shell #assetPanel.asset-panel,
+html:is(.theme-dark, .studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-dialog {
+    isolation: isolate;
+    background: var(--ui-surface-elevated) !important;
+    background-image: none !important;
+    border-color: var(--ui-border) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) body #shell #assetPanel.asset-panel::before,
+html:is(.theme-dark, .studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-dialog::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 72px 8px 8px;
+    pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 16px;
+    background: #232325;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
+}
+
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode
+    .chat-shell #messages.messages .bubble,
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode
+    .chat-shell #messageInput {
+    color: var(--gh-ink-strong) !important;
+    font-weight: var(--gh-weight-regular) !important;
+}
+
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode
+    .chat-shell #messages.messages .bubble {
+    font-size: var(--gh-type-section) !important;
+    line-height: 1.72 !important;
+}
+
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode
+    .chat-shell #messageInput {
+    font-size: var(--gh-type-body) !important;
+    line-height: 1.6 !important;
+}
+
+/* Match canvas composer primary menu (C06) for dock foot controls. */
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell :is(
+    .attach-btn,
+    .dock-api-btn,
+    .dock-context-pct
+) {
+    color: #50565e !important;
+    font-family: "Inter", "Segoe UI", "ui-cjk", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif !important;
+    font-size: 13px !important;
+    font-weight:400 !important;
+    line-height: 20px !important;
+    letter-spacing: 0 !important;
+    font-variant-numeric: tabular-nums !important;
+    border: 1px solid transparent !important;
+    margin-left: 6px !important;
+}
+
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell :is(
+    .attach-btn,
+    .dock-api-btn
+):is(:hover, :focus-visible, .open) {
+    background: #f9fafb !important;
+    border: 1px solid rgba(148, 163, 184, .44) !important;
+    box-shadow: none !important;
+}
+
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell :is(
+    .attach-btn,
+    .dock-api-btn
+) :is(svg, i, i > svg, #skillBtnIcon, #skillBtnIcon > svg) {
+    width: 16px !important;
+    height: 16px !important;
+    flex: 0 0 16px !important;
+    color: #50565e !important;
+    stroke: #50565e !important;
+    stroke-width: 1.5 !important;
+}
+
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell
+    .dock-context-ring {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell :is(
+    .dock-context-track,
+    .dock-context-fill
+) {
+    stroke-width: 1.5 !important;
+}
+
+html.gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell
+    .dock-context-fill {
+    stroke: #50565e !important;
+}
+
+/* Left rail icons: one explicit size, without changing button geometry. */
+html body .app-shell.app-shell .floating-toolbar.floating-toolbar
+    .tool-button.tool-button:not([data-canvas-main="1"])
+    :is(svg, i, i > svg) {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+html body .app-shell.app-shell .floating-toolbar.floating-toolbar
+    .tool-button.tool-button[data-canvas-main="1"]
+    .studio-shell-icon-canvas-liquid {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+html body #imageQuickToolbar.image-quick-toolbar
+    :is(button, .iqt-menu-action, .iqt-menu-item)
+    :is(svg, i, i > svg),
+html body #selectionBoxCapsule.selection-capsule-bar
+    :is(.selection-capsule-btn, .selection-capsule-folder)
+    :is(svg, i, i > svg) {
+    width: 16px !important;
+    height: 16px !important;
+    flex: 0 0 16px !important;
+    color: currentColor !important;
+    stroke: currentColor !important;
+    stroke-width: 1.5 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    vector-effect: non-scaling-stroke;
+}
+
+html body #imageQuickToolbar.image-quick-toolbar .iqt-dropdown-chevron {
+    width: 11px !important;
+    height: 11px !important;
+    flex-basis: 11px !important;
+    stroke-width: 1.5 !important;
+}
+
+html body #imageQuickToolbar.image-quick-toolbar .image-action-hd-icon {
+    width: 16px !important;
+    height: 16px !important;
+    flex: 0 0 16px !important;
+}
+
+html body #imageQuickToolbar.image-quick-toolbar
+    .image-action-hd-icon rect {
+    stroke-width: 1.5 !important;
+}
+
+/*
+ * 2026-07-28 — final control/placeholder alignment
+ * Keep this block intentionally narrow: typography and hover feedback only.
+ * Component geometry, popover behavior, and business state are untouched.
+ */
+
+/* B01/B02: a small damped hop, without changing ink or font weight. */
+@keyframes gh-toolbar-control-hop {
+    0%   { transform: translateY(0); }
+    44%  { transform: translateY(-2px); }
+    74%  { transform: translateY(.5px); }
+    100% { transform: translateY(0); }
+}html body :is(
+    #imageQuickToolbar.image-quick-toolbar button,
+    #selectionBoxCapsule.selection-capsule-bar .selection-capsule-btn,
+    #selectionBoxCapsule.selection-capsule-bar .selection-capsule-folder
+):is(:hover, :focus-visible){
+    animation: gh-toolbar-control-hop .30s cubic-bezier(.22, .78, .28, 1) both;
+}html body :is(
+    #imageQuickToolbar.image-quick-toolbar button,
+    #selectionBoxCapsule.selection-capsule-bar .selection-capsule-btn,
+    #selectionBoxCapsule.selection-capsule-bar .selection-capsule-folder
+):is(:hover, :focus-visible) :is(svg, i, i > svg){
+    stroke: #50565e !important;
+}
+
+/* C06: match B01 image-quick-toolbar live text/icon size. */
+html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+) {
+    color: #50565e !important;
+    font-family: var(--ui-font) !important;
+    font-size: 13px !important;
+    font-weight:400 !important;
+    font-style: normal !important;
+    line-height: 20px !important;
+    letter-spacing: 0 !important;
+    font-synthesis: none !important;
+    font-variant-numeric: tabular-nums !important;
+    border-radius: 13px !important;
+}
+
+html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+) > :is(svg, i) {
+    width: 16px !important;
+    height: 16px !important;
+    flex: 0 0 16px !important;
+    color: #50565e !important;
+    stroke: #50565e !important;
+    stroke-width: 1.5 !important;
+}html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+):hover,
+html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+):focus-visible,
+html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+):active,
+html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsWrap,
+    #composerSizeWrap,
+    #composerVideoReferenceWrap,
+    #composerKindWrap
+).open > :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+){
+    background: #f9fafb !important;
+    border: 1px solid rgba(148, 163, 184, .44) !important;
+    border-radius: 13px !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+):active,
+html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsWrap,
+    #composerSizeWrap,
+    #composerVideoReferenceWrap,
+    #composerKindWrap
+).open > :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+){font-weight:400 !important;}
+html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+):active,
+html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsWrap,
+    #composerSizeWrap,
+    #composerVideoReferenceWrap,
+    #composerKindWrap
+).open > :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+){color: #50565e !important;}html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+):hover > :is(svg, i),
+html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+):focus-visible > :is(svg, i),
+html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+):active > :is(svg, i),
+html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsWrap,
+    #composerSizeWrap,
+    #composerVideoReferenceWrap,
+    #composerKindWrap
+).open > :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+) > :is(svg, i){
+    stroke: #50565e !important;
+    stroke-width: 1.5 !important;
+}
+html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+):active > :is(svg, i),
+html body #shell.shell #composer .composer-footer :is(
+    #composerApiSettingsWrap,
+    #composerSizeWrap,
+    #composerVideoReferenceWrap,
+    #composerKindWrap
+).open > :is(
+    #composerApiSettingsBtn,
+    #composerSizeBtn,
+    #composerVideoReferenceBtn,
+    #composerKindBtn
+) > :is(svg, i){color: #50565e !important;}
+
+/* C06: keep the travelling plate motion, but remove its old capsule shadow. */
+html body #shell.shell #composer .composer-footer .composer-footer-glider {
+    border: 0 !important;
+    border-radius: 10px !important;
+    background: #f7f9fa !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}/* B03: enabled primary labels in the node-reference menu. */
+html:not(.theme-dark):not(.studio-theme-dark) body
+    .port-link-pick-item:not(.is-disabled):not(:disabled)
+    .port-link-pick-title,
+html:not(.theme-dark):not(.studio-theme-dark) body
+    .port-link-pick-item:not(.is-disabled):not(:disabled):hover
+    .port-link-pick-title,
+html:not(.theme-dark):not(.studio-theme-dark) body
+    .port-link-pick-item:not(.is-disabled):not(:disabled).is-hover
+    .port-link-pick-title{
+}
+/* B03: enabled primary labels in the node-reference menu. */
+html:not(.theme-dark):not(.studio-theme-dark) body
+    .port-link-pick-item:not(.is-disabled):not(:disabled)
+    .port-link-pick-title,
+html:not(.theme-dark):not(.studio-theme-dark) body
+    .port-link-pick-item:not(.is-disabled):not(:disabled).is-hover
+    .port-link-pick-title{color: #50565e !important;}
+
+/* D04/C04/A07: one calm placeholder specification across all three inputs. */
+html body #shell.shell .prompt-node-text::placeholder,
+html body #shell.shell #composer .prompt-input:empty::before,
+html body .chat-shell #messageInput::placeholder,
+html body .chat-shell .composer :is(textarea, input)::placeholder {
+    color: #a6adb6 !important;
+    opacity: 1 !important;
+    font-family: var(--gh-font-ui) !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    line-height: 1.6 !important;
+    letter-spacing: 0 !important;
+}
+
+/* Empty composer hints are intentionally quieter than entered text. */
+html body #shell.shell #composer .prompt-input:empty::before,
+html body .chat-shell #messageInput::placeholder {
+    opacity: .5 !important;
+}
+
+/*
+ * D04 — text-node footer controls
+ * Keep the font-size slider compact in the text-node footer.
+ */
+html body #shell.shell
+    .prompt-node-card-unified-llm
+    .prompt-node-font-range {
+    width: 190px !important;
+    height: 32px !important;
+    pointer-events: auto !important;
+    touch-action: none !important;
+}
+
+html body #shell.shell
+    .prompt-node-card-unified-llm
+    .prompt-node-font-range::-webkit-slider-runnable-track {
+    height: 8px !important;
+}
+
+html body #shell.shell
+    .prompt-node-card-unified-llm
+    .prompt-node-font-range::-webkit-slider-thumb {
+    width: 28px !important;
+    height: 28px !important;
+    margin-top: -10px !important;
+    border-width: 3px !important;
+    background: var(--ui-accent) !important;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, .16) !important;
+}
+
+html body #shell.shell
+    .prompt-node-card-unified-llm
+    .prompt-node-font-range:hover::-webkit-slider-thumb,
+html body #shell.shell
+    .prompt-node-card-unified-llm
+    .prompt-node-font-range:focus-visible::-webkit-slider-thumb {
+    box-shadow:
+        0 0 0 5px rgba(var(--ui-accent-rgb), .14),
+        0 0 14px 4px rgba(var(--ui-accent-rgb), .32) !important;
+}
+
+html body #shell.shell
+    .prompt-node-card-unified-llm
+    .prompt-node-font-range::-moz-range-track {
+    height: 8px !important;
+}
+
+html body #shell.shell
+    .prompt-node-card-unified-llm
+    .prompt-node-font-range::-moz-range-thumb {
+    width: 28px !important;
+    height: 28px !important;
+    border-width: 3px !important;
+    background: var(--ui-accent) !important;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, .16) !important;
+}
+
+html body #shell.shell
+    .prompt-node-card-unified-llm
+    .prompt-node-font-range:hover::-moz-range-thumb,
+html body #shell.shell
+    .prompt-node-card-unified-llm
+    .prompt-node-font-range:focus-visible::-moz-range-thumb {
+    box-shadow:
+        0 0 0 5px rgba(var(--ui-accent-rgb), .14),
+        0 0 14px 4px rgba(var(--ui-accent-rgb), .32) !important;
+}
+
+/*
+ * A03 — user credit card
+ * One Apple-blue surface with white content and a white-only progress layer.
+ * Pro mode softens both the card and profile entry into the same light grey.
+ */
+html body #shellUserMenu.shell-user-menu {
+    --shell-pro-disabled-ink: #c5cad3;
+    --shell-pro-disabled-surface: #eef1f5;
+    --shell-pro-disabled-track: #e4e8ee;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-points {
+    color: var(--ui-text) !important;
+    border-color: transparent !important;
+    background: var(--ui-hover) !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    transition:
+        background-color .22s ease, border-color .22s ease, box-shadow .22s ease, filter .22s ease !important;
+}
+
+html body #shellUserMenu.shell-user-menu.is-pro-mode .shell-user-points,
+html body #shellUserMenu.shell-user-menu .shell-user-points.is-disabled,
+html body #shellUserMenu.shell-user-menu .shell-user-points:disabled {
+    color: var(--shell-pro-disabled-ink) !important;
+    border-color: transparent !important;
+    background: var(--shell-pro-disabled-surface) !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+    filter: none !important;
+    pointer-events: none !important;
+}
+
+html body #shellUserMenu.shell-user-menu
+    .shell-user-points :is(.shell-user-points-head, .shell-user-points-meta, strong, span) {
+    color: var(--ui-text) !important;
+    transition: none !important;
+}
+
+html body #shellUserMenu.shell-user-menu.is-pro-mode
+    .shell-user-points :is(.shell-user-points-head, .shell-user-points-meta, strong, span),
+html body #shellUserMenu.shell-user-menu .shell-user-points:disabled
+    :is(.shell-user-points-head, .shell-user-points-meta, strong, span),
+html body #shellUserMenu.shell-user-menu .shell-user-points.is-disabled
+    :is(.shell-user-points-head, .shell-user-points-meta, strong, span) {
+    color: var(--shell-pro-disabled-ink) !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-points-head svg {
+    color: var(--ui-text-secondary) !important;
+    stroke: var(--ui-text-secondary) !important;
+    transition: stroke .22s ease !important;
+}
+
+html body #shellUserMenu.shell-user-menu.is-pro-mode .shell-user-points-head svg,
+html body #shellUserMenu.shell-user-menu .shell-user-points:disabled .shell-user-points-head svg,
+html body #shellUserMenu.shell-user-menu .shell-user-points.is-disabled .shell-user-points-head svg {
+    color: var(--shell-pro-disabled-ink) !important;
+    stroke: var(--shell-pro-disabled-ink) !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-points-track {
+    background: transparent;
+    transition: background-color .22s ease !important;
+}
+
+html body #shellUserMenu.shell-user-menu.is-pro-mode .shell-user-points-track,
+html body #shellUserMenu.shell-user-menu .shell-user-points:disabled .shell-user-points-track,
+html body #shellUserMenu.shell-user-menu .shell-user-points.is-disabled .shell-user-points-track {
+    background: var(--shell-pro-disabled-track) !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-points-track span {
+    background: transparent !important;
+    transition: background-color .22s ease !important;
+}
+
+html body #shellUserMenu.shell-user-menu.is-pro-mode .shell-user-points-track span,
+html body #shellUserMenu.shell-user-menu .shell-user-points:disabled .shell-user-points-track span,
+html body #shellUserMenu.shell-user-menu .shell-user-points.is-disabled .shell-user-points-track span {
+    background: #d5dae2 !important;
+}
+
+html body #shellUserMenu.shell-user-menu
+    .shell-user-menu-item[data-shell-user-action="profile"] {
+    transition: background-color .22s ease !important;
+}
+
+html body #shellUserMenu.shell-user-menu
+    .shell-user-menu-item[data-shell-user-action="profile"] .shell-user-menu-item-icon {
+    transition: background-color .22s ease !important;
+}
+
+html body #shellUserMenu.shell-user-menu.is-pro-mode
+    .shell-user-menu-item[data-shell-user-action="profile"],
+html body #shellUserMenu.shell-user-menu.is-pro-mode
+    .shell-user-menu-item[data-shell-user-action="profile"].is-current,
+html body #shellUserMenu.shell-user-menu.is-pro-mode
+    .shell-user-menu-item[data-shell-user-action="profile"] span,
+html body #shellUserMenu.shell-user-menu.is-pro-mode
+    .shell-user-menu-item[data-shell-user-action="profile"] > span:not(.shell-user-menu-item-icon) {
+    color: #c5cad3 !important;
+    background: transparent !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    font-weight: 445 !important;
+}
+
+html body #shellUserMenu.shell-user-menu.is-pro-mode
+    .shell-user-menu-item[data-shell-user-action="profile"] .shell-user-menu-item-icon,
+html body #shellUserMenu.shell-user-menu.is-pro-mode
+    .shell-user-menu-item[data-shell-user-action="profile"] .shell-user-menu-item-icon svg {
+    color: #c5cad3 !important;
+    stroke: #c5cad3 !important;
+    background: #eef1f5 !important;
+}
+
+/*
+ * Shared quiet-hover surface
+ * The image-toolbar submenu used rgba(148, 163, 184, .14) over white.
+ * Store the composited opaque result so the same hover looks identical on
+ * both the solid submenu and the user-menu card.
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body {
+    --gh-quiet-hover-surface: var(--ui-hover);
+    --gh-quiet-hover-border: transparent;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #imageQuickToolbar.image-quick-toolbar .iqt-menu-glass-glider {
+    background: var(--gh-quiet-hover-surface) !important;
+    background-image: none !important;
+    border-color: var(--gh-quiet-hover-border) !important;
+    box-shadow: none !important;
+}
+
+/* A03: match user-menu hover feedback to the image-toolbar submenu. */
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellUserMenu.shell-user-menu .shell-user-menu-glider {
+    background: var(--gh-quiet-hover-surface) !important;
+    background-image: none !important;
+    border: 1px solid var(--gh-quiet-hover-border) !important;
+    box-shadow: none !important;
+}html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellUserMenu.shell-user-menu
+    .shell-user-menu-item:is(:hover, :focus-visible)
+    .shell-user-menu-item-icon{
+    background: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellUserMenu.shell-user-menu
+    .shell-user-menu-item:is(:hover, :focus-visible)
+    .shell-user-menu-item-icon svg{
+    stroke: currentColor !important;
+}
+
+/*
+ * C08/C09 — composer primary popovers
+ * Keep menu geometry and interaction intact; make every popover opened from
+ * the bottom composer's first-level controls a fully opaque white surface.
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-popover,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-api-settings-wrap > .composer-api-settings-popover {
+    background: #fff !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsPopover,
+        #composerVideoReferencePopover,
+        #composerKindPopover,
+        #composerSizePopover
+    ) {
+    background: #fff !important;
+    background-color: #fff !important;
+    background-image: none !important;
+}
+
+/* C06 — slightly slimmer first-level composer controls. */
+html body #shell.shell #composer.composer .composer-footer
+    :is(.composer-tool-btn, .composer-api-settings-btn) {
+    height: 36px !important;
+    min-height: 36px !important;
+}
+
+/*
+ * C08/C09 — opaque composer submenu surfaces.
+ * The popover is the only base surface. Idle rows remain visually white;
+ * hover/selected rows keep a restrained neutral cue.
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsPopover,
+        #composerApiSettingsPopover .composer-api-models,
+        #composerVideoReferencePopover,
+        #composerKindPopover,
+        #composerSizePopover,
+        #composerSizePopover .size-picker-list,
+        #composerSizePopover #composerCountPanel
+    ) {
+    background: #fff !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-api-branch summary,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-api-models button,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover :is(
+        .size-picker-option,
+        .video-flat-choice,
+        #composerQualityPanel .quality-choice-grid button,
+        #composerCountPanel .count-cell,
+        #composerVideoSizeMenu .count-cell,
+        .video-flat-segments button
+    ) {
+    background: #fff !important;
+    background-image: none !important;
+    border: 1px solid rgba(137, 145, 156, .22) !important;
+    box-shadow: none !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+}html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-api-branch summary:is(:hover, :focus-visible),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-api-branch.active > summary,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-api-models button:hover,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-api-models button:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-api-models button.active,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice:is(:hover, :focus-visible),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover :is(
+        .size-picker-option,
+        .video-flat-choice,
+        #composerQualityPanel .quality-choice-grid button,
+        #composerCountPanel .count-cell,
+        #composerVideoSizeMenu .count-cell,
+        .video-flat-segments button
+    ):is(:hover, :focus-visible){
+    background: #fafbfc !important;
+    border-color: rgba(137, 145, 156, .34) !important;
+    box-shadow: none !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-api-branch.active > summary,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-api-models button.active{color: #505761 !important;}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.active,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover :is(
+        .size-picker-option,
+        .video-flat-choice,
+        #composerQualityPanel .quality-choice-grid button,
+        #composerCountPanel .count-cell,
+        #composerVideoSizeMenu .count-cell,
+        .video-flat-segments button
+    ).active {
+    color: var(--ui-accent) !important;
+    background: rgba(var(--ui-accent-rgb), .06) !important;
+    border-color: rgba(var(--ui-accent-rgb), .42) !important;
+    box-shadow: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover :is(.size-choice-glider.is-soft, .size-choice-glider.is-strong) {
+    display: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsWrap:not(.open) > #composerApiSettingsPopover:has(.composer-model-menu),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsWrap.open > #composerApiSettingsPopover:has(.composer-model-menu) {
+    transition:none !important;
+    transform:none !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover:has(.composer-model-menu) .mode-model-choice,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover:has(.composer-model-menu) .mode-model-choice:is(:hover,:focus-visible,.active) {
+    transition:none !important;
+    transform:none !important;
+    animation:none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover .composer-submenu-label {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+/*
+ * C06 — keep the full hit area, but make the travelling hover plate
+ * visibly smaller than the first-level control.
+ */
+html body #shell.shell #composer .composer-footer .composer-footer-glider {
+    width: max(0px, calc(var(--composer-glider-width, 0px) - 8px)) !important;
+    height: max(0px, calc(var(--composer-glider-height, var(--composer-footer-h)) - 6px)) !important;
+    transform:
+        translate3d(
+            calc(var(--composer-glider-x, 0px) + 4px),
+            calc(var(--composer-glider-y, 0px) + 3px),
+            0
+        )
+        scale(.94) !important;
+}
+
+html body #shell.shell #composer .composer-footer .composer-footer-glider.is-visible {
+    transform:
+        translate3d(
+            calc(var(--composer-glider-x, 0px) + 4px),
+            calc(var(--composer-glider-y, 0px) + 3px),
+            0
+        )
+        scale(1) !important;
+}
+
+/*
+ * C06 — shared first-level footer controls for Image / Video / Text / Audio.
+ * Match B01's secondary-menu hover surface without changing geometry or
+ * interaction: restrained neutral fill, thin neutral outline, no shadow.
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn {
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:is(
+        :hover,
+        :focus-visible,
+        :active
+    ),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap.open > .composer-tool-btn {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-footer-glider {
+    background: rgba(148, 163, 184, .14) !important;
+    border: 1px solid rgba(148, 163, 184, .44) !important;
+    box-shadow: none !important;
+}
+
+/*
+ * C09: the size submenu is one opaque white sheet.
+ * Remove every legacy glass/shadow layer from the popover itself without
+ * changing the option grid, selection gliders, dimensions or interaction.
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover.composer-tool-popover {
+    background: #fff !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: 0 18px 46px rgba(55, 65, 81, .14) !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    overflow: hidden !important;
+    isolation: isolate;
+}
+
+/*
+ * Do not force opacity on the popover itself: that used to override the
+ * shared closed state and left C09 visibly stuck after the trigger closed.
+ * Keep the state contract explicit here because this file intentionally has
+ * higher specificity than the legacy component stylesheet.
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizeWrap:not(.open) > #composerSizePopover.composer-tool-popover {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateY(7px) scale(.985) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizeWrap.open > #composerSizePopover.composer-tool-popover {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateY(0) scale(1) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover :is(
+        #composerSizePanel,
+        .size-picker-control,
+        .size-picker-popover,
+        .size-picker-head,
+        .size-picker-pane,
+        .size-picker-list,
+        #composerQualityPanel,
+        #composerCountPanel
+    ) {
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover.composer-tool-popover::before,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerSizePopover.composer-tool-popover::after {
+    content: none !important;
+    display: none !important;
+}
+
+/*
+ * A04 / A05 — align Asset Library and Project History with the existing
+ * User Center hierarchy.  This is deliberately visual-only: no geometry,
+ * visibility, interaction or component state is changed here.
+ *
+ * Shared roles:
+ *   panel / card heading  #343A40
+ *   primary copy / icon   #697077
+ *   supporting copy       #9299A2
+ *   quiet surface         #F7F9FA
+ *   hairline              #E5E9EE
+ *   selected state        #0A84FF
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    :is(#assetPanel, #shellProjectHistoryModal) {
+    --gh-library-title: #343a40;
+    --gh-library-primary: #697077;
+    --gh-library-secondary: #9299a2;
+    --gh-library-disabled: rgba(146, 153, 162, .46);
+    --gh-library-surface: #f7f9fa;
+    --gh-library-line: #e5e9ee;
+    --gh-library-accent: var(--ui-accent);
+}
+
+/* A04 — Asset Library: title, tabs and top-level controls. */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    .asset-title {
+    color: #50565e !important;
+    font-size:14px !important;
+    font-weight: 600 !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    .asset-title :is(i, svg) {
+    color: var(--gh-library-primary) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    .asset-tab {
+    color: var(--gh-library-primary) !important;
+    font-size: 13px !important;
+    font-weight: 445 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0 !important;
+}html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    .asset-tab:hover{
+    border-color: var(--gh-library-line) !important;
+    background: var(--gh-library-surface) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    .asset-tab.active {
+    border-color: var(--gh-library-accent) !important;
+    background: var(--gh-library-accent) !important;
+    color: #fff !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    :is(.asset-folder-action-btn, .asset-folder-back-btn) {
+    color: var(--gh-library-primary) !important;
+    font-size: 12px !important;
+    font-weight: 445 !important;
+    line-height: 1.2 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    :is(.asset-folder-search-wrap, .asset-folder-action-btn) {
+    border-color: var(--gh-library-line) !important;
+    background: #fff !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    .asset-folder-search-input {
+    color: var(--gh-library-primary) !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    .asset-folder-search-input::placeholder {
+    color: var(--gh-library-secondary) !important;
+}
+
+/* A04 — folder tree, preview cards and prompt cards. */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    :is(
+        .asset-folder-section-title,
+        .asset-folder-current-name,
+        .asset-folder-breadcrumb-current,
+        .asset-name,
+        .asset-prompt-main span,
+        .asset-dialog-title
+    ) {
+    color: var(--gh-library-title) !important;
+    font-size: 13px !important;
+    font-weight: 445 !important;
+    line-height: 1.3 !important;
+    letter-spacing: 0 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    :is(.asset-folder-card-name, .asset-folder-breadcrumb button) {
+    color: var(--gh-library-primary) !important;
+    font-size: 12px !important;
+    font-weight: 445 !important;
+    line-height: 1.35 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    :is(
+        .asset-folder-card-kicker,
+        .asset-folder-card-count,
+        .asset-folder-section-count,
+        .asset-folder-breadcrumb span,
+        .asset-card-kind,
+        .asset-prompt-main small,
+        .asset-meta
+    ) {
+    color: var(--gh-library-secondary) !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    line-height: 1.45 !important;
+    letter-spacing: 0 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    :is(.asset-folder-card-icon, .asset-folder-action-icon-btn) {
+    border-color: var(--gh-library-line) !important;
+    background: var(--gh-library-surface) !important;
+    color: var(--gh-library-primary) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    :is(.asset-inline-grid .asset-item, .asset-prompt-main) {
+    border-color: var(--gh-library-line) !important;
+    background: var(--gh-library-surface) !important;
+    box-shadow: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    :is(.asset-folder-card, .asset-inline-grid .asset-item, .asset-prompt-main):hover {
+    border-color: rgba(148, 153, 162, .44) !important;
+    background: #fff !important;
+    box-shadow: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #assetPanel.asset-panel
+    :is(.asset-folder-action-btn, .asset-mini-btn, .asset-folder-action-icon-btn):disabled {
+    color: var(--gh-library-disabled) !important;
+}
+
+/* A05 — History panel header and controls use the same visual hierarchy. */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal .shell-project-history-head h2 {
+    color: #50565e !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal .shell-project-history-head span {
+    color: var(--gh-library-secondary) !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    line-height: 1.3 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal .shell-project-history-filters button {
+    color: var(--gh-library-primary) !important;
+    font-size: 13px !important;
+    font-weight: 445 !important;
+    line-height: 1.2 !important;
+}html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal .shell-project-history-filters button:hover{
+    border-color: var(--gh-library-line) !important;
+    background: var(--gh-library-surface) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal .shell-project-history-filters button.active {
+    border-color: var(--gh-library-accent) !important;
+    background: var(--gh-library-accent) !important;
+    color: #fff !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal :is(
+        .shell-project-history-search,
+        .shell-project-history-sort,
+        .shell-project-history-view-toggle
+    ) {
+    border-color: var(--gh-library-line) !important;
+    background: #fff !important;
+    color: var(--gh-library-primary) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal :is(
+        .shell-project-history-search input,
+        .shell-project-history-sort
+    ) {
+    color: #343a40 !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellProjectHistoryModal .shell-project-history-search input::placeholder {
+    color: #9299a2 !important;
+    font-weight: 400 !important;
+    opacity: 1 !important;
+}
+
+/* A05 — History cards mirror User Center's strong/primary/meta roles. */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal .shell-project-card {
+    border-color: var(--gh-library-line) !important;
+    background: var(--gh-library-surface) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal .shell-project-card:hover {
+    border-color: rgba(148, 153, 162, .44) !important;
+    background: #fff !important;
+    box-shadow: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal .shell-project-card.active {
+    border-color: var(--gh-library-accent) !important;
+    box-shadow: 0 0 0 1px var(--gh-library-accent) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal .shell-project-card-icon {
+    border: 1px solid var(--gh-library-line) !important;
+    background: #fff !important;
+    color: var(--gh-library-primary) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal .shell-project-card-icon--agent {
+    background: #fff !important;
+    color: var(--gh-library-primary) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal .shell-project-card-title {
+    color: #50565e !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 1.35 !important;
+    letter-spacing: 0 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal :is(
+        .shell-project-card-type,
+        .shell-project-card-detail,
+        .shell-project-card-time
+    ) {
+    color: var(--gh-library-secondary) !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    line-height: 1.45 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal .shell-project-card-action {
+    border-color: var(--gh-library-line) !important;
+    background: #fff !important;
+    color: var(--gh-library-secondary) !important;
+    box-shadow: none !important;
+}html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal .shell-project-card-action:hover{
+    background: var(--gh-library-surface) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell
+    #shellProjectHistoryModal .shell-project-history-empty {
+    border-color: var(--gh-library-line) !important;
+    background: var(--gh-library-surface) !important;
+    color: var(--gh-library-secondary) !important;
+}
+
+/*
+ * A03 — user menu hover repair.
+ * The travelling glider could become a visible empty row inside the menu card.
+ * Keep hover feedback on each real button so it can never cover or replace
+ * the Storage Settings item.
+ */
+html body #shellUserMenu.shell-user-menu .shell-user-menu-glider {
+    display: none !important;
+}
+
+html body #shellUserMenu.shell-user-menu
+    .shell-user-menu-item[data-shell-user-action="storage"] {
+    display: grid !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellUserMenu.shell-user-menu .shell-user-menu-item {
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transition:
+        background-color 140ms ease, border-color 140ms ease !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellUserMenu.shell-user-menu .shell-user-menu-item:hover,
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #shellUserMenu.shell-user-menu .shell-user-menu-item:focus-visible {
+    border-color: var(--gh-quiet-hover-border) !important;
+    background: var(--gh-quiet-hover-surface, #f9fafb) !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+}
+
+/* C06 — the first-level controls use the requested solid hover gray. */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-footer-glider {
+    background: #f9fafb !important;
+    border-color: rgba(148, 163, 184, .44) !important;
+    box-shadow: none !important;
+}
+
+/*
+ * C06 — single-layer hover plate.
+ * The legacy liquid-glass plate and the button hover surface must never paint
+ * at the same time.  Keep the travelling plate for motion, but make it the
+ * only visible surface so the resulting pixel colour is exactly #F9FAFB.
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-footer-glider {
+    opacity: 0 !important;
+    background: #f9fafb !important;
+    background-color: #f9fafb !important;
+    background-image: none !important;
+    background-blend-mode: normal !important;
+    background-clip: border-box !important;
+    border: 1px solid rgba(148, 163, 184, .44) !important;
+    box-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    mix-blend-mode: normal !important;
+    mask: none !important;
+    -webkit-mask: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-footer-glider.is-visible {
+    opacity: 1 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:active,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap.open > .composer-tool-btn {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+/*
+ * C06 — definitive single-surface footer controls.
+ * Do not let the travelling glider and the real button paint simultaneously:
+ * that produced the darker, gradient-looking plate seen in the running app.
+ * The button itself now owns the complete hover/open surface.
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-footer-glider {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:focus-visible,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn.active,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap.open > .composer-tool-btn,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn[aria-expanded="true"] {
+    background: #f9fafb !important;
+    background-color: #f9fafb !important;
+    background-image: none !important;
+    background-blend-mode: normal !important;
+    border: 1px solid rgba(148, 163, 184, .44) !important;
+    box-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    mix-blend-mode: normal !important;
+    border-radius: 13px !important;
+}
+
+/* Composer size menu: ratio frame + ratio only; no descriptive/pixel subtitles. */
+html body #shell.shell #composer.composer #composerSizePopover
+    .size-picker-ratio-list .size-picker-option {
+    min-height: 34px;
+    gap: 3px;
+    padding: 3px 1px;
+}
+
+html body #shell.shell #composer.composer #composerSizePopover
+    .size-picker-ratio-icon {
+    display: block;
+    flex: 0 0 auto;
+    border-width: 1px;
+    opacity: .82;
+}
+
+html body #shell.shell #composer.composer #composerSizePopover
+    .size-picker-ratio-value {
+    display: block;
+    line-height: 1;
+}
+
+html body #shell.shell #composer.composer #composerSizePopover
+    .size-picker-resolution-list .size-picker-option {
+    min-height: 28px;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn::before,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* C06: one real button surface only; the legacy travelling plate is disabled. */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-footer-glider {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/*
+ * C06 footer control normalization.
+ * Image / video / text / audio share one typographic rhythm.  Keep this as
+ * the final footer rule so mode-specific legacy declarations cannot make
+ * Chinese, Latin text or numerals render at different sizes and weights.
+ */
+html body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn {
+    font-family: var(--ui-font) !important;
+    font-size: 13px !important;
+    font-weight: 445 !important;
+    font-style: normal !important;
+    line-height: 20px !important;
+    letter-spacing: 0 !important;
+    font-synthesis: none !important;
+    font-variant-numeric: tabular-nums !important;
+    color: #50565e !important;
+    border-radius: 13px !important;
+}
+
+html body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn > span,
+html body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn
+    .composer-size-summary,
+html body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap > .composer-tool-btn
+    .composer-size-summary > span {
+    font: inherit !important;
+    line-height: inherit !important;
+    letter-spacing: inherit !important;
+    color: inherit !important;
+}
+
+html body #shell.shell #composer.composer
+    .composer-footer .composer-footer-glider {
+    border-radius: 13px !important;
+}
+
+/* Composer size submenu: quality + count options share one typographic scale. */
+html body #shell.shell #composer.composer #composerApiSettingsPopover
+    .composer-mode-model-list .mode-model-choice,
+html body #shell.shell #composer.composer #composerSizePopover
+    .size-picker-resolution-list .size-picker-option,
+html body #shell.shell #composer.composer #composerSizePopover
+    .size-picker-resolution-list .size-picker-option span,
+html body #shell.shell #composer.composer #composerSizePopover
+    #composerQualityPanel .quality-choice-grid button,
+html body #shell.shell #composer.composer #composerSizePopover
+    :is(#composerCountPanel, #composerVideoSizeMenu) .count-cell,
+html body #shell.shell #composer.composer #composerSizePopover
+    .video-flat-segments button {
+    font-family: "Inter", "Segoe UI", "ui-cjk", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    line-height: 1 !important;
+    letter-spacing: 0 !important;
+    font-synthesis: none !important;
+    font-variant-numeric: tabular-nums !important;
+}
+
+/* Video mode: never leak the image submenu labels into the open sheet. */
+html body #shell.shell #composer.composer
+    #composerSizePopover:has(#composerVideoSizeMenu:not([hidden]))
+    #composerImageSizeMenu {
+    display: none !important;
+}
+
+/* Footer popovers must paint above the card-topbar kind toggle. */
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-tool-wrap.open)
+    .composer-footer {
+    position: relative;
+    z-index: 8 !important;
+}
+
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-tool-wrap.open)
+    .composer-card-topbar {
+    z-index: 2 !important;
+}
+
+html body #shell.shell #composer.composer
+    .composer-tool-wrap.open > .composer-tool-popover {
+    z-index: 20 !important;
+}
+
+/* Video size submenu: match image submenu spacing and remove legacy lift motion. */
+html body #shell.shell #composer.composer #composerVideoSizeMenu.video-settings-flat
+    :is(.video-flat-grid, .count-grid, .video-flat-segments) {
+    gap: 2px !important;
+}
+
+html body #shell.shell #composer.composer #composerSizePopover
+    .video-flat-choice:is(:hover, :focus-visible, .active) {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/*
+ * Canvas dark glass — Uiverse glass-radio-group inspired.
+ * Appended last so it overrides C06 light footer rules in this file.
+ * Light mode untouched.
+ */
+html.theme-dark,
+html.studio-theme-dark {
+    --canvas-glass-bg: rgba(255, 255, 255, 0.06);
+    --canvas-glass-text: #e5e5e5;
+    --canvas-glass-shadow:
+        inset 1px 1px 4px rgba(255, 255, 255, 0.2),
+        inset -1px -1px 6px rgba(0, 0, 0, 0.3),
+        0 4px 12px rgba(0, 0, 0, 0.15);
+    --canvas-glass-glider-bg: linear-gradient(135deg, rgba(192, 192, 192, 0.33), #e0e0e0);
+    --canvas-glass-glider-shadow:
+        0 0 18px rgba(192, 192, 192, 0.5),
+        0 0 10px rgba(255, 255, 255, 0.4) inset;
+    --canvas-glass-glider-ease: cubic-bezier(0.37, 1.95, 0.66, 0.56);
+}
+
+html.theme-dark body #shell.shell :is(.composer-card, .create-menu, .image-quick-toolbar, .selection-capsule-bar, .image-node.empty-node, .image-node.loop-smart-node, .image-node.group-node, .composer-tool-popover, #composerSizePopover),
+html.studio-theme-dark body #shell.shell :is(.composer-card, .create-menu, .image-quick-toolbar, .selection-capsule-bar, .image-node.empty-node, .image-node.loop-smart-node, .image-node.group-node, .composer-tool-popover, #composerSizePopover) {
+    color: var(--canvas-glass-text) !important;
+    background: var(--canvas-glass-bg) !important;
+    background-image: none !important;
+    border: 1px solid var(--ui-border) !important;
+    border-radius: 16px !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    box-shadow: var(--canvas-glass-shadow) !important;
+}html.theme-dark body #shell.shell #composer.composer .composer-card .prompt-input,
+html.studio-theme-dark body #shell.shell #composer.composer .composer-card .prompt-input,
+html.theme-dark body #shell.shell #composer.composer .composer-card .prompt-input:focus,
+html.studio-theme-dark body #shell.shell #composer.composer .composer-card .prompt-input:focus{
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 0 !important;
+    box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.22), inset -1px -1px 4px rgba(255, 255, 255, 0.04) !important;
+}
+html.theme-dark body #shell.shell #composer.composer .composer-card .prompt-input,
+html.studio-theme-dark body #shell.shell #composer.composer .composer-card .prompt-input{color: var(--canvas-glass-text) !important;}
+
+html.theme-dark body #shell.shell #composer.composer .composer-footer .composer-footer-bar,
+html.studio-theme-dark body #shell.shell #composer.composer .composer-footer .composer-footer-bar {
+    overflow: hidden;
+    background: var(--canvas-glass-bg) !important;
+    border-radius: 16px !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    box-shadow: var(--canvas-glass-shadow) !important;
+}
+
+html.theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn),
+html.studio-theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn),
+html.theme-dark body #shell.shell #composer.composer .composer-footer .composer-tool-wrap > .composer-tool-btn,
+html.studio-theme-dark body #shell.shell #composer.composer .composer-footer .composer-tool-wrap > .composer-tool-btn {
+    color: var(--canvas-glass-text) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    font-weight: 600 !important;
+}html.theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn):hover,
+html.theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn):focus-visible,
+html.theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn):active,
+html.studio-theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn):hover,
+html.studio-theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn):focus-visible,
+html.studio-theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn):active,
+html.theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsWrap, #composerSizeWrap, #composerVideoReferenceWrap, #composerKindWrap).open > :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn),
+html.studio-theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsWrap, #composerSizeWrap, #composerVideoReferenceWrap, #composerKindWrap).open > :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn){
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+html.theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn):active,
+html.studio-theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn):active,
+html.theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsWrap, #composerSizeWrap, #composerVideoReferenceWrap, #composerKindWrap).open > :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn),
+html.studio-theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsWrap, #composerSizeWrap, #composerVideoReferenceWrap, #composerKindWrap).open > :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn){color: #fff !important;}
+
+html.theme-dark body #shell.shell #composer.composer .composer-footer .composer-footer-glider,
+html.studio-theme-dark body #shell.shell #composer.composer .composer-footer .composer-footer-glider {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 0 !important;
+    border: 0 !important;
+    border-radius: 16px !important;
+    background: var(--canvas-glass-glider-bg) !important;
+    background-image: var(--canvas-glass-glider-bg) !important;
+    box-shadow: var(--canvas-glass-glider-shadow) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    transition:
+        transform 0.5s var(--canvas-glass-glider-ease), width 0.38s var(--canvas-glass-glider-ease), height 0.38s var(--canvas-glass-glider-ease), opacity 0.3s ease-in-out !important;
+}
+
+html.theme-dark body #shell.shell #composer.composer .composer-footer .composer-footer-glider.is-visible,
+html.studio-theme-dark body #shell.shell #composer.composer .composer-footer .composer-footer-glider.is-visible {
+    opacity: 1 !important;
+}
+
+html.theme-dark body #shell.shell :is(.composer-mode-glider, .size-choice-glider.is-soft, .iqt-glass-glider, .iqt-menu-glass-glider, .selection-capsule-glider),
+html.studio-theme-dark body #shell.shell :is(.composer-mode-glider, .size-choice-glider.is-soft, .iqt-glass-glider, .iqt-menu-glass-glider, .selection-capsule-glider) {
+    background: var(--canvas-glass-glider-bg) !important;
+    background-image: var(--canvas-glass-glider-bg) !important;
+    box-shadow: var(--canvas-glass-glider-shadow) !important;
+    border: 0 !important;
+}
+
+html.theme-dark .floating-toolbar::before,
+html.studio-theme-dark .floating-toolbar::before {
+    background: var(--canvas-glass-bg) !important;
+    border: 1px solid var(--ui-border) !important;
+    border-radius: 16px !important;
+    box-shadow: var(--canvas-glass-shadow) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/*
+ * C10: Skill pack popover mirrors composer size submenu shell.
+ * Opaque white panel with composer shadow; item pills match size/quality buttons.
+ */
+html:not(.theme-dark):not(.studio-theme-dark) body #skillMenu.skill-menu.composer-tool-popover {
+    background: #fff !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    border-radius: 12px !important;
+    box-shadow: 0 18px 46px rgba(55, 65, 81, .14) !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 7px !important;
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+    overflow: hidden !important;
+    isolation: isolate;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #skillMenu.skill-menu.composer-tool-popover::before,
+html:not(.theme-dark):not(.studio-theme-dark) body #skillMenu.skill-menu.composer-tool-popover::after {
+    content: none !important;
+    display: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #skillMenu.skill-menu :is(
+    .skill-menu-head,
+    .skill-menu-list,
+    .skill-menu-state
+) {
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #skillMenu.skill-menu .skill-menu-item {
+    color: #505761 !important;
+    background: #fff !important;
+    background-image: none !important;
+    border: 1px solid rgba(137, 145, 156, .22) !important;
+    box-shadow: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #skillMenu.skill-menu .skill-menu-item:is(
+    :hover,
+    :focus-visible
+) {
+    background: #fafbfc !important;
+    border-color: rgba(137, 145, 156, .34) !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #skillMenu.skill-menu .skill-menu-name {
+    color: #505761 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #skillMenu.skill-menu .skill-menu-item.selected .skill-menu-name {
+    color: var(--ui-accent) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #skillMenu.skill-menu .skill-menu-item.selected {
+    color: var(--ui-accent) !important;
+    background: rgba(var(--ui-accent-rgb), .06) !important;
+    border-color: rgba(var(--ui-accent-rgb), .42) !important;
+    box-shadow: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #skillMenu.skill-menu .skill-menu-icon {
+    border: 1px solid #edf0f3 !important;
+    border-radius: 7px !important;
+    background: #f7f8fa !important;
+    box-shadow: none !important;
+    color: #747b85 !important;
+}html:not(.theme-dark):not(.studio-theme-dark) body #skillMenu.skill-menu .skill-menu-item:hover .skill-menu-icon,
+html:not(.theme-dark):not(.studio-theme-dark) body #skillMenu.skill-menu .skill-menu-item:focus-visible .skill-menu-icon,
+html:not(.theme-dark):not(.studio-theme-dark) body #skillMenu.skill-menu .skill-menu-item.selected .skill-menu-icon{
+    background: var(--ui-accent) !important;
+    border-color: var(--ui-accent) !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) body #skillMenu.skill-menu .skill-menu-item.selected .skill-menu-icon{color: #fff !important;}
+
+/* C11: image-node corner controls stay flat on hover/selected. */
+html body #shell.shell .image-node :is(.mini-x,.node-delete,.image-delete),
+html body #shell.shell .image-node .node-resize-handle,
+html body #shell.shell .image-node:is(:hover,.selected) :is(.mini-x,.node-delete,.image-delete),
+html body #shell.shell .image-node:is(:hover,.selected) .node-resize-handle {
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    filter: none !important;
+}
+
+/* C12: composer mode toggle keeps semantic state only; the visual glider is retired. */
+html body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle .composer-mode-glider {
+    display: none !important;
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    transform: translate3d(var(--composer-mode-glider-x, 0px), var(--composer-mode-glider-y, 0px), 0) !important;
+    transition: transform .22s ease, width .22s ease, height .22s ease, opacity .16s ease !important;
+    animation: none !important;
+}
+
+html body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle .composer-mode-glider.is-visible {
+    transform: translate3d(var(--composer-mode-glider-x, 0px), var(--composer-mode-glider-y, 0px), 0) !important;
+}
+
+html body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button {
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle .composer-mode-glider {
+    display: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button.is-mode-hover,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
+    button.active {
+    color: #fff !important;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
+    button.active {
+    color: #747b85 !important;
+    background: transparent !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button.is-mode-hover :is(i, svg, span),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
+    button.active :is(i, svg, span) {
+    color: #fff !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button.is-mode-hover :is(i, svg),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
+    button.active :is(i, svg) {
+    stroke: #fff !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover) :is(i, svg, span),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
+    button.active :is(i, svg, span) {
+    color: #747b85 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover) :is(i, svg),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
+    button.active :is(i, svg) {
+    stroke: #747b85 !important;
+}
+
+html.theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle .composer-mode-glider,
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle .composer-mode-glider {
+    display: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+html.theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button.is-mode-hover,
+html.theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
+    button.active,
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button.is-mode-hover,
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
+    button.active {
+    color: #fff !important;
+    background: transparent !important;
+}
+
+html.theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover),
+html.theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
+    button.active,
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover),
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
+    button.active {
+    color: #9aa0a8 !important;
+}
+
+html.theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button.is-mode-hover :is(i, svg, span),
+html.theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
+    button.active :is(i, svg, span),
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button.is-mode-hover :is(i, svg, span),
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
+    button.active :is(i, svg, span) {
+    color: #fff !important;
+}
+
+html.theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button.is-mode-hover :is(i, svg),
+html.theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
+    button.active :is(i, svg),
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button.is-mode-hover :is(i, svg),
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
+    button.active :is(i, svg) {
+    stroke: #fff !important;
+}
+
+html.theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover) :is(i, svg, span),
+html.theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
+    button.active :is(i, svg, span),
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover) :is(i, svg, span),
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
+    button.active :is(i, svg, span) {
+    color: #9aa0a8 !important;
+}
+
+html.theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover) :is(i, svg),
+html.theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
+    button.active :is(i, svg),
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover) :is(i, svg),
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
+    button.active :is(i, svg) {
+    stroke: #9aa0a8 !important;
+}
+
+/* C13: asset shortcut glider is retired with the top-right mode switch glider. */
+html body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle .composer-mode-glider {
+    display: none !important;
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    transform: translate3d(var(--composer-mode-glider-x, 0px), var(--composer-mode-glider-y, 0px), 0) !important;
+    transition: transform .22s ease, width .22s ease, height .22s ease, opacity .16s ease !important;
+    animation: none !important;
+}
+
+html body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle button {
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+}
+
+html body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle button.is-mode-hover,
+html body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle:not(:has(.is-mode-hover)) button.active {
+    color:#fff !important;
+    border-color:transparent !important;
+}
+
+html body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle button.is-mode-hover :is(i, svg, span),
+html body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle:not(:has(.is-mode-hover)) button.active :is(i, svg, span) {
+    color:#fff !important;
+    stroke:#fff !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle button:not(.is-mode-hover),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle:has(.is-mode-hover) button.active {
+    color:#747b85 !important;
+}
+
+html.theme-dark body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle button:not(.is-mode-hover),
+html.theme-dark body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle:has(.is-mode-hover) button.active,
+html.studio-theme-dark body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle button:not(.is-mode-hover),
+html.studio-theme-dark body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle:has(.is-mode-hover) button.active {
+    color:#9aa0a8 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle button.is-mode-hover,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle:not(:has(.is-mode-hover)) button.active,
+html.theme-dark body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle button.is-mode-hover,
+html.theme-dark body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle:not(:has(.is-mode-hover)) button.active,
+html.studio-theme-dark body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle button.is-mode-hover,
+html.studio-theme-dark body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle:not(:has(.is-mode-hover)) button.active {
+    color:#fff !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle button.is-mode-hover :is(i, svg, span),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle:not(:has(.is-mode-hover)) button.active :is(i, svg, span),
+html.theme-dark body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle button.is-mode-hover :is(i, svg, span),
+html.theme-dark body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle:not(:has(.is-mode-hover)) button.active :is(i, svg, span),
+html.studio-theme-dark body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle button.is-mode-hover :is(i, svg, span),
+html.studio-theme-dark body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcuts.composer-kind-toggle:not(:has(.is-mode-hover)) button.active :is(i, svg, span) {
+    color:#fff !important;
+    stroke:#fff !important;
+}
+
+/* Dark dock menus mirror the canvas composer's first- and second-level menus. */
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode .chat-shell .composer-foot-left .attach-btn {
+    width:36px !important;
+    height:36px !important;
+    padding:0 !important;
+    margin-left:6px !important;
+    color:rgba(236, 240, 246, .74) !important;
+    border:1px solid transparent !important;
+    border-radius:13px !important;
+    background:transparent !important;
+    background-image:none !important;
+    box-shadow:none !important;
+    font-family: "Inter", "Segoe UI", "ui-cjk", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif !important;
+    font-size:13px !important;
+    font-weight:400 !important;
+    line-height:20px !important;
+    transform:none !important;
+    animation:none !important;
+    transition:background-color .14s ease, border-color .14s ease, box-shadow .14s ease !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode .chat-shell .composer-foot-left .attach-btn
+    :is(svg, i, i > svg, #skillBtnIcon, #skillBtnIcon > svg) {
+    width:16px !important;
+    height:16px !important;
+    flex:0 0 16px !important;
+    color:currentColor !important;
+    stroke:currentColor !important;
+    stroke-width:1.5px !important;
+}html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode .chat-shell .composer-foot-left .attach-btn:hover,
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode .chat-shell .composer-foot-left .attach-btn:focus-visible,
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode .chat-shell .composer-foot-left .attach-btn:active,
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode .chat-shell #skillBtn[aria-expanded="true"]{
+    border:1px solid rgba(255, 255, 255, .08) !important;
+    border-radius:13px !important;
+    background:radial-gradient(
+        ellipse at 50% 42%,
+        rgba(9, 11, 15, .94) 0 58%,
+        rgba(31, 34, 39, .82) 100%
+    ) !important;
+    box-shadow:
+        inset 0 0 10px rgba(255, 255, 255, .10),
+        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+    transform:none !important;
+    animation:none !important;
+}
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode .chat-shell .composer-foot-left .attach-btn:active,
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode .chat-shell #skillBtn[aria-expanded="true"]{color:rgba(236, 240, 246, .96) !important; font-weight:400 !important;}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode #skillMenu.skill-menu.composer-tool-popover {
+    color:rgba(236, 240, 246, .74) !important;
+    background:var(--ui-surface-elevated) !important;
+    background-image:none !important;
+    border:1px solid var(--ui-border) !important;
+    border-radius:14px !important;
+    box-shadow:var(--ui-shadow-pop) !important;
+    -webkit-backdrop-filter:none !important;
+    backdrop-filter:none !important;
+    filter:none !important;
+    padding:7px !important;
+    overflow:hidden !important;
+    transform:none !important;
+    animation:none !important;
+    transition:none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-head {
+    color:rgba(236, 240, 246, .50) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-head button {
+    color:rgba(236, 240, 246, .74) !important;
+    border:1px solid transparent !important;
+    border-radius:8px !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    transform:none !important;
+    animation:none !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-item {
+    color:rgba(236, 240, 246, .74) !important;
+    border:1px solid rgba(255, 255, 255, .08) !important;
+    border-radius:8px !important;
+    background:rgba(255, 255, 255, .025) !important;
+    background-image:none !important;
+    box-shadow:none !important;
+    transform:none !important;
+    animation:none !important;
+    transition:background-color .14s ease, border-color .14s ease, box-shadow .14s ease !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-name {
+    color:rgba(236, 240, 246, .96) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-description {
+    color:rgba(236, 240, 246, .50) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-icon {
+    color:rgba(236, 240, 246, .74) !important;
+    border:1px solid rgba(255, 255, 255, .08) !important;
+    border-radius:7px !important;
+    background:rgba(255, 255, 255, .025) !important;
+    box-shadow:none !important;
+}html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode #skillMenu.skill-menu :is(
+        .skill-menu-head button,
+        .skill-menu-item
+    ):is(:hover, :focus-visible){
+    border:1px solid rgba(255, 255, 255, .08) !important;
+    border-radius:8px !important;
+    background:radial-gradient(
+        ellipse at 50% 42%,
+        rgba(9, 11, 15, .94) 0 58%,
+        rgba(31, 34, 39, .82) 100%
+    ) !important;
+    box-shadow:
+        inset 0 0 10px rgba(255, 255, 255, .10),
+        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+    outline:none !important;
+    transform:none !important;
+    animation:none !important;
+}html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-item:is(:hover, :focus-visible) .skill-menu-icon{
+    border-color:rgba(255, 255, 255, .10) !important;
+    background:rgba(255, 255, 255, .10) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-item.selected {
+    color:rgba(236, 240, 246, .74) !important;
+    border-color:rgba(255, 255, 255, .08) !important;
+    background:rgba(255, 255, 255, .025) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-item.selected .skill-menu-icon {
+    color:rgba(236, 240, 246, .74) !important;
+    border-color:rgba(255, 255, 255, .08) !important;
+    background:rgba(255, 255, 255, .025) !important;
+}
+/* Dark mode keeps every neutral control and secondary label achromatic. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-caret {
+    color: #575757 !important;
+    stroke: #575757 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-history-meta {
+    color: #a2a2a2 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark).gpt-dock-canvas-mode
+    body.gpt-dock-canvas-mode .chat-shell .dock-context-pct {
+    color: #a2a2a2 !important;
+}

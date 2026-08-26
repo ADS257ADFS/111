@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API 设置</title>
+    <script>
+        (function(){
+            try {
+                if(window.location.hash === '#embedded') {
+                    document.documentElement.classList.add('settings-embedded');
+                }
+                var theme = localStorage.getItem('studio_theme') || localStorage.getItem('canvas_theme') || 'light';
+                                if(theme === 'dark') {
+                    document.documentElement.classList.add('studio-theme-dark');
+                    document.documentElement.classList.add('theme-dark');
+                }
+            } catch(e) {}
+        })();
+    </script>
+    <script src="/static/vendor/js/mutation-observer-guard.js?v=2026.08.11.82"></script>
+    <script src="/static/vendor/js/tailwindcss-cdn.js?v=2026.08.11.82"></script>
+    <script src="/static/vendor/js/lucide.js?v=2026.08.11.82"></script>
+    <script src="/static/js/theme.js?v=2026.08.11.82"></script>
+    <script src="/static/js/i18n.js?v=2026.08.11.82"></script>
+    <link rel="stylesheet" href="/static/css/theme.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/visual-system-preview.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/visual-typography-system.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/api-settings.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/dark-desaturated/api-settings.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/ui-primitives.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.11.82">
+</head>
+<body>
+    <div class="page">
+        <div class="wrap">
+            <header class="page-head">
+                <div>
+                    <div class="title" data-i18n="api.title">API 设置</div>
+                    <div class="sub" data-i18n="api.subtitle">管理平台地址、模型列表和 Key。Key 写入后端 env，页面不会回显完整内容</div>
+                </div>
+                <div id="status" class="status"></div>
+            </header>
+
+            <div class="layout">
+                <aside class="sidebar">
+                    <div class="side-section-title" data-i18n="api.providersTitle">平台列表</div>
+                    <div id="providerList" class="provider-list"></div>
+                    <button class="add-btn" type="button" onclick="addProvider()">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        <span data-i18n="api.addProvider">新增平台</span>
+                    </button>
+                </aside>
+
+                <main id="settingsContent" class="content">
+                    <div class="content-head">
+                        <div>
+                            <div id="editorTitle" class="editor-title" data-i18n="api.provider">平台</div>
+                            <div id="editorSub" class="editor-sub" data-i18n="api.editorSub">配置基础信息、API Key 和可用模型</div>
+                        </div>
+                        <div class="content-actions">
+                            <button id="deleteBtn" class="action-btn danger-btn api-page-delete-btn" type="button" onclick="deleteProvider()">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                <span data-i18n="api.delete">删除</span>
+                            </button>
+                            <button class="action-btn save-btn api-page-save-btn" type="button" onclick="saveProviders()">
+                                <i data-lucide="save" class="w-3.5 h-3.5"></i>
+                                <span data-i18n="api.save">保存</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <section id="providerOnboardingCard" class="provider-onboarding-card" hidden></section>
+
+                    <section id="providerBasicBlock" class="block">
+                        <div class="block-head">
+                            <div>
+                                <div class="block-title" data-i18n="api.basicInfo">基本信息</div>
+                                <div class="block-desc" data-i18n="api.basicHint">平台显示名、唯一 ID 和请求地址</div>
+                            </div>
+                        </div>
+                        <div class="form">
+                            <div class="api-basic-row">
+                                <label class="field api-name-field">
+                                    <span class="label" data-i18n="api.platformName">平台名称</span>
+                                    <div class="field-frame"><input id="nameInput" type="text" placeholder="Comfly"></div>
+                                    <span class="hint"><span data-i18n="api.platformIdShown">平台 ID</span>: <span id="idPreview" style="font-family:ui-monospace,Menlo,monospace;color:var(--text)">-</span></span>
+                                    <input id="idInput" type="hidden">
+                                </label>
+                                <label class="field api-base-url-field">
+                                    <span class="label" data-i18n="api.baseUrl">请求地址</span>
+                                    <div class="field-frame"><input id="baseInput" type="text" placeholder="https://api.example.com/v1"></div>
+                                </label>
+                                <label class="field api-key-field">
+                                    <span class="label api-key-label">API Key</span>
+                                    <div class="key-panel api-standard-key-row">
+                                        <div class="key-input-line">
+                                            <div class="field-frame"><input id="keyInput" type="password"></div>
+                                            <div class="key-actions">
+                                                <button class="key-btn" type="button" onclick="saveKeyOnly()" title="保存 Key" data-i18n-title="api.saveKeyTitle"><i data-lucide="check" class="w-4 h-4"></i></button>
+                                                <button class="key-btn key-clear" type="button" onclick="clearKeyOnly()" title="清除 Key" data-i18n-title="api.clearKeyTitle"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="verify-action-row">
+                                <div class="verify-action-band">
+                                    <button id="testUrlBtn" class="action-btn" type="button" onclick="testConnection()">
+                                        <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+                                        <span data-i18n="api.testUrl">验证地址</span>
+                                    </button>
+                                    <button id="probeAsyncBtn" class="action-btn" type="button" onclick="probeAsync()">
+                                        <i data-lucide="radar" class="w-3.5 h-3.5"></i>
+                                        <span>验证协议</span>
+                                    </button>
+                                    <div class="field-frame protocol-selector-wrap">
+                                        <select id="protocolInput">
+                                            <option value="openai" data-i18n="api.protocolOpenAI">OpenAI 直连</option>
+                                            <option value="apimart" data-i18n="api.protocolApimart">异步协议</option>
+                                            <option value="gemini" data-i18n="api.protocolGemini">Gemini 协议</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <span id="keyHint" class="hint api-key-hint"></span>
+                            <div id="verifyResult" style="display:none;padding:2px 0;grid-column:1/-1"></div>
+                        </div>
+                    </section>
+
+                    <div id="modelsHead" class="block models-toolbar">
+                        <div>
+                            <div id="modelsHeadTitle" class="block-title" data-i18n="api.modelsTitle">模型列表</div>
+                            <div id="modelsHeadDesc" class="block-desc" data-i18n="api.modelsDesc">从上游 API 自动拉取可用模型，并按 image / chat / video / audio 分类；保存后画布各模式自动汇总所有中转站对应模型</div>
+                        </div>
+                        <div class="models-toolbar-actions">
+                            <button id="fetchModelsBtn" class="action-btn primary-btn" type="button" onclick="fetchModels()">
+                                <i data-lucide="download-cloud" class="w-3.5 h-3.5"></i>
+                                <span data-i18n="api.fetchModels">拉取模型</span>
+                            </button>
+                            <button id="openPickerBtn" class="action-btn" type="button" onclick="openModelPicker()" disabled style="opacity:.5">
+                                <i data-lucide="list-checks" class="w-3.5 h-3.5"></i>
+                                <span data-i18n="api.selectModels">选择模型</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="modelGrid" class="model-grid">
+                        <section class="block" data-mode-model-section="image">
+                            <div class="block-head">
+                                <div>
+                                    <div class="block-title" data-i18n="api.imageModels">生图模型</div>
+                                    <div class="block-desc" data-i18n="api.imageHint">在线生图和无限画布 API 生成使用</div>
+                                </div>
+                                <button class="ghost-btn" type="button" onclick="addModel('image')"><i data-lucide="plus" class="w-3.5 h-3.5"></i><span data-i18n="api.model">模型</span></button>
+                            </div>
+                            <div id="imageModelList" class="model-list"></div>
+                        </section>
+
+                        <section class="block" data-mode-model-section="chat">
+                            <div class="block-head">
+                                <div>
+                                    <div class="block-title" data-i18n="api.chatModels">聊天模型</div>
+                                    <div class="block-desc" data-i18n="api.chatHint">GPT 对话和 LLM 节点使用</div>
+                                </div>
+                                <button class="ghost-btn" type="button" onclick="addModel('chat')"><i data-lucide="plus" class="w-3.5 h-3.5"></i><span data-i18n="api.model">模型</span></button>
+                            </div>
+                            <div id="chatModelList" class="model-list"></div>
+                        </section>
+
+                        <section class="block" data-mode-model-section="video">
+                            <div class="block-head">
+                                <div>
+                                    <div class="block-title" data-i18n="api.videoModels">视频模型</div>
+                                    <div class="block-desc" data-i18n="api.videoHint">无限画布视频生成节点使用</div>
+                                </div>
+                                <button class="ghost-btn" type="button" onclick="addModel('video')"><i data-lucide="plus" class="w-3.5 h-3.5"></i><span data-i18n="api.model">模型</span></button>
+                            </div>
+                            <div id="videoModelList" class="model-list"></div>
+                        </section>
+
+                        <section class="block" data-mode-model-section="audio">
+                            <div class="block-head">
+                                <div>
+                                    <div class="block-title">音频模型</div>
+                                    <div class="block-desc">音频模式 API 生成使用</div>
+                                </div>
+                                <button class="ghost-btn" type="button" onclick="addModel('audio')"><i data-lucide="plus" class="w-3.5 h-3.5"></i><span data-i18n="api.model">模型</span></button>
+                            </div>
+                            <div id="audioModelList" class="model-list"></div>
+                        </section>
+                    </div>
+
+                    <div id="customModelsView" class="model-grid custom-models-view"></div>
+                </main>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="modelPickerOverlay" class="picker-overlay">
+        <div class="picker-modal">
+                <div class="picker-head">
+                    <div>
+                        <div class="picker-title">从上游拉取的模型清单</div>
+                        <div id="pickerCount" class="picker-count">-</div>
+                        <div id="pickerDiscoveryStatus" class="picker-discovery-status" aria-live="polite"></div>
+                        <details id="pickerDiscoveryDiagnostics" class="picker-discovery-diagnostics">
+                            <summary>查看拉取诊断</summary>
+                            <div class="picker-discovery-diagnostics-body"></div>
+                        </details>
+                    </div>
+                <div class="picker-close" onclick="closeModelPicker()"><i data-lucide="x" class="w-4 h-4"></i></div>
+            </div>
+            <div class="picker-toolbar">
+                <input id="pickerFilter" class="picker-search" type="text" placeholder="按名称搜索模型.." oninput="renderModelPicker()">
+                <div class="picker-cat-tabs">
+                    <button class="picker-cat-tab active" data-cat="all" onclick="selectPickerCat('all')">全部 <span class="cat-count">0</span></button>
+                    <button class="picker-cat-tab" data-cat="image" onclick="selectPickerCat('image')">生图 <span class="cat-count">0</span></button>
+                    <button class="picker-cat-tab" data-cat="chat" onclick="selectPickerCat('chat')">LLM <span class="cat-count">0</span></button>
+                    <button class="picker-cat-tab" data-cat="video" onclick="selectPickerCat('video')">视频 <span class="cat-count">0</span></button>
+                    <button class="picker-cat-tab" data-cat="audio" onclick="selectPickerCat('audio')">音频 <span class="cat-count">0</span></button>
+                </div>
+            </div>
+            <div id="pickerList" class="picker-body"></div>
+            <div id="pickerSummary" class="picker-summary">
+                <span class="picker-summary-title">将应用：</span>
+                <span id="sumImage" class="picker-sum-chip picker-sum-chip-empty">生图 0</span>
+                <span id="sumChat" class="picker-sum-chip picker-sum-chip-empty">聊天 0</span>
+                <span id="sumVideo" class="picker-sum-chip picker-sum-chip-empty">视频 0</span>
+                <span id="sumAudio" class="picker-sum-chip picker-sum-chip-empty">音频 0</span>
+                <span id="sumUnsel" style="margin-left:auto;color:var(--faint)">未选 0</span>
+            </div>
+            <div class="picker-foot">
+                <button class="action-btn" type="button" onclick="closeModelPicker()">取消</button>
+                <button class="action-btn save-btn" type="button" onclick="applyModelPicker()">应用到模型列表</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function(){
+            if(!document.documentElement.classList.contains('settings-embedded')) return;
+            var content = document.querySelector('.content');
+            var contentHead = content && content.querySelector('.content-head');
+            var providerRail = document.querySelector('.sidebar');
+            if(content && contentHead && providerRail) {
+                contentHead.insertAdjacentElement('afterend', providerRail);
+                providerRail.classList.add('embedded-provider-strip');
+            }
+        })();
+    </script>
+    <script src="/static/js/model-discovery-status.js?v=2026.08.11.82"></script>
+    <script src="/static/js/api-settings.js?v=2026.08.11.82"></script>
+</body>
+</html>

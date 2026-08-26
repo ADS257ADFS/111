@@ -1,0 +1,133 @@
+/* Final shell refinements: keep the account control at its collapsed-dock
+   position.  The expanded chat dock intentionally covers this control. */
+
+.top-user-btn {
+    position: fixed;
+    top: 22px;
+    right: 126px;
+    z-index: 170;
+    width: auto;
+    min-width: 70px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 11px;
+    border-radius: 16px;
+    color: #50565e;
+    cursor: pointer;
+    transition:
+        transform 180ms ease, opacity 180ms ease, visibility 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+body.is-dock-resizing .top-user-btn {
+    transition: none !important;
+}
+
+.top-user-points {
+    min-width: 1ch;
+    font-size: 12px;
+    font-weight:600;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.top-user-btn svg,
+.top-user-btn i {
+    width: 15px;
+    height: 15px;
+    stroke-width: 1.7;
+}
+
+html.gpt-dock-collapsed:not(.studio-hide-gpt-dock) .top-user-btn {
+    right: 126px;
+}
+
+html.studio-hide-gpt-dock .top-user-btn {
+    right: 18px;
+}
+
+html.theme-dark .top-user-btn,
+html.studio-theme-dark .top-user-btn {
+    border-color: rgba(255, 255, 255, .14);
+    background: rgba(38, 39, 43, .68);
+    color: #d8dbe1;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .08),
+        0 9px 22px rgba(0, 0, 0, .32);
+}html.theme-dark .top-user-btn:hover,
+html.theme-dark .top-user-btn:focus-visible,
+html.theme-dark .top-user-btn[aria-expanded="true"],
+html.studio-theme-dark .top-user-btn:hover,
+html.studio-theme-dark .top-user-btn:focus-visible,
+html.studio-theme-dark .top-user-btn[aria-expanded="true"]{
+    background: var(--ui-accent);
+}
+html.theme-dark .top-user-btn[aria-expanded="true"],
+html.studio-theme-dark .top-user-btn[aria-expanded="true"]{color: #fff;}
+
+@media (max-width: 860px) {
+    .top-user-btn {
+        top: 16px;
+    }
+}
+
+html.studio-page-canvas .shell-primary-rail {
+    transition: transform .42s cubic-bezier(.22,.75,.3,1), opacity .36s ease, visibility .36s ease;
+}
+
+html.studio-page-canvas.canvas-empty-chrome-recessed .shell-primary-rail {
+    transform: translate(calc(-100% - 24px), -50%) scale(.95);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+html.studio-page-canvas.canvas-empty-chrome-recessed .top-user-btn {
+    transform: translateX(calc(100% + 150px));
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+html.studio-page-canvas .dock-open-btn {
+    width: auto !important;
+    min-width: 104px !important;
+    height: 36px !important;
+    padding: 0 12px !important;
+    gap: 7px !important;
+    border-radius: 16px !important;
+    transition: none !important;
+}
+
+html.studio-page-canvas .top-user-btn {
+    transition: transform .42s cubic-bezier(.22,.75,.3,1), opacity .36s ease, visibility .36s ease, background-color .18s ease, box-shadow .18s ease;
+}
+
+.dock-open-label {
+    display: inline !important;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+html:is(.theme-dark,.studio-theme-dark) .floating-toolbar .tool-button[data-canvas-main="1"].active,
+html:is(.theme-dark,.studio-theme-dark) .floating-toolbar .tool-button[data-canvas-main="1"].active:hover,
+html:is(.theme-dark,.studio-theme-dark) .floating-toolbar .tool-button[data-canvas-main="1"].active:focus-visible {
+    box-shadow: none !important;
+}
+
+/* The dark rail glass used the shared accent RGB for its outer shadow, which
+   made the active blue control appear to cast a long blue glow. Keep only the
+   neutral inner edge; the blue button itself remains unchanged. */
+html:is(.theme-dark,.studio-theme-dark) body .app-shell .floating-toolbar::before {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+
+html:is(.theme-dark,.studio-theme-dark) .floating-toolbar .tool-button[data-canvas-main="1"].active,
+html:is(.theme-dark,.studio-theme-dark) .floating-toolbar .tool-button[data-canvas-main="1"].active:hover,
+html:is(.theme-dark,.studio-theme-dark) .floating-toolbar .tool-button[data-canvas-main="1"].active:focus-visible {
+    filter: none !important;
+}

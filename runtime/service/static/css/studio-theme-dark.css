@@ -1,0 +1,210 @@
+/*
+ * SuperCmd-inspired dark foundation for Lightbox.
+ * Rebuilt from an empty file. It activates only under the existing dark classes.
+ */
+
+:is(html.theme-dark, html.studio-theme-dark, .theme-dark) {
+    color-scheme: dark;
+
+    --sc-base-rgb: 20, 20, 20;
+    --sc-on-surface-rgb: 236, 240, 246;
+    --sc-backdrop-rgb: 0, 0, 0;
+    --sc-page: #0d0d0f;
+    --sc-surface: rgba(var(--sc-base-rgb), .68);
+    --sc-surface-solid: rgba(30, 30, 34, .97);
+    --sc-surface-raised: rgba(30, 31, 36, .82);
+    --sc-surface-soft: rgba(255, 255, 255, .03);
+    --sc-input: rgba(5, 5, 8, .52);
+    --sc-hover: rgba(255, 255, 255, .065);
+    --sc-selected: rgba(255, 255, 255, .14);
+    --sc-text: rgba(var(--sc-on-surface-rgb), .96);
+    --sc-text-secondary: rgba(var(--sc-on-surface-rgb), .74);
+    --sc-text-muted: rgba(var(--sc-on-surface-rgb), .50);
+    --sc-text-subtle: rgba(var(--sc-on-surface-rgb), .40);
+    --sc-divider: rgba(255, 255, 255, .05);
+    --sc-border: rgba(255, 255, 255, .08);
+    --sc-border-panel: rgba(255, 255, 255, .12);
+    --sc-border-strong: rgba(255, 255, 255, .18);
+    --sc-outline: rgba(184, 190, 198, .18);
+    --sc-accent: #4ea2ff;
+    --sc-accent-hover: #6bb4ff;
+    --sc-accent-soft: rgba(78, 162, 255, .22);
+    --sc-shadow-rgb: 10, 132, 255;
+    --sc-danger: #ff6363;
+    --sc-success: #48c78e;
+    --sc-radius-sm: 10px;
+    --sc-radius: 12px;
+    --sc-radius-lg: 16px;
+    --sc-blur: 54px;
+    --sc-glass: linear-gradient(180deg, rgba(255, 255, 255, .055), rgba(255, 255, 255, .018)), rgba(var(--sc-base-rgb), .68);
+    --sc-glass-strong: linear-gradient(160deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .018)), rgba(20, 20, 22, .84);
+    --sc-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
+    --sc-shadow-raised: inset 0 1px 0 rgba(255, 255, 255, .10);
+    --sc-focus: 0 0 0 2px rgba(78, 162, 255, .28), 0 0 0 1px rgba(78, 162, 255, .5);
+
+    /* Existing views consume these compatibility tokens. */
+    --studio-dark-page: var(--sc-page);
+    --studio-dark-grid: rgba(255, 255, 255, .08);
+    --studio-dark-panel: var(--sc-surface);
+    --studio-dark-card: var(--sc-surface-soft);
+    --studio-dark-soft: var(--sc-surface-soft);
+    --studio-dark-line: var(--sc-border);
+    --studio-dark-text: var(--sc-text);
+    --studio-dark-muted: var(--sc-text-secondary);
+    --studio-dark-faint: var(--sc-text-muted);
+    --studio-dark-glass: var(--sc-surface);
+    --studio-dark-glass-border: var(--sc-border-panel);
+    --studio-dark-shadow: transparent;
+    --studio-dark-input: var(--sc-input);
+    --studio-dark-accent: var(--sc-accent);
+    --studio-dark-btn: var(--sc-surface-soft);
+    --studio-dark-btn-hover: var(--sc-hover);
+
+    --page: var(--sc-page);
+    --grid: rgba(255, 255, 255, .08);
+    --panel: rgba(20, 20, 20, .72);
+    --card: var(--sc-surface-soft);
+    --text: var(--sc-text);
+    --muted: var(--sc-text-secondary);
+    --faint: var(--sc-text-muted);
+    --line: var(--sc-border);
+    --soft: var(--sc-surface-soft);
+    --shadow: transparent;
+    --strong: var(--sc-accent);
+    --strong-text: #fff;
+    --accent: var(--sc-accent);
+
+    --bg: var(--sc-page);
+    --stage-bg: var(--sc-page);
+    --sidebar-bg: rgba(5, 5, 8, .45);
+    --stage-border: var(--sc-border);
+    --border: var(--sc-border);
+    --nav-hover-bg: var(--sc-hover);
+    --monitor-bg: rgba(5, 5, 8, .45);
+    --monitor-border: var(--sc-border);
+    --monitor-shadow: transparent;
+    --divider: var(--sc-divider);
+    --scrollbar: rgba(255, 255, 255, .22);
+    --scrollbar-hover: rgba(255, 255, 255, .32);
+    --author-name: var(--sc-text);
+    --social-icon: var(--sc-text-secondary);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body {
+    color: var(--sc-text);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .025), transparent 28%),
+        linear-gradient(145deg, #161619, var(--sc-page) 52%, #101012);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(input, select, textarea, [contenteditable="true"]) {
+    color: var(--sc-text);
+    caret-color: var(--sc-accent);
+    border-color: var(--sc-border-panel);
+    background: var(--sc-input);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035), inset 0 2px 10px rgba(0, 0, 0, .28);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(input, textarea)::placeholder {
+    color: var(--sc-text-muted);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(input, select, textarea, [contenteditable="true"]):focus {
+    outline: none;
+    border-color: rgba(78, 162, 255, .5);
+    background: rgba(8, 9, 13, .72);
+    box-shadow: var(--sc-focus), inset 0 2px 10px rgba(0, 0, 0, .24);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(.btn, .mini-btn, .icon-btn, .tool-btn, .gate-icon-btn) {
+    color: var(--sc-text-secondary);
+    border-color: var(--sc-border);
+    background: var(--sc-surface-soft);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .055);
+    transition: border-color .18s ease, background .18s ease, box-shadow .18s ease, transform .18s ease;
+}:is(html.theme-dark, html.studio-theme-dark) :is(.btn, .mini-btn, .icon-btn, .tool-btn, .gate-icon-btn):hover:not(:disabled){
+    border-color: var(--sc-border-panel);
+    background: var(--sc-hover);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
+    transform: translateY(-1px);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(.btn, .mini-btn, .icon-btn, .tool-btn, .gate-icon-btn):active:not(:disabled) {
+    transform: translateY(0) scale(.98);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(.btn.primary, .btn-batch, .primary-btn, .smart-create-btn, .create-confirm) {
+    color: #fff;
+    border-color: rgba(255, 255, 255, .14);
+    background: var(--sc-accent);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(.btn.primary, .btn-batch, .primary-btn, .smart-create-btn, .create-confirm):hover:not(:disabled) {
+    background: var(--sc-accent-hover);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .26);
+}:is(html.theme-dark, html.studio-theme-dark) :is(.btn.danger, .danger, .delete-btn, .mini-x):hover:not(:disabled){
+    border-color: rgba(255, 99, 99, .4);
+    background: rgba(255, 99, 99, .18);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(.panel, .section, .edit-bar, .edit-modal, .gate-panel) {
+    color: var(--sc-text);
+    border-color: var(--sc-border-panel);
+    background: var(--sc-glass);
+    box-shadow: var(--sc-shadow);
+    -webkit-backdrop-filter: blur(var(--sc-blur)) saturate(170%);
+    backdrop-filter: blur(var(--sc-blur)) saturate(170%);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(.prompt-card, .output-card, .ref-card, .drop, .right-empty, .gate-card) {
+    color: var(--sc-text);
+    border-color: var(--sc-border);
+    background: var(--sc-surface-soft);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(.prompt-card, .output-card, .ref-card, .gate-card):hover {
+    border-color: var(--sc-border-panel);
+    background: var(--sc-hover);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) :is(.image-node.group-node, .promptGroup-node) {
+    color: var(--sc-text);
+    border-color: var(--sc-border-panel);
+    background: rgba(20, 20, 20, .55);
+    box-shadow: var(--sc-shadow);
+    -webkit-backdrop-filter: blur(44px) saturate(155%);
+    backdrop-filter: blur(44px) saturate(155%);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) .smart-group-frame-hit {
+    background: linear-gradient(160deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .012));
+    border: .5px solid rgba(255, 255, 255, .32);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+}
+
+:is(html.theme-dark, html.studio-theme-dark) * {
+    scrollbar-color: rgba(255, 255, 255, .22) transparent;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) *::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .22);
+    background-clip: padding-box;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) *::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, .32);
+    background-clip: padding-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :is(html.theme-dark, html.studio-theme-dark) *,
+    :is(html.theme-dark, html.studio-theme-dark) *::before,
+    :is(html.theme-dark, html.studio-theme-dark) *::after {
+        scroll-behavior: auto !important;
+    }
+}

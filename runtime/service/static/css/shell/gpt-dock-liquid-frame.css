@@ -1,0 +1,249 @@
+/*
+ * Floating liquid-glass frame for the right conversation dock.
+ * Scope is limited to shell chrome; chat layout and business behavior remain
+ * owned by the existing dock component.
+ */
+
+html:not(.theme-dark):not(.studio-theme-dark) {
+    --chat-dock-edge: 10px;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .stage {
+    right: 0 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .gpt-dock {
+    --dock-edge-angle: -165deg;
+    box-sizing: border-box;
+    padding: 12px;
+    left: var(--chat-dock-edge);
+    right: auto;
+    border: 0 !important;
+    border-radius: 0;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible;
+    isolation: isolate;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition:
+        transform 240ms cubic-bezier(.22, .75, .3, 1), opacity 180ms ease, width 120ms linear, left 240ms cubic-bezier(.22, .75, .3, 1) !important;
+    will-change: transform, opacity, left;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .gpt-dock::before {
+    content: "";
+    display: block !important;
+    position: absolute;
+    inset: 12px;
+    z-index: 0;
+    /* 1px 细描边 + 轻投影 */
+    border: 1px solid rgba(0, 0, 0, .12);
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(55, 65, 81, .10);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    pointer-events: none;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .gpt-dock::after {
+    content: none !important;
+    display: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .gpt-dock > * {
+    position: relative;
+    z-index: 1;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .gpt-dock .dock-chrome {
+    min-height: 46px;
+    padding: 6px 12px;
+    border-bottom: 1px solid transparent !important;
+    border-radius: 20px 20px 0 0;
+    background: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .gpt-dock iframe {
+    /* 面板 1px 描边画在 ::before 上：iframe 内容不透明，必须内缩 1px，
+       否则会盖住左右/底部描边，只剩头部露边，看起来"顶部凹进一圈"。 */
+    margin: 0 1px 1px;
+    width: calc(100% - 2px);
+    border-radius: 0 0 19px 19px;
+    background: transparent !important;
+    overflow: hidden;
+}
+
+/* 头部压矮后，拖拽占位条的负外边距同步收窄 */
+.gpt-dock .dock-chrome-spacer {
+    margin: -6px 0;
+}
+
+html.gpt-dock-collapsed:not(.theme-dark):not(.studio-theme-dark) .gpt-dock {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(calc(-100% - 28px), 0, 0) !important;
+}
+
+html.gpt-dock-collapsed.gpt-dock-closing .gpt-dock {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .dock-resizer,
+html.theme-dark .dock-resizer,
+html.studio-theme-dark .dock-resizer {
+    z-index: 999;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .dock-open-btn {
+    top: 22px;
+    width: auto;
+    min-width: 104px;
+    height: 34px;
+    padding: 0 13px 0 10px;
+    gap: 7px;
+    justify-content: flex-start;
+    border: 1px solid var(--ui-border);
+    border-radius: 999px;
+    background: var(--ui-surface-elevated);
+    color: var(--ui-text-secondary);
+    box-shadow: var(--ui-shadow-pop);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    transition:
+        transform 460ms cubic-bezier(.37, 1.55, .66, .96), background-color 180ms ease, border-color 180ms ease, box-shadow 220ms ease;
+}
+
+.dock-open-btn .dock-open-label {
+    display: block;
+    color: inherit;
+    font-family: "Inter", "Segoe UI", "ui-cjk", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+    font-size: 12px;
+    font-weight: 445;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.dock-open-btn svg,
+.dock-open-btn i {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
+    stroke-width: 1.5;
+}html:not(.theme-dark):not(.studio-theme-dark) .dock-open-btn:hover,
+html:not(.theme-dark):not(.studio-theme-dark) .dock-open-btn:focus-visible{
+    border-color: rgba(255, 255, 255, .72) !important;
+    background: var(--ui-accent) !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .36),
+        -3px 6px 15px -3px rgba(103, 116, 134, .16),
+        0 2px 7px rgba(var(--ui-accent-rgb), .12) !important;
+    transform: translateY(-2px) scale(1.02);
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) .dock-open-btn:active {
+    transform: translateY(0) scale(.97);
+}
+
+html.theme-dark .dock-open-btn,
+html.studio-theme-dark .dock-open-btn {
+    top: 22px;
+    width: auto;
+    min-width: 104px;
+    height: 34px;
+    padding: 0 13px 0 10px;
+    gap: 7px;
+    justify-content: flex-start;
+    border-radius: 999px;
+}
+
+html.theme-dark,
+html.studio-theme-dark {
+    --chat-dock-edge: 10px;
+}
+
+html.theme-dark .stage,
+html.studio-theme-dark .stage {
+    right: 0 !important;
+}
+
+html.theme-dark .gpt-dock,
+html.studio-theme-dark .gpt-dock {
+    box-sizing: border-box;
+    padding: 12px;
+    left: var(--chat-dock-edge);
+    right: auto;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible;
+    isolation: isolate;
+    transition:
+        transform 240ms cubic-bezier(.22, .75, .3, 1), opacity 180ms ease, width 120ms linear, left 240ms cubic-bezier(.22, .75, .3, 1) !important;
+}
+
+html.theme-dark .gpt-dock::before,
+html.studio-theme-dark .gpt-dock::before {
+    content: "";
+    display: block !important;
+    position: absolute;
+    inset: 12px;
+    z-index: 0;
+    /* 1px 细描边 + 轻投影 */
+    border: 1px solid rgba(255, 255, 255, .13);
+    border-radius: 20px;
+    background: #1e1f22;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .32);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    pointer-events: none;
+}
+
+html.theme-dark .gpt-dock::after,
+html.studio-theme-dark .gpt-dock::after {
+    content: none !important;
+    display: none !important;
+}
+
+html.theme-dark .gpt-dock > *,
+html.studio-theme-dark .gpt-dock > * {
+    position: relative;
+    z-index: 1;
+}
+
+html.theme-dark .gpt-dock .dock-chrome,
+html.studio-theme-dark .gpt-dock .dock-chrome {
+    min-height: 46px;
+    padding: 6px 12px;
+    border-bottom: 1px solid transparent !important;
+    border-radius: 20px 20px 0 0;
+    background: transparent !important;
+}
+
+html.theme-dark .gpt-dock iframe,
+html.studio-theme-dark .gpt-dock iframe {
+    margin: 0 1px 1px;
+    width: calc(100% - 2px);
+    border-radius: 0 0 19px 19px;
+    overflow: hidden;
+}
+
+html.gpt-dock-collapsed.theme-dark .gpt-dock,
+html.gpt-dock-collapsed.studio-theme-dark .gpt-dock {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(calc(-100% - 28px), 0, 0) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gpt-dock,
+    .stage,
+    .dock-open-btn {
+        transition-duration: 1ms !important;
+    }
+}

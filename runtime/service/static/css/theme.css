@@ -1,0 +1,1732 @@
+html.studio-theme-dark,
+html.studio-theme-dark body,
+body.studio-theme-dark {
+    color-scheme: dark;
+    background: #131416 !important;
+    color: #f1f2f4 !important;
+}
+
+html,
+body {
+    overscroll-behavior: auto;
+}
+
+* {
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(148, 163, 184, .72) transparent !important;
+}
+
+*::-webkit-scrollbar {
+    width: 10px !important;
+    height: 10px !important;
+    background: transparent !important;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+*::-webkit-scrollbar-thumb {
+    min-height: 36px;
+    background-color: rgba(148, 163, 184, .72) !important;
+    border: 3px solid transparent !important;
+    border-right-width: 3px !important;
+    background-clip: padding-box !important;
+    border-radius: 999px !important;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(100, 116, 139, .86) !important;
+}
+
+*::-webkit-scrollbar-corner {
+    background: transparent !important;
+}
+
+body.studio-theme-dark {
+    --accent: #f1f2f4;
+    --bg: #131416;
+    --bg-base: #131416;
+    --card: #1b1c20;
+    --text-main: #f1f2f4;
+}
+
+html.studio-theme-dark body .app-shell,
+html.studio-theme-dark body .sidebar,
+html.studio-theme-dark body .stage,
+body.studio-theme-dark .app-shell,
+body.studio-theme-dark .sidebar,
+body.studio-theme-dark .stage {
+    background: #131416 !important;
+    border-color: #2b2c30 !important;
+}
+
+html.studio-theme-dark body .stage,
+body.studio-theme-dark .stage {
+    box-shadow: none;
+}
+
+html.studio-theme-dark body .nav-item,
+body.studio-theme-dark .nav-item {
+    color: #9aa0a9;
+}html.studio-theme-dark body .nav-item:hover,
+body.studio-theme-dark .nav-item:hover{
+    background: #1b1c20 !important;
+}
+
+html.studio-theme-dark body .nav-item.active,
+body.studio-theme-dark .nav-item.active {
+    background: var(--ui-accent) !important;
+    color: #ffffff !important;
+    box-shadow: none;
+}
+
+html.studio-theme-dark body .logo-ring,
+body.studio-theme-dark .logo-ring {
+    border-color: rgba(255,255,255,.34) !important;
+}
+
+html.studio-theme-dark body #logo-dot,
+body.studio-theme-dark #logo-dot {
+    background: var(--ui-accent) !important;
+}
+
+html.studio-theme-dark body .nano-monitor,
+body.studio-theme-dark .nano-monitor {
+    background: rgba(17,18,22,.88) !important;
+    color: #f1f2f4;
+    border-color: rgba(255,255,255,.10) !important;
+    box-shadow: var(--ui-shadow-pop);
+}
+
+html.studio-theme-dark body .divider,
+body.studio-theme-dark .divider {
+    background: rgba(255,255,255,.10) !important;
+}
+
+html.studio-theme-dark body .theme-dock-btn,
+body.studio-theme-dark .theme-dock-btn {
+    background: #1b1c20;
+    border-color: #2b2c30;
+    color: #9aa0a9;
+}html.studio-theme-dark body .theme-dock-btn:hover,
+html.studio-theme-dark body .theme-dock-btn.active,
+body.studio-theme-dark .theme-dock-btn:hover,
+body.studio-theme-dark .theme-dock-btn.active{
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+}
+html.studio-theme-dark body .theme-dock-btn.active,
+body.studio-theme-dark .theme-dock-btn.active{color: #ffffff;}
+
+html.studio-theme-dark body .console-card,
+html.studio-theme-dark body .nano-input,
+html.studio-theme-dark body .upload-item,
+html.studio-theme-dark body .result-frame,
+html.studio-theme-dark body .masonry-item,
+html.studio-theme-dark body .work-panel,
+html.studio-theme-dark body .setting-row,
+html.studio-theme-dark body .tool-panel,
+html.studio-theme-dark body .control-panel,
+html.studio-theme-dark body .topbar,
+html.studio-theme-dark body .composer,
+html.studio-theme-dark body .composer-body,
+html.studio-theme-dark body .bubble.assistant,
+html.studio-theme-dark body .history-popover,
+html.studio-theme-dark body .thread-item,
+html.studio-theme-dark body .lightbox-card,
+html.studio-theme-dark body #lightboxCard,
+html.studio-theme-dark body .bg-white,
+html.studio-theme-dark body .bg-gray-50,
+html.studio-theme-dark body .bg-slate-50,
+html.studio-theme-dark body .bg-gray-50\/50,
+html.studio-theme-dark body .bg-white\/90,
+html.studio-theme-dark body .bg-\[\#ffffff\],
+body.studio-theme-dark .console-card,
+body.studio-theme-dark .nano-input,
+body.studio-theme-dark .upload-item,
+body.studio-theme-dark .result-frame,
+body.studio-theme-dark .masonry-item,
+body.studio-theme-dark .work-panel,
+body.studio-theme-dark .setting-row,
+body.studio-theme-dark .tool-panel,
+body.studio-theme-dark .control-panel,
+body.studio-theme-dark .topbar,
+body.studio-theme-dark .composer,
+body.studio-theme-dark .composer-body,
+body.studio-theme-dark .bubble.assistant,
+body.studio-theme-dark .history-popover,
+body.studio-theme-dark .thread-item,
+body.studio-theme-dark .lightbox-card,
+body.studio-theme-dark #lightboxCard,
+body.studio-theme-dark .bg-white,
+body.studio-theme-dark .bg-gray-50,
+body.studio-theme-dark .bg-slate-50,
+body.studio-theme-dark .bg-gray-50\/50,
+body.studio-theme-dark .bg-white\/90,
+body.studio-theme-dark .bg-\[\#ffffff\] {
+    background-color: #1b1c20 !important;
+    border-color: #2b2c30 !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .bg-gray-100,
+html.studio-theme-dark body .bg-slate-100,
+html.studio-theme-dark body .select-shell,
+html.studio-theme-dark body .model-pill,
+html.studio-theme-dark body .ratio-grid,
+html.studio-theme-dark body .resolution-toggle,
+html.studio-theme-dark body .mode-switch,
+html.studio-theme-dark body .mini-ratio,
+body.studio-theme-dark .bg-gray-100,
+body.studio-theme-dark .bg-slate-100,
+body.studio-theme-dark .select-shell,
+body.studio-theme-dark .model-pill,
+body.studio-theme-dark .ratio-grid,
+body.studio-theme-dark .resolution-toggle,
+body.studio-theme-dark .mode-switch,
+body.studio-theme-dark .mini-ratio {
+    background-color: #1e1f23 !important;
+    border-color: #2b2c30 !important;
+}
+
+html.studio-theme-dark body input,
+html.studio-theme-dark body textarea,
+html.studio-theme-dark body select,
+body.studio-theme-dark input,
+body.studio-theme-dark textarea,
+body.studio-theme-dark select {
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body input::placeholder,
+html.studio-theme-dark body textarea::placeholder,
+body.studio-theme-dark input::placeholder,
+body.studio-theme-dark textarea::placeholder {
+    color: #9aa0a9 !important;
+}
+
+html.studio-theme-dark body .text-black,
+html.studio-theme-dark body .text-gray-700,
+html.studio-theme-dark body .text-slate-700,
+html.studio-theme-dark body .setting-title,
+html.studio-theme-dark body h1,
+html.studio-theme-dark body h2,
+html.studio-theme-dark body h3,
+body.studio-theme-dark .text-black,
+body.studio-theme-dark .text-gray-700,
+body.studio-theme-dark .text-slate-700,
+body.studio-theme-dark .setting-title,
+body.studio-theme-dark h1,
+body.studio-theme-dark h2,
+body.studio-theme-dark h3 {
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .text-gray-300,
+html.studio-theme-dark body .text-gray-400,
+html.studio-theme-dark body .text-gray-500,
+html.studio-theme-dark body .text-slate-400,
+html.studio-theme-dark body .text-slate-500,
+html.studio-theme-dark body .setting-meta,
+html.studio-theme-dark body .label-nano,
+body.studio-theme-dark .text-gray-300,
+body.studio-theme-dark .text-gray-400,
+body.studio-theme-dark .text-gray-500,
+body.studio-theme-dark .text-slate-400,
+body.studio-theme-dark .text-slate-500,
+body.studio-theme-dark .setting-meta,
+body.studio-theme-dark .label-nano {
+    color: #9aa0a9 !important;
+}
+
+html.studio-theme-dark body .border-gray-100,
+html.studio-theme-dark body .border-gray-200,
+html.studio-theme-dark body .border-gray-300,
+html.studio-theme-dark body .border-slate-100,
+html.studio-theme-dark body .border-slate-200,
+html.studio-theme-dark body .border-black,
+html.studio-theme-dark body .border-white,
+html.studio-theme-dark body .border-\[\#eff1f4\],
+html.studio-theme-dark body .border-\[\#eff1f4\],
+body.studio-theme-dark .border-gray-100,
+body.studio-theme-dark .border-gray-200,
+body.studio-theme-dark .border-gray-300,
+body.studio-theme-dark .border-slate-100,
+body.studio-theme-dark .border-slate-200,
+body.studio-theme-dark .border-black,
+body.studio-theme-dark .border-white,
+body.studio-theme-dark .border-\[\#eff1f4\],
+body.studio-theme-dark .border-\[\#eff1f4\] {
+    border-color: #2b2c30 !important;
+}
+
+html.studio-theme-dark body .glass-btn,
+html.studio-theme-dark body .btn-action-dark,
+html.studio-theme-dark body .send-btn,
+html.studio-theme-dark body .gen-btn,
+html.studio-theme-dark body .comfy-run,
+html.studio-theme-dark body .llm-run,
+html.studio-theme-dark body .primary-btn,
+html.studio-theme-dark body .bg-black,
+body.studio-theme-dark .glass-btn,
+body.studio-theme-dark .btn-action-dark,
+body.studio-theme-dark .send-btn,
+body.studio-theme-dark .gen-btn,
+body.studio-theme-dark .comfy-run,
+body.studio-theme-dark .llm-run,
+body.studio-theme-dark .primary-btn,
+body.studio-theme-dark .bg-black {
+    background-color: #f1f2f4 !important;
+    color: #ffffff !important;
+}
+
+html.studio-theme-dark body .glass-btn:hover,
+html.studio-theme-dark body .btn-action-dark:hover,
+html.studio-theme-dark body .bg-black:hover,
+body.studio-theme-dark .glass-btn:hover,
+body.studio-theme-dark .btn-action-dark:hover,
+body.studio-theme-dark .bg-black:hover {
+    background-color: #b9bec7 !important;
+}
+
+html.studio-theme-dark body .gallery-lightbox,
+html.studio-theme-dark body #lightbox,
+body.studio-theme-dark .gallery-lightbox,
+body.studio-theme-dark #lightbox {
+    background: rgba(15,20,29,.78) !important;
+    backdrop-filter: blur(28px) saturate(115%);
+}
+
+html.studio-theme-dark body .masonry-item:hover,
+html.studio-theme-dark body .console-card:focus-within,
+html.studio-theme-dark body .select-shell:focus-within,
+body.studio-theme-dark .masonry-item:hover,
+body.studio-theme-dark .console-card:focus-within,
+body.studio-theme-dark .select-shell:focus-within {
+    border-color: #9aa0a9 !important;
+    box-shadow: none !important;
+}
+
+html.studio-theme-dark body .console-card textarea,
+html.studio-theme-dark body #prompt,
+html.studio-theme-dark body #promptInput,
+body.studio-theme-dark .console-card textarea,
+body.studio-theme-dark #prompt,
+body.studio-theme-dark #promptInput {
+    color: #f1f2f4 !important;
+    caret-color: #f1f2f4;
+}
+
+html.studio-theme-dark body .size-btn,
+html.studio-theme-dark body .model-option,
+html.studio-theme-dark body .ratio-option,
+html.studio-theme-dark body .resolution-option,
+html.studio-theme-dark body .mini-ratio button,
+html.studio-theme-dark body .mode-switch button,
+body.studio-theme-dark .size-btn,
+body.studio-theme-dark .model-option,
+body.studio-theme-dark .ratio-option,
+body.studio-theme-dark .resolution-option,
+body.studio-theme-dark .mini-ratio button,
+body.studio-theme-dark .mode-switch button {
+    background: #1b1c20 !important;
+    border-color: #2b2c30 !important;
+    color: #9aa0a9 !important;
+}html.studio-theme-dark body .size-btn:hover,
+html.studio-theme-dark body .model-option:hover,
+html.studio-theme-dark body .ratio-option:hover,
+html.studio-theme-dark body .resolution-option:hover,
+body.studio-theme-dark .size-btn:hover,
+body.studio-theme-dark .model-option:hover,
+body.studio-theme-dark .ratio-option:hover,
+body.studio-theme-dark .resolution-option:hover{
+    border-color: #9aa0a9 !important;
+}
+
+html.studio-theme-dark body .size-btn.active,
+html.studio-theme-dark body .model-option.active,
+html.studio-theme-dark body .ratio-option.active,
+html.studio-theme-dark body .resolution-option.active,
+html.studio-theme-dark body .mini-ratio button.active,
+html.studio-theme-dark body .mode-switch button.active,
+body.studio-theme-dark .size-btn.active,
+body.studio-theme-dark .model-option.active,
+body.studio-theme-dark .ratio-option.active,
+body.studio-theme-dark .resolution-option.active,
+body.studio-theme-dark .mini-ratio button.active,
+body.studio-theme-dark .mode-switch button.active {
+    background: var(--ui-accent) !important;
+    border-color: rgba(255,255,255,.34) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+html.studio-theme-dark body .ios-slider,
+body.studio-theme-dark .ios-slider {
+    background: #2b2c30 !important;
+}
+
+html.studio-theme-dark body .ios-switch input:checked + .ios-slider,
+body.studio-theme-dark .ios-switch input:checked + .ios-slider {
+    background: var(--ui-accent) !important;
+}
+
+html.studio-theme-dark body .ios-slider:before,
+body.studio-theme-dark .ios-slider:before {
+    background: #1b1c20 !important;
+    box-shadow: none !important;
+}
+
+html.studio-theme-dark body .composer-wrap,
+body.studio-theme-dark .composer-wrap {
+    background: linear-gradient(to top,#131416 82%,rgba(15,20,29,0)) !important;
+}
+
+html.studio-theme-dark body .canvas-gate,
+body.studio-theme-dark .canvas-gate {
+    background-color: #131416 !important;
+    background-image: radial-gradient(rgba(148,163,184,.18) 1px, transparent 1px) !important;
+}
+
+html.studio-theme-dark body .gate-panel,
+html.studio-theme-dark body .canvas-item,
+html.studio-theme-dark body .canvas-open,
+body.studio-theme-dark .gate-panel,
+body.studio-theme-dark .canvas-item,
+body.studio-theme-dark .canvas-open {
+    background: #1e1f23 !important;
+    border-color: #2b2c30 !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .canvas-item:hover,
+body.studio-theme-dark .canvas-item:hover {
+    background: #232327 !important;
+}
+
+html.studio-theme-dark body .canvas-item.active,
+body.studio-theme-dark .canvas-item.active {
+    background: #2b2c30 !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .canvas-card-title,
+html.studio-theme-dark body .gate-title,
+html.studio-theme-dark body .gate-name-input,
+body.studio-theme-dark .canvas-card-title,
+body.studio-theme-dark .gate-title,
+body.studio-theme-dark .gate-name-input {
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .canvas-card-time,
+html.studio-theme-dark body .gate-subtitle,
+body.studio-theme-dark .canvas-card-time {
+    color: #9aa0a9 !important;
+}
+
+body.studio-theme-dark .gate-subtitle {
+    color: #9aa0a9 !important;
+}
+
+html.studio-theme-dark body .canvas-preview-mark,
+html.studio-theme-dark body .canvas-delete,
+html.studio-theme-dark body .secondary-btn,
+html.studio-theme-dark body .gate-back,
+html.studio-theme-dark body .gate-trash-entry,
+html.studio-theme-dark body .create-cancel,
+html.studio-theme-dark body .gate-create-row,
+html.studio-theme-dark body .gate-actions,
+html.studio-theme-dark body .trash-note,
+html.studio-theme-dark body .emoji-picker,
+html.studio-theme-dark body .create-menu,
+html.studio-theme-dark body .selection-hub,
+html.studio-theme-dark body .output-preview,
+body.studio-theme-dark .canvas-preview-mark,
+body.studio-theme-dark .canvas-delete,
+body.studio-theme-dark .secondary-btn,
+body.studio-theme-dark .gate-back,
+body.studio-theme-dark .gate-trash-entry,
+body.studio-theme-dark .create-cancel,
+body.studio-theme-dark .gate-create-row,
+body.studio-theme-dark .gate-actions,
+body.studio-theme-dark .trash-note,
+body.studio-theme-dark .emoji-picker,
+body.studio-theme-dark .create-menu,
+body.studio-theme-dark .selection-hub,
+body.studio-theme-dark .output-preview {
+    background: #1b1c20 !important;
+    border-color: #2b2c30 !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .gate-trash-badge,
+body.studio-theme-dark .gate-trash-badge {
+    background: var(--ui-accent) !important;
+    color: #ffffff !important;
+    border-color: #1b1c20 !important;
+}
+
+html.studio-theme-dark body .secondary-btn.active,
+body.studio-theme-dark .secondary-btn.active {
+    background: var(--ui-accent) !important;
+    border-color: rgba(255,255,255,.34) !important;
+    color: #ffffff !important;
+}html.studio-theme-dark body .canvas-delete:hover,
+html.studio-theme-dark body .create-cancel:hover,
+body.studio-theme-dark .canvas-delete:hover,
+body.studio-theme-dark .create-cancel:hover{
+    background: rgba(248,113,113,.14) !important;
+    border-color: rgba(248,113,113,.32) !important;
+}html.studio-theme-dark body .canvas-restore:hover,
+body.studio-theme-dark .canvas-restore:hover{
+    background: rgba(16,185,129,.14) !important;
+    border-color: rgba(16,185,129,.32) !important;
+}
+
+html.studio-theme-dark body .canvas-delete-box,
+body.studio-theme-dark .canvas-delete-box {
+    background: #232327 !important;
+    border: 1px solid #2b2c30;
+}
+
+html.studio-theme-dark body .canvas-confirm-btn,
+html.studio-theme-dark body .create-confirm,
+body.studio-theme-dark .canvas-confirm-btn,
+body.studio-theme-dark .create-confirm {
+    background: var(--ui-accent) !important;
+    color: #ffffff !important;
+}
+
+html.studio-theme-dark body .output-resolution,
+body.studio-theme-dark .output-resolution {
+    background: rgba(27,28,32,.86) !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .shell .topbar,
+body.studio-theme-dark .shell .topbar {
+    background: transparent !important;
+    border-color: transparent !important;
+    backdrop-filter: none !important;
+}
+
+html.studio-theme-dark body .shell,
+html.studio-theme-dark body .shell .board,
+body.studio-theme-dark .shell,
+body.studio-theme-dark .shell .board {
+    background-color: #131416 !important;
+    background-image: radial-gradient(rgba(148,163,184,.18) 1px, transparent 1px) !important;
+}
+
+html.studio-theme-dark body .shell.theme-dark,
+body.studio-theme-dark .shell.theme-dark {
+    --page: #131416;
+    --grid: rgba(148,163,184,.18);
+    --panel: rgba(17,23,34,.88);
+    --card: #1e1f23;
+    --card-solid: #1e1f23;
+    --soft: #1b1c20;
+    --soft-2: #232327;
+    --line: rgba(148,163,184,.16);
+    --line-2: rgba(148,163,184,.22);
+    --text: #f1f2f4;
+    --muted: #9aa0a9;
+    --faint: #6e747c;
+    --shadow: rgba(0,0,0,.2);
+    --strong: var(--ui-accent);
+    --strong-text: #ffffff;
+}
+
+html.studio-theme-dark body .shell .panel,
+body.studio-theme-dark .shell .panel {
+    background: rgba(27,28,32,.86) !important;
+    border: 1px solid rgba(148,163,184,.16) !important;
+    box-shadow: var(--ui-shadow-pop) !important;
+}
+
+html.studio-theme-dark body .shell .node,
+body.studio-theme-dark .shell .node {
+    background: #1e1f23 !important;
+    border-color: rgba(148,163,184,.16) !important;
+    box-shadow: none !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .shell .node-head,
+body.studio-theme-dark .shell .node-head {
+    background: #1e1f23 !important;
+    border-bottom-color: rgba(148,163,184,.14) !important;
+}
+
+html.studio-theme-dark body .shell .node-title,
+body.studio-theme-dark .shell .node-title {
+    color: #9aa0a9 !important;
+}
+
+html.studio-theme-dark body .shell .node.selected,
+body.studio-theme-dark .shell .node.selected {
+    outline-color: rgba(216,222,233,.72) !important;
+}
+
+html.studio-theme-dark body .shell .toolbar,
+body.studio-theme-dark .shell .toolbar {
+    gap: 8px;
+}
+
+html.studio-theme-dark body .shell .tool-btn,
+html.studio-theme-dark body .shell .select-lite,
+html.studio-theme-dark body .shell .gen-count-row,
+html.studio-theme-dark body .shell .seg,
+html.studio-theme-dark body .shell .llm-mode,
+html.studio-theme-dark body .shell .mode-tabs,
+body.studio-theme-dark .shell .tool-btn,
+body.studio-theme-dark .shell .select-lite,
+body.studio-theme-dark .shell .gen-count-row,
+body.studio-theme-dark .shell .seg,
+body.studio-theme-dark .shell .llm-mode,
+body.studio-theme-dark .shell .mode-tabs {
+    background: #1b1c20 !important;
+    border: 1px solid rgba(148,163,184,.16) !important;
+    box-shadow: none !important;
+    color: #9aa0a9 !important;
+}
+
+html.studio-theme-dark body .shell .gen-settings,
+html.studio-theme-dark body .shell .setting-row,
+html.studio-theme-dark body .shell .comfy-settings,
+body.studio-theme-dark .shell .gen-settings,
+body.studio-theme-dark .shell .setting-row,
+body.studio-theme-dark .shell .comfy-settings {
+    background: #1b1c20 !important;
+    border: 1px solid rgba(148,163,184,.16) !important;
+    box-shadow: none !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .shell .setting-title,
+body.studio-theme-dark .shell .setting-title {
+    color: #9aa0a9 !important;
+}
+
+html.studio-theme-dark body .shell .setting-input,
+html.studio-theme-dark body .shell .setting-check,
+html.studio-theme-dark body .shell .gen-count-input,
+body.studio-theme-dark .shell .setting-input,
+body.studio-theme-dark .shell .setting-check,
+body.studio-theme-dark .shell .gen-count-input {
+    background: #1e1f23 !important;
+    border-color: rgba(148,163,184,.16) !important;
+    color: #f1f2f4 !important;
+    box-shadow: none !important;
+}
+
+html.studio-theme-dark body .shell .gen-step-btn,
+body.studio-theme-dark .shell .gen-step-btn {
+    color: #9aa0a9 !important;
+}html.studio-theme-dark body .shell .gen-step-btn:hover,
+body.studio-theme-dark .shell .gen-step-btn:hover{
+    background: #232327 !important;
+}html.studio-theme-dark body .shell .tool-btn:hover,
+html.studio-theme-dark body .shell .select-lite:hover,
+body.studio-theme-dark .shell .tool-btn:hover,
+body.studio-theme-dark .shell .select-lite:hover{
+    background: #1e1f23 !important;
+    border-color: #9aa0a9 !important;
+}
+
+html.studio-theme-dark body .shell .llm-mode button,
+html.studio-theme-dark body .shell .seg button,
+html.studio-theme-dark body .shell .mode-tabs button,
+body.studio-theme-dark .shell .llm-mode button,
+body.studio-theme-dark .shell .seg button,
+body.studio-theme-dark .shell .mode-tabs button {
+    background: transparent !important;
+    border-color: transparent !important;
+    color: #9aa0a9 !important;
+    box-shadow: none !important;
+}
+
+html.studio-theme-dark body .shell .llm-mode button.active,
+html.studio-theme-dark body .shell .seg button.active,
+html.studio-theme-dark body .shell .mode-tabs button.active,
+body.studio-theme-dark .shell .llm-mode button.active,
+body.studio-theme-dark .shell .seg button.active,
+body.studio-theme-dark .shell .mode-tabs button.active {
+    background: var(--ui-accent) !important;
+    border-color: rgba(255,255,255,.34) !important;
+    color: #ffffff !important;
+}
+
+html.studio-theme-dark body .shell .llm-system,
+html.studio-theme-dark body .shell .llm-chat-input,
+html.studio-theme-dark body .shell .llm-chat-log,
+html.studio-theme-dark body .shell .llm-output,
+html.studio-theme-dark body .shell .llm-chat-pane,
+body.studio-theme-dark .shell .llm-system,
+body.studio-theme-dark .shell .llm-chat-input,
+body.studio-theme-dark .shell .llm-chat-log,
+body.studio-theme-dark .shell .llm-output,
+body.studio-theme-dark .shell .llm-chat-pane {
+    background: #1b1c20 !important;
+    border-color: #2b2c30 !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .shell .llm-pane-resizer::before,
+body.studio-theme-dark .shell .llm-pane-resizer::before {
+    background: #747b85 !important;
+}
+
+html.studio-theme-dark body .shell .llm-bubble.assistant,
+body.studio-theme-dark .shell .llm-bubble.assistant {
+    background: #232327 !important;
+    border-color: #2b2c30 !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .shell .llm-bubble.user,
+body.studio-theme-dark .shell .llm-bubble.user {
+    background: var(--ui-accent) !important;
+    color: #ffffff !important;
+}
+
+html.studio-theme-dark body .shell .image-node img,
+html.studio-theme-dark body .shell .output-grid img,
+html.studio-theme-dark body .shell .output-preview img,
+html.studio-theme-dark body .shell .blank-image,
+html.studio-theme-dark body .shell .input-item,
+html.studio-theme-dark body .shell .prompt-node textarea,
+html.studio-theme-dark body .shell .llm-system,
+html.studio-theme-dark body .shell .llm-chat-input,
+html.studio-theme-dark body .shell .model-input,
+body.studio-theme-dark .shell .image-node img,
+body.studio-theme-dark .shell .output-grid img,
+body.studio-theme-dark .shell .output-preview img,
+body.studio-theme-dark .shell .blank-image,
+body.studio-theme-dark .shell .input-item,
+body.studio-theme-dark .shell .prompt-node textarea,
+body.studio-theme-dark .shell .llm-system,
+body.studio-theme-dark .shell .llm-chat-input,
+body.studio-theme-dark .shell .model-input {
+    background: #131416 !important;
+    border-color: rgba(148,163,184,.16) !important;
+}
+
+html.studio-theme-dark body .shell .blank-image,
+body.studio-theme-dark .shell .blank-image {
+    color: #9aa0a9 !important;
+    border-style: dashed !important;
+}html.studio-theme-dark body .shell .blank-image:hover,
+html.studio-theme-dark body .shell .blank-image.drag-over,
+body.studio-theme-dark .shell .blank-image:hover,
+body.studio-theme-dark .shell .blank-image.drag-over{
+    background: #1b1c20 !important;
+    border-color: rgba(216,222,233,.42) !important;
+}
+html.studio-theme-dark body .shell .blank-image.drag-over,
+body.studio-theme-dark .shell .blank-image.drag-over{color: #f1f2f4 !important;}
+
+html.studio-theme-dark body .shell .image-caption,
+body.studio-theme-dark .shell .image-caption {
+    color: #9aa0a9 !important;
+}
+
+html.studio-theme-dark body .shell .input-label,
+body.studio-theme-dark .shell .input-label {
+    background: rgba(15,20,29,.78) !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .shell .prompt-list .bg-slate-50,
+html.studio-theme-dark body .shell .prompt-list .border-slate-100,
+body.studio-theme-dark .shell .prompt-list .bg-slate-50,
+body.studio-theme-dark .shell .prompt-list .border-slate-100 {
+    background: #1b1c20 !important;
+    border-color: rgba(148,163,184,.16) !important;
+    color: #b9bec7 !important;
+}
+
+html.studio-theme-dark body .shell .input-index,
+body.studio-theme-dark .shell .input-index {
+    background: var(--ui-accent) !important;
+    color: #ffffff !important;
+}
+
+html.studio-theme-dark body .shell .port::after,
+body.studio-theme-dark .shell .port::after {
+    background: var(--ui-accent) !important;
+    border-color: #1b1c20 !important;
+    box-shadow: 0 0 0 1px rgba(148,163,184,.32) !important;
+}
+
+html.studio-theme-dark body .shell .drop-overlay,
+body.studio-theme-dark .shell .drop-overlay {
+    background: rgba(15,20,29,.44) !important;
+    color: #b9bec7 !important;
+    backdrop-filter: blur(2px) !important;
+}
+
+html.studio-theme-dark body .output-drag-preview,
+body.studio-theme-dark .output-drag-preview,
+.output-drag-preview {
+    position: fixed;
+    left: -10000px;
+    top: -10000px;
+    width: 150px;
+    height: 150px;
+    padding: 8px;
+    border-radius: 18px;
+    background: #131416;
+    border: 1px solid rgba(148,163,184,.18);
+    box-shadow: var(--ui-shadow-pop);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.output-drag-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+    background: #131416;
+}
+
+html.studio-theme-dark body .shell .resize-handle,
+body.studio-theme-dark .shell .resize-handle {
+    background: rgba(27,28,32,.86) !important;
+    border-color: rgba(148,163,184,.18) !important;
+    color: #9aa0a9 !important;
+}html.studio-theme-dark body .shell .resize-handle:hover,
+body.studio-theme-dark .shell .resize-handle:hover{
+    background: #1e1f23 !important;
+    border-color: rgba(216,222,233,.36) !important;
+}
+
+/* Standalone studio pages: zimage / enhance / klein / angle */
+html.studio-theme-dark body .layout-container,
+body.studio-theme-dark .layout-container,
+html.studio-theme-dark body .container-box,
+body.studio-theme-dark .container-box {
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .mode-switcher,
+html.studio-theme-dark body .engine-panel,
+html.studio-theme-dark body .engine-switch,
+html.studio-theme-dark body .ios-slider,
+html.studio-theme-dark body .result-frame,
+html.studio-theme-dark body .gallery-lightbox,
+html.studio-theme-dark body #lightbox,
+html.studio-theme-dark body #compareContainer,
+html.studio-theme-dark body #compareContainerKlein,
+html.studio-theme-dark body #lightboxImg,
+body.studio-theme-dark .mode-switcher,
+body.studio-theme-dark .engine-panel,
+body.studio-theme-dark .engine-switch,
+body.studio-theme-dark .ios-slider,
+body.studio-theme-dark .result-frame,
+body.studio-theme-dark .gallery-lightbox,
+body.studio-theme-dark #lightbox,
+body.studio-theme-dark #compareContainer,
+body.studio-theme-dark #compareContainerKlein,
+body.studio-theme-dark #lightboxImg {
+    background-color: #1b1c20 !important;
+    border-color: rgba(148,163,184,.16) !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .mode-glider,
+html.studio-theme-dark body .engine-btn.active,
+html.studio-theme-dark body .ios-slider:before,
+body.studio-theme-dark .mode-glider,
+body.studio-theme-dark .engine-btn.active,
+body.studio-theme-dark .ios-slider:before {
+    background: var(--ui-accent) !important;
+    color: #ffffff !important;
+}
+
+html.studio-theme-dark body .mode-btn.active,
+html.studio-theme-dark body .engine-btn.active,
+body.studio-theme-dark .mode-btn.active,
+body.studio-theme-dark .engine-btn.active {
+    color: #ffffff !important;
+}
+
+html.studio-theme-dark body .mode-btn,
+html.studio-theme-dark body .engine-btn,
+html.studio-theme-dark body .cloud-status,
+body.studio-theme-dark .mode-btn,
+body.studio-theme-dark .engine-btn,
+body.studio-theme-dark .cloud-status {
+    color: #9aa0a9 !important;
+}html.studio-theme-dark body .engine-btn:not(.active):hover,
+body.studio-theme-dark .engine-btn:not(.active):hover{
+    background: rgba(216,222,233,.08) !important;
+}
+
+html.studio-theme-dark body .upload-item:hover,
+html.studio-theme-dark body .upload-item.drag-over,
+body.studio-theme-dark .upload-item:hover,
+body.studio-theme-dark .upload-item.drag-over {
+    background: #1e1f23 !important;
+    border-color: rgba(216,222,233,.42) !important;
+}
+
+html.studio-theme-dark body .glass-btn,
+html.studio-theme-dark body .btn-render,
+html.studio-theme-dark body #downloadBtn,
+html.studio-theme-dark body #lightboxDownload,
+body.studio-theme-dark .glass-btn,
+body.studio-theme-dark .btn-render,
+body.studio-theme-dark #downloadBtn,
+body.studio-theme-dark #lightboxDownload {
+    background: var(--ui-accent) !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,.34) !important;
+}html.studio-theme-dark body .glass-btn:hover,
+html.studio-theme-dark body .btn-render:hover,
+body.studio-theme-dark .glass-btn:hover,
+body.studio-theme-dark .btn-render:hover{
+    background: #eff1f4 !important;
+}
+
+html.studio-theme-dark body input[type=range]::-webkit-slider-runnable-track,
+body.studio-theme-dark input[type=range]::-webkit-slider-runnable-track {
+    background: #2b2c30 !important;
+}
+
+html.studio-theme-dark body input[type=range]::-webkit-slider-thumb,
+body.studio-theme-dark input[type=range]::-webkit-slider-thumb {
+    background: var(--ui-accent) !important;
+}
+
+html.studio-theme-dark body .masonry-item img,
+html.studio-theme-dark body .result-frame img,
+body.studio-theme-dark .masonry-item img,
+body.studio-theme-dark .result-frame img {
+    background-color: #1b1c20 !important;
+}
+
+html.studio-theme-dark body .bg-black,
+body.studio-theme-dark .bg-black {
+    background-color: #f1f2f4 !important;
+    color: #ffffff !important;
+}html.studio-theme-dark body .hover\:text-black:hover,
+body.studio-theme-dark .hover\:text-black:hover{
+}
+
+/* Final neutral dark pass: remove blue-tinted surfaces from tool pages. */
+html.studio-theme-dark,
+html.studio-theme-dark body,
+body.studio-theme-dark {
+    background: #131416 !important;
+    color: #f1f2f4 !important;
+}
+
+body.studio-theme-dark {
+    --bg: #131416;
+    --bg-base: #131416;
+    --page: #131416;
+    --card: #1b1c20;
+    --card-solid: #1b1c20;
+    --soft: #1e1f23;
+    --soft-2: #1b1c20;
+    --panel: rgba(17,18,22,.92);
+    --text: #f1f2f4;
+    --text-main: #f1f2f4;
+    --accent: #f1f2f4;
+    --line: #2b2c30;
+    --line-2: #2e2f33;
+}
+
+html.studio-theme-dark body .app-shell,
+html.studio-theme-dark body .sidebar,
+html.studio-theme-dark body .stage,
+html.studio-theme-dark body .shell,
+body.studio-theme-dark .app-shell,
+body.studio-theme-dark .sidebar,
+body.studio-theme-dark .stage,
+body.studio-theme-dark .shell {
+    background: #131416 !important;
+    border-color: #2b2c30 !important;
+}
+
+html.studio-theme-dark body .console-card,
+html.studio-theme-dark body .nano-input,
+html.studio-theme-dark body .upload-item,
+html.studio-theme-dark body .result-frame,
+html.studio-theme-dark body .masonry-item,
+html.studio-theme-dark body .engine-panel,
+html.studio-theme-dark body .engine-switch,
+html.studio-theme-dark body .mode-switcher,
+html.studio-theme-dark body .setting-row,
+html.studio-theme-dark body .provider-switch,
+html.studio-theme-dark body .ios-slider,
+html.studio-theme-dark body #compareContainer,
+html.studio-theme-dark body #lightboxImg,
+html.studio-theme-dark body #lightbox .bg-white,
+html.studio-theme-dark body .bg-white,
+html.studio-theme-dark body .bg-white\/90,
+html.studio-theme-dark body .bg-white\/95,
+html.studio-theme-dark body .bg-gray-50,
+html.studio-theme-dark body .bg-gray-50\/50,
+html.studio-theme-dark body .bg-gray-100,
+html.studio-theme-dark body .bg-gray-200,
+html.studio-theme-dark body .bg-\[\#f5f6f8\],
+html.studio-theme-dark body .bg-\[\#f5f6f8\],
+body.studio-theme-dark .console-card,
+body.studio-theme-dark .nano-input,
+body.studio-theme-dark .upload-item,
+body.studio-theme-dark .result-frame,
+body.studio-theme-dark .masonry-item,
+body.studio-theme-dark .engine-panel,
+body.studio-theme-dark .engine-switch,
+body.studio-theme-dark .mode-switcher,
+body.studio-theme-dark .setting-row,
+body.studio-theme-dark .provider-switch,
+body.studio-theme-dark .ios-slider,
+body.studio-theme-dark #compareContainer,
+body.studio-theme-dark #lightboxImg,
+body.studio-theme-dark #lightbox .bg-white,
+body.studio-theme-dark .bg-white,
+body.studio-theme-dark .bg-white\/90,
+body.studio-theme-dark .bg-white\/95,
+body.studio-theme-dark .bg-gray-50,
+body.studio-theme-dark .bg-gray-50\/50,
+body.studio-theme-dark .bg-gray-100,
+body.studio-theme-dark .bg-gray-200,
+body.studio-theme-dark .bg-\[\#f5f6f8\],
+body.studio-theme-dark .bg-\[\#f5f6f8\] {
+    background-color: #1b1c20 !important;
+    border-color: #2b2c30 !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body #lightbox,
+body.studio-theme-dark #lightbox {
+    background: rgba(8,9,12,.96) !important;
+}
+
+html.studio-theme-dark body .glass-btn,
+html.studio-theme-dark body .btn-render,
+html.studio-theme-dark body .mode-glider,
+html.studio-theme-dark body .engine-btn.active,
+html.studio-theme-dark body .ios-switch input:checked + .ios-slider,
+html.studio-theme-dark body #cloud-progress-bar,
+body.studio-theme-dark .glass-btn,
+body.studio-theme-dark .btn-render,
+body.studio-theme-dark .mode-glider,
+body.studio-theme-dark .engine-btn.active,
+body.studio-theme-dark .ios-switch input:checked + .ios-slider,
+body.studio-theme-dark #cloud-progress-bar {
+    background: #f1f2f4 !important;
+    color: #131416 !important;
+    border-color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .mode-btn.active,
+html.studio-theme-dark body .engine-btn.active,
+html.studio-theme-dark body .text-black,
+body.studio-theme-dark .mode-btn.active,
+body.studio-theme-dark .engine-btn.active,
+body.studio-theme-dark .text-black {
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .mode-glider + .mode-btn.active,
+body.studio-theme-dark .mode-glider + .mode-btn.active {
+    color: #131416 !important;
+}
+
+html.studio-theme-dark body input,
+html.studio-theme-dark body textarea,
+html.studio-theme-dark body select,
+body.studio-theme-dark input,
+body.studio-theme-dark textarea,
+body.studio-theme-dark select {
+    background-color: #1e1f23 !important;
+    border-color: #2e2f33 !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .border-gray-100,
+html.studio-theme-dark body .border-gray-200,
+html.studio-theme-dark body .border-gray-200\/50,
+html.studio-theme-dark body .border-black,
+body.studio-theme-dark .border-gray-100,
+body.studio-theme-dark .border-gray-200,
+body.studio-theme-dark .border-gray-200\/50,
+body.studio-theme-dark .border-black {
+    border-color: #2b2c30 !important;
+}
+
+html.studio-theme-dark body .text-gray-300,
+html.studio-theme-dark body .text-gray-400,
+html.studio-theme-dark body .text-gray-500,
+html.studio-theme-dark body .text-gray-600,
+html.studio-theme-dark body .text-gray-700,
+html.studio-theme-dark body .text-gray-800,
+body.studio-theme-dark .text-gray-300,
+body.studio-theme-dark .text-gray-400,
+body.studio-theme-dark .text-gray-500,
+body.studio-theme-dark .text-gray-600,
+body.studio-theme-dark .text-gray-700,
+body.studio-theme-dark .text-gray-800 {
+    color: #9aa0a9 !important;
+}
+
+html.studio-theme-dark body h1,
+html.studio-theme-dark body h2,
+html.studio-theme-dark body h3,
+html.studio-theme-dark body label,
+body.studio-theme-dark h1,
+body.studio-theme-dark h2,
+body.studio-theme-dark h3,
+body.studio-theme-dark label {
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .mode-switcher .mode-btn.active,
+html.studio-theme-dark body .engine-switch .engine-btn.active,
+body.studio-theme-dark .mode-switcher .mode-btn.active,
+body.studio-theme-dark .engine-switch .engine-btn.active {
+    color: #131416 !important;
+}
+
+/* Online-generation dark pass: soft blue-gray instead of heavy black. */
+html.studio-theme-dark,
+html.studio-theme-dark body,
+body.studio-theme-dark {
+    background: #131416 !important;
+    color: #f1f2f4 !important;
+}
+
+body.studio-theme-dark {
+    --bg: #131416;
+    --bg-base: #131416;
+    --page: #131416;
+    --card: #1e1f23;
+    --card-solid: #1e1f23;
+    --soft: #1b1c20;
+    --soft-2: #232327;
+    --panel: rgba(23,29,41,.92);
+    --text: #f1f2f4;
+    --text-main: #f1f2f4;
+    --accent: #f1f2f4;
+    --line: #2b2c30;
+    --line-2: #3a3b40;
+}
+
+html.studio-theme-dark body .app-shell,
+html.studio-theme-dark body .sidebar,
+html.studio-theme-dark body .stage,
+html.studio-theme-dark body .shell,
+body.studio-theme-dark .app-shell,
+body.studio-theme-dark .sidebar,
+body.studio-theme-dark .stage,
+body.studio-theme-dark .shell {
+    background: #131416 !important;
+    border-color: #2b2c30 !important;
+}
+
+html.studio-theme-dark body .stage,
+body.studio-theme-dark .stage {
+    background: #1b1c20 !important;
+}
+
+html.studio-theme-dark body .console-card,
+html.studio-theme-dark body .nano-input,
+html.studio-theme-dark body .upload-item,
+html.studio-theme-dark body .result-frame,
+html.studio-theme-dark body .masonry-item,
+html.studio-theme-dark body .engine-panel,
+html.studio-theme-dark body .tool-panel,
+html.studio-theme-dark body .control-panel,
+html.studio-theme-dark body .engine-switch,
+html.studio-theme-dark body .mode-switcher,
+html.studio-theme-dark body .setting-row,
+html.studio-theme-dark body .ios-slider,
+html.studio-theme-dark body #compareContainer,
+html.studio-theme-dark body #lightboxImg,
+html.studio-theme-dark body #lightbox .bg-white,
+html.studio-theme-dark body .bg-white,
+html.studio-theme-dark body .bg-white\/90,
+html.studio-theme-dark body .bg-white\/95,
+html.studio-theme-dark body .bg-gray-50,
+html.studio-theme-dark body .bg-gray-50\/50,
+html.studio-theme-dark body .bg-gray-100,
+html.studio-theme-dark body .bg-gray-200,
+html.studio-theme-dark body .bg-\[\#f5f6f8\],
+html.studio-theme-dark body .bg-\[\#f5f6f8\],
+body.studio-theme-dark .console-card,
+body.studio-theme-dark .nano-input,
+body.studio-theme-dark .upload-item,
+body.studio-theme-dark .result-frame,
+body.studio-theme-dark .masonry-item,
+body.studio-theme-dark .engine-panel,
+body.studio-theme-dark .tool-panel,
+body.studio-theme-dark .control-panel,
+body.studio-theme-dark .engine-switch,
+body.studio-theme-dark .mode-switcher,
+body.studio-theme-dark .setting-row,
+body.studio-theme-dark .ios-slider,
+body.studio-theme-dark #compareContainer,
+body.studio-theme-dark #lightboxImg,
+body.studio-theme-dark #lightbox .bg-white,
+body.studio-theme-dark .bg-white,
+body.studio-theme-dark .bg-white\/90,
+body.studio-theme-dark .bg-white\/95,
+body.studio-theme-dark .bg-gray-50,
+body.studio-theme-dark .bg-gray-50\/50,
+body.studio-theme-dark .bg-gray-100,
+body.studio-theme-dark .bg-gray-200,
+body.studio-theme-dark .bg-\[\#f5f6f8\],
+body.studio-theme-dark .bg-\[\#f5f6f8\] {
+    background-color: #1e1f23 !important;
+    border-color: #2b2c30 !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .model-pill,
+html.studio-theme-dark body .ratio-grid,
+html.studio-theme-dark body .resolution-toggle,
+html.studio-theme-dark body .select-shell,
+html.studio-theme-dark body .mode-switch,
+html.studio-theme-dark body .mini-ratio,
+html.studio-theme-dark body input,
+html.studio-theme-dark body textarea,
+html.studio-theme-dark body select,
+body.studio-theme-dark .model-pill,
+body.studio-theme-dark .ratio-grid,
+body.studio-theme-dark .resolution-toggle,
+body.studio-theme-dark .select-shell,
+body.studio-theme-dark .mode-switch,
+body.studio-theme-dark .mini-ratio,
+body.studio-theme-dark input,
+body.studio-theme-dark textarea,
+body.studio-theme-dark select {
+    background-color: #1b1c20 !important;
+    border-color: #3a3b40 !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .size-select,
+html.studio-theme-dark body .size-custom,
+body.studio-theme-dark .size-select,
+body.studio-theme-dark .size-custom {
+    background-color: #1b1c20 !important;
+    border-color: #3a3b40 !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body #lightbox,
+body.studio-theme-dark #lightbox {
+    background: rgba(15,20,29,.9) !important;
+}
+
+html.studio-theme-dark body .glass-btn,
+html.studio-theme-dark body .btn-render,
+html.studio-theme-dark body .mode-glider,
+html.studio-theme-dark body .engine-btn.active,
+html.studio-theme-dark body .model-option.active,
+html.studio-theme-dark body .ratio-option.active,
+html.studio-theme-dark body .resolution-option.active,
+html.studio-theme-dark body .provider-btn.active,
+html.studio-theme-dark body .ios-switch input:checked + .ios-slider,
+html.studio-theme-dark body #cloud-progress-bar,
+html.studio-theme-dark body #downloadBtn,
+html.studio-theme-dark body #lightboxDownload,
+html.studio-theme-dark body .bg-black,
+body.studio-theme-dark .glass-btn,
+body.studio-theme-dark .btn-render,
+body.studio-theme-dark .mode-glider,
+body.studio-theme-dark .engine-btn.active,
+body.studio-theme-dark .model-option.active,
+body.studio-theme-dark .ratio-option.active,
+body.studio-theme-dark .resolution-option.active,
+body.studio-theme-dark .provider-btn.active,
+body.studio-theme-dark .ios-switch input:checked + .ios-slider,
+body.studio-theme-dark #cloud-progress-bar,
+body.studio-theme-dark #downloadBtn,
+body.studio-theme-dark #lightboxDownload,
+body.studio-theme-dark .bg-black {
+    background: var(--ui-accent) !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,.34) !important;
+}
+
+html.studio-theme-dark body .mode-btn,
+html.studio-theme-dark body .engine-btn,
+html.studio-theme-dark body .model-option,
+html.studio-theme-dark body .ratio-option,
+html.studio-theme-dark body .resolution-option,
+html.studio-theme-dark body .provider-btn,
+body.studio-theme-dark .mode-btn,
+body.studio-theme-dark .engine-btn,
+body.studio-theme-dark .model-option,
+body.studio-theme-dark .ratio-option,
+body.studio-theme-dark .resolution-option {
+    color: #9aa0a9 !important;
+}
+
+body.studio-theme-dark .provider-btn {
+    color: #9aa0a9 !important;
+}
+
+html.studio-theme-dark body .provider-switch button,
+body.studio-theme-dark .provider-switch button {
+    color: #9aa0a9 !important;
+}html.studio-theme-dark body .mode-btn:hover,
+html.studio-theme-dark body .engine-btn:hover,
+html.studio-theme-dark body .model-option:hover,
+html.studio-theme-dark body .ratio-option:hover,
+html.studio-theme-dark body .resolution-option:hover,
+html.studio-theme-dark body .provider-btn:hover,
+body.studio-theme-dark .mode-btn:hover,
+body.studio-theme-dark .engine-btn:hover,
+body.studio-theme-dark .model-option:hover,
+body.studio-theme-dark .ratio-option:hover,
+body.studio-theme-dark .resolution-option:hover,
+body.studio-theme-dark .provider-btn:hover{
+    background: rgba(216,222,233,.08) !important;
+}html.studio-theme-dark body .provider-switch button:hover,
+body.studio-theme-dark .provider-switch button:hover{
+    background: rgba(216,222,233,.08) !important;
+}
+
+html.studio-theme-dark body .mode-btn.active,
+html.studio-theme-dark body .engine-btn.active,
+html.studio-theme-dark body .model-option.active,
+html.studio-theme-dark body .ratio-option.active,
+html.studio-theme-dark body .resolution-option.active,
+html.studio-theme-dark body .provider-btn.active,
+html.studio-theme-dark body .mode-switcher .mode-btn.active,
+html.studio-theme-dark body .engine-switch .engine-btn.active,
+body.studio-theme-dark .mode-btn.active,
+body.studio-theme-dark .engine-btn.active,
+body.studio-theme-dark .model-option.active,
+body.studio-theme-dark .ratio-option.active,
+body.studio-theme-dark .resolution-option.active,
+body.studio-theme-dark .provider-btn.active,
+body.studio-theme-dark .mode-switcher .mode-btn.active,
+body.studio-theme-dark .engine-switch .engine-btn.active {
+    color: #ffffff !important;
+}
+
+html.studio-theme-dark body .provider-switch button.active,
+body.studio-theme-dark .provider-switch button.active {
+    background: var(--ui-accent) !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,.34) !important;
+    box-shadow: none !important;
+}
+
+html.studio-theme-dark body .mode-switcher,
+body.studio-theme-dark .mode-switcher,
+html.studio-theme-dark body .provider-switch,
+body.studio-theme-dark .provider-switch,
+html.studio-theme-dark body .engine-switch,
+body.studio-theme-dark .engine-switch {
+    background: #1b1c20 !important;
+    border: 1px solid #3a3b40 !important;
+    box-shadow: none !important;
+}
+
+html.studio-theme-dark body .mode-glider,
+body.studio-theme-dark .mode-glider {
+    background: var(--ui-accent) !important;
+    box-shadow: none !important;
+}
+
+html.studio-theme-dark body .mode-btn,
+body.studio-theme-dark .mode-btn,
+html.studio-theme-dark body .engine-btn,
+body.studio-theme-dark .engine-btn,
+html.studio-theme-dark body .provider-btn,
+body.studio-theme-dark .provider-btn {
+    border-radius: 999px !important;
+    letter-spacing: .02em !important;
+}
+
+html.studio-theme-dark body .provider-switch button,
+body.studio-theme-dark .provider-switch button {
+    border-radius: 999px !important;
+    min-height: 30px !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    letter-spacing: .02em !important;
+}
+
+html.studio-theme-dark body .border-gray-100,
+html.studio-theme-dark body .border-gray-200,
+html.studio-theme-dark body .border-gray-200\/50,
+html.studio-theme-dark body .border-black,
+body.studio-theme-dark .border-gray-100,
+body.studio-theme-dark .border-gray-200,
+body.studio-theme-dark .border-gray-200\/50,
+body.studio-theme-dark .border-black {
+    border-color: #2b2c30 !important;
+}
+
+html.studio-theme-dark body .text-gray-300,
+html.studio-theme-dark body .text-gray-400,
+html.studio-theme-dark body .text-gray-500,
+html.studio-theme-dark body .text-gray-600,
+html.studio-theme-dark body .text-gray-700,
+html.studio-theme-dark body .text-gray-800,
+body.studio-theme-dark .text-gray-300,
+body.studio-theme-dark .text-gray-400,
+body.studio-theme-dark .text-gray-500,
+body.studio-theme-dark .text-gray-600,
+body.studio-theme-dark .text-gray-700,
+body.studio-theme-dark .text-gray-800 {
+    color: #9aa0a9 !important;
+}
+
+html.studio-theme-dark body h1,
+html.studio-theme-dark body h2,
+html.studio-theme-dark body h3,
+html.studio-theme-dark body label,
+body.studio-theme-dark h1,
+body.studio-theme-dark h2,
+body.studio-theme-dark h3,
+body.studio-theme-dark label {
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body input[type=range]::-webkit-slider-runnable-track,
+body.studio-theme-dark input[type=range]::-webkit-slider-runnable-track {
+    background: #2b2c30 !important;
+}
+
+html.studio-theme-dark body input[type=range]::-webkit-slider-thumb,
+body.studio-theme-dark input[type=range]::-webkit-slider-thumb {
+    background: var(--ui-accent) !important;
+    border-color: #131416 !important;
+}
+
+html.studio-theme-dark body ::placeholder,
+body.studio-theme-dark ::placeholder {
+    color: #747b85 !important;
+}
+
+/* Z-image console polish: keep the prompt field open and make cloud providers readable. */
+html.studio-theme-dark body #prompt,
+body.studio-theme-dark #prompt {
+    background: transparent !important;
+    border-color: transparent !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .console-card > .bg-gray-50\/50,
+body.studio-theme-dark .console-card > .bg-gray-50\/50 {
+    background: transparent !important;
+}
+
+html.studio-theme-dark body #prompt::placeholder,
+body.studio-theme-dark #prompt::placeholder {
+    color: #9aa0a9 !important;
+}
+
+/* GPT chat dark polish: avoid harsh black bars around text areas. */
+html.studio-theme-dark body .chat-shell,
+body.studio-theme-dark .chat-shell,
+html.studio-theme-dark body .messages,
+body.studio-theme-dark .messages {
+    background: #131416 !important;
+}
+
+html.studio-theme-dark body .topbar,
+body.studio-theme-dark .topbar {
+    background: rgba(15,20,29,.9) !important;
+    border-bottom-color: #2b2c30 !important;
+}
+
+html.studio-theme-dark body .composer-wrap,
+body.studio-theme-dark .composer-wrap {
+    background: linear-gradient(to top,#131416 82%,rgba(15,20,29,0)) !important;
+}
+
+html.studio-theme-dark body .chat-shell .composer,
+body.studio-theme-dark .chat-shell .composer,
+html.studio-theme-dark body .history-popover,
+body.studio-theme-dark .history-popover {
+    background: #1e1f23 !important;
+    border-color: #2b2c30 !important;
+    color: #f1f2f4 !important;
+    box-shadow: var(--ui-shadow-pop) !important;
+}
+
+html.studio-theme-dark body .composer-body,
+body.studio-theme-dark .composer-body {
+    background: #1b1c20 !important;
+    border-color: #3a3b40 !important;
+}
+
+html.studio-theme-dark body #messageInput,
+body.studio-theme-dark #messageInput {
+    background: transparent !important;
+    border-color: transparent !important;
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body #messageInput::placeholder,
+body.studio-theme-dark #messageInput::placeholder {
+    color: #747b85 !important;
+}
+
+html.studio-theme-dark body .title-block h1,
+body.studio-theme-dark .title-block h1 {
+    color: #f1f2f4 !important;
+}
+
+html.studio-theme-dark body .title-block p,
+body.studio-theme-dark .title-block p {
+    color: #9aa0a9 !important;
+}
+
+html.studio-theme-dark body .action-btn,
+body.studio-theme-dark .action-btn,
+html.studio-theme-dark body .thread-item,
+body.studio-theme-dark .thread-item {
+    background: #1b1c20 !important;
+    border-color: #3a3b40 !important;
+    color: #f1f2f4 !important;
+}html.studio-theme-dark body .action-btn:hover,
+body.studio-theme-dark .action-btn:hover,
+html.studio-theme-dark body .thread-item:hover,
+body.studio-theme-dark .thread-item:hover{
+    background: #232327 !important;
+}
+
+html.studio-theme-dark body .bubble.user,
+body.studio-theme-dark .bubble.user {
+    background: #3a3b40 !important;
+    color: #eff1f4 !important;
+    border: 1px solid #3a3b40 !important;
+    box-shadow: none !important;
+}
+
+html.studio-theme-dark body .bubble.assistant,
+body.studio-theme-dark .bubble.assistant {
+    background: #1e1f23 !important;
+    color: #f1f2f4 !important;
+    border-color: #2b2c30 !important;
+    box-shadow: none !important;
+}
+
+html.studio-theme-dark body .bubble.assistant.streaming::after,
+body.studio-theme-dark .bubble.assistant.streaming::after {
+    background: var(--ui-accent) !important;
+}
+
+html.studio-theme-dark body .bubble img.generated,
+body.studio-theme-dark .bubble img.generated {
+    border-color: #3a3b40 !important;
+}
+
+/* Dark-card clipping: keep inner fills from poking through rounded top corners. */
+html.studio-theme-dark body .console-card,
+html.studio-theme-dark body .nano-input,
+html.studio-theme-dark body .upload-item,
+html.studio-theme-dark body .result-frame,
+html.studio-theme-dark body .masonry-item,
+html.studio-theme-dark body .engine-panel,
+html.studio-theme-dark body .tool-panel,
+html.studio-theme-dark body .control-panel,
+html.studio-theme-dark body .composer,
+html.studio-theme-dark body .history-popover,
+html.studio-theme-dark body .model-panel,
+html.studio-theme-dark body .gate-panel,
+body.studio-theme-dark .console-card,
+body.studio-theme-dark .nano-input,
+body.studio-theme-dark .upload-item,
+body.studio-theme-dark .result-frame,
+body.studio-theme-dark .masonry-item,
+body.studio-theme-dark .engine-panel,
+body.studio-theme-dark .tool-panel,
+body.studio-theme-dark .control-panel,
+body.studio-theme-dark .composer,
+body.studio-theme-dark .history-popover,
+body.studio-theme-dark .model-panel,
+body.studio-theme-dark .gate-panel {
+    overflow: hidden !important;
+    background-clip: padding-box !important;
+}
+
+html.studio-theme-dark body .shell .node,
+body.studio-theme-dark .shell .node {
+    background-clip: padding-box !important;
+}
+
+html.studio-theme-dark body .shell .node-head,
+body.studio-theme-dark .shell .node-head {
+    border-radius: 22px 22px 0 0 !important;
+    overflow: hidden !important;
+    background-clip: padding-box !important;
+}
+
+/* Switch contrast: keep iOS toggles visible on blue-gray panels. */
+html.studio-theme-dark body .ios-switch .ios-slider,
+body.studio-theme-dark .ios-switch .ios-slider {
+    background: #2b2c30 !important;
+    border: 1px solid #3a3b40 !important;
+    box-shadow: 0 0 0 1px rgba(216,222,233,.05) !important;
+}
+
+html.studio-theme-dark body .ios-switch .ios-slider:before,
+body.studio-theme-dark .ios-switch .ios-slider:before {
+    background: #f5f6f8 !important;
+    box-shadow: none !important;
+}
+
+html.studio-theme-dark body .ios-switch input:checked + .ios-slider,
+body.studio-theme-dark .ios-switch input:checked + .ios-slider {
+    background: var(--ui-accent) !important;
+    border-color: rgba(255,255,255,.34) !important;
+    box-shadow: 0 0 0 3px rgba(var(--ui-accent-rgb),.14) !important;
+}
+
+html.studio-theme-dark body .ios-switch input:checked + .ios-slider:before,
+body.studio-theme-dark .ios-switch input:checked + .ios-slider:before {
+    background: #ffffff !important;
+    box-shadow: none !important;
+}
+
+html.studio-theme-dark body .shell .comfy-random-btn.active,
+body.studio-theme-dark .shell .comfy-random-btn.active {
+    background: #f5f6f8 !important;
+    background-color: #f5f6f8 !important;
+    color: #1b1c20 !important;
+    border-color: #f5f6f8 !important;
+}
+
+html.studio-theme-dark body .shell .comfy-random-btn.active svg,
+body.studio-theme-dark .shell .comfy-random-btn.active svg {
+    fill: none !important;
+    stroke: #1b1c20 !important;
+}
+
+/* Unified soft iOS visual language across every embedded tool. */
+:root {
+    --ios-blue:var(--ui-accent);
+    --ios-blue-dark:var(--ui-accent);
+    --ios-bg:#f1f2f4;
+    --ios-card:rgba(255,255,255,.95);
+    --ios-fill:#f5f6f8;
+    --ios-label:#1b1c20;
+    --ios-secondary:#777b82;
+    --ios-separator:rgba(155,160,168,.18);
+    --ios-shadow:none;
+    --ios-control-shadow:none;
+    --ios-inset-shadow:none;
+}
+html:not(.gpt-dock-canvas-mode) body:not(.studio-theme-dark) {
+    background:var(--ios-bg);
+    color:var(--ios-label);
+}
+body:not(.studio-theme-dark) :is(
+    .console-card,.engine-panel,.tool-panel,.control-panel,.model-panel,.gate-panel,
+    .settings-card,.setting-card,.panel,.modal-content,.dialog,.popover,.history-popover,
+    .chat-shell .composer,.nano-input,.upload-item,.result-frame,.node,.asset-panel
+) {
+    background:var(--ios-card) !important;
+    border-color:var(--ios-separator) !important;
+    box-shadow:var(--ios-shadow) !important;
+    backdrop-filter:none;
+}
+body :is(button,.btn,.action-btn,.tool-btn,.icon-btn,.mini-btn,.secondary-btn,.primary-btn) {
+    transition:background-color .16s ease, border-color .16s ease, box-shadow .16s ease, transform .16s ease !important;
+}
+body:not(.studio-theme-dark) :is(button,.btn,.action-btn,.tool-btn,.icon-btn,.mini-btn,.secondary-btn):not(.primary):not(.active) {
+    background:linear-gradient(145deg,#fff,#f5f6f8);
+    border-color:rgba(255,255,255,.94);
+    color:var(--ios-secondary);
+    box-shadow:var(--ios-control-shadow);
+}body:not(.studio-theme-dark) :is(button,.btn,.action-btn,.tool-btn,.icon-btn,.mini-btn,.secondary-btn):hover{
+    border-color:rgba(var(--ui-accent-rgb),.38) !important;
+    transform:translateY(-1px);
+}
+body :is(.primary,.primary-btn,.active,[aria-pressed="true"]):is(button,.btn,.action-btn,.tool-btn,.icon-btn,.mini-btn) {
+    background:linear-gradient(145deg,var(--ui-accent),#006de8) !important;
+    border-color:var(--ios-blue) !important;
+    color:#fff !important;
+    box-shadow:none !important;
+}
+body :is(input,select,textarea,[contenteditable="true"]) {
+    border-color:var(--ios-separator) !important;
+}
+body:not(.studio-theme-dark) :is(input,select,textarea,[contenteditable="true"]) {
+    background:#f1f2f4;
+    color:var(--ios-label);
+    box-shadow:var(--ios-inset-shadow);
+}
+body :is(input,select,textarea,[contenteditable="true"]):focus {
+    border-color:var(--ios-blue) !important;
+    box-shadow:0 0 0 3px rgba(var(--ui-accent-rgb),.14) !important;
+}
+body svg[data-lucide],
+body [data-lucide] svg,
+body .lucide,
+body button svg {
+    fill:none !important;
+    stroke:currentColor !important;
+    stroke-width:1.9 !important;
+    stroke-linecap:round !important;
+    stroke-linejoin:round !important;
+    vector-effect:non-scaling-stroke;
+}
+body :is(button,.btn,.action-btn,.tool-btn,.icon-btn,.mini-btn,.secondary-btn,.primary-btn) svg {
+    flex:0 0 auto;
+    opacity:.92;
+    transition:opacity .16s ease, transform .16s ease;
+}
+body :is(button,.btn,.action-btn,.tool-btn,.icon-btn,.mini-btn,.secondary-btn,.primary-btn):hover svg {
+    opacity:1;
+    transform:scale(1.04);
+}
+body :is(.primary,.primary-btn,.active,[aria-pressed="true"]):is(button,.btn,.action-btn,.tool-btn,.icon-btn,.mini-btn) svg {
+    opacity:1;
+}body :is(button,.btn,.action-btn,.tool-btn,.icon-btn,.mini-btn,.secondary-btn,.primary-btn):not(:disabled):hover{
+    background:linear-gradient(145deg,var(--ui-accent),#006de8) !important;
+    border-color:var(--ui-accent) !important;
+    box-shadow:none !important;
+    animation:shared-button-hop .32s cubic-bezier(.22,.75,.3,1) both;
+}
+@keyframes shared-button-hop {
+    0% { transform:translateY(0); }
+    45% { transform:translateY(-3px); }
+    72% { transform:translateY(1px); }
+    100% { transform:translateY(-1px); }
+}body :is(button,.btn,.action-btn,.tool-btn,.icon-btn,.mini-btn,.secondary-btn,.primary-btn):not(:disabled):hover svg{
+    stroke:#fff !important;
+}
+body.studio-theme-dark :is(
+    .console-card,.engine-panel,.tool-panel,.control-panel,.model-panel,.gate-panel,
+    .settings-card,.setting-card,.panel,.modal-content,.dialog,.popover,.history-popover,
+    .chat-shell .composer,.nano-input,.upload-item,.result-frame,.node,.asset-panel
+),
+html.studio-theme-dark body :is(
+    .console-card,.engine-panel,.tool-panel,.control-panel,.model-panel,.gate-panel,
+    .settings-card,.setting-card,.panel,.modal-content,.dialog,.popover,.history-popover,
+    .chat-shell .composer,.nano-input,.upload-item,.result-frame,.node,.asset-panel
+) {
+    background:rgba(28,28,30,.88) !important;
+    border-color:rgba(255,255,255,.14) !important;
+    box-shadow:var(--ui-shadow-pop) !important;
+    backdrop-filter:none;
+}
+body.studio-theme-dark :is(input,select,textarea,[contenteditable="true"]),
+html.studio-theme-dark body :is(input,select,textarea,[contenteditable="true"]) {
+    background:#232327 !important;
+    border-color:rgba(255,255,255,.14) !important;
+    color:#f5f6f8 !important;
+}
+body.studio-theme-dark :is(.primary,.primary-btn,.active,[aria-pressed="true"]):is(button,.btn,.action-btn,.tool-btn,.icon-btn,.mini-btn),
+html.studio-theme-dark body :is(.primary,.primary-btn,.active,[aria-pressed="true"]):is(button,.btn,.action-btn,.tool-btn,.icon-btn,.mini-btn) {
+    background:var(--ios-blue-dark) !important;
+    border-color:var(--ios-blue-dark) !important;
+    color:#fff !important;
+}

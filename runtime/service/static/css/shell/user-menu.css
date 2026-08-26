@@ -1,0 +1,398 @@
+.shell-user-menu {
+    position: fixed;
+    z-index: 360;
+    width: 224px;
+    max-height: calc(100vh - var(--ui-space-8));
+    overflow: auto;
+    padding: var(--ui-space-4);
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-panel);
+    color: var(--ui-text-secondary);
+    background: var(--ui-surface-elevated);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transform: translateY(var(--ui-space-2)) scale(.985);
+    transform-origin: left bottom;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity .18s ease, transform .24s cubic-bezier(.22, .75, .3, 1), visibility .18s ease;
+}
+
+.shell-user-menu.open {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.shell-user-menu-profile {
+    display: grid;
+    grid-template-columns: calc(var(--ui-control-h-lg) + var(--ui-space-2)) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--ui-space-4);
+    padding: var(--ui-space-2) var(--ui-space-2) var(--ui-space-4);
+}
+
+.shell-user-avatar {
+    position: relative;
+    width: calc(var(--ui-control-h-lg) + var(--ui-space-2));
+    height: calc(var(--ui-control-h-lg) + var(--ui-space-2));
+    padding: 0;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--ui-border);
+    border-radius: 50%;
+    color: var(--ui-text-secondary);
+    background: var(--ui-hover);
+    box-shadow: none;
+    cursor: pointer;
+}
+
+.shell-user-avatar > svg {
+    width: var(--ui-control-h-sm);
+    height: var(--ui-control-h-sm);
+    stroke-width: 1.55;
+}
+
+.shell-user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.shell-user-avatar-edit {
+    position: absolute;
+    right: 1px;
+    bottom: 1px;
+    width: 16px;
+    height: 16px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, .94);
+    border-radius: 50%;
+    color: #fff;
+    background: #737b86;
+}
+
+.shell-user-avatar-edit svg {
+    width: 9px;
+    height: 9px;
+    stroke-width: 1.8;
+}
+
+.shell-user-name-field {
+    min-width: 0;
+    display: grid;
+    gap: 2px;
+}
+
+.shell-user-name-caption {
+    color: var(--ui-text-muted);
+    font-size: var(--ui-type-meta);
+    line-height: 1.2;
+    font-weight: 400;
+}
+
+.shell-user-name-row {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.shell-user-name-row input {
+    width: 100%;
+    min-width: 0;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    color: var(--ui-text);
+    background: transparent;
+    font: var(--ui-weight-regular) var(--ui-type-section)/28px var(--ui-font);
+    text-overflow: ellipsis;
+}
+
+.shell-user-name-row svg {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 auto;
+    color: var(--ui-text-muted);
+    stroke-width: 1.5;
+}
+
+.shell-user-name-row:focus-within {
+    box-shadow: inset 0 -1px 0 rgba(103, 116, 134, .26);
+}
+
+.shell-user-points {
+    width: 100%;
+    margin: 0 0 var(--ui-space-2);
+    padding: var(--ui-space-3) var(--ui-space-4);
+    border: 0;
+    border-radius: var(--ui-radius-card);
+    background: var(--ui-hover);
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition:
+        background-color .22s ease, border-color .22s ease, box-shadow .22s ease, filter .22s ease, opacity .22s ease;
+}
+
+.shell-user-points:hover,
+.shell-user-points:focus-visible {
+    outline: none;
+    filter: brightness(1.04);
+}
+
+.shell-user-points-head,
+.shell-user-points-head > span,
+.shell-user-points-meta,
+.shell-user-points-head strong,
+.shell-user-points-head svg,
+.shell-user-points-track,
+.shell-user-points-track span {
+    transition: background-color .22s ease, stroke .22s ease;
+}
+
+.shell-user-points-head,
+.shell-user-points-head > span,
+.shell-user-points-meta {
+    display: flex;
+    align-items: center;
+}
+
+.shell-user-points-head {
+    justify-content: space-between;
+    color: var(--ui-text-secondary);
+    font-size: var(--ui-type-meta);
+}
+
+.shell-user-points-head strong {
+    font-weight: var(--ui-weight-regular);
+}
+
+.shell-user-points-head > span {
+    gap: 7px;
+}
+
+.shell-user-points-head svg {
+    width: 15px;
+    height: 15px;
+    stroke-width: 1.55;
+}
+
+.shell-user-points-head strong:last-child {
+    color: var(--ui-text);
+    font-size: var(--ui-type-control);
+    font-weight: var(--ui-weight-regular);
+}
+
+.shell-user-points-track {
+    display: none;
+}
+
+.shell-user-points-track span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--ui-accent);
+}
+
+.shell-user-points-meta {
+    justify-content: space-between;
+    margin-top: var(--ui-space-2);
+    color: var(--ui-text-muted);
+    font-size: var(--ui-type-meta);
+}
+
+.shell-user-menu-list {
+    display: grid;
+    gap: var(--ui-space-1);
+    padding: var(--ui-space-2) 0;
+    border-top: 1px solid var(--ui-border);
+}
+
+.shell-user-menu-item {
+    width: 100%;
+    min-height: var(--ui-control-h-lg);
+    padding: 0 var(--ui-space-2);
+    display: grid;
+    grid-template-columns: var(--ui-control-h-sm) minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: var(--ui-space-2);
+    border: 1px solid transparent;
+    border-radius: var(--ui-radius-control);
+    color: var(--ui-text-secondary);
+    background: transparent;
+    box-shadow: none;
+    text-align: left;
+    font: var(--ui-weight-regular) var(--ui-type-section)/1.2 var(--ui-font);
+    cursor: pointer;
+    transition: background-color .22s ease, opacity .22s ease;
+}.shell-user-menu-item:hover,
+.shell-user-menu-item:focus-visible,
+.shell-user-menu-item.is-current{
+    background: var(--gh-quiet-hover-surface);
+    border-color: var(--gh-quiet-hover-border);
+    outline: 0;
+}
+.shell-user-menu-item.is-current{color: #17181b;}
+
+.shell-user-menu-item.is-current {
+    font-weight: 445;
+}
+
+.shell-user-menu-item-icon {
+    width: var(--ui-control-h-sm);
+    height: var(--ui-control-h-sm);
+    display: grid;
+    place-items: center;
+    border-radius: var(--ui-radius-control);
+    color: currentColor;
+    background: transparent;
+    transition: background-color .22s ease;
+}
+
+.shell-user-menu-item-icon svg,
+.shell-user-menu-chevron {
+    width: 15px;
+    height: 15px;
+    stroke-width: 1.55;
+}
+
+.shell-user-menu-item small {
+    color: var(--ui-text-muted);
+    font-size: var(--ui-type-meta);
+    font-weight: var(--ui-weight-regular);
+}
+
+.shell-user-menu-chevron {
+    color: var(--ui-text-muted);
+}
+
+.shell-user-theme-switch {
+    width: 28px;
+    height: 16px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, .25);
+    transition: background-color .18s ease;
+}
+
+.shell-user-theme-switch span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(55, 65, 81, .18);
+    transform: translateX(0);
+    transition: transform .2s cubic-bezier(.22, .75, .3, 1);
+}
+
+.shell-user-menu-item[aria-pressed="true"] .shell-user-theme-switch {
+    background: var(--ui-accent);
+}
+
+.shell-user-menu-item[aria-pressed="true"] .shell-user-theme-switch span {
+    transform: translateX(12px);
+}.shell-user-menu-logout:hover,
+.shell-user-menu-logout:focus-visible{
+}
+
+.shell-user-menu-logout,
+.shell-user-menu-logout > span,
+.shell-user-menu-logout .shell-user-menu-item-icon {
+    color: var(--ui-danger);
+}
+
+.shell-user-menu-status {
+    min-height: 0;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 8px;
+    color: #747b85;
+    font-size: 10px;
+    opacity: 0;
+    transition: max-height .18s ease, padding .18s ease, opacity .18s ease;
+}
+
+.shell-user-menu-status.visible {
+    min-height: 22px;
+    max-height: 22px;
+    padding-top: 7px;
+    opacity: 1;
+}
+
+html.theme-dark .shell-user-menu,
+html.studio-theme-dark .shell-user-menu {
+    color: #b9bec7;
+    border-color: var(--ui-border);
+    background: var(--ui-surface-elevated);
+    box-shadow: var(--ui-shadow-pop);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+html.theme-dark .shell-user-avatar,
+html.studio-theme-dark .shell-user-avatar,
+html.theme-dark .shell-user-menu-item:hover,
+html.theme-dark .shell-user-menu-item:focus-visible,
+html.theme-dark .shell-user-menu-item.is-current,
+html.studio-theme-dark .shell-user-menu-item:hover,
+html.studio-theme-dark .shell-user-menu-item:focus-visible,
+html.studio-theme-dark .shell-user-menu-item.is-current {
+    border-color: rgba(255, 255, 255, .1);
+    background: rgba(255, 255, 255, .075);
+}html.theme-dark .shell-user-name-row input,
+html.theme-dark .shell-user-points-head strong:last-child,
+html.theme-dark .shell-user-menu-item:hover,
+html.theme-dark .shell-user-menu-item:focus-visible,
+html.theme-dark .shell-user-menu-item.is-current,
+html.studio-theme-dark .shell-user-name-row input,
+html.studio-theme-dark .shell-user-points-head strong:last-child,
+html.studio-theme-dark .shell-user-menu-item:hover,
+html.studio-theme-dark .shell-user-menu-item:focus-visible,
+html.studio-theme-dark .shell-user-menu-item.is-current{
+}
+html.theme-dark .shell-user-name-row input,
+html.theme-dark .shell-user-points-head strong:last-child,
+html.theme-dark .shell-user-menu-item.is-current,
+html.studio-theme-dark .shell-user-name-row input,
+html.studio-theme-dark .shell-user-points-head strong:last-child,
+html.studio-theme-dark .shell-user-menu-item.is-current{color: #f1f2f4;}
+
+html.theme-dark .shell-user-points,
+html.studio-theme-dark .shell-user-points {
+    border-color: rgba(255, 255, 255, .06);
+    background: rgba(255, 255, 255, .055);
+}
+
+html.theme-dark .shell-user-menu-list,
+html.studio-theme-dark .shell-user-menu-list {
+    border-color: rgba(255, 255, 255, .09);
+}
+
+@media (max-width: 720px) {
+    .shell-user-menu {
+        width: min(224px, calc(100vw - var(--ui-space-8)));
+        transform-origin: left bottom;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .shell-user-menu,
+    .shell-user-theme-switch span {
+        transition: none;
+    }
+}

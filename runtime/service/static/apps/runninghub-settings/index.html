@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RunningHub 设置</title>
+    <script>
+        try {
+            if(window.location.hash === '#embedded') {
+                document.documentElement.classList.add('settings-embedded');
+            }
+            const theme = localStorage.getItem('studio_theme') || localStorage.getItem('canvas_theme') || 'light';
+            if(theme === 'dark') document.documentElement.classList.add('theme-dark');
+        } catch(e) {}
+    </script>
+    <script src="/static/vendor/js/lucide.js?v=2026.06.08.85"></script>
+    <link rel="stylesheet" href="/static/apps/runninghub-settings/runninghub-settings.css?v=2026.07.26.rollback1">
+    <link rel="stylesheet" href="/static/css/visual-system-preview.css?v=2026.08.09.98">
+<link rel="stylesheet" href="/static/css/dark-desaturated/apps-runninghub-settings-index.css?v=2026.08.09.99">
+<link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.24.87">
+<link rel="stylesheet" href="/static/css/ui-primitives.css?v=2026.08.23.2">
+<link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.24.87">
+</head>
+<body>
+    <main class="page-shell">
+        <header class="page-head">
+            <div>
+                <h1>RunningHub</h1>
+                <p>管理 AI 应用和工作流，保存后可直接在无限画布调用。</p>
+            </div>
+            <div id="status" class="status" role="status"></div>
+        </header>
+
+        <section class="connection-card">
+            <label>
+                <span>站点</span>
+                <select id="baseUrlInput">
+                    <option value="https://www.runninghub.cn">中国站</option>
+                    <option value="https://www.runninghub.ai">国际站</option>
+                </select>
+            </label>
+            <label class="key-field">
+                <span>API Key <b id="keyState">未配置</b></span>
+                <input id="keyInput" type="password" autocomplete="new-password" placeholder="输入新 Key；已保存的 Key 不会回显">
+            </label>
+            <button id="clearKeyBtn" class="ghost danger" type="button">清除 Key</button>
+            <button id="saveSettingsBtn" class="primary" type="button"><i data-lucide="save"></i>保存设置</button>
+        </section>
+
+        <section class="library-card">
+            <div class="library-head">
+                <div class="tabs" role="tablist">
+                    <button class="tab active" data-tab="apps" type="button">AI 应用</button>
+                    <button class="tab" data-tab="workflows" type="button">工作流</button>
+                </div>
+                <button id="addEntryBtn" class="primary compact" type="button"><i data-lucide="plus"></i><span>新增 AI 应用</span></button>
+            </div>
+            <div id="entryList" class="entry-list"></div>
+        </section>
+    </main>
+
+    <dialog id="entryDialog">
+        <form id="entryForm" method="dialog">
+            <div class="dialog-head">
+                <div>
+                    <h2 id="dialogTitle">新增 AI 应用</h2>
+                    <p id="dialogHint">填写应用 ID，并粘贴详情页提供的 nodeInfoList。</p>
+                </div>
+                <button id="dialogCloseBtn" class="icon-btn" type="button" aria-label="关闭"><i data-lucide="x"></i></button>
+            </div>
+            <label><span>名称</span><input id="entryTitleInput" maxlength="80" required placeholder="例如：风格迁移"></label>
+            <label><span id="remoteIdLabel">AI 应用 ID</span><input id="entryRemoteIdInput" maxlength="80" required placeholder="webappId"></label>
+            <label id="nodeInfoField">
+                <span>示例 nodeInfoList</span>
+                <textarea id="nodeInfoInput" spellcheck="false" placeholder='[{"nodeId":"122","fieldName":"prompt","fieldValue":""}]'></textarea>
+            </label>
+            <label id="workflowFileField" hidden>
+                <span>API 工作流 JSON（自动读取失败时选择）</span>
+                <input id="workflowFileInput" type="file" accept="application/json,.json">
+            </label>
+            <div id="inspectSummary" class="inspect-summary">尚未识别参数</div>
+            <div class="dialog-actions">
+                <button id="inspectBtn" class="ghost" type="button"><i data-lucide="scan-search"></i>识别参数</button>
+                <span></span>
+                <button id="entryCancelBtn" class="ghost" type="button">取消</button>
+                <button id="entrySaveBtn" class="primary" type="submit">保存</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script src="/static/apps/runninghub-settings/runninghub-settings.js?v=2026.07.11.110"></script>
+</body>
+</html>
+

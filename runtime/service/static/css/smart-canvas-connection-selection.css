@@ -1,0 +1,19 @@
+/* Smart Canvas — connection line selection (isolated UI) */
+.connection-layer .conn-line.conn-selected {
+    stroke: var(--accent, var(--ui-accent)) !important;
+    stroke-width: 2.2 !important;
+    opacity: 1 !important;
+}
+.connection-layer .conn-end.conn-selected-end {
+    fill: var(--accent, var(--ui-accent)) !important;
+    stroke: var(--accent, var(--ui-accent)) !important;
+    r: 3.2;
+}
+.connection-layer .conn-cut.is-selected {
+    opacity: 1 !important;
+}
+.connection-layer .conn-cut.is-selected circle {
+    fill: rgba(var(--ui-accent-rgb), 0.12);
+    stroke: var(--accent, var(--ui-accent));
+    stroke-width: 1.4;
+}

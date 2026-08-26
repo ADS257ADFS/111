@@ -1,0 +1,368 @@
+/* Top-right canvas chrome — navigation controls aligned left of Agent. */
+
+:root {
+    /* 胶囊内按键与圆形按钮统一尺寸、统一图标大小 */
+    --canvas-bottom-btn: var(--ui-canvas-nav-control-size);
+    --canvas-bottom-icon: var(--ui-canvas-nav-icon-size);
+}
+
+.canvas-bottom-chrome {
+    position: fixed;
+    right: var(--shell-agent-control-reserve, 120px);
+    left: auto;
+    top: 12px;
+    bottom: auto;
+    z-index: 57;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    pointer-events: none;
+    transition:transform .42s cubic-bezier(.22,.75,.3,1), opacity .36s ease, visibility .36s ease;
+}
+
+html.canvas-empty-chrome-recessed .canvas-bottom-chrome {
+    transform:translateX(0);
+    opacity:1;
+    visibility:visible;
+    pointer-events:none;
+    transition:none;
+}
+
+html.asset-library-open .canvas-bottom-chrome {
+    transform: translateX(calc(100% + 28px)) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition:
+        transform .42s cubic-bezier(.22,.75,.3,1), opacity .36s ease, visibility 0s linear .42s;
+}
+
+html.history-panel-open .canvas-bottom-chrome {
+    transform: translateX(calc(100% + 28px)) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition:
+        transform .42s cubic-bezier(.22,.75,.3,1), opacity .36s ease, visibility 0s linear .42s;
+}
+
+.canvas-bottom-chrome > * {
+    pointer-events: auto;
+}
+
+.canvas-bottom-capsule {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: var(--ui-space-1) var(--ui-space-2);
+    border-radius: var(--ui-canvas-nav-radius);
+    border: 1px solid transparent;
+    background: transparent;
+    box-shadow: none;
+}
+
+.canvas-bottom-help-btn {
+    appearance: none;
+    position: relative;
+    isolation: isolate;
+    width: var(--canvas-bottom-btn);
+    height: var(--canvas-bottom-btn);
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ui-text-secondary);
+    background: transparent;
+    box-shadow: none;
+    cursor: pointer;
+    transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
+}
+
+.canvas-bottom-help-btn svg,
+.canvas-bottom-help-btn i {
+    width: var(--canvas-bottom-icon);
+    height: var(--canvas-bottom-icon);
+    stroke-width: 2;
+}
+
+.canvas-bottom-help-btn[aria-expanded="true"] {
+    color: var(--ui-accent);
+}
+
+.theme-dark .canvas-bottom-help-btn[aria-expanded="true"] {
+    color: var(--ui-accent);
+}
+
+/* M5 材质定案:扁平实色,无玻璃无流动描边(原 conic/blur 三层结构已拆除) */
+html:not(.theme-dark):not(.studio-theme-dark) :is(.canvas-bottom-capsule, .canvas-bottom-help-btn) {
+    border: 1px solid var(--ui-border);
+    background: var(--ui-surface-elevated);
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}html:not(.theme-dark):not(.studio-theme-dark) .canvas-bottom-help-btn:is(:hover, :focus-visible){
+    outline: none;
+}
+
+.canvas-bottom-capsule-btn {
+    width: var(--canvas-bottom-btn);
+    height: var(--canvas-bottom-btn);
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ui-text-secondary);
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: none;
+    transition:
+        background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.canvas-bottom-capsule-btn svg,
+.canvas-bottom-capsule-btn i {
+    width: var(--canvas-bottom-icon);
+    height: var(--canvas-bottom-icon);
+    stroke-width: 2;
+}.canvas-bottom-capsule-btn:not(:disabled):hover,
+.canvas-bottom-capsule-btn:not(:disabled):focus-visible{
+    background: var(--ui-hover);
+    border-color: transparent;
+    box-shadow: none;
+    outline: none;
+}
+
+.canvas-bottom-capsule-btn.active,
+.canvas-bottom-capsule-btn[aria-pressed="true"] {
+    color: var(--ui-text-on-accent);
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+    box-shadow: none;
+}
+
+.canvas-zoom-divider {
+    width: 1px;
+    height: var(--ui-icon-sm);
+    margin: 0 var(--ui-space-1);
+    background: var(--ui-border);
+    flex: 0 0 auto;
+}
+
+.canvas-zoom-step-btn {
+    width: var(--ui-control-h-sm);
+}
+
+.canvas-zoom-menu-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.canvas-zoom-value-btn {
+    appearance: none;
+    min-width: var(--ui-canvas-zoom-value-w);
+    height: var(--canvas-bottom-btn);
+    padding: 0 var(--ui-space-1) 0 var(--ui-space-2);
+    border: 1px solid transparent;
+    border-radius: var(--ui-radius-control);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ui-space-1);
+    color: var(--ui-text-secondary);
+    background: transparent;
+    font-family: var(--ui-font);
+    font-weight: var(--ui-weight-regular);
+    cursor: pointer;
+}
+
+.canvas-zoom-value-btn svg,
+.canvas-zoom-value-btn i {
+    width: var(--ui-icon-xs);
+    height: var(--ui-icon-xs);
+    stroke-width: var(--ui-icon-stroke);
+}
+
+.canvas-zoom-value-btn:is(:hover, :focus-visible, [aria-expanded="true"]) {
+    background: var(--ui-hover);
+    border-color: transparent;
+    box-shadow: none;
+    outline: none;
+}
+
+.canvas-zoom-menu {
+    position: absolute;
+    top: calc(100% + var(--ui-space-3));
+    left: 50%;
+    width: var(--ui-canvas-zoom-menu-w);
+    transform: translateX(-50%);
+}
+
+.canvas-zoom-menu[hidden] {
+    display: none;
+}
+
+.canvas-zoom-menu-item {
+    justify-content: space-between;
+}
+
+.canvas-zoom-menu-item kbd {
+    margin-left: auto;
+    color: var(--ui-text-muted);
+    font-family: var(--ui-font);
+    font-weight: var(--ui-weight-regular);
+}
+
+/* Temporary object-to-object alignment guides. */
+.smart-guide-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 52;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.smart-guide-overlay.visible {
+    opacity: 1;
+}
+
+.smart-guide-line {
+    stroke: var(--ui-accent);
+    stroke-width: 0.5;
+    stroke-dasharray: 6 4;
+    stroke-linecap: round;
+    animation: smart-guide-flow 0.9s linear infinite;
+    vector-effect: non-scaling-stroke;
+    shape-rendering: geometricPrecision;
+}
+
+.smart-guide-line.is-spacing {
+    stroke-dasharray: 3 3;
+}
+
+@keyframes smart-guide-flow {
+    to {
+        stroke-dashoffset: -10;
+    }
+}
+
+/* Minimap — hidden until toggled, opens below the relocated capsule. */
+.shell > .smart-minimap {
+    right: var(--shell-agent-control-reserve, 120px);
+    top: 52px;
+    bottom: auto;
+}
+
+.canvas-bottom-chrome .smart-minimap {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    left: 0;
+    display: none;
+    width: 180px;
+    height: 112px;
+    margin: 0;
+    border-radius: 14px;
+    border: 1px solid var(--ui-border);
+    background: var(--ui-surface-elevated);
+    box-shadow: var(--ui-shadow-pop);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.canvas-bottom-chrome .smart-minimap.open {
+    display: block;
+}
+
+.canvas-bottom-chrome .smart-minimap-content {
+    inset: 7px;
+    border-radius: 10px;
+    background-size: 10px 10px;
+    background-image: radial-gradient(rgba(158, 168, 180, 0.35) 1px, transparent 1px);
+}
+
+/* Help panel anchored above bottom-right chrome */
+.shortcut-modal.shortcut-modal--bottom-left {
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 16px 16px 76px;
+}
+
+.shortcut-modal.shortcut-modal--bottom-left .shortcut-panel {
+    width: min(560px, calc(100vw - 44px));
+    max-height: min(420px, calc(100vh - 140px));
+}
+
+.theme-dark .canvas-bottom-capsule {
+    background: var(--ui-surface-chrome);
+    border-color: var(--ui-border);
+    box-shadow: none;
+}
+
+.theme-dark .canvas-bottom-help-btn {
+    color: var(--ui-text-secondary);
+    background: var(--ui-surface-chrome);
+    border-color: var(--ui-border);
+    box-shadow: none;
+}.theme-dark .canvas-bottom-help-btn:hover,
+.theme-dark .canvas-bottom-help-btn:focus-visible{
+    background: var(--ui-active);
+    border-color: var(--ui-border-strong);
+}
+
+.theme-dark .canvas-bottom-capsule-btn {
+    background: transparent;
+    border-color: transparent;
+    color: var(--ui-text-secondary);
+    box-shadow: none;
+}.theme-dark .canvas-bottom-capsule-btn:not(:disabled):hover,
+.theme-dark .canvas-bottom-capsule-btn:not(:disabled):focus-visible{
+    background: var(--ui-active);
+    border-color: transparent;
+}
+
+.theme-dark .canvas-bottom-capsule-btn.active,
+.theme-dark .canvas-bottom-capsule-btn[aria-pressed="true"] {
+    color: var(--ui-text-on-accent);
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+}
+
+.theme-dark .canvas-bottom-chrome .smart-minimap {
+    background: var(--ui-surface-elevated);
+    border-color: var(--ui-border);
+}
+
+@media (max-width: 720px) {
+    .canvas-bottom-chrome {
+        right: 14px;
+        left: auto;
+        top: 14px;
+        bottom: auto;
+    }
+
+    .shell > .smart-minimap {
+        right: 14px;
+        top: 54px;
+        bottom: auto;
+    }
+
+    .canvas-bottom-chrome .smart-minimap {
+        width: min(180px, calc(100vw - 28px));
+    }
+
+    .shortcut-modal.shortcut-modal--bottom-left {
+        padding: 12px 12px 72px;
+    }
+}
