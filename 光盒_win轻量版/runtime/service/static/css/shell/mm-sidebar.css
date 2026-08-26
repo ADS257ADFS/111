@@ -119,14 +119,16 @@ html.shell-history-open .mm-sidebar-nav #mmSideAll { background: var(--ui-hover)
 
 /* ================================================================
  * 右侧栏顶栏「未命名对话」+ 图标：与左侧「新建画布」同一套 token。
- * 本文件在 index.html 中最后加载，用于压过 preview/shell 旧硬编码。
+ * 字重走固定字族实例（勿写 font-variation-settings wght，否则会落到
+ * MiSans Variable，视觉上比侧栏更粗）。描边必须打到 Lucide 内层 svg。
  * ================================================================ */
 html.lightbox-desktop-native .gpt-dock .dock-chrome-title,
 html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger {
     font-family: var(--ui-font) !important;
     font-size: var(--ui-type-section) !important;
     font-weight: var(--ui-weight-menu-strong) !important;
-    font-variation-settings: "wght" var(--ui-weight-menu-strong) !important;
+    font-variation-settings: normal !important;
+    font-synthesis: none !important;
     color: var(--ui-text) !important;
     line-height: var(--ui-leading-tight) !important;
 }
@@ -137,7 +139,7 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .dock-chrome-btn {
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg),
 html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon,
-html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon :is(i, svg) {
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon svg {
     width: var(--ui-sidebar-nav-icon-size) !important;
     height: var(--ui-sidebar-nav-icon-size) !important;
     flex: 0 0 var(--ui-sidebar-nav-icon-size) !important;

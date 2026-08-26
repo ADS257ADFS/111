@@ -1527,7 +1527,9 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
     font-family: var(--ui-font) !important;
     font-size: var(--ui-type-section) !important;
     font-weight: var(--ui-weight-menu-strong) !important;
-    font-variation-settings: "wght" var(--ui-weight-menu-strong) !important;
+    /* Keep fixed MiSans CJK/Latin instances like left「新建画布」; do not force Variable axis. */
+    font-variation-settings: normal !important;
+    font-synthesis: none !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-history-panel {
@@ -3930,6 +3932,9 @@ html:not(#ui-dock-copy-1):not(#ui-dock-copy-2):not(#ui-dock-copy-3):not(#ui-dock
     font-variation-settings:"wght" var(--ui-weight-dock-body) !important;
 }
 
+/* Same type recipe as .mm-sidebar-nav button（新建画布）:
+   fixed font instances + menu-strong weight. Never force Variable wght here —
+   that made 未命名对话 look heavier than the left rail. */
 html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
     .gpt-dock .dock-chrome-title,
 html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
@@ -3938,7 +3943,8 @@ html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-d
     font-family:var(--ui-font) !important;
     font-size:var(--ui-type-section) !important;
     font-weight:var(--ui-weight-menu-strong) !important;
-    font-variation-settings:"wght" var(--ui-weight-menu-strong) !important;
+    font-variation-settings:normal !important;
+    font-synthesis:none !important;
     line-height:var(--ui-leading-tight) !important;
 }
 
@@ -3947,10 +3953,13 @@ html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-d
     color:var(--ui-text) !important;
 }
 
+/* stroke-width is not inherited — must hit nested Lucide <svg>, same as left nav. */
 html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
     .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg),
 html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
-    .gpt-dock .dock-chrome-title-trigger-icon {
+    .gpt-dock .dock-chrome-title-trigger-icon,
+html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
+    .gpt-dock .dock-chrome-title-trigger-icon svg {
     width:var(--ui-sidebar-nav-icon-size) !important;
     height:var(--ui-sidebar-nav-icon-size) !important;
     flex:0 0 var(--ui-sidebar-nav-icon-size) !important;
@@ -4190,7 +4199,8 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-title {
     font-family: var(--ui-font) !important;
     font-size: var(--ui-type-section) !important;
     font-weight: var(--ui-weight-menu-strong) !important;
-    font-variation-settings: "wght" var(--ui-weight-menu-strong) !important;
+    font-variation-settings: normal !important;
+    font-synthesis: none !important;
     color: var(--ui-text) !important;
     line-height: var(--ui-leading-tight) !important;
 }
@@ -4200,7 +4210,8 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .dock-chrome-btn {
     color: var(--ui-text) !important;
 }
 html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg),
-html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon {
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon,
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon svg {
     width: var(--ui-sidebar-nav-icon-size) !important;
     height: var(--ui-sidebar-nav-icon-size) !important;
     flex: 0 0 var(--ui-sidebar-nav-icon-size) !important;
