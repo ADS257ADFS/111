@@ -4419,11 +4419,11 @@ body #shell.shell #composer.composer .composer-footer
     box-shadow: none !important;
 }
 
-/* Right dock chat input: lighter than the dock chrome / canvas. */
+/* Right dock chat input: slightly lighter than dock chrome, but not too pale. */
 :is(html.theme-dark, html.studio-theme-dark).gpt-dock-canvas-mode
 body.gpt-dock-canvas-mode .chat-shell .composer {
-    background: var(--ui-surface-dock-composer, #2e2e2e) !important;
-    background-color: var(--ui-surface-dock-composer, #2e2e2e) !important;
+    background: var(--ui-surface-dock-composer, #242424) !important;
+    background-color: var(--ui-surface-dock-composer, #242424) !important;
     background-image: none !important;
 }
 

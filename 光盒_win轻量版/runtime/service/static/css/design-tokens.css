@@ -85,7 +85,7 @@ body.studio-theme-dark {
     --ui-surface-elevated: #232323;
     --ui-surface-input: #1e1e1e;
     --ui-surface-composer: #0e0e0e;      /* 画布底部输入面：贴近画布底色 */
-    --ui-surface-dock-composer: #2e2e2e; /* 右侧对话栏输入面：比栏底更浅 */
+    --ui-surface-dock-composer: #242424; /* 右侧对话栏输入面：比栏底略浅，但不过亮 */
     --ui-surface-composer-topbar: rgba(255, 255, 255, .06);
 
     --ui-hover: rgba(255, 255, 255, .07);
