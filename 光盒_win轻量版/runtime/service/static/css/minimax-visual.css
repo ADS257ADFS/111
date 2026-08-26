@@ -2224,6 +2224,14 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     color: var(--ui-text-disabled) !important;
 }
 
+:is(html, html.theme-dark, html.studio-theme-dark) body :is(
+    .node-context-menu,
+    .canvas-context-menu
+) :is(button, [role="menuitem"]):disabled :is(i, svg, span) {
+    color: var(--ui-text-disabled) !important;
+    stroke: var(--ui-text-disabled) !important;
+}
+
 :is(html, html.theme-dark, html.studio-theme-dark) body .port-link-pick-menu
     :is(.port-link-pick-head, .port-link-pick-section-label) {
     color: var(--ui-text-muted) !important;
