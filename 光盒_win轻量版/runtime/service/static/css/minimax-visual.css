@@ -296,7 +296,7 @@ html body #shell.shell #composer.composer {
 
 /* 与右侧对话输入框底边对齐：整体下移，不改变面板和内部控件尺寸。 */
 html body #shell.shell #composer.composer.open {
-    transform: translate(-50%, 10px);
+    transform: translateX(-50%) translateY(10px);
 }
 
 /* 底部框整体紧凑化：只收间距与区块高度，不改任何文字/图标大小 */
@@ -888,10 +888,10 @@ html.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-the
     border-left-color: var(--mm-border, rgba(255, 255, 255, .08)) !important;
 }
 
-/* iframe 左缩 1px 露出分割线；圆角清零 */
+/* iframe 左缩 1px 露出分割线；右缘留 8px 让滚动条离开窗口拉伸热区；圆角清零 */
 html.lightbox-desktop-native.lightbox-desktop-native:not(.lightbox-compact-mode) .gpt-dock iframe {
-    margin: 0 0 0 1px !important;
-    width: calc(100% - 1px) !important;
+    margin: 0 8px 0 1px !important;
+    width: calc(100% - 9px) !important;
     border-radius: 0 !important;
     backface-visibility: hidden;
     transform: translate3d(0, 0, 0);
@@ -1516,7 +1516,10 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
     .dock-chrome-menu-item
 ) {
     color: var(--ui-text) !important;
-    font-weight: var(--ui-weight-medium) !important;
+    font-family: var(--ui-font) !important;
+    font-size: var(--ui-type-section) !important;
+    font-weight: var(--ui-weight-menu-strong) !important;
+    font-variation-settings: "wght" var(--ui-weight-menu-strong) !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-history-panel {
@@ -1550,7 +1553,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
     color: var(--ui-text) !important;
 }
 
-/* 底部输入框表面：浅色纯白；深色沿用壳层 #181818，压过冻结层 #0e0e0e。 */
+/* 底部输入框表面：浅色纯白；深色比画布更浅，压过冻结层 #0e0e0e。 */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card .composer-card-surface {
     background-color: var(--ui-surface-composer) !important;
@@ -3556,6 +3559,25 @@ html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not
     color: var(--ui-text) !important;
 }
 
+/* 右侧对话栏：用户输入与助手正文复用“未命名项目”字号/颜色/字重，行距略放开。 */
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
+    .bubble.user,
+    .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
+    .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble),
+    .bubble.user .bubble-text,
+    .bubble.assistant .bubble-text
+),
+html body.gpt-dock-canvas-mode .chat-shell .composer-body textarea,
+html body.gpt-dock-canvas-mode .chat-shell .composer textarea {
+    font-family: var(--ui-font-body-cjk) !important;
+    font-size: var(--ui-type-compact-label) !important;
+    font-weight: var(--ui-weight-latin) !important;
+    font-variation-settings: "wght" var(--ui-weight-latin) !important;
+    color: var(--ui-text) !important;
+    line-height: 1.72 !important;
+    letter-spacing: 0 !important;
+}
+
 /* M44：深色模式下发送区只保留积分内容和发送按钮，移除两者外层底框。 */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell
     #composer.composer .composer-footer .composer-actions .composer-run-capsule {
@@ -3687,6 +3709,7 @@ html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not
     #composer.composer .composer-footer .composer-footer-tools {
     position:relative;
     left:3px;
+    top:-5px;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
@@ -3697,9 +3720,10 @@ html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not
 
 html:not(#ui-composer-hint-1):not(#ui-composer-hint-2):not(#ui-composer-hint-3):not(#ui-composer-hint-4) body #shell.shell
     #composer.composer .composer-card .prompt-input:empty::before {
-    position:relative;
-    left:5px;
-    top:5px;
+    position:static;
+    left:auto;
+    top:auto;
+    margin:0;
     color:var(--ui-text-muted) !important;
     opacity:.62 !important;
     font-family:var(--ui-font-variable) !important;
@@ -3707,10 +3731,24 @@ html:not(#ui-composer-hint-1):not(#ui-composer-hint-2):not(#ui-composer-hint-3):
     font-variation-settings:"wght" var(--ui-weight-placeholder) !important;
 }
 
+/* Keep typed prompt text on the same origin as the empty-state hint. */
+html:not(#ui-composer-hint-1):not(#ui-composer-hint-2):not(#ui-composer-hint-3):not(#ui-composer-hint-4) body #shell.shell
+    #composer.composer .composer-card .prompt-row > #promptInput.prompt-input {
+    text-indent:0 !important;
+}
+
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
     #composer.composer #composerHeightToggle.composer-height-toggle {
-    right:17px;
-    top:48px;
+    right:17px !important;
+    top:36px !important;
+}
+
+/* Expanded composer grows upward only; keep bottom gap fixed while open. */
+html body #shell.shell #composer.composer.open {
+    top: auto !important;
+    bottom: var(--composer-bottom-gap) !important;
+    margin-bottom: 0 !important;
+    transform: translateX(-50%) translateY(10px) !important;
 }
 
 /* M64：选中态直接加粗节点原边框，不再在节点外追加第二层描边。 */
@@ -3869,11 +3907,15 @@ html:not(#ui-dock-copy-1):not(#ui-dock-copy-2):not(#ui-dock-copy-3):not(#ui-dock
 }
 
 html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
-    .gpt-dock .dock-chrome-title {
+    .gpt-dock .dock-chrome-title,
+html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
+    .gpt-dock .dock-chrome-title-trigger {
     color:var(--ui-text) !important;
-    font-family:var(--ui-font-body-cjk) !important;
-    font-weight:var(--ui-weight-latin) !important;
-    font-variation-settings:"wght" var(--ui-weight-latin) !important;
+    font-family:var(--ui-font) !important;
+    font-size:var(--ui-type-section) !important;
+    font-weight:var(--ui-weight-menu-strong) !important;
+    font-variation-settings:"wght" var(--ui-weight-menu-strong) !important;
+    line-height:var(--ui-leading-tight) !important;
 }
 
 html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
@@ -3882,12 +3924,15 @@ html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-d
 }
 
 html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
-    .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg) {
+    .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg),
+html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
+    .gpt-dock .dock-chrome-title-trigger-icon {
     width:var(--ui-sidebar-nav-icon-size) !important;
     height:var(--ui-sidebar-nav-icon-size) !important;
     flex:0 0 var(--ui-sidebar-nav-icon-size) !important;
     color:currentColor !important;
-    stroke-width:var(--ui-icon-stroke) !important;
+    stroke:currentColor !important;
+    stroke-width:var(--ui-sidebar-nav-icon-stroke) !important;
 }
 /* M62：右上画布导航统一尺寸与外框几何。 */
 #shell.shell .canvas-bottom-chrome {
@@ -4118,28 +4163,35 @@ html.lightbox-desktop-native .stage iframe {
 /* ================================================================
  * 右侧栏左上角"未命名对话"样式——与左侧栏"新建画布"一致
  * ================================================================ */
-html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger {
-    font-size: var(--ui-type-section, 14px) !important;
-    font-weight: var(--ui-weight-menu-strong, 380) !important;
-    color: var(--ui-text, inherit) !important;
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger,
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title {
+    font-family: var(--ui-font) !important;
+    font-size: var(--ui-type-section) !important;
+    font-weight: var(--ui-weight-menu-strong) !important;
+    font-variation-settings: "wght" var(--ui-weight-menu-strong) !important;
+    color: var(--ui-text) !important;
+    line-height: var(--ui-leading-tight) !important;
 }
 
-/* 右侧栏右上角两个按钮（折叠/关闭）变细 */
+/* 右侧栏右上角图标：与左侧「新建画布」图标同尺寸、同描边、同颜色 */
 html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .dock-chrome-btn {
-    width: 26px !important;
-    height: 26px !important;
-    min-width: 26px !important;
-    padding: 0 !important;
+    color: var(--ui-text) !important;
 }
-html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg) {
-    width: 12px !important;
-    height: 12px !important;
+html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg),
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon {
+    width: var(--ui-sidebar-nav-icon-size) !important;
+    height: var(--ui-sidebar-nav-icon-size) !important;
+    flex: 0 0 var(--ui-sidebar-nav-icon-size) !important;
+    color: var(--ui-text) !important;
+    stroke: currentColor !important;
+    stroke-width: var(--ui-sidebar-nav-icon-stroke) !important;
 }
 
 /* 下拉菜单样式优化 */
 html.lightbox-desktop-native .gpt-dock .dock-chrome-title-menu {
-    min-width: 180px !important;
-    max-width: 260px !important;
+    width: min(200px, calc(var(--chat-dock-width) - 40px)) !important;
+    min-width: 168px !important;
+    max-width: 200px !important;
     padding: 4px !important;
 }
 
@@ -4147,8 +4199,22 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-title-menu {
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item {
     position: relative !important;
     min-height: 24px !important;
-    padding: 2px 6px 2px 10px !important;
-    margin-bottom: 1px !important;
+    height: auto !important;
+    padding: 2px 4px 2px 8px !important;
+    margin-bottom: 0 !important;
+    gap: 6px !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-new {
+    min-height: 30px !important;
+    padding: 0 8px !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-title {
+    font-size: 12px !important;
+    line-height: 1.15 !important;
 }
 
 /* 下拉菜单项底部边框拉低 */
@@ -4156,8 +4222,8 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item::after {
     content: "" !important;
     position: absolute !important;
     bottom: 0 !important;
-    left: 10px !important;
-    right: 6px !important;
+    left: 8px !important;
+    right: 4px !important;
     height: 1px !important;
     background: rgba(148, 163, 184, 0.12) !important;
 }
@@ -4169,7 +4235,12 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-title-menu {
 
 /* 菜单内文字行高缩小 */
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-open {
-    line-height: 1.3 !important;
+    line-height: 1.15 !important;
+}
+
+/* Left sidebar user chip: rounder hover face. */
+html.lightbox-desktop-native .mm-sidebar .mm-sidebar-user:is(:hover, :focus-visible) {
+    border-radius: 14px !important;
 }
 
 /* ================================================================
@@ -4291,4 +4362,37 @@ body #shell.shell #composer.composer .composer-footer
     min-height: calc(var(--ui-menu-item-h) + var(--ui-space-4)) !important;
     padding: var(--ui-space-2) var(--ui-space-3) !important;
     gap: var(--ui-space-3) !important;
+}
+
+/* Canvas bottom composer stays near the canvas tone (not the elevated dock face). */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer .composer-card {
+    background: var(--ui-surface-composer) !important;
+    background-image: none !important;
+    background-color: var(--ui-surface-composer) !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card > .composer-card-surface {
+    display: block !important;
+    background: var(--ui-surface-composer) !important;
+    background-color: var(--ui-surface-composer) !important;
+    background-image: none !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-footer-bar {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Right dock chat input: lighter than the dock chrome / canvas. */
+:is(html.theme-dark, html.studio-theme-dark).gpt-dock-canvas-mode
+body.gpt-dock-canvas-mode .chat-shell .composer {
+    background: var(--ui-surface-dock-composer, #2e2e2e) !important;
+    background-color: var(--ui-surface-dock-composer, #2e2e2e) !important;
+    background-image: none !important;
+}
+
+/* Left model / size pills (Hailuo etc.): lift 5px to match send-side offset. */
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #composer.composer .composer-footer .composer-footer-tools {
+    top: -5px !important;
 }
