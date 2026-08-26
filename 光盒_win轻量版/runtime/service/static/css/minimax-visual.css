@@ -916,7 +916,7 @@ html.lightbox-desktop-native #shellNewCanvasBtn {
 
 /* Agent 胶囊（对话栏收起时的展开按钮）跟随对话栏移到右上角 */
 html.lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native .dock-open-btn.dock-open-btn {
-    top: calc(var(--mm-titlebar-h, 28px) + 13px) !important;
+    top: calc(var(--mm-titlebar-h, 28px) + 14px) !important;
     right: 16px !important;
     left: auto !important;
 }
