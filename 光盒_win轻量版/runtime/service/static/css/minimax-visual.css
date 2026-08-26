@@ -792,30 +792,31 @@ html.lightbox-desktop-native .lightbox-native-window-controls {
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button {
-    width: 24px !important;
-    height: 24px !important;
+    width: 28px !important;
+    height: 28px !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button::before {
-    width: 18px !important;
-    height: 18px !important;
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 6px !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button:is([data-native-window-action="minimize"], [data-native-window-action="maximize"]) span {
     width: 8px !important;
-    left: 8px !important;
+    left: 10px !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button[data-native-window-action="maximize"] span {
     width: 7px !important;
     height: 7px !important;
-    left: 8.5px !important;
+    left: 10.5px !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button[data-native-window-action="close"] span {
     width: 10px !important;
     height: 10px !important;
-    left: 7px !important;
+    left: 9px !important;
 }
 
 /* —— 8.2 壳层三栏：左侧栏 / 中画布 / 右对话栏，无窗框 —— */
@@ -4266,6 +4267,8 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     .canvas-context-menu,
     .shell-user-menu,
     .dock-chrome-title-menu,
+    .canvas-history-panel,
+    .shell-settings-dialog,
     #composerApiSettingsPopover,
     #composerSizePopover,
     #composerKindPopover,

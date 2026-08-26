@@ -235,16 +235,16 @@ html.lightbox-desktop-native .lightbox-native-window-controls button {
     outline: none;
 }
 
-/* 悬停光斑：20px 正圆，居中绘制，不再随按钮长宽拉扁 */
+/* 悬停光斑：方框，覆盖略大于图标区 */
 html.lightbox-desktop-native .lightbox-native-window-controls button::before {
     content: "";
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     transform: translate(-50%, -50%);
-    border-radius: 50%;
+    border-radius: 6px;
     background: transparent;
     transition: background-color .15s ease;
 }

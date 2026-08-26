@@ -312,7 +312,7 @@ body.studio-theme-dark {
     --ui-canvas-selection: var(--ui-accent);
     --ui-canvas-selection-fill: rgba(var(--ui-accent-rgb), .08);
     --ui-canvas-node-border-size: 1px;
-    --ui-canvas-node-selected-border-size: 1.5px;
+    --ui-canvas-node-selected-border-size: 1.65px;
     --ui-canvas-guide: var(--ui-accent);
     --ui-canvas-port: var(--ui-text-secondary);
     --ui-canvas-port-active: var(--ui-accent);
