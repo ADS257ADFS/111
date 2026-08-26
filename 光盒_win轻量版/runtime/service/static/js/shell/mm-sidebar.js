@@ -106,7 +106,9 @@
             <button class="mm-recent-rename" type="button" role="menuitem"><i data-lucide="pencil"></i><span>重命名</span></button>
             <button class="mm-recent-delete" type="button" role="menuitem"><i data-lucide="trash-2"></i><span>删除</span></button>`;
         menu.addEventListener('mousedown', event => {
-            event.preventDefault();
+            event.stopPropagation();
+        });
+        menu.addEventListener('pointerdown', event => {
             event.stopPropagation();
         });
         menu.addEventListener('click', event => event.stopPropagation());
