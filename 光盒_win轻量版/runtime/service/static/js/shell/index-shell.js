@@ -1391,11 +1391,40 @@
             panel.querySelector('.dock-image-preview-image').src = src;
         }
 
+        function isShellEditableTarget(target) {
+            const el = target || document.activeElement;
+            return !!el?.closest?.('input, textarea, select, option, [contenteditable="true"]');
+        }
+
+        function shouldRelayCanvasClipboard(event) {
+            if(!isCanvasPageActive()) return false;
+            if(!(event.ctrlKey || event.metaKey) || event.altKey) return false;
+            const key = String(event.key || '').toLowerCase();
+            if(key !== 'c' && key !== 'v') return false;
+            if(isShellEditableTarget(event.target)) return false;
+            if(key === 'c') {
+                const selectionText = window.getSelection?.().toString() || '';
+                if(selectionText) return false;
+            }
+            return true;
+        }
+
         window.addEventListener('keydown', event => {
             if(event.key === 'Escape' && !document.getElementById('dockImagePreview')?.hidden){
                 closeDockImagePreview();
+                return;
             }
-        });
+            // Parent shell often holds focus (sidebar/titlebar/iframe element).
+            // Relay Ctrl/Cmd+C·V into the canvas frame so copy/paste still works.
+            if(shouldRelayCanvasClipboard(event)){
+                const key = String(event.key || '').toLowerCase();
+                event.preventDefault();
+                postToCanvasFrame({
+                    type: 'shell-canvas-clipboard',
+                    action: key === 'c' ? 'copy' : 'paste',
+                });
+            }
+        }, true);
 
         function shouldSwitchShellCanvas(canvasId) {
             const activeId = getActiveCanvasIdFromFrame();
@@ -1460,7 +1489,7 @@
         }
 
         function smartCanvasShellUrl(id) {
-            const base = '/static/smart-canvas.html?v=2026.08.13.13';
+            const base = '/static/smart-canvas.html?v=2026.08.26.clip1';
             return id ? `${base}&id=${encodeURIComponent(id)}` : base;
         }
 
