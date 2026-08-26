@@ -3630,7 +3630,8 @@ html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover .has-strong-s
 .shell .composer .composer-footer .composer-footer-bar {
     position:relative;
     isolation:isolate;
-    transform:translateY(-6px);
+    /* Level with right-dock composer-inside-foot (top:2px); no upward lift. */
+    transform:translateY(2px);
 }
 .shell .composer .composer-footer .composer-footer-tools {
     position:relative;

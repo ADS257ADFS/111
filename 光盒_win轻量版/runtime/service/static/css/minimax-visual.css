@@ -888,10 +888,10 @@ html.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-the
     border-left-color: var(--mm-border, rgba(255, 255, 255, .08)) !important;
 }
 
-/* iframe 不向右“拉宽”；右缘用 dock padding 均匀内缩，滚动条离开窗口边，左右视觉对称。 */
-html.lightbox-desktop-native.lightbox-desktop-native:not(.lightbox-compact-mode):not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock) .gpt-dock {
-    padding-right: 5px !important;
-    box-sizing: border-box !important;
+/* Dock content stays full-bleed and symmetric. Scrollbar vs resize is handled
+ * by a 3px native right-band in winforms + a matching thin HTML handle. */
+html.lightbox-desktop-native.lightbox-desktop-native:not(.lightbox-compact-mode) .gpt-dock {
+    padding-right: 0 !important;
 }
 
 html.lightbox-desktop-native.lightbox-desktop-native:not(.lightbox-compact-mode) .gpt-dock iframe {
@@ -3723,6 +3723,11 @@ html body.gpt-dock-canvas-mode .chat-shell .composer textarea {
     top:0;
 }
 
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #composer.composer .composer-footer .composer-footer-bar {
+    transform:translateY(2px) !important;
+}
+
 html:not(#ui-composer-hint-1):not(#ui-composer-hint-2):not(#ui-composer-hint-3):not(#ui-composer-hint-4) body #shell.shell
     #composer.composer .composer-card .prompt-input:empty::before {
     position:static;
@@ -4395,8 +4400,10 @@ body.gpt-dock-canvas-mode .chat-shell .composer {
     background-image: none !important;
 }
 
-/* Left model / size pills (Hailuo etc.): keep level with dock composer tools. */
+/* Left model / size / credits / send: same baseline as dock foot controls. */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
-    #composer.composer .composer-footer .composer-footer-tools {
+    #composer.composer .composer-footer .composer-footer-tools,
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #composer.composer .composer-footer .composer-actions {
     top: 0 !important;
 }
