@@ -744,14 +744,14 @@ html.lightbox-desktop-native .lightbox-native-titlebar {
     height: var(--mm-titlebar-h, 28px) !important;
 }
 
-/* 浅色窗框：顶栏与左侧栏同用略深的壳层表面色 + 1px 发丝分割线 */
+/* 浅色窗框：顶栏 / 宿主抗锯齿补边 / CSS 窗框统一纯白，避免上角贴合下角错色。 */
 html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark):not(.lightbox-compact-mode) {
-    --lightbox-chrome-bg: var(--ui-surface-shell) !important;
+    --lightbox-chrome-bg: #fff !important;
     --lightbox-chrome-surface: none !important;
 }
 
 html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark):not(.lightbox-compact-mode) .lightbox-native-titlebar {
-    background-color: var(--ui-surface-shell) !important;
+    background-color: #fff !important;
     background-image: none !important;
     box-shadow: none !important;
 }
