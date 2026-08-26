@@ -21,13 +21,22 @@ html.lightbox-desktop-native:not(.lightbox-compact-mode) .mm-sidebar {
 html.lightbox-desktop-native:not(.lightbox-compact-mode) .mm-sidebar { transition: transform var(--ui-motion-surface) var(--ui-ease-panel); }
 html.mm-sidebar-collapsed .mm-sidebar { transform: translateX(calc(-100% - 2px)); pointer-events: none; }
 
-.mm-sidebar-head { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: var(--ui-space-4); padding: var(--ui-space-2) var(--ui-space-2) var(--ui-space-5) var(--ui-space-5); }
+.mm-sidebar-head { flex: 0 0 auto; display: flex; align-items: center; justify-content: flex-end; gap: var(--ui-space-4); padding: var(--ui-space-2) var(--ui-space-2) var(--ui-space-5) var(--ui-space-5); }
 .mm-sidebar-logo { height: var(--ui-sidebar-logo-h); width: auto; object-fit: contain; user-select: none; -webkit-user-drag: none; pointer-events: none; }
 html:is(.theme-dark, .studio-theme-dark) .mm-sidebar-logo { filter: brightness(0) invert(1); }
+.lightbox-native-titlebar-logo {
+    display: block;
+    height: var(--ui-sidebar-logo-h);
+    width: auto;
+    max-width: min(220px, 42vw);
+    margin: 0 0 0 3px;
+    flex: 0 0 auto;
+}
 .mm-sidebar-collapse, .mm-sidebar-reopen { appearance: none; width: 30px; height: 30px; flex: 0 0 30px; border: 1px solid var(--ui-border); border-radius: var(--ui-canvas-nav-radius, 10px); background: var(--ui-surface-elevated); color: var(--ui-text-secondary); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.mm-sidebar-collapse { margin-top: 4px; }
 .mm-sidebar-collapse:hover, .mm-sidebar-reopen:hover { background: var(--ui-hover); border-color: var(--ui-border); }
 .mm-sidebar-collapse :is(i, svg), .mm-sidebar-reopen :is(i, svg) { width: var(--ui-icon-sm); height: var(--ui-icon-sm); stroke-width: var(--ui-icon-stroke); }
-.mm-sidebar-reopen { display: none; position: fixed; top: calc(var(--mm-titlebar-h, 28px) + 10px); left: 12px; z-index: var(--ui-z-sidebar); }
+.mm-sidebar-reopen { display: none; position: fixed; top: calc(var(--mm-titlebar-h, 28px) + 14px); left: 12px; z-index: var(--ui-z-sidebar); }
 html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .mm-sidebar-reopen { display: inline-flex; }
 
 .mm-sidebar-nav { display: flex; flex-direction: column; gap: var(--ui-space-1); }
@@ -51,7 +60,7 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
 .mm-asset-tree-folder-label { display: flex; align-items: center; gap: var(--ui-space-2); height: var(--ui-control-h); padding: 0 var(--ui-space-2); padding-left: calc(var(--ui-space-5) + 10px); color: var(--ui-text); font-size: var(--ui-type-project-title); font-weight: var(--ui-weight-latin); line-height: var(--ui-leading-tight); }
 .mm-asset-tree-folder-label .mm-asset-folder-chevron { width: var(--ui-icon-xs); height: var(--ui-icon-xs); flex: 0 0 var(--ui-icon-xs); stroke-width: var(--ui-icon-stroke); transform: rotate(-90deg); }
 
-.mm-asset-folder-menu { position: fixed; z-index: var(--ui-z-menu); min-width: 132px; padding: var(--ui-space-2); border: 1px solid var(--ui-border); border-radius: var(--ui-radius-card); background: var(--ui-surface-elevated); box-shadow: var(--ui-shadow-pop); }
+.mm-asset-folder-menu { position: fixed; z-index: calc(var(--ui-z-chrome) + 20); min-width: 132px; padding: var(--ui-space-2); border: 1px solid var(--ui-border); border-radius: var(--ui-radius-card); background: var(--ui-surface-elevated); box-shadow: var(--ui-shadow-pop); }
 .mm-asset-folder-menu[hidden] { display: none; }
 .mm-asset-folder-menu button { width: 100%; height: var(--ui-control-h); padding: 0 var(--ui-space-3); display: flex; align-items: center; gap: var(--ui-space-3); border: 0; border-radius: var(--ui-radius-control); background: transparent; color: var(--ui-text); font-size: var(--ui-type-control); cursor: pointer; }
 .mm-asset-folder-menu button:hover { background: var(--ui-hover); }
@@ -69,20 +78,22 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
 .mm-recent-group-items { display: flex; flex-direction: column; gap: 0; }
 .mm-recent-item { position: relative; display: flex; align-items: center; min-width: 0; min-height: var(--ui-control-h); margin-left: var(--ui-space-6); padding: 0 var(--ui-space-2); border: 1px solid transparent; border-radius: var(--ui-radius-control); }
 .mm-recent-item:hover, .mm-recent-item.menu-open, .mm-recent-item.active { background: var(--ui-hover); }
-.mm-recent-open { appearance: none; min-width: 0; flex: 1 1 auto; height: 100%; display: flex; align-items: center; gap: var(--ui-space-3); padding: 0 var(--ui-space-2); padding-right: calc(78px + var(--ui-space-3)); border: 0; border-radius: var(--ui-radius-control); background: transparent; color: var(--ui-text); text-align: left; cursor: pointer; }
+.mm-recent-open { appearance: none; min-width: 0; flex: 1 1 auto; height: 100%; display: flex; align-items: center; gap: var(--ui-space-3); padding: 0 var(--ui-space-2); padding-right: calc(78px + var(--ui-space-3)); border: 0; border-radius: var(--ui-radius-control); background: transparent; color: var(--ui-text); text-align: left; cursor: pointer; position: relative; z-index: 0; }
+.mm-recent-item:is(:hover, :focus-within, .menu-open) .mm-recent-open { padding-right: var(--ui-space-2); }
 .mm-recent-open:hover, .mm-recent-open:focus-visible { background: transparent; outline: none; }
 .mm-recent-thumb { width: 24px; height: 24px; flex: 0 0 24px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--ui-radius-control); overflow: hidden; background: var(--ui-surface-card); color: var(--ui-text-muted); }
 .mm-recent-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .mm-recent-thumb :is(i, svg) { width: var(--ui-icon-sm); height: var(--ui-icon-sm); }
 .mm-recent-name { min-width: 0; flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ui-text); font-size: var(--ui-type-project-title); line-height: var(--ui-leading-tight); }
-.mm-recent-meta { position: absolute; right: var(--ui-space-3); top: 50%; transform: translateY(-50%); max-width: 78px; overflow: hidden; text-overflow: ellipsis; font-size: 10px; color: var(--ui-text-muted); white-space: nowrap; pointer-events: none; }
-.mm-recent-item:is(:hover, :focus-within, .menu-open) .mm-recent-meta { opacity: 0; }
-.mm-recent-actions { position: absolute; right: var(--ui-space-2); top: 50%; transform: translateY(-50%); flex: 0 0 auto; display: none; align-items: center; }
-.mm-recent-item:is(:hover, :focus-within, .menu-open) .mm-recent-actions { display: flex; }
-.mm-recent-menu-trigger { appearance: none; width: var(--ui-control-h-sm); height: var(--ui-control-h-sm); padding: 0; display: inline-flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: var(--ui-radius-control); background: transparent; color: var(--ui-text-secondary); cursor: pointer; }
+.mm-recent-meta { position: absolute; right: var(--ui-space-3); top: 50%; transform: translateY(-50%); z-index: 1; max-width: 78px; overflow: hidden; text-overflow: ellipsis; font-size: 10px; color: var(--ui-text-muted); white-space: nowrap; pointer-events: none; }
+.mm-recent-item:is(:hover, :focus-within, .menu-open) .mm-recent-meta { opacity: 0; visibility: hidden; }
+/* Keep the ellipsis in normal flex flow so it is never covered by the open button. */
+.mm-recent-actions { position: relative; z-index: 3; flex: 0 0 auto; display: none; align-items: center; margin-left: var(--ui-space-1); pointer-events: auto; }
+.mm-recent-item:is(:hover, :focus-within, .menu-open) .mm-recent-actions { display: inline-flex; }
+.mm-recent-menu-trigger { appearance: none; width: var(--ui-control-h-sm); height: var(--ui-control-h-sm); padding: 0; display: inline-flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: var(--ui-radius-control); background: transparent; color: var(--ui-text-secondary); cursor: pointer; position: relative; z-index: 3; pointer-events: auto; }
 .mm-recent-menu-trigger:hover, .mm-recent-menu-trigger:focus-visible { background: var(--ui-hover); outline: none; }
-.mm-recent-menu-trigger :is(i, svg) { width: var(--ui-icon-sm); height: var(--ui-icon-sm); }
-.mm-recent-menu { position: fixed; z-index: var(--ui-z-menu); min-width: 132px; padding: var(--ui-space-2); border: 1px solid var(--ui-border); border-radius: var(--ui-radius-card); background: var(--ui-surface-elevated); box-shadow: var(--ui-shadow-pop); }
+.mm-recent-menu-trigger :is(i, svg) { width: var(--ui-icon-sm); height: var(--ui-icon-sm); pointer-events: none; }
+.mm-recent-menu { position: fixed; z-index: calc(var(--ui-z-chrome) + 20); min-width: 148px; padding: var(--ui-space-2); border: 1px solid var(--ui-border); border-radius: var(--ui-radius-card); background: var(--ui-surface-elevated); box-shadow: var(--ui-shadow-pop); }
 .mm-recent-menu[hidden] { display: none; }
 .mm-recent-menu button { appearance: none; width: 100%; height: var(--ui-control-h); padding: 0 var(--ui-space-3); display: flex; align-items: center; border: 0; border-radius: var(--ui-radius-control); background: transparent; color: var(--ui-text); font-size: var(--ui-type-control); text-align: left; cursor: pointer; }
 .mm-recent-menu button:hover { background: var(--ui-hover); }
@@ -102,3 +113,32 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
 
 /* 全部创作按钮激活态（历史面板打开时） */
 html.shell-history-open .mm-sidebar-nav #mmSideAll { background: var(--ui-hover); color: var(--ui-accent, #3b82f6); }
+
+/* ================================================================
+ * 右侧栏顶栏「未命名对话」+ 图标：与左侧「新建画布」同一套 token。
+ * 本文件在 index.html 中最后加载，用于压过 preview/shell 旧硬编码。
+ * ================================================================ */
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title,
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger {
+    font-family: var(--ui-font) !important;
+    font-size: var(--ui-type-section) !important;
+    font-weight: var(--ui-weight-menu-strong) !important;
+    font-variation-settings: "wght" var(--ui-weight-menu-strong) !important;
+    color: var(--ui-text) !important;
+    line-height: var(--ui-leading-tight) !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .dock-chrome-btn {
+    color: var(--ui-text) !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg),
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon,
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon :is(i, svg) {
+    width: var(--ui-sidebar-nav-icon-size) !important;
+    height: var(--ui-sidebar-nav-icon-size) !important;
+    flex: 0 0 var(--ui-sidebar-nav-icon-size) !important;
+    color: var(--ui-text) !important;
+    stroke: currentColor !important;
+    stroke-width: var(--ui-sidebar-nav-icon-stroke) !important;
+}
