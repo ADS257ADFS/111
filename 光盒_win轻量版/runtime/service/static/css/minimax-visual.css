@@ -4344,7 +4344,7 @@ body #shell.shell #composer.composer .composer-footer
     gap: var(--ui-space-3) !important;
 }
 
-/* Dark composer: solid elevated face, clearly lighter than the canvas. */
+/* Canvas bottom composer stays near the canvas tone (not the elevated dock face). */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer .composer-card {
     background: var(--ui-surface-composer) !important;
     background-image: none !important;
@@ -4361,6 +4361,14 @@ body #shell.shell #composer.composer .composer-footer
     .composer-footer .composer-footer-bar {
     background: transparent !important;
     box-shadow: none !important;
+}
+
+/* Right dock chat input: lighter than the dock chrome / canvas. */
+:is(html.theme-dark, html.studio-theme-dark).gpt-dock-canvas-mode
+body.gpt-dock-canvas-mode .chat-shell .composer {
+    background: var(--ui-surface-dock-composer, #2e2e2e) !important;
+    background-color: var(--ui-surface-dock-composer, #2e2e2e) !important;
+    background-image: none !important;
 }
 
 /* Left model / size pills (Hailuo etc.): lift 5px to match send-side offset. */
