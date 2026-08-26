@@ -3090,11 +3090,14 @@ html body :is(
     filter: none;
 }
 
-/* 连线粗细不随视角缩放变化：世界层用 CSS transform:scale(--world-scale)，
-   端口(.node-port)已按同一变量反向补偿，这里让连线紧随其后保持视觉恒定
-   （覆盖 SVG 内联 stroke-width，wait/pending 等虚线变体仍保留各自 stroke-width）。 */
-html body #shell.shell .connection-layer .conn-line {
-    stroke-width: calc(1.05px / var(--world-scale, 1));
+/* 连线粗细恒定：路径已带 vector-effect:non-scaling-stroke。
+   切勿再用 stroke-width: calc(... / var(--world-scale)) 反向补偿——
+   会与 non-scaling-stroke 叠加，滚轮缩放时忽粗忽细。 */
+html body #shell.shell .connection-layer .conn-line,
+html body #shell.shell .connection-layer .port-drag-temp,
+html body #shell.shell .connection-layer .port-link-pending-line,
+html body #shell.shell .connection-layer .selection-multi-port-line {
+    vector-effect: non-scaling-stroke;
 }
 
 /* 全局统一：浅色主题所有普通按钮、菜单项和工具栏项的悬停底色与
