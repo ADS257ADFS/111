@@ -3709,6 +3709,7 @@ html body.gpt-dock-canvas-mode .chat-shell .composer textarea {
     #composer.composer .composer-footer .composer-footer-tools {
     position:relative;
     left:3px;
+    top:-5px;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
@@ -4360,4 +4361,10 @@ body #shell.shell #composer.composer .composer-footer
     .composer-footer .composer-footer-bar {
     background: transparent !important;
     box-shadow: none !important;
+}
+
+/* Left model / size pills (Hailuo etc.): lift 5px to match send-side offset. */
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #composer.composer .composer-footer .composer-footer-tools {
+    top: -5px !important;
 }

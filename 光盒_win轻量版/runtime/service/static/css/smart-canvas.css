@@ -3632,6 +3632,10 @@ html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover .has-strong-s
     isolation:isolate;
     transform:translateY(-16px);
 }
+.shell .composer .composer-footer .composer-footer-tools {
+    position:relative;
+    top:-5px;
+}
 .shell .composer .composer-footer .composer-footer-glider {
     display:block;
     position:absolute;
