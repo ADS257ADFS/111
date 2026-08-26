@@ -690,14 +690,21 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
     .bubble.user,
     .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
     .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble)
+) {
+    padding:var(--ui-space-5) var(--ui-space-6) !important;
+    border-radius:var(--ui-radius-card) !important;
+}
+
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
+    .bubble.user,
+    .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
+    .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble)
 ),
 html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
     .bubble.user,
     .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
     .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble)
 ) .bubble-text {
-    padding:var(--ui-space-5) var(--ui-space-6) !important;
-    border-radius:var(--ui-radius-card) !important;
     font-family:var(--ui-font-body-cjk);
     font-size:var(--ui-type-compact-label);
     font-weight:var(--ui-weight-latin) !important;
