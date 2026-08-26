@@ -3725,7 +3725,7 @@ html body.gpt-dock-canvas-mode .chat-shell .composer textarea {
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
     #composer.composer .composer-footer .composer-footer-bar {
-    transform:translateY(16px) !important;
+    transform:translateY(44px) !important;
 }
 
 html:not(#ui-composer-hint-1):not(#ui-composer-hint-2):not(#ui-composer-hint-3):not(#ui-composer-hint-4) body #shell.shell

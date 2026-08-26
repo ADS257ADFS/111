@@ -3630,8 +3630,8 @@ html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover .has-strong-s
 .shell .composer .composer-footer .composer-footer-bar {
     position:relative;
     isolation:isolate;
-    /* Drop tools/credits/send to the same baseline as the right-dock foot. */
-    transform:translateY(16px);
+    /* Sit on the same baseline as right-dock attach/send (~30px below prior). */
+    transform:translateY(44px);
 }
 .shell .composer .composer-footer .composer-footer-tools {
     position:relative;
@@ -3778,7 +3778,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-footer 
     margin-right:8px;
 }
 .shell .composer .composer-card {
-    padding-bottom:16px !important;
+    padding-bottom:8px !important;
 }
 .shell .composer .input-thumbs-row {
     padding:2px 12px 4px 16px;
