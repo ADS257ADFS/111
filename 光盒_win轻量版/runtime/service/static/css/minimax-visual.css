@@ -4296,13 +4296,29 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item {
     color: var(--ui-text) !important;
 }
 
-html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-new {
-    min-height: 22px !important;
-    padding: 0 6px !important;
-    font-size: 11px !important;
-    font-weight: 445 !important;
-    font-variation-settings: "wght" 445 !important;
-    line-height: 1.15 !important;
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-new,
+html.lightbox-desktop-native .gpt-dock #dockShellMenuNewBtn {
+    display: none !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-actions {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 2px !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-actions #dockShellNewBtn {
+    order: 1 !important;
+    display: inline-flex !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .lightbox-compact-btn {
+    order: 2 !important;
+    display: inline-flex !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-actions #gptDockCloseBtn {
+    order: 3 !important;
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-title {

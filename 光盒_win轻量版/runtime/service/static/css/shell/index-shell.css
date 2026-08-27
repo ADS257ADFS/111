@@ -1206,30 +1206,14 @@
             display: none !important;
         }
 
-        .dock-chrome-menu-new {
-            flex: 0 0 auto;
-            width: 100%;
-            min-height: 26px;
-            padding: 0 7px;
-            border: none;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            background: transparent;
-            color: #50565e;
-            font-size: 12px;
-            font-weight: 445;
-            line-height: 1.15;
-            text-align: left;
-            cursor: pointer;
-            transition: background-color .16s ease;
+        .dock-chrome-menu-new,
+        #dockShellMenuNewBtn {
+            display: none !important;
         }
 
-        .dock-chrome-menu-new:hover,
-        .dock-chrome-menu-new:focus-visible {
-            background: #f9fafb;
-            outline: none;
-        }
+        .dock-chrome-actions #dockShellNewBtn { order: 1; }
+        .dock-chrome-actions .lightbox-compact-btn { order: 2; }
+        .dock-chrome-actions #gptDockCloseBtn { order: 3; }
 
         .dock-chrome-menu-list {
             flex: 1 1 auto;

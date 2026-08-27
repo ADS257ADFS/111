@@ -64,15 +64,22 @@
         if (newBtn && newBtn.parentElement !== document.body) {
             document.body.appendChild(newBtn);
         }
-        // 原窗口栏中的精简模式入口移到对话栏标题区，位于「+」新建与收起之间。
+        // 对话栏右侧操作顺序固定：＋新建 → 精简模式 → 收起。
         const compactBtn = document.querySelector('.lightbox-compact-btn');
+        const newChatBtn = document.getElementById('dockShellNewBtn');
         const closeBtn = document.getElementById('gptDockCloseBtn');
         const dockActions = closeBtn?.parentElement || document.querySelector('.dock-chrome-actions');
-        if (compactBtn && dockActions && closeBtn && compactBtn.parentElement !== dockActions) {
+        if (compactBtn && dockActions) {
             compactBtn.classList.add('dock-chrome-btn');
             compactBtn.removeAttribute('tabindex');
-            dockActions.insertBefore(compactBtn, closeBtn);
+            if (closeBtn) dockActions.insertBefore(compactBtn, closeBtn);
+            else if (compactBtn.parentElement !== dockActions) dockActions.appendChild(compactBtn);
         }
+        if (newChatBtn && dockActions && compactBtn && newChatBtn.nextElementSibling !== compactBtn) {
+            dockActions.insertBefore(newChatBtn, compactBtn);
+        }
+        // 下拉里不应再出现「新建对话」。
+        document.querySelectorAll('.dock-chrome-menu-new, #dockShellMenuNewBtn').forEach(node => node.remove());
     };
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', relocateTitlebarButtons);
