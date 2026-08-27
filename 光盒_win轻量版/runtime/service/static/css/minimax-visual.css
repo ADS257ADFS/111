@@ -1674,7 +1674,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
     color: #747b85 !important;
 }
 
-/* 深色磨砂顶排：未选中不得再用浅色灰 #747b85（会跟底部输入实色 #1f1f1f 糊在一起） */
+/* 深色磨砂顶排：未选中不得再用会跟 #1f1f1f 输入底糊在一起的深灰；改用可读浅色 */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindTopbar #apiKindToggle.composer-kind-toggle
     button:not(.is-mode-hover):not(.active),
@@ -5451,7 +5451,7 @@ body #shell.shell #composer.composer #composerApiSettingsPopover
 }
 
 /* 深色磨砂顶排（参考/批量/Audio/Text/Image/Video）：
- * 未选中文字与图标必须是浅色，禁止再跟底部输入实色 #1f1f1f 糊成一团。
+ * 未选中文字与图标改为可读浅色，避免跟底部输入实色 #1f1f1f 糊在一起。
  * 选中项保持纯白。 */
 html:not(#ui-topbar-fg-1):not(#ui-topbar-fg-2):not(#ui-topbar-fg-3):not(#ui-topbar-fg-4):is(.theme-dark, .studio-theme-dark)
 body #shell.shell #composer.composer .composer-card-topbar
