@@ -383,10 +383,8 @@ html.studio-theme-dark .shell-user-menu-item:focus-visible,
 html.studio-theme-dark .shell-user-menu-item.is-current{
 }
 html.theme-dark .shell-user-name-row input,
-html.theme-dark .shell-user-points-head strong:last-child,
 html.theme-dark .shell-user-menu-item.is-current,
 html.studio-theme-dark .shell-user-name-row input,
-html.studio-theme-dark .shell-user-points-head strong:last-child,
 html.studio-theme-dark .shell-user-menu-item.is-current{color: #f1f2f4;}
 
 html.theme-dark .shell-user-points,
@@ -404,6 +402,8 @@ html.studio-theme-dark .shell-user-points-head,
 html.studio-theme-dark .shell-user-points-head strong,
 html.studio-theme-dark .shell-user-points-head strong:last-child,
 html.studio-theme-dark .shell-user-points-meta {
+    color: #ffffff;
+}
     color: #ffffff;
 }
 
