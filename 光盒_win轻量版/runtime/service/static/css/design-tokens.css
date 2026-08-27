@@ -87,9 +87,9 @@ body.studio-theme-dark {
     --ui-surface-composer: #1f1f1f;      /* 底部输入栏：实色，无磨砂 */
     --ui-surface-dock-composer: #242424;
     --ui-surface-composer-topbar: rgba(31, 31, 31, .72);
-    --ui-panel-frost: rgba(31, 31, 31, .82);
+    --ui-panel-frost: rgba(31, 31, 31, .70);
     --ui-panel-frost-blur: blur(18px) saturate(140%);
-    --ui-panel-frost-border: rgba(255, 255, 255, .12);
+    --ui-panel-frost-border: rgba(255, 255, 255, .16);
 
     --ui-hover: rgba(255, 255, 255, .07);
     --ui-active: rgba(255, 255, 255, .11);
