@@ -982,7 +982,8 @@
         const title = byId('mmKindPanelTitle');
         if(!sidebar || !panel) return;
         if(title) title.textContent = ASSET_KIND_TITLES[next];
-        setKindViewMode(kindViewMode);
+        // 提示词默认列表视图，方便阅读全文
+        setKindViewMode(next === 'prompt' ? 'list' : kindViewMode);
         syncKindPanelAddButton();
         sidebar.classList.add('is-kind-panel-open');
         panel.hidden = false;
