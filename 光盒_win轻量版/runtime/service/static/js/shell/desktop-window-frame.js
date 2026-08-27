@@ -114,7 +114,6 @@
         if(!compact){
             if(compactDockWasCollapsed) window.closeGptDock?.();
             if(compactDockWasHidden) root.classList.add('studio-hide-gpt-dock');
-            document.querySelector('[data-compact-pin]')?.classList.remove('active');
             syncWindowState(await api()?.get_window_state());
         }
     };
@@ -127,17 +126,6 @@
             if(action === 'compact') syncCompactState(await api()?.toggle_compact_window());
             if(action === 'close') api()?.close_window();
         });
-    });
-
-    document.querySelector('[data-compact-pin]')?.addEventListener('click', event => {
-        const button = event.currentTarget;
-        const next = !button.classList.contains('active');
-        api()?.set_window_topmost(next);
-        button.classList.toggle('active', next);
-    });
-
-    document.querySelector('[data-compact-restore]')?.addEventListener('click', async () => {
-        syncCompactState(await api()?.toggle_compact_window());
     });
 
     document.querySelectorAll('[data-native-window-resize]').forEach(handle => {
