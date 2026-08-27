@@ -23,10 +23,10 @@
         audio: '音频资产',
     };
     const ASSET_KIND_EMPTY = {
-        image: '暂无图片资产\n点击上方「上传」或把图片拖进来',
-        prompt: '暂无提示词\n点击上方「新建」添加一条',
-        video: '暂无视频资产\n点击上方「上传」或把视频拖进来',
-        audio: '暂无音频资产\n点击上方「上传」或把音频拖进来',
+        image: '暂无图片资产\n点击右上角上传图标，或从画布拖入',
+        prompt: '暂无提示词\n点击右上角新建图标添加；可复制、编辑并引用到输入栏',
+        video: '暂无视频资产\n点击右上角上传图标，或从画布拖入',
+        audio: '暂无音频资产\n点击右上角上传图标，或从画布拖入',
     };
     const ASSET_KIND_ACCEPT = {
         image: 'image/*,.png,.jpg,.jpeg,.gif,.webp,.bmp,.svg',
@@ -535,12 +535,13 @@
         const addBtn = byId('mmKindPanelAdd');
         const label = byId('mmKindPanelAddLabel');
         const fileInput = byId('mmKindPanelFile');
-        if(!addBtn || !label) return;
+        if(!addBtn) return;
         const isPrompt = activeAssetKind === 'prompt';
         const iconName = isPrompt ? 'plus' : 'upload';
-        label.textContent = isPrompt ? '新建' : '上传';
-        addBtn.title = isPrompt ? '新建提示词' : '上传资产';
-        addBtn.setAttribute('aria-label', addBtn.title);
+        const title = isPrompt ? '新建提示词' : '上传资产';
+        if(label) label.textContent = isPrompt ? '新建' : '上传';
+        addBtn.title = title;
+        addBtn.setAttribute('aria-label', title);
         addBtn.disabled = kindAssetsSaving;
         addBtn.querySelectorAll(':scope > i, :scope > svg').forEach(node => node.remove());
         const icon = document.createElement('i');
@@ -551,6 +552,98 @@
             fileInput.value = '';
         }
         try { global.lucide?.createIcons?.(); } catch(_e) {}
+    }
+
+    async function copyTextToClipboard(text){
+        const value = String(text || '');
+        if(!value) return false;
+        try {
+            if(navigator.clipboard?.writeText){
+                await navigator.clipboard.writeText(value);
+                return true;
+            }
+        } catch(_e) {}
+        try {
+            const area = document.createElement('textarea');
+            area.value = value;
+            area.setAttribute('readonly', '');
+            area.style.position = 'fixed';
+            area.style.left = '-9999px';
+            document.body.appendChild(area);
+            area.select();
+            const ok = document.execCommand('copy');
+            area.remove();
+            return ok;
+        } catch(_e) {
+            return false;
+        }
+    }
+
+    function postToCanvas(message){
+        const frame = document.getElementById('frame-canvas');
+        try { frame?.contentWindow?.postMessage(message, '*'); } catch(_e) {}
+    }
+
+    function absoluteAssetUrl(url){
+        const raw = String(url || '').trim();
+        if(!raw) return '';
+        if(/^(https?:|data:|blob:)/i.test(raw)) return raw;
+        try { return new URL(raw, global.location.origin).href; } catch(_e) { return raw; }
+    }
+
+    async function importCanvasUrlsToKindPanel(items){
+        if(!activeAssetKind || activeAssetKind === 'prompt'){
+            toastKindMessage('请先打开图片/视频/音频资产面板');
+            return;
+        }
+        const list = (items || [])
+            .map(item => ({
+                url: absoluteAssetUrl(item?.url),
+                name: String(item?.name || 'media').trim() || 'media',
+                kind: String(item?.kind || '').toLowerCase(),
+            }))
+            .filter(item => item.url && (!item.kind || item.kind === activeAssetKind || (
+                activeAssetKind === 'image' && !item.kind
+            )));
+        if(!list.length){
+            toastKindMessage(`请拖入${ASSET_KIND_TITLES[activeAssetKind] || '对应'}素材`);
+            return;
+        }
+        kindAssetsSaving = true;
+        syncKindPanelAddButton();
+        try {
+            const data = await fetch('/api/local-assets/import-urls', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    folder: activeAssetKind,
+                    items: list.map(item => ({ url: item.url, name: item.name })),
+                }),
+            }).then(async r => {
+                if(!r.ok){
+                    const detail = await r.json().catch(() => ({}));
+                    throw new Error(detail?.detail || await r.text() || '导入失败');
+                }
+                return r.json();
+            });
+            toastKindMessage(`已保存 ${data?.count || list.length} 个资产`);
+            await loadKindPanelAssets(activeAssetKind);
+        } catch(error) {
+            toastKindMessage(error?.message || '从画布导入失败');
+        } finally {
+            kindAssetsSaving = false;
+            syncKindPanelAddButton();
+        }
+    }
+
+    function tryImportCanvasDropAtPoint(clientX, clientY, items){
+        const panel = byId('mmSidebarKindPanel');
+        const body = byId('mmKindPanelBody');
+        if(!panel || panel.hidden || !body || !activeAssetKind || activeAssetKind === 'prompt') return false;
+        const rect = body.getBoundingClientRect();
+        if(clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) return false;
+        void importCanvasUrlsToKindPanel(items);
+        return true;
     }
 
     function setKindPanelDropActive(active){
@@ -596,19 +689,124 @@
         grid.innerHTML = list.map(item => {
             const name = esc(assetDisplayName(item));
             const thumb = assetThumbUrl(item);
-            const preview = activeAssetKind === 'prompt'
-                ? esc(String(item?.positive || item?.text || item?.prompt || '').trim())
-                : '';
-            const thumbHtml = thumb && activeAssetKind !== 'prompt'
+            const bodyText = String(item?.positive || item?.text || item?.prompt || '').trim();
+            const preview = esc(bodyText);
+            if(activeAssetKind === 'prompt'){
+                const id = esc(String(item?.id || ''));
+                const libraryId = esc(String(item?.library_id || ''));
+                return `<div class="mm-kind-item mm-kind-item-prompt" data-prompt-id="${id}" data-library-id="${libraryId}" data-prompt-name="${name}">
+                    <div class="mm-kind-item-prompt-body">
+                        <span class="mm-kind-item-name">${name}</span>
+                        <span class="mm-kind-item-preview">${preview || '（空提示词）'}</span>
+                        <textarea class="mm-kind-item-editor" hidden rows="4">${preview}</textarea>
+                    </div>
+                    <div class="mm-kind-item-actions">
+                        <button type="button" class="mm-kind-item-action" data-prompt-action="copy" title="复制提示词" aria-label="复制提示词"><i data-lucide="copy"></i><span>复制</span></button>
+                        <button type="button" class="mm-kind-item-action" data-prompt-action="edit" title="编辑提示词" aria-label="编辑提示词"><i data-lucide="pencil"></i><span>编辑</span></button>
+                        <button type="button" class="mm-kind-item-action" data-prompt-action="apply" title="引用到画布输入栏" aria-label="引用到画布输入栏"><i data-lucide="corner-down-left"></i><span>引用</span></button>
+                        <button type="button" class="mm-kind-item-action" data-prompt-action="save" hidden title="保存修改" aria-label="保存修改"><i data-lucide="save"></i><span>保存</span></button>
+                        <button type="button" class="mm-kind-item-action" data-prompt-action="cancel" hidden title="取消" aria-label="取消"><span>取消</span></button>
+                    </div>
+                </div>`;
+            }
+            const thumbHtml = thumb
                 ? `<img src="${esc(thumb)}" alt="">`
                 : `<i data-lucide="${icon}"></i>`;
-            const title = preview ? `${name}\n${preview}` : name;
-            return `<button type="button" class="mm-kind-item" title="${title}">
+            return `<button type="button" class="mm-kind-item" title="${name}">
                 <span class="mm-kind-item-thumb">${thumbHtml}</span>
                 <span class="mm-kind-item-name">${name}</span>
             </button>`;
         }).join('');
         try { global.lucide?.createIcons?.(); } catch(_e) {}
+    }
+
+    function setPromptItemEditing(card, editing){
+        if(!card) return;
+        card.classList.toggle('is-editing', Boolean(editing));
+        const preview = card.querySelector('.mm-kind-item-preview');
+        const editor = card.querySelector('.mm-kind-item-editor');
+        const editBtn = card.querySelector('[data-prompt-action="edit"]');
+        const saveBtn = card.querySelector('[data-prompt-action="save"]');
+        const cancelBtn = card.querySelector('[data-prompt-action="cancel"]');
+        const copyBtn = card.querySelector('[data-prompt-action="copy"]');
+        const applyBtn = card.querySelector('[data-prompt-action="apply"]');
+        if(preview) preview.hidden = Boolean(editing);
+        if(editor){
+            editor.hidden = !editing;
+            if(editing){
+                editor.focus();
+                editor.setSelectionRange(editor.value.length, editor.value.length);
+            }
+        }
+        if(editBtn) editBtn.hidden = Boolean(editing);
+        if(copyBtn) copyBtn.hidden = Boolean(editing);
+        if(applyBtn) applyBtn.hidden = Boolean(editing);
+        if(saveBtn) saveBtn.hidden = !editing;
+        if(cancelBtn) cancelBtn.hidden = !editing;
+    }
+
+    async function handlePromptItemAction(action, card){
+        if(!card || !action) return;
+        const id = card.dataset.promptId || '';
+        const editor = card.querySelector('.mm-kind-item-editor');
+        const preview = card.querySelector('.mm-kind-item-preview');
+        const currentText = String(editor?.value || preview?.textContent || '').trim();
+        if(action === 'copy'){
+            const ok = await copyTextToClipboard(currentText);
+            toastKindMessage(ok ? '已复制提示词' : '复制失败');
+            return;
+        }
+        if(action === 'apply'){
+            if(!currentText){
+                toastKindMessage('提示词为空');
+                return;
+            }
+            postToCanvas({ type: 'shell-apply-prompt', text: currentText });
+            toastKindMessage('已引用到画布输入栏');
+            return;
+        }
+        if(action === 'edit'){
+            setPromptItemEditing(card, true);
+            return;
+        }
+        if(action === 'cancel'){
+            if(editor && preview) editor.value = preview.textContent || '';
+            setPromptItemEditing(card, false);
+            return;
+        }
+        if(action === 'save'){
+            if(!id){
+                toastKindMessage('无法保存：缺少提示词 ID');
+                return;
+            }
+            const nextText = String(editor?.value || '').trim();
+            if(!nextText){
+                toastKindMessage('提示词不能为空');
+                return;
+            }
+            try {
+                const data = await fetch(`/api/prompt-libraries/items/${encodeURIComponent(id)}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        positive: nextText,
+                        name: card.dataset.promptName || undefined,
+                    }),
+                }).then(async r => {
+                    if(!r.ok){
+                        const detail = await r.json().catch(() => ({}));
+                        throw new Error(detail?.detail || await r.text() || '保存失败');
+                    }
+                    return r.json();
+                });
+                void data;
+                if(preview) preview.textContent = nextText;
+                setPromptItemEditing(card, false);
+                toastKindMessage('提示词已更新');
+            } catch(error) {
+                toastKindMessage(error?.message || '保存失败');
+            }
+        }
     }
 
     async function loadLocalKindAssets(kind){
@@ -784,7 +982,8 @@
         const title = byId('mmKindPanelTitle');
         if(!sidebar || !panel) return;
         if(title) title.textContent = ASSET_KIND_TITLES[next];
-        setKindViewMode(kindViewMode);
+        // 提示词默认列表视图，方便阅读全文
+        setKindViewMode(next === 'prompt' ? 'list' : kindViewMode);
         syncKindPanelAddButton();
         sidebar.classList.add('is-kind-panel-open');
         panel.hidden = false;
@@ -938,6 +1137,14 @@
             void uploadKindFiles(files);
             if(input) input.value = '';
         });
+        byId('mmKindPanelGrid')?.addEventListener('click', event => {
+            const actionBtn = event.target.closest('[data-prompt-action]');
+            const card = event.target.closest('.mm-kind-item-prompt');
+            if(!actionBtn || !card) return;
+            event.preventDefault();
+            event.stopPropagation();
+            void handlePromptItemAction(actionBtn.dataset.promptAction, card);
+        });
         const kindBody = byId('mmKindPanelBody');
         kindBody?.addEventListener('dragenter', event => {
             if(!activeAssetKind || activeAssetKind === 'prompt') return;
@@ -1002,7 +1209,16 @@
         });
         // 画布状态变化（新建 / 改名 / 打开）时刷新最近创作
         global.addEventListener('message', event => {
-            if(event?.data?.type === 'canvas-project-state') scheduleReload(500);
+            const data = event?.data;
+            if(data?.type === 'canvas-project-state') scheduleReload(500);
+            if(data?.type === 'shell-try-import-canvas-assets'){
+                const frame = document.getElementById('frame-canvas');
+                const rect = frame?.getBoundingClientRect?.();
+                if(!rect) return;
+                const clientX = Number(data.clientX) + rect.left;
+                const clientY = Number(data.clientY) + rect.top;
+                tryImportCanvasDropAtPoint(clientX, clientY, data.items || []);
+            }
         });
         // 用户菜单里改名时实时同步侧栏
         document.addEventListener('input', event => {
@@ -1062,5 +1278,7 @@
         syncUser,
         openAssetKindPanel,
         closeAssetKindPanel,
+        tryImportCanvasDropAtPoint,
+        importCanvasUrlsToKindPanel,
     });
 })(window);
