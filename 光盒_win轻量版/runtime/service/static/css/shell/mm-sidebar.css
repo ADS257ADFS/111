@@ -567,3 +567,17 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon svg {
     stroke: currentColor !important;
     stroke-width: var(--ui-sidebar-nav-icon-stroke) !important;
 }
+
+/* 深色：左侧栏悬停底对齐工具栏新建画布等按钮 rgba(255,255,255,.10) */
+html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .mm-sidebar :is(
+    button,
+    .mm-asset-tree-root,
+    .mm-recent-item,
+    .mm-kind-item,
+    [role="button"]
+):not(:disabled):not(.mm-recent-group-head):is(:hover, :focus-visible),
+html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .mm-sidebar-reopen:is(:hover, :focus-visible) {
+    background: rgba(255, 255, 255, .10) !important;
+    background-color: rgba(255, 255, 255, .10) !important;
+    background-image: none !important;
+}
