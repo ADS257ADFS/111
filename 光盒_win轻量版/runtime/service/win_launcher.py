@@ -1916,11 +1916,12 @@ def main() -> None:
         startup_thread.start()
 
         bridge = DesktopBridge()
-        initial_theme = "light" if 6 <= datetime.now().hour < 18 else "dark"
+        # Canvas opens dark every launch; welcome shader intro matches host chrome.
+        initial_theme = "dark"
         # Opaque host — transparency/layered modes break WebView2 composition
         # on Win10; windowed corners are rounded via SetWindowRgn (see
         # apply_rounded_window_region), maximized stays square.
-        initial_window_color = "#fafafb" if initial_theme == "light" else "#1b1b1b"
+        initial_window_color = "#1b1b1b"
         window = webview.create_window(
             APP_TITLE,
             url=f"{app_url(port)}?desktop=1&startup={uuid.uuid4().hex}",
