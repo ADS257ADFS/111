@@ -250,6 +250,11 @@ html.lightbox-desktop-native .lightbox-native-window-controls button::before {
     transition: background-color .15s ease;
 }
 
+html.lightbox-desktop-native .lightbox-native-window-controls button:is(:hover, :focus-visible, :active),
+html.lightbox-desktop-native .lightbox-native-window-controls button:is(:hover, :focus-visible, :active)::before {
+    border-radius: 0;
+}
+
 html.lightbox-desktop-native .lightbox-native-window-controls button span {
     z-index: 1;
 }

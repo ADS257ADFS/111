@@ -161,8 +161,9 @@ body.studio-theme-dark .shell .node-head {
     border-radius: var(--ui-radius-card);
 }
 
-/* 按钮 / 输入统一小圆角（含原胶囊按钮 → MiniMax 小方钮） */
-body button,
+/* 按钮 / 输入统一小圆角（含原胶囊按钮 → MiniMax 小方钮）。
+   右上角窗口三键悬停要直角，排除 data-native-window-action。 */
+body button:not([data-native-window-action]),
 body .btn,
 body input,
 body select,
@@ -796,13 +797,27 @@ html.lightbox-desktop-native .lightbox-native-window-controls button {
     width: 30px !important;
     height: 30px !important;
     border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
     overflow: visible !important;
+    background: transparent !important;
+}
+
+html.lightbox-desktop-native .lightbox-native-window-controls button:is(:hover, :focus, :focus-visible, :active) {
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    background: transparent !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button::before {
     width: 30px !important;
     height: 30px !important;
     border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+}
+
+html.lightbox-desktop-native .lightbox-native-window-controls button:is(:hover, :focus-visible, :active)::before {
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button:is([data-native-window-action="minimize"], [data-native-window-action="maximize"]) span {
