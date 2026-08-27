@@ -560,9 +560,9 @@ html:is(.theme-dark, .studio-theme-dark) body :is(
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
     color: var(--mm-text, #ededed) !important;
-}/* 悬停：深色下只轻微提亮，不再整体变蓝 */
-body.studio-theme-dark :is(button, .btn, .action-btn, .tool-btn, .icon-btn, .mini-btn, .secondary-btn, .primary-btn):not(:disabled):hover,
-html:is(.theme-dark, .studio-theme-dark) body :is(button, .btn, .action-btn, .tool-btn, .icon-btn, .mini-btn, .secondary-btn, .primary-btn):not(:disabled):hover{
+}/* 悬停：深色下只轻微提亮，不再整体变蓝。左侧「最近创作/更早」小字标题除外。 */
+body.studio-theme-dark :is(button, .btn, .action-btn, .tool-btn, .icon-btn, .mini-btn, .secondary-btn, .primary-btn):not(:disabled):not(.mm-recent-group-head):hover,
+html:is(.theme-dark, .studio-theme-dark) body :is(button, .btn, .action-btn, .tool-btn, .icon-btn, .mini-btn, .secondary-btn, .primary-btn):not(:disabled):not(.mm-recent-group-head):hover{
     background: #2a2a2a !important;
     border-color: var(--mm-border-strong, rgba(255, 255, 255, .14)) !important;
     box-shadow: none !important;
@@ -4135,11 +4135,12 @@ html:not(#ui-user-menu-logout-type-1):not(#ui-user-menu-logout-type-2):not(#ui-u
 }
 
 /* M73：浅色全产品普通悬停面统一为 #F3F3F4；任何按钮型控件在
-   鼠标悬停时都不得新增边框、轮廓或伪描边阴影。 */
+   鼠标悬停时都不得新增边框、轮廓或伪描边阴影。
+   「最近创作 / 更早」分组小字标题不出现悬停底色（项目行仍保留）。 */
 html:not(.theme-dark):not(.studio-theme-dark) body :where(
-    button:not(:disabled),
+    button:not(:disabled):not(.mm-recent-group-head),
     input:is([type="button"], [type="submit"], [type="reset"]):not(:disabled),
-    [role="button"]:not([aria-disabled="true"]),
+    [role="button"]:not([aria-disabled="true"]):not(.mm-recent-group-head),
     [role="menuitem"]:not([aria-disabled="true"]),
     [role="option"]:not([aria-disabled="true"]),
     .ui-menu-item:not([aria-disabled="true"]),
@@ -4150,8 +4151,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body :where(
     .direct-option,
     .skill-menu-item,
     .shell-user-menu-item,
-    .mm-recent-item,
-    .mm-recent-group-head
+    .mm-recent-item
 ):not(
     .active, .selected, .is-active, .is-current, .checked, .is-on,
     [aria-pressed="true"], [aria-selected="true"], [aria-checked="true"],
@@ -4163,9 +4163,9 @@ html:not(.theme-dark):not(.studio-theme-dark) body :where(
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body :where(
-    button:not(:disabled),
+    button:not(:disabled):not(.mm-recent-group-head),
     input:is([type="button"], [type="submit"], [type="reset"]):not(:disabled),
-    [role="button"]:not([aria-disabled="true"]),
+    [role="button"]:not([aria-disabled="true"]):not(.mm-recent-group-head),
     [role="menuitem"]:not([aria-disabled="true"]),
     [role="option"]:not([aria-disabled="true"]),
     .ui-menu-item:not([aria-disabled="true"]),
@@ -4176,8 +4176,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body :where(
     .direct-option,
     .skill-menu-item,
     .shell-user-menu-item,
-    .mm-recent-item,
-    .mm-recent-group-head
+    .mm-recent-item
 ):hover {
     border-color: transparent !important;
     outline: none !important;

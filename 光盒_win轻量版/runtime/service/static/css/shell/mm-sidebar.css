@@ -302,9 +302,12 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
 .mm-recent-group + .mm-recent-group { margin-top: var(--ui-space-2); }
 .mm-recent-group-head { appearance: none; display: flex; align-items: center; justify-content: space-between; gap: var(--ui-space-3); height: 26px; padding: 0 var(--ui-space-5); border: 1px solid transparent; border-radius: var(--ui-radius-control); background: transparent; color: var(--ui-text-muted); font-size: 11px; font-weight: 445; text-align: left; cursor: pointer; }
 .mm-recent-group-head:hover,
-.mm-recent-group-head:focus-visible {
-    background: transparent;
-    border-color: transparent;
+.mm-recent-group-head:focus-visible,
+.mm-recent-group-head:active {
+    background: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
 }
 .mm-recent-group-head :is(i, svg) { width: var(--ui-icon-sm); height: var(--ui-icon-sm); flex: 0 0 var(--ui-icon-sm); stroke-width: var(--ui-icon-stroke); }
 .mm-recent-group.is-collapsed .mm-recent-group-head :is(i, svg) { transform: rotate(-90deg); }
