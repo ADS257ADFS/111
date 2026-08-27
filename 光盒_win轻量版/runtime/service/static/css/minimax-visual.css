@@ -1725,6 +1725,17 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover .mode-model-choice .mode-model-desc {
     color: var(--ui-text-muted) !important;
+    font-size: 10px !important;
+    font-weight: 320 !important;
+    font-variation-settings: "wght" 320 !important;
+    line-height: 1.3 !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice .mode-model-name {
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+    font-variation-settings: "wght" 500 !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer :is(
