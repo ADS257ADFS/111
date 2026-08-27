@@ -1223,13 +1223,16 @@
             border-top: none;
             overflow-y: auto;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
         }
 
         .dock-chrome-menu-item {
             box-sizing: border-box;
             width: 100%;
-            min-height: 20px;
-            padding: 0 4px 0 6px;
+            min-height: 26px;
+            padding: 3px 4px 3px 6px;
             border: none;
             border-radius: 6px;
             display: flex;
@@ -1240,7 +1243,7 @@
             color: #50565e;
             font: inherit;
             font-size: 11px;
-            line-height: 1.15;
+            line-height: 1.35;
             text-align: left;
             cursor: default;
             transition: background-color .16s ease;
@@ -1280,7 +1283,7 @@
             min-width: 0;
             font-size: 11px;
             font-weight: 400;
-            line-height: 1.15;
+            line-height: 1.35;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -1320,11 +1323,11 @@
 
         .dock-chrome-menu-item-rename,
         .dock-chrome-menu-item-delete {
-            width: 24px;
-            height: 24px;
+            width: 18px;
+            height: 18px;
             padding: 0;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -1338,8 +1341,8 @@
         .dock-chrome-menu-item-rename i,
         .dock-chrome-menu-item-delete svg,
         .dock-chrome-menu-item-delete i {
-            width: 14px;
-            height: 14px;
+            width: 11px;
+            height: 11px;
         }.dock-chrome-menu-item-rename:hover,
 .dock-chrome-menu-item-rename:focus-visible{
             background: #f3f4f6;

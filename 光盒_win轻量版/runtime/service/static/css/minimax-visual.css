@@ -4313,12 +4313,12 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon svg {
     stroke-width: var(--ui-sidebar-nav-icon-stroke) !important;
 }
 
-/* 下拉菜单：更窄、更小字号、更紧行距（压过通用菜单 14px/32px）。 */
+/* 下拉菜单：紧凑宽度与小字号；行距适中，尾部操作图标略小。 */
 html.lightbox-desktop-native .gpt-dock .dock-chrome-title-menu {
     width: 168px !important;
     min-width: 152px !important;
     max-width: 168px !important;
-    padding: 2px !important;
+    padding: 4px 2px !important;
     min-height: auto !important;
     gap: 0 !important;
 }
@@ -4327,23 +4327,23 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-list {
     margin-top: 0 !important;
     padding-top: 0 !important;
     border-top: 0 !important;
-    gap: 0 !important;
+    gap: 3px !important;
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item,
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-open,
 html.lightbox-desktop-native .gpt-dock .dock-chrome-title-menu :is(button, [role="menuitem"]) {
-    min-height: 20px !important;
+    min-height: 26px !important;
     height: auto !important;
     max-height: none !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    line-height: 1.15 !important;
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+    line-height: 1.35 !important;
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item {
     position: relative !important;
-    padding: 0 4px 0 6px !important;
+    padding: 3px 4px 3px 6px !important;
     margin: 0 !important;
     gap: 4px !important;
     font-size: 11px !important;
@@ -4381,7 +4381,7 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-title {
     font-size: 11px !important;
     font-weight: 400 !important;
     font-variation-settings: "wght" 400 !important;
-    line-height: 1.15 !important;
+    line-height: 1.35 !important;
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-time {
@@ -4403,17 +4403,24 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item::after {
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-open {
-    line-height: 1.15 !important;
+    line-height: 1.35 !important;
     font-size: 11px !important;
     min-width: 0 !important;
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-rename,
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-delete {
-    width: 20px !important;
-    height: 20px !important;
-    min-height: 20px !important;
-    min-width: 20px !important;
+    width: 16px !important;
+    height: 16px !important;
+    min-height: 16px !important;
+    min-width: 16px !important;
+    border-radius: 5px !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-rename :is(i, svg),
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-delete :is(i, svg) {
+    width: 11px !important;
+    height: 11px !important;
 }
 
 /* Left sidebar user chip: rounder hover face. */
