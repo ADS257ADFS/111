@@ -1563,7 +1563,7 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
         .composer-api-branch summary,
         .composer-api-models button,
         .composer-mode-model-list .mode-model-choice
-    ),:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    ):not(:hover):not(:focus-visible),:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerSizePopover :is(
         .size-picker-option,
         .video-flat-choice,
@@ -1571,7 +1571,7 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
         #composerCountPanel .count-cell,
         #composerVideoSizeMenu .count-cell,
         .video-flat-segments button
-    ){border:1px solid rgba(255, 255, 255, .08) !important;background:rgba(255, 255, 255, .025) !important}
+    ):not(:hover):not(:focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:rgba(255, 255, 255, .025) !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer :is(
         #composerApiSettingsPopover,

@@ -1073,7 +1073,11 @@ video.node-img { object-fit:cover; background:transparent; }
 #composerCountPanel .count-cell.active{color:var(--ui-accent);}
 .has-size-choice-glider { position:relative; isolation:isolate; }
 .has-size-choice-glider > button { position:relative; z-index:1; }
-.has-size-choice-glider > button.active,.has-size-choice-glider > button:hover,.has-size-choice-glider > button:focus-visible { background:transparent !important; border-color:transparent !important; }.has-strong-size-glider > button:hover,
+.has-size-choice-glider > button.active { background:transparent !important; border-color:transparent !important; }
+/* Hover fill is owned by minimax-visual (match first-level menu). Do not force transparent. */
+.has-size-choice-glider > button:hover,
+.has-size-choice-glider > button:focus-visible { border-color:transparent !important; }
+.has-strong-size-glider > button:hover,
 .has-strong-size-glider > button:focus-visible{ }.has-soft-size-glider > button:hover,
 .has-soft-size-glider > button:focus-visible{ }
 .size-choice-glider { position:absolute; left:0; top:0; z-index:0; width:var(--size-glider-width, 0px); height:var(--size-glider-height, 0px); box-sizing:border-box; border-radius:9px; pointer-events:none; transform:translate3d(var(--size-glider-x, 0px), var(--size-glider-y, 0px), 0) scale(1); transition:transform .5s cubic-bezier(.37,1.55,.66,.96), width .38s cubic-bezier(.37,1.35,.66,.96), height .38s cubic-bezier(.37,1.35,.66,.96), background .28s ease, box-shadow .28s ease; will-change:transform,width,height; }
