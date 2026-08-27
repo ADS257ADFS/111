@@ -3026,24 +3026,32 @@ html body #shell.shell #composer.composer
     display: none !important;
 }
 
-/* Footer popovers stack above the input surface; topbar stays on top so
-   参考 / 批量 / 模式切换 remain visible while a bottom menu is open. */
+/* Footer + open popover stack above topbar so model/size menus are not
+   covered by 参考 / 批量 / 模式. Topbar stays above the white input surface. */
 html body #shell.shell #composer.composer.open
     .composer-card:has(.composer-tool-wrap.open)
+    .composer-footer,
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-api-settings-wrap.open)
     .composer-footer {
     position: relative;
-    z-index: 8 !important;
+    z-index: 40 !important;
 }
 
 html body #shell.shell #composer.composer.open
     .composer-card:has(.composer-tool-wrap.open)
+    .composer-card-topbar,
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-api-settings-wrap.open)
     .composer-card-topbar {
     z-index: 30 !important;
 }
 
 html body #shell.shell #composer.composer
-    .composer-tool-wrap.open > .composer-tool-popover {
-    z-index: 20 !important;
+    .composer-tool-wrap.open > .composer-tool-popover,
+html body #shell.shell #composer.composer
+    .composer-api-settings-wrap.open > .composer-api-settings-popover {
+    z-index: 50 !important;
 }
 
 /* Video size submenu: match image submenu spacing and remove legacy lift motion. */
