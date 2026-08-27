@@ -3081,8 +3081,12 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card > :not(.comp
 }.shell .composer-card .composer-asset-shortcut:hover,
 .shell .composer-card .composer-asset-shortcut:focus-visible{
     border-color:transparent;
-    background:rgba(var(--ui-accent-rgb),.06);
+    background:#ffffff;
     outline:none;
+}
+html:is(.theme-dark, .studio-theme-dark) .shell .composer-card .composer-asset-shortcut:hover,
+html:is(.theme-dark, .studio-theme-dark) .shell .composer-card .composer-asset-shortcut:focus-visible{
+    background:#000000;
 }
 .shell .composer-card .composer-asset-shortcut :is(i,svg) {
     width:11px !important;
