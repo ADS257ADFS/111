@@ -3026,7 +3026,8 @@ html body #shell.shell #composer.composer
     display: none !important;
 }
 
-/* Footer popovers must paint above the card-topbar kind toggle. */
+/* Footer popovers stack above the input surface; topbar stays on top so
+   参考 / 批量 / 模式切换 remain visible while a bottom menu is open. */
 html body #shell.shell #composer.composer.open
     .composer-card:has(.composer-tool-wrap.open)
     .composer-footer {
@@ -3037,7 +3038,7 @@ html body #shell.shell #composer.composer.open
 html body #shell.shell #composer.composer.open
     .composer-card:has(.composer-tool-wrap.open)
     .composer-card-topbar {
-    z-index: 2 !important;
+    z-index: 30 !important;
 }
 
 html body #shell.shell #composer.composer
