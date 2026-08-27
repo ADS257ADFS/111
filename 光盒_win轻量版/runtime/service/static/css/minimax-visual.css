@@ -4589,7 +4589,8 @@ body #shell.shell #composer.composer .composer-footer :is(
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice {
-    min-height: 34px !important;
+    min-height: 46px !important;
+    height: 46px !important;
     padding: 6px 12px !important;
 }
 
@@ -4597,14 +4598,16 @@ html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:has(.mode-model-desc) {
-    min-height: 34px !important;
+    min-height: 46px !important;
+    height: 46px !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:has(.mode-model-desc):is(:hover, :focus-visible) {
-    min-height: 34px !important;
+    min-height: 46px !important;
+    height: 46px !important;
     padding: 6px 12px !important;
 }
 
@@ -4617,19 +4620,39 @@ body #shell.shell #composer.composer .composer-footer
     line-height: 1.25 !important;
 }
 
-/* Keep desc in layout always so hover only changes opacity, not row height. */
+/* Desc is absolutely positioned; idle name stays vertically centered. */
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
     display: block !important;
-    max-height: 1.25em !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: calc(50% + 2px) !important;
+    max-height: none !important;
     overflow: hidden !important;
     opacity: 0 !important;
+    transform: translateY(4px) !important;
     font-size: 9.5px !important;
     font-weight: 300 !important;
     font-variation-settings: "wght" 300 !important;
     line-height: 1.25 !important;
     color: var(--ui-text-muted) !important;
+    transition: opacity .18s ease, transform .18s cubic-bezier(.22, .8, .28, 1) !important;
+}
+
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-title-row {
+    transition: transform .18s cubic-bezier(.22, .8, .28, 1) !important;
+    transform: translateY(0) !important;
+}
+
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer
+    #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:is(:hover, :focus-visible) .mode-model-title-row {
+    transform: translateY(-8px) !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
@@ -4637,6 +4660,7 @@ body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:is(:hover, :focus-visible) .mode-model-desc {
     opacity: 1 !important;
+    transform: translateY(0) !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
@@ -5051,3 +5075,67 @@ html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .dock-open-btn.
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .dock-open-btn.dock-open-btn {
     color: rgba(241, 241, 241, .74) !important;
 }
+
+/* 底部输入栏一级上拉菜单：悬停必须有背景（覆盖 transparent !important 与空 hover 规则） */
+html body #shell.shell #composer.composer .composer-footer :is(
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
+).composer-tool-popover :is(
+    .mode-model-choice,
+    .composer-mode-option,
+    .composer-api-models button,
+    .composer-api-branch summary,
+    .size-picker-option,
+    .video-flat-choice,
+    .video-flat-segments button,
+    #composerQualityPanel .quality-choice-grid button,
+    #composerCountPanel .count-cell,
+    #composerVideoSizeMenu .count-cell,
+    .video-reference-option,
+    .composer-kind-toggle button
+):not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
+    background-color: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
+    background-image: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer .composer-footer :is(
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
+).composer-tool-popover :is(
+    .mode-model-choice,
+    .composer-mode-option,
+    .composer-api-models button,
+    .composer-api-branch summary,
+    .size-picker-option,
+    .video-flat-choice,
+    .video-flat-segments button,
+    #composerQualityPanel .quality-choice-grid button,
+    #composerCountPanel .count-cell,
+    #composerVideoSizeMenu .count-cell,
+    .video-reference-option,
+    .composer-kind-toggle button
+):not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: #f1f3f6 !important;
+    background-color: #f1f3f6 !important;
+}
+
+/* Model row hover bg needs 4× class weight to beat the idle transparent rule. */
+html body #shell.shell #composer.composer #composerApiSettingsPopover
+    .composer-mode-model-list
+    .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
+    background-color: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover
+    .composer-mode-model-list
+    .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: #f1f3f6 !important;
+    background-color: #f1f3f6 !important;
+}
+
