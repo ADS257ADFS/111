@@ -5079,20 +5079,44 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     backdrop-filter: blur(18px) saturate(140%) !important;
 }
 
-/* 打组面板：70% + 18px 磨砂 + 细描边（压过浅色白半透明覆写） */
+/* 打组面板：浅色半透明底 + 不透明白边；文字/图标用底部输入栏底色 #1f1f1f */
 html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body
     .image-node.smart-group-node .smart-group-frame-hit,
 :is(html.theme-dark, html.studio-theme-dark) body
     .image-node.smart-group-node .smart-group-frame-hit {
-    background: rgba(31, 31, 31, .70) !important;
-    background-color: rgba(31, 31, 31, .70) !important;
-    border: 1px solid rgba(255, 255, 255, .16) !important;
-    border-color: rgba(255, 255, 255, .16) !important;
+    background: rgba(255, 255, 255, .70) !important;
+    background-color: rgba(255, 255, 255, .70) !important;
+    border: 1px solid #ffffff !important;
+    border-color: #ffffff !important;
     box-shadow: none !important;
     -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
     backdrop-filter: blur(18px) saturate(140%) !important;
     opacity: 1 !important;
     visibility: visible !important;
+}
+
+html:not(#ui-group-fg-1):not(#ui-group-fg-2):not(#ui-group-fg-3):not(#ui-group-fg-4):is(.theme-dark, .studio-theme-dark) body
+    .image-node.smart-group-node :is(
+        .smart-group-summary,
+        .smart-group-empty,
+        .node-title,
+        .node-hint,
+        .node-head,
+        .node-actions button,
+        .smart-group-member-grab
+    ),
+html:not(#ui-group-fg-1):not(#ui-group-fg-2):not(#ui-group-fg-3):not(#ui-group-fg-4):is(.theme-dark, .studio-theme-dark) body
+    .image-node.smart-group-node :is(
+        .smart-group-summary,
+        .smart-group-empty,
+        .node-title,
+        .node-hint,
+        .node-head,
+        .node-actions button,
+        .smart-group-member-grab
+    ) :is(i, svg, span) {
+    color: #1f1f1f !important;
+    stroke: #1f1f1f !important;
 }
 
 /* 底部输入栏：实色 #1F1F1F，不磨砂；保留细描边 */
@@ -5307,20 +5331,53 @@ body #shell.shell #composer.composer .composer-footer
     background-color: rgba(255, 255, 255, .12) !important;
 }
 
-/* 左侧栏悬停底：对齐工具栏（新建画布等）rgba(255,255,255,.10)，
- * 压过 --ui-hover:.07 与全局 #2a2a2a 按钮悬停。 */
-html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .mm-sidebar :is(
-    button,
+/* 左侧栏悬停：对齐工具栏黑底圆角 + 边缘内发光。
+ * 最近项目只给外层 .mm-recent-item 铺一层，内层 button 保持透明，避免双层。 */
+html:not(#ui-side-hov-1):not(#ui-side-hov-2):not(#ui-side-hov-3):not(#ui-side-hov-4).lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.mm-sidebar :is(
+    .mm-sidebar-nav > button,
     .mm-asset-tree-root,
-    .mm-recent-item,
+    .mm-asset-tree-folder-btn,
+    .mm-sidebar-collapse,
+    .mm-sidebar-gear,
+    .mm-sidebar-user,
     .mm-kind-item,
+    .mm-kind-back,
     [role="button"]
-):not(:disabled):not(.mm-recent-group-head):is(:hover, :focus-visible),
-html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .mm-sidebar-reopen:is(:hover, :focus-visible) {
-    background: rgba(255, 255, 255, .10) !important;
-    background-color: rgba(255, 255, 255, .10) !important;
+):not(:disabled):not(.mm-recent-group-head):not(.mm-recent-open):not(.mm-recent-menu-trigger):is(:hover, :focus-visible),
+html:not(#ui-side-hov-1):not(#ui-side-hov-2):not(#ui-side-hov-3):not(#ui-side-hov-4).lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.mm-sidebar .mm-recent-item:is(:hover, :focus-within, .menu-open, .active),
+html:not(#ui-side-hov-1):not(#ui-side-hov-2):not(#ui-side-hov-3):not(#ui-side-hov-4).lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.mm-sidebar-reopen:is(:hover, :focus-visible) {
+    border-color: rgba(255, 255, 255, .08) !important;
+    background: radial-gradient(
+        ellipse at 50% 42%,
+        rgba(12, 12, 12, .94) 0 58%,
+        rgba(35, 35, 35, .82) 100%
+    ) !important;
+    background-color: transparent !important;
+    background-image: radial-gradient(
+        ellipse at 50% 42%,
+        rgba(12, 12, 12, .94) 0 58%,
+        rgba(35, 35, 35, .82) 100%
+    ) !important;
+    box-shadow:
+        inset 0 0 10px rgba(255, 255, 255, .10),
+        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+}
+
+html:not(#ui-side-hov-1):not(#ui-side-hov-2):not(#ui-side-hov-3):not(#ui-side-hov-4).lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.mm-sidebar .mm-recent-item:is(:hover, :focus-within, .menu-open, .active)
+:is(.mm-recent-open, .mm-recent-menu-trigger),
+html:not(#ui-side-hov-1):not(#ui-side-hov-2):not(#ui-side-hov-3):not(#ui-side-hov-4).lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.mm-sidebar .mm-recent-open:is(:hover, :focus-visible),
+html:not(#ui-side-hov-1):not(#ui-side-hov-2):not(#ui-side-hov-3):not(#ui-side-hov-4).lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.mm-sidebar .mm-recent-menu-trigger:is(:hover, :focus-visible) {
+    background: transparent !important;
+    background-color: transparent !important;
     background-image: none !important;
     border-color: transparent !important;
+    box-shadow: none !important;
 }
 
 /* 模型选择上拉：默认无边框无底色（含已选）；悬停对齐一级按钮黑底+微内发光 */
