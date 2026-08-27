@@ -274,7 +274,7 @@ body.studio-theme-dark {
     --ui-sidebar-logo-h: 14px; /* Welcome mark; +1/5 vs 11.7px */
     --ui-dock-w: 460px;
     --ui-composer-w: 760px;
-    --ui-composer-surface-h: 174px;
+    --ui-composer-surface-h: 128px;
     --ui-composer-surface-side-inset: 7px;
     --ui-composer-surface-bottom-gap: 15px;
     /* Tall enough for 28px 参考/批量/模式 controls; white surface starts below. */
