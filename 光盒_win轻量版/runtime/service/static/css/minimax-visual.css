@@ -1529,8 +1529,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
 
 :is(html, html.theme-dark, html.studio-theme-dark) body :is(
     .dock-chrome-title,
-    .dock-chrome-menu-new,
-    .dock-chrome-menu-item
+    .dock-chrome-menu-new
 ) {
     color: var(--ui-text) !important;
     font-family: var(--ui-font) !important;
@@ -2790,7 +2789,8 @@ html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-menu
     box-shadow: var(--ui-shadow-pop) !important;
 }
 
-/* 单行菜单项：32px 行高与 8px 圆角；复合卡片在下一组单独处理。 */
+/* 单行菜单项：32px 行高与 8px 圆角；复合卡片在下一组单独处理。
+   右侧对话标题下拉单独收紧，不走通用 32px。 */
 :is(html, html.theme-dark, html.studio-theme-dark) body :is(
     .node-context-menu,
     .node-port-menu,
@@ -2808,8 +2808,6 @@ html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-menu
     .size-picker-popover,
     .skill-menu,
     .composer-popover,
-    .dock-chrome-menu,
-    .dock-chrome-title-menu,
     .emoji-picker
 ) :is(button, [role="menuitem"], [role="option"]):not(.thread-item):not(.skill-menu-item):not(.composer-mode-option):not(.port-link-pick-item):not(.mode-model-choice):not(.create-card):not(.video-reference-option):not(.menu-btn) {
     box-sizing: border-box;
@@ -4259,46 +4257,66 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon svg {
     stroke-width: var(--ui-sidebar-nav-icon-stroke) !important;
 }
 
-/* 下拉菜单：更窄、更紧的行距，压过通用菜单 14px/32px 规则。 */
+/* 下拉菜单：更窄、更小字号、更紧行距（压过通用菜单 14px/32px）。 */
 html.lightbox-desktop-native .gpt-dock .dock-chrome-title-menu {
-    width: 176px !important;
-    min-width: 160px !important;
-    max-width: 176px !important;
-    padding: 3px !important;
+    width: 168px !important;
+    min-width: 152px !important;
+    max-width: 168px !important;
+    padding: 2px !important;
     min-height: auto !important;
+    gap: 0 !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-list {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    border-top: 0 !important;
+    gap: 0 !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item,
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-open,
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title-menu :is(button, [role="menuitem"]) {
+    min-height: 20px !important;
+    height: auto !important;
+    max-height: none !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 1.15 !important;
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item {
     position: relative !important;
-    min-height: 22px !important;
-    height: auto !important;
-    padding: 1px 4px 1px 7px !important;
-    margin-bottom: 0 !important;
+    padding: 0 4px 0 6px !important;
+    margin: 0 !important;
     gap: 4px !important;
-    font-size: 12px !important;
+    font-size: 11px !important;
     font-weight: 400 !important;
     font-variation-settings: "wght" 400 !important;
-    line-height: 1.1 !important;
+    color: var(--ui-text) !important;
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-new {
-    min-height: 26px !important;
-    padding: 0 7px !important;
-    font-size: 12px !important;
+    min-height: 22px !important;
+    padding: 0 6px !important;
+    font-size: 11px !important;
     font-weight: 445 !important;
     font-variation-settings: "wght" 445 !important;
     line-height: 1.15 !important;
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-title {
-    font-size: 12px !important;
+    font-size: 11px !important;
     font-weight: 400 !important;
-    line-height: 1.1 !important;
+    font-variation-settings: "wght" 400 !important;
+    line-height: 1.15 !important;
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-time {
     font-size: 10px !important;
-    line-height: 1.1 !important;
+    font-weight: var(--ui-weight-latin, 350) !important;
+    line-height: 1.15 !important;
+    color: var(--ui-text-muted) !important;
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item::after {
@@ -4306,7 +4324,17 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item::after {
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-open {
-    line-height: 1.1 !important;
+    line-height: 1.15 !important;
+    font-size: 11px !important;
+    min-width: 0 !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-rename,
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-delete {
+    width: 20px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    min-width: 20px !important;
 }
 
 /* Left sidebar user chip: rounder hover face. */
