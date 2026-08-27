@@ -111,10 +111,12 @@ body.smart-node-drag .image-wrap:hover .image-resolution-badge { opacity:0 !impo
     z-index:0;
     pointer-events:auto;
     cursor:default;
-    border:.5px solid rgba(255,255,255,.32);
+    border:.5px solid rgba(255,255,255,.42);
     border-radius:28px;
-    background:rgba(248,249,251,.5);
-    box-shadow:none;
+    background:rgba(255,255,255,.30);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.35);
+    -webkit-backdrop-filter:none;
+    backdrop-filter:none;
 }
 .image-node.smart-group-node .node-head,
 .image-node.smart-group-node .node-body,
