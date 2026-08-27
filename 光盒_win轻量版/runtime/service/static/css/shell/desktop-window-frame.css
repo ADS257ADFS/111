@@ -1473,16 +1473,9 @@ html.lightbox-desktop-native .gpt-dock .lightbox-compact-btn.active {
     background: rgba(var(--ui-accent-rgb), .10);
 }
 
-/* 置顶/回归放在小窗左上角（与标题条同一行） */
+/* 置顶/回归默认隐藏；精简模式下由 dock-chrome 内联展示（见下方合并顶栏规则） */
 html.lightbox-compact-mode .lightbox-compact-controls {
     display: none;
-    align-items: center;
-    gap: 6px;
-    position: fixed;
-    top: 0;
-    left: 8px;
-    height: var(--mm-titlebar-h, 36px);
-    z-index: 500;
 }
 
 html.lightbox-compact-mode .lightbox-compact-controls button {
