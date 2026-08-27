@@ -5,7 +5,7 @@
     --shadow:rgba(55,65,81,.12); --strong:var(--ui-accent); --strong-text:#ffffff; --accent:var(--ui-accent);
 }
 .theme-dark {
-    --page:var(--ui-surface-canvas); --grid:rgba(255,255,255,.08); --panel:var(--ui-surface-chrome); --card:var(--ui-surface-card);
+    --page:var(--ui-surface-canvas); --grid:rgba(255,255,255,.032); --panel:var(--ui-surface-chrome); --card:var(--ui-surface-card);
     --text:var(--ui-text); --muted:var(--ui-text-secondary); --faint:var(--ui-text-muted); --line:var(--ui-border); --soft:var(--ui-hover);
     --shadow:rgba(0,0,0,.38); --strong:var(--ui-accent); --strong-text:#ffffff; --accent:var(--ui-accent);
 }
@@ -5202,8 +5202,7 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):has(.mode-model-desc):is(:hover, :focus-visible) {
     min-height:34px !important;
     align-items:center !important;
-    padding-top:7px !important;
-    padding-bottom:7px !important;
+    padding:6px 12px !important;
 }
 
 /* 名字常驻；说明小字仅悬停/聚焦时出现。 */
@@ -5241,8 +5240,9 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
 
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
     position:static;
-    display:none;
+    display:block;
     margin:0;
+    max-height:1.25em;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
@@ -5251,7 +5251,7 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     font-variation-settings:"wght" 300 !important;
     line-height:1.25 !important;
     color:var(--ui-text-muted) !important;
-    opacity:1;
+    opacity:0;
     transform:none;
     pointer-events:none;
 }
@@ -5259,6 +5259,7 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:is(:hover, :focus-visible) .mode-model-desc {
     display:block;
+    opacity:1;
 }
 
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
@@ -5271,7 +5272,7 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:has(.mode-model-desc):is(:hover, :focus-visible) {
     min-height:34px !important;
-    padding:7px 12px !important;
+    padding:6px 12px !important;
     align-items:center !important;
 }
 
