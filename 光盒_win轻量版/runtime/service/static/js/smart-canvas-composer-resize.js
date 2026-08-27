@@ -2,8 +2,10 @@
 (function(global){
     'use strict';
 
-    const DEFAULT_HEIGHT = 48;
-    const MIN_HEIGHT = 48;
+    /* Collapsed prompt field: 48 + 15 (CSS --composer-prompt-h). Inline
+       --composer-prompt-h must match or it overrides the stylesheet. */
+    const DEFAULT_HEIGHT = 63;
+    const MIN_HEIGHT = 63;
     /** Extra chrome only when expanded so the sheet can grow with the field. */
     const SHEET_CHROME_EXPANDED = 150;
     const PIN_PROPS = ['top', 'bottom', 'margin-bottom', 'height', 'transform', 'transform-origin'];

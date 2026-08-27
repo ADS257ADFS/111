@@ -3325,8 +3325,8 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     content: none;
 }
 
-/* 顶排磨砂材质：独立底层，向下延伸到白色输入面顶边之下，
-   白色主体（z 更高）直接压在磨砂上，顶排与白色之间不留缝隙。 */
+/* 顶排磨砂材质：高度只跟顶排 token，不跟 --composer-prompt-h；
+   输入栏加高时半透明条保持原高，仍贴在输入面板上方。 */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-material {
     display: block !important;
@@ -3336,6 +3336,8 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     left: 18px !important;
     right: 18px !important;
     height: calc(var(--ui-composer-topbar-h) + var(--ui-space-5)) !important;
+    max-height: calc(var(--ui-composer-topbar-h) + var(--ui-space-5)) !important;
+    min-height: calc(var(--ui-composer-topbar-h) + var(--ui-space-5)) !important;
     border: var(--ui-shell-divider-size) solid var(--ui-border) !important;
     border-bottom-color: transparent !important;
     border-radius: var(--ui-composer-topbar-radius) var(--ui-composer-topbar-radius) 0 0 !important;
@@ -5170,5 +5172,59 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
     background: #f1f3f6 !important;
     background-color: #f1f3f6 !important;
+}
+
+/* 上拉菜单内部按钮（含 has-size-choice-glider / 尺寸·质量·张数格子）：
+ * 压过 canvas-dark-glass 与 smart-canvas 的 transparent !important，
+ * 与一级菜单条目同一套悬停底。 */
+html body #shell.shell #composer.composer .composer-footer :is(
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
+).composer-tool-popover :is(
+    .has-size-choice-glider > button,
+    .size-picker-option,
+    .quality-choice-grid > button,
+    .count-grid > .count-cell,
+    .count-cell,
+    .video-flat-choice,
+    .video-flat-segments > button,
+    .video-reference-option,
+    .composer-kind-toggle > button,
+    .composer-api-models > button,
+    .composer-api-branch > summary,
+    .mode-model-choice,
+    .direct-option
+):not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
+    background-color: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
+    background-image: none !important;
+    border-color: transparent !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer .composer-footer :is(
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
+).composer-tool-popover :is(
+    .has-size-choice-glider > button,
+    .size-picker-option,
+    .quality-choice-grid > button,
+    .count-grid > .count-cell,
+    .count-cell,
+    .video-flat-choice,
+    .video-flat-segments > button,
+    .video-reference-option,
+    .composer-kind-toggle > button,
+    .composer-api-models > button,
+    .composer-api-branch > summary,
+    .mode-model-choice,
+    .direct-option
+):not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: #f1f3f6 !important;
+    background-color: #f1f3f6 !important;
+    background-image: none !important;
 }
 
