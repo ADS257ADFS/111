@@ -94,7 +94,7 @@ function ensureCanvasContextMenu(){
             global.location.reload();
         }
         if(action === 'reset-view') global.SmartCanvasViewport?.fitAllNodesViewport?.();
-        if(action === 'paste') d().pasteNodes?.();
+        if(action === 'paste') await d().pasteFromClipboard?.();
         if(action === 'undo') d().performUndo?.();
         if(action === 'assets') d().toggleAssetLibrary?.(true);
         if(action === 'settings') openPersonalSettings();

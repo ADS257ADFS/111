@@ -651,7 +651,7 @@ function getSmartCanvasContextScope(){
         normalizeActiveAssetCategory, normalizeApiSizeSettings, normalizeImportedSmartWorkflow, normalizeLegacySmartNode, normalizeMaskPreviewCanvas, normalizeSmartImageMode, normalizedSizeLabel, noteImageClickForDouble, nowMs, openAssetNameDialog, openControlState, openCreateMenu,
         openGroupGridJoin, openGroupImagePreview, openImageEditor, openImagePreview, openImagePreviewSmart, openImageQuickAction, openPromptPresetPanel, openPromptTemplatePanel, openSmartCanvasLog, openSmartCanvasShortcuts, openSmartWorkflowTransferModal,
         optionHtml, originalPromptTextFromParts, outgoingConnectionsFor, outgoingInputConnectionsFor, outpaintNaturalSize, outputImagesForNode, outputUrlLooksVideo, panoramaFallbackSource, panoramaRatioValue, panoramaResolutionValue, panoramaSource, parseRatioValue,
-        parseRunningHubEntryKey, parseSizePair, parseSizeValue, pasteAssetsFromInbox, pasteNodes, pendingBaseBoxSize, pendingBoxSize, pendingSizeFromImageRef, pendingSourceBoxSize, performUndo, persistActiveSmartSettings, pickMediaForSmartNode,
+        parseRunningHubEntryKey, parseSizePair, parseSizeValue, pasteAssetsFromInbox, pasteFromClipboard, pasteNodes, pasteWorkflowFromText, pendingBaseBoxSize, pendingBoxSize, pendingSizeFromImageRef, pendingSourceBoxSize, performUndo, persistActiveSmartSettings, pickMediaForSmartNode,
         placeMentionPickerInComposerCard, placeMentionPickerInPromptRow, pollSmartCanvasTask, positionAssetHoverPreview, positionComposerForNode, positionEditTextInlineEditor, positionHistoryGroupForNode, positionImageHdPopover, positionImageQuickToolbar, positionMentionPickerAtCaret, previewCompareSources, previewDownloadGroupItems,
         previewResolutionText, primaryImageInputFor, promptHtmlWithMentionTokens, promptInputNodesFor, promptLlmInstructionHeight, promptNodeBodyHtml, promptNodeContentHeight, promptNodeExpandedHeight, promptNodeInputImages, promptNodeInputMediaForLLM, promptNodeLLMInputText, promptNodeLayoutSize,
         promptNodeMinHeight, promptNodePromptItems, promptNodeSeparator, promptNodeSplitExtraHeight, promptNodeSplitPreviewHeight, promptNodeTextHeight, promptNodeUpstreamPromptItems, promptNodeUpstreamPromptText, promptPlainText, promptPresetPanelNode, promptTemplateCategoryLabel, promptTemplateItems,
@@ -1278,6 +1278,8 @@ function createLoopNode(x, y, options={}){ return window.SmartCanvasNodeFactory?
 function cloneSmartNode(node, dx=0, dy=0){ return window.SmartCanvasNodeFactory?.cloneSmartNode?.(node, dx, dy); }
 function copySelectedNodes(){ return window.SmartCanvasNodeClipboard?.copySelectedNodes?.(); }
 function pasteNodes(){ return window.SmartCanvasNodeClipboard?.pasteNodes?.(); }
+function pasteFromClipboard(){ return window.SmartCanvasNodeClipboard?.pasteFromClipboard?.(); }
+function pasteWorkflowFromText(text){ return window.SmartCanvasNodeClipboard?.pasteWorkflowFromText?.(text); }
 function duplicateForAltDrag(node){ return window.SmartCanvasNodeClipboard?.duplicateForAltDrag?.(node); }
 function shellPoint(event){ return window.SmartCanvasOverlayChrome?.shellPoint?.(event); }
 function render(...args){
@@ -2894,6 +2896,7 @@ function registerSmartCanvasModuleDeps(){
         set lastMouseWorld(v){ lastMouseWorld = v; },
         isEditableTarget, selectedNodeIds, toast, pushUndo, viewportCenter,
         cloneSmartNode, render, scheduleSave, isNodeSelected,
+        serializableSmartNode, mediaKindForItem,
     });
     const nodeFactoryMod = window.SmartCanvasNodeFactory;
     nodeFactoryMod?.registerDeps?.({
@@ -2972,7 +2975,7 @@ function registerSmartCanvasModuleDeps(){
         resolveSmartImageDropPayload, handleSmartImageDropPayload, setSmartDropCopyEffect,
         isSmartImageNode, isSmartGroupNode, isHistoryGroupNode, smartGroupContainingNode,
         isNodeSelected, selectedNode, uid, escapeHtml, refreshIcons,
-        mediaKindForItem, smartActivateVideoPreview, copySelectedNodes, pasteNodes,
+        mediaKindForItem, smartActivateVideoPreview, copySelectedNodes, pasteNodes, pasteFromClipboard, pasteWorkflowFromText,
         createNewSmartCanvas, arrangeSelectedNodes, performUndo, toggleAssetLibrary,
         downloadNodeImage, zipDownloadImageItems, saveNodeImageAs, zipSaveImageItemsAs,
     });
