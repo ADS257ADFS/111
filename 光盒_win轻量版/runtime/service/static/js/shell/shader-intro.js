@@ -1,10 +1,10 @@
 /**
- * WebGL shader welcome intro (adapted from ShaderAnimation / three.js).
- * Full-screen play → brief zoom+blur → reveal dark fullscreen canvas.
+ * Independent rounded shader startup panel → fullscreen dark software.
+ * Waits for the animation to finish before expanding into the app.
  */
-const THREE_URL = "/static/vendor/js/three-0.160.0.module.js?v=2026.08.27.shader1";
-const PLAY_MS = 2800;
-const EXIT_MS = 720;
+const THREE_URL = "/static/vendor/js/three-0.160.0.module.js?v=2026.08.27.shader2";
+const PLAY_MS = 6500;
+const EXIT_MS = 900;
 const ROOT_ID = "lightboxShaderIntro";
 const STAGE_ID = "lightboxShaderIntroStage";
 
@@ -38,6 +38,27 @@ const fragmentShader = `
   }
 `;
 
+async function enterFullscreenSoftware() {
+  const api = window.pywebview?.api;
+  if (!api) return;
+  try {
+    if (typeof api.enter_app_from_intro === "function") {
+      const state = await api.enter_app_from_intro();
+      document.documentElement.classList.toggle(
+        "lightbox-window-maximized",
+        state === "maximized"
+      );
+      return;
+    }
+    if (typeof api.maximize_to_work_area === "function") {
+      await api.maximize_to_work_area();
+      document.documentElement.classList.add("lightbox-window-maximized");
+    }
+  } catch (err) {
+    console.warn("[shader-intro] enter fullscreen failed", err);
+  }
+}
+
 function finishIntro(root) {
   document.documentElement.classList.remove("lightbox-shader-intro-active");
   root.classList.add("is-done");
@@ -50,6 +71,8 @@ function finishIntro(root) {
 function startExit(root, cleanup) {
   if (!root || root.classList.contains("is-exiting") || root.classList.contains("is-done")) return;
   root.classList.add("is-exiting");
+  // Expand host window while the panel zooms/blurs into fullscreen software.
+  enterFullscreenSoftware();
   window.setTimeout(() => {
     try {
       cleanup();
@@ -70,6 +93,7 @@ async function boot() {
     THREE = await import(THREE_URL);
   } catch (err) {
     console.warn("[shader-intro] three.js load failed", err);
+    await enterFullscreenSoftware();
     finishIntro(root);
     return;
   }
@@ -98,11 +122,12 @@ async function boot() {
 
   let animationId = 0;
   let disposed = false;
+  let exitArmed = false;
 
   const onResize = () => {
     if (disposed) return;
-    const width = stage.clientWidth || window.innerWidth;
-    const height = stage.clientHeight || window.innerHeight;
+    const width = Math.max(1, stage.clientWidth || root.clientWidth || window.innerWidth);
+    const height = Math.max(1, stage.clientHeight || root.clientHeight || window.innerHeight);
     renderer.setSize(width, height, false);
     uniforms.resolution.value.x = renderer.domElement.width;
     uniforms.resolution.value.y = renderer.domElement.height;
@@ -132,14 +157,22 @@ async function boot() {
     } catch (_) {}
   };
 
+  const armExit = () => {
+    if (exitArmed) return;
+    exitArmed = true;
+    // Wait for the shader cycle to play through before expanding.
+    window.setTimeout(() => startExit(root, cleanup), PLAY_MS);
+  };
+
   onResize();
   window.addEventListener("resize", onResize, { passive: true });
   animate();
+  // Start the play clock only after the first painted frame.
+  requestAnimationFrame(() => requestAnimationFrame(armExit));
 
-  window.setTimeout(() => startExit(root, cleanup), PLAY_MS);
   window.setTimeout(() => {
     if (!root.classList.contains("is-done")) startExit(root, cleanup);
-  }, PLAY_MS + EXIT_MS + 2500);
+  }, PLAY_MS + EXIT_MS + 4000);
 }
 
 if (document.readyState === "loading") {

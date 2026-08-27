@@ -32,6 +32,10 @@ UI_ZOOM_FACTOR = 1.21
 DEFAULT_WINDOW_RATIO = 0.68
 WINDOW_MIN_WIDTH = 1440
 WINDOW_MIN_HEIGHT = 850
+INTRO_WINDOW_WIDTH = 880
+INTRO_WINDOW_HEIGHT = 520
+INTRO_WINDOW_MIN_WIDTH = 640
+INTRO_WINDOW_MIN_HEIGHT = 380
 LOCAL_ASSET_EXTENSIONS = {
     ".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp", ".tif", ".tiff", ".svg",
     ".mp4", ".webm", ".mov", ".m4v", ".avi", ".mkv",
@@ -702,6 +706,36 @@ class DesktopBridge:
         x = work_x + (work_width - width) // 2
         y = work_y + (work_height - height) // 2
         return x, y, width, height
+
+    def _intro_window_bounds(self):
+        work_x, work_y, work_width, work_height = self._work_area()
+        width = min(INTRO_WINDOW_WIDTH, max(INTRO_WINDOW_MIN_WIDTH, work_width - 96))
+        height = min(INTRO_WINDOW_HEIGHT, max(INTRO_WINDOW_MIN_HEIGHT, work_height - 96))
+        x = work_x + (work_width - width) // 2
+        y = work_y + (work_height - height) // 2
+        return x, y, width, height
+
+    def show_intro_window(self) -> None:
+        """Small rounded startup panel — not the full software window."""
+        self._set_form_min_size(INTRO_WINDOW_MIN_WIDTH, INTRO_WINDOW_MIN_HEIGHT)
+        # Keep a normal restore target for later maximize-from-intro.
+        self._restore_bounds = self._default_window_bounds()
+        x, y, width, height = self._intro_window_bounds()
+        hwnd = self._hwnd()
+        if ctypes.windll.user32.IsZoomed(hwnd) or ctypes.windll.user32.IsIconic(hwnd):
+            ctypes.windll.user32.ShowWindow(hwnd, 9)
+        ctypes.windll.user32.SetWindowPos(hwnd, 0, x, y, width, height, 0x0044)
+        self._maximized = False
+        self._set_resize_style(False)
+        if self._window is not None:
+            configure_opaque_form(self._window)
+        apply_solid_window_frame(hwnd, show_shadow=True)
+
+    def enter_app_from_intro(self) -> str:
+        """After welcome animation: restore min size and open fullscreen software."""
+        self._set_form_min_size(WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT)
+        self.maximize_to_work_area(remember=True)
+        return "maximized"
 
     def show_default_window(self) -> None:
         self._restore_bounds = self._default_window_bounds()
@@ -1926,9 +1960,9 @@ def main() -> None:
             APP_TITLE,
             url=f"{app_url(port)}?desktop=1&startup={uuid.uuid4().hex}",
             js_api=bridge,
-            width=1600,
-            height=1000,
-            min_size=(WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT),
+            width=INTRO_WINDOW_WIDTH,
+            height=INTRO_WINDOW_HEIGHT,
+            min_size=(INTRO_WINDOW_MIN_WIDTH, INTRO_WINDOW_MIN_HEIGHT),
             resizable=True,
             hidden=True,
             frameless=True,
@@ -1952,7 +1986,7 @@ def main() -> None:
             main_window_ready.wait(timeout=15.0)
             try:
                 configure_opaque_form(window)
-                bridge.show_default_window()
+                bridge.show_intro_window()
                 bridge.set_window_backdrop(initial_theme)
                 window.show()
                 time.sleep(0.12)
@@ -1969,10 +2003,10 @@ def main() -> None:
                         not rect
                         or rect[0] < -10000
                         or rect[1] < -10000
-                        or rect[2] < 400
-                        or rect[3] < 300
+                        or rect[2] < 320
+                        or rect[3] < 240
                     ):
-                        bridge.show_default_window()
+                        bridge.show_intro_window()
                     ctypes.windll.user32.ShowWindow(hwnd, 9)  # SW_RESTORE
                     ctypes.windll.user32.SetForegroundWindow(hwnd)
                     configure_opaque_form(window)
