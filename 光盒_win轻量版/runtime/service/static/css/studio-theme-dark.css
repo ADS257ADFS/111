@@ -61,7 +61,7 @@
     --studio-dark-btn-hover: var(--sc-hover);
 
     --page: var(--sc-page);
-    --grid: rgba(255, 255, 255, .012);
+    --grid: rgba(255, 255, 255, .006);
     --panel: rgba(20, 20, 20, .72);
     --card: var(--sc-surface-soft);
     --text: var(--sc-text);
