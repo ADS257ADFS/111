@@ -1176,7 +1176,7 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            padding: 2px;
+            padding: 6px;
             border: 1px solid rgba(255, 255, 255, 0.96);
             border-radius: 10px;
             background: #fff;
@@ -1231,8 +1231,8 @@
         .dock-chrome-menu-item {
             box-sizing: border-box;
             width: 100%;
-            min-height: 26px;
-            padding: 3px 4px 3px 6px;
+            min-height: 24px;
+            padding: 3px 8px;
             border: none;
             border-radius: 6px;
             display: flex;
