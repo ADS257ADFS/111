@@ -2914,7 +2914,7 @@ blue primary canvas actions. */.shell .create-card:hover,
 
 /* Canvas composer: gray panel + white input; node text areas keep gray inset */
 .shell .composer {
-    --composer-prompt-h:48px;
+    --composer-prompt-h:63px;
     --composer-sheet-min-h:0px;
     background:transparent !important;
     border:0 !important;
@@ -5176,8 +5176,8 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     display:flex !important;
     align-items:center !important;
     gap:10px !important;
-    min-height:34px !important;
-    height:auto !important;
+    min-height:46px !important;
+    height:46px !important;
     padding:6px 12px !important;
     font-size:14px !important;
     font-weight:445 !important;
@@ -5186,26 +5186,28 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     background-image:none !important;
     box-shadow:none !important;
     border-radius:10px !important;
-    overflow:visible !important;
+    overflow:hidden !important;
     white-space:normal !important;
 }
 
-/* Hover/focus: keep compact row; description reveals below the name. */
+/* Hover/focus: fixed row height; name rises, desc fades in. */
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
-    min-height:34px !important;
+    min-height:46px !important;
+    height:46px !important;
     padding:6px 12px !important;
     align-items:center !important;
 }
 
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):has(.mode-model-desc):is(:hover, :focus-visible) {
-    min-height:34px !important;
+    min-height:46px !important;
+    height:46px !important;
     align-items:center !important;
     padding:6px 12px !important;
 }
 
-/* 名字常驻；说明小字仅悬停/聚焦时出现。 */
+/* 名字常驻居中；说明小字绝对定位，悬停时淡入，名字上移。 */
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-copy {
     position:relative;
     flex:1 1 auto;
@@ -5213,8 +5215,8 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     display:flex;
     flex-direction:column;
     justify-content:center;
-    gap:2px;
-    align-self:center;
+    gap:0;
+    align-self:stretch;
     min-height:0;
 }
 
@@ -5222,6 +5224,9 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     min-width:0;
     display:flex;
     align-items:center;
+    transition:transform .18s cubic-bezier(.22, .8, .28, 1);
+    transform:translateY(0);
+    will-change:transform;
 }
 
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-name {
@@ -5239,10 +5244,12 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
 }
 
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
-    position:static;
+    position:absolute;
+    left:0;
+    right:0;
+    top:calc(50% + 2px);
     display:block;
     margin:0;
-    max-height:1.25em;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
@@ -5252,26 +5259,35 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     line-height:1.25 !important;
     color:var(--ui-text-muted) !important;
     opacity:0;
-    transform:none;
+    transform:translateY(4px);
     pointer-events:none;
+    transition:opacity .18s ease, transform .18s cubic-bezier(.22, .8, .28, 1);
+}
+
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:is(:hover, :focus-visible) .mode-model-title-row {
+    transform:translateY(-8px);
 }
 
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:is(:hover, :focus-visible) .mode-model-desc {
     display:block;
     opacity:1;
+    transform:translateY(0);
 }
 
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:has(.mode-model-desc) {
-    min-height:34px !important;
+    min-height:46px !important;
+    height:46px !important;
     padding:6px 12px !important;
     align-items:center !important;
 }
 
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:has(.mode-model-desc):is(:hover, :focus-visible) {
-    min-height:34px !important;
+    min-height:46px !important;
+    height:46px !important;
     padding:6px 12px !important;
     align-items:center !important;
 }
@@ -5322,8 +5338,9 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.active .mode-model-check {
     display:inline-flex;
-}html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible){
+}html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible){
     background:#f1f3f6 !important;
+    background-color:#f1f3f6 !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice.active {
@@ -5331,8 +5348,9 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     background:rgba(var(--ui-accent-rgb),.08) !important;
 }
 
-:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
     background:rgba(255,255,255,.08) !important;
+    background-color:rgba(255,255,255,.08) !important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice.active {

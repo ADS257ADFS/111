@@ -300,9 +300,9 @@ html body #shell.shell #composer.composer.open {
     transform: translateX(-50%);
 }
 
-/* 画布底部输入栏变矮：只动 #composer，不动右侧对话栏 */
+/* 画布底部输入栏：只动 #composer，不动右侧对话栏；向上加高 15px，底边距/圆角不变 */
 html body #shell.shell #composer.composer {
-    --composer-prompt-h: 48px;
+    --composer-prompt-h: 63px;
     /* 不再用过大的 min-height 撑出底部空底板 */
     --composer-sheet-min-h: 0px;
 }
@@ -4589,7 +4589,8 @@ body #shell.shell #composer.composer .composer-footer :is(
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice {
-    min-height: 34px !important;
+    min-height: 46px !important;
+    height: 46px !important;
     padding: 6px 12px !important;
 }
 
@@ -4597,14 +4598,16 @@ html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:has(.mode-model-desc) {
-    min-height: 34px !important;
+    min-height: 46px !important;
+    height: 46px !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:has(.mode-model-desc):is(:hover, :focus-visible) {
-    min-height: 34px !important;
+    min-height: 46px !important;
+    height: 46px !important;
     padding: 6px 12px !important;
 }
 
@@ -4617,19 +4620,39 @@ body #shell.shell #composer.composer .composer-footer
     line-height: 1.25 !important;
 }
 
-/* Keep desc in layout always so hover only changes opacity, not row height. */
+/* Desc is absolutely positioned; idle name stays vertically centered. */
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
     display: block !important;
-    max-height: 1.25em !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: calc(50% + 2px) !important;
+    max-height: none !important;
     overflow: hidden !important;
     opacity: 0 !important;
+    transform: translateY(4px) !important;
     font-size: 9.5px !important;
     font-weight: 300 !important;
     font-variation-settings: "wght" 300 !important;
     line-height: 1.25 !important;
     color: var(--ui-text-muted) !important;
+    transition: opacity .18s ease, transform .18s cubic-bezier(.22, .8, .28, 1) !important;
+}
+
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-title-row {
+    transition: transform .18s cubic-bezier(.22, .8, .28, 1) !important;
+    transform: translateY(0) !important;
+}
+
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer
+    #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:is(:hover, :focus-visible) .mode-model-title-row {
+    transform: translateY(-8px) !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
@@ -4637,6 +4660,7 @@ body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:is(:hover, :focus-visible) .mode-model-desc {
     opacity: 1 !important;
+    transform: translateY(0) !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
@@ -4963,24 +4987,54 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
     .node-context-menu,
     .canvas-context-menu,
     .ui-menu.node-context-menu,
+    .create-menu,
     .mm-sidebar,
     .lightbox-native-titlebar
 ) {
     background: var(--ui-panel-frost, rgba(31, 31, 31, .82)) !important;
     background-color: var(--ui-panel-frost, rgba(31, 31, 31, .82)) !important;
     background-image: none !important;
-    border: 1px solid var(--ui-panel-frost-border, rgba(255, 255, 255, .10)) !important;
+    border: 1px solid var(--ui-panel-frost-border, rgba(255, 255, 255, .12)) !important;
+    outline: none !important;
     box-shadow: none !important;
     -webkit-backdrop-filter: var(--ui-panel-frost-blur, blur(18px) saturate(140%)) !important;
     backdrop-filter: var(--ui-panel-frost-blur, blur(18px) saturate(140%)) !important;
 }
 
-/* 打组面板：同色磨砂细边 */
+/* 双击画布引用/创建面板：只留内层 shell 一条 1px 细描边。
+   外壳曾被菜单通用规则 + M76 float 阴影叠成“粗边”，这里用同级 :not 前缀压过。 */
+html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body
+    .port-link-pick-menu,
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-menu {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body
+    .port-link-pick-menu .port-link-pick-shell,
+:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-menu .port-link-pick-shell {
+    background: var(--ui-panel-frost, rgba(31, 31, 31, .82)) !important;
+    background-color: var(--ui-panel-frost, rgba(31, 31, 31, .82)) !important;
+    border: 1px solid var(--ui-panel-frost-border, rgba(255, 255, 255, .12)) !important;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: var(--ui-panel-frost-blur, blur(18px) saturate(140%)) !important;
+    backdrop-filter: var(--ui-panel-frost-blur, blur(18px) saturate(140%)) !important;
+}
+
+/* 打组面板：更高透明度 + 细描边 */
 :is(html.theme-dark, html.studio-theme-dark) body
     .image-node.smart-group-node .smart-group-frame-hit {
-    background: var(--ui-panel-frost, rgba(31, 31, 31, .82)) !important;
-    border: 1px solid var(--ui-panel-frost-border, rgba(255, 255, 255, .10)) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06) !important;
+    background: rgba(31, 31, 31, .48) !important;
+    background-color: rgba(31, 31, 31, .48) !important;
+    border: 1px solid var(--ui-panel-frost-border, rgba(255, 255, 255, .12)) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05) !important;
     -webkit-backdrop-filter: var(--ui-panel-frost-blur, blur(18px) saturate(140%)) !important;
     backdrop-filter: var(--ui-panel-frost-blur, blur(18px) saturate(140%)) !important;
     opacity: 1 !important;
@@ -5021,3 +5075,67 @@ html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .dock-open-btn.
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .dock-open-btn.dock-open-btn {
     color: rgba(241, 241, 241, .74) !important;
 }
+
+/* 底部输入栏一级上拉菜单：悬停必须有背景（覆盖 transparent !important 与空 hover 规则） */
+html body #shell.shell #composer.composer .composer-footer :is(
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
+).composer-tool-popover :is(
+    .mode-model-choice,
+    .composer-mode-option,
+    .composer-api-models button,
+    .composer-api-branch summary,
+    .size-picker-option,
+    .video-flat-choice,
+    .video-flat-segments button,
+    #composerQualityPanel .quality-choice-grid button,
+    #composerCountPanel .count-cell,
+    #composerVideoSizeMenu .count-cell,
+    .video-reference-option,
+    .composer-kind-toggle button
+):not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
+    background-color: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
+    background-image: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer .composer-footer :is(
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
+).composer-tool-popover :is(
+    .mode-model-choice,
+    .composer-mode-option,
+    .composer-api-models button,
+    .composer-api-branch summary,
+    .size-picker-option,
+    .video-flat-choice,
+    .video-flat-segments button,
+    #composerQualityPanel .quality-choice-grid button,
+    #composerCountPanel .count-cell,
+    #composerVideoSizeMenu .count-cell,
+    .video-reference-option,
+    .composer-kind-toggle button
+):not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: #f1f3f6 !important;
+    background-color: #f1f3f6 !important;
+}
+
+/* Model row hover bg needs 4× class weight to beat the idle transparent rule. */
+html body #shell.shell #composer.composer #composerApiSettingsPopover
+    .composer-mode-model-list
+    .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
+    background-color: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover
+    .composer-mode-model-list
+    .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: #f1f3f6 !important;
+    background-color: #f1f3f6 !important;
+}
+
