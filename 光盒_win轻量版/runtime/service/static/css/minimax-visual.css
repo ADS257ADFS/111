@@ -300,14 +300,17 @@ html body #shell.shell #composer.composer.open {
     transform: translateX(-50%);
 }
 
-/* 底部框整体紧凑化：只收间距与区块高度，不改任何文字/图标大小 */
+/* 画布底部输入栏变矮：只动 #composer，不动右侧对话栏 */
 html body #shell.shell #composer.composer {
-    --composer-prompt-h: 84px;
-    --composer-sheet-min-h: calc(180px + var(--composer-prompt-h, 84px));
+    --composer-prompt-h: 48px;
+    /* 不再用过大的 min-height 撑出底部空底板 */
+    --composer-sheet-min-h: 0px;
 }
 html body #shell.shell #composer.composer .composer-card {
     gap: var(--ui-space-2) !important;
     padding: var(--ui-space-2) !important;
+    min-height: 0 !important;
+    height: auto !important;
 }
 /* Keep prompt padding for the topbar rail (参考/批量/模式); do not collapse to 0. */
 html body #shell.shell #composer.composer .composer-card .prompt-row {
@@ -3281,6 +3284,7 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     top: var(--ui-composer-surface-top) !important;
     right: var(--ui-composer-surface-side-inset) !important;
     left: var(--ui-composer-surface-side-inset) !important;
+    bottom: var(--ui-composer-surface-bottom-gap) !important;
     border-top: var(--ui-shell-divider-size) solid var(--ui-border) !important;
 }
 
@@ -3893,9 +3897,12 @@ html body #shell.shell #composer.composer.open[data-height-state="default"] {
     transition-property: opacity !important;
 }
 
-/* Outer sheet min-height tracks prompt height so the chrome expands upward with the field. */
+/* Outer sheet follows content; expanded state grows via --composer-prompt-h only. */
 html body #shell.shell #composer.composer {
-    --composer-sheet-min-h: calc(180px + var(--composer-prompt-h, 84px));
+    --composer-sheet-min-h: 0px;
+}
+html body #shell.shell #composer.composer .composer-card {
+    min-height: 0 !important;
 }
 
 html body #shell.shell #composer.composer.open[data-height-state="expanded"] .composer-card,

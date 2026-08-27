@@ -286,7 +286,11 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card .composer-card-surface {
     position: absolute;
     z-index: 1;
-    inset: 40px 10px 10px;
+    inset: auto;
+    top: 40px;
+    right: 10px;
+    bottom: 8px;
+    left: 10px;
     display: block;
     border: 1px solid var(--sc-border);
     border-radius: 18px;
