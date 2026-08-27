@@ -732,7 +732,7 @@ let _jimengLastVideoCommand = null;
                     <div class="composer-submenu-label">模型选择</div>
                     <div class="composer-mode-model-list" data-mode-model-list="${escapeHtml(mode)}">${customs.map((entry, idx) => bound(entry)
                         ? `<button type="button" class="mode-model-choice ${idx === activeIdx ? 'active' : ''}" data-mode-model-select="${escapeHtml(mode)}" data-mode-model-value="${escapeHtml(entry.name)}">${modeModelChoiceInner(entry.name, escapeHtml)}</button>`
-                        : `<button type="button" class="mode-model-choice is-unbound" disabled title="未绑定，请在 API 设置 · 我的模型中绑定中转站">${modeModelChoiceInner(entry.name, escapeHtml)}</button>`
+                        : `<button type="button" class="mode-model-choice is-unbound" disabled title="未绑定，请在 API 设置 · 画布显示名中绑定平台">${modeModelChoiceInner(entry.name, escapeHtml)}</button>`
                     ).join('')}</div>
                 </div>
             </div>`;
