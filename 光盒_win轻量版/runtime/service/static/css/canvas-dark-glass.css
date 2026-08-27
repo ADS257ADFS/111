@@ -464,7 +464,6 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
 
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
     .composer-kind-toggle button,
-    .has-size-choice-glider > button,
     .image-quick-toolbar button,
     .selection-capsule-bar button,
     .port-link-pick-shell button
@@ -475,7 +474,17 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
     border-color: transparent !important;
     background: transparent !important;
     box-shadow: none !important;
-}:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+}
+/* Size/quality/count cells: idle transparent; hover fill comes from minimax end layer */
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell .has-size-choice-glider > button:not(:hover):not(:focus-visible) {
+    position: relative;
+    z-index: 2;
+    color: var(--sc-text-secondary) !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
     .composer-kind-toggle button,
     .has-size-choice-glider > button,
     .image-quick-toolbar button,
@@ -1674,7 +1683,7 @@ and these rows must not depend on a travelling glider. */
         .composer-api-branch summary,
         .composer-api-models button,
         .composer-mode-model-list .mode-model-choice
-    ),
+    ):not(:hover):not(:focus-visible),
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerSizePopover :is(
         .size-picker-option,
@@ -1683,7 +1692,7 @@ and these rows must not depend on a travelling glider. */
         #composerCountPanel .count-cell,
         #composerVideoSizeMenu .count-cell,
         .video-flat-segments button
-    ) {
+    ):not(:hover):not(:focus-visible) {
     box-sizing: border-box !important;
     border: 1px solid rgba(255, 255, 255, .08) !important;
     border-radius: 8px !important;

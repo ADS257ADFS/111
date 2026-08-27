@@ -5270,3 +5270,36 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     background-size: var(--ui-canvas-grid-size, 18px) var(--ui-canvas-grid-size, 18px) !important;
 }
 
+/* 上拉菜单内按钮悬停：末层核弹。对齐一级菜单/工具栏悬停底 rgba(.10)。
+ * 压过 idle .025、glider transparent、以及仅改 border 的空 hover 规则。 */
+html:not(#ui-pop-hov-1):not(#ui-pop-hov-2):not(#ui-pop-hov-3):not(#ui-pop-hov-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer .composer-footer
+:is(
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
+)
+:is(button, summary, [role="button"], .mode-model-choice, .size-picker-option, .count-cell)
+:not(:disabled):not(.is-unbound):not([aria-disabled="true"]):not(.composer-tool-btn):not(.composer-height-toggle)
+:is(:hover, :focus-visible) {
+    background: rgba(255, 255, 255, .10) !important;
+    background-color: rgba(255, 255, 255, .10) !important;
+    background-image: none !important;
+}
+
+html:not(#ui-pop-hov-1):not(#ui-pop-hov-2):not(#ui-pop-hov-3):not(#ui-pop-hov-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer .composer-footer
+:is(
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
+)
+:is(button, summary, [role="button"], .mode-model-choice, .size-picker-option, .count-cell).active
+:not(:disabled):not(.is-unbound):is(:hover, :focus-visible) {
+    /* Keep selected readable; still show a hover lift above idle */
+    background: rgba(255, 255, 255, .12) !important;
+    background-color: rgba(255, 255, 255, .12) !important;
+}
+
