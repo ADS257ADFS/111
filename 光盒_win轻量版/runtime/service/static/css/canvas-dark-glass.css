@@ -1754,7 +1754,7 @@ and these rows must not depend on a travelling glider. */
     gap: 6px !important;
     color: var(--sc-text-secondary) !important;
     border: 1px solid transparent !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
     background: transparent !important;
     box-shadow: none !important;
     font-size: 13px !important;
