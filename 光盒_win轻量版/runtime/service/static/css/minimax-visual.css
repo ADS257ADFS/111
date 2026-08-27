@@ -370,7 +370,7 @@ html.studio-theme-dark body .shell.theme-dark,
 body.studio-theme-dark .shell.theme-dark {
     /* —— 旧通用语义变量（smart-canvas / canvas / index-shell / api-settings）—— */
     --page: var(--mm-canvas) !important;
-    --grid: rgba(255, 255, 255, .032) !important;
+    --grid: rgba(255, 255, 255, .022) !important;
     --panel: rgba(27, 27, 27, .97) !important;
     --card: var(--mm-card) !important;
     --card-solid: var(--mm-card) !important;
@@ -651,14 +651,14 @@ body.studio-theme-dark .shell,
 html.studio-theme-dark body .shell .board,
 body.studio-theme-dark .shell .board {
     background-color: var(--mm-canvas, #101010) !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .032)) .6px, transparent 1.1px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .022)) .6px, transparent 1.1px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
 html.studio-theme-dark body .canvas-gate,
 body.studio-theme-dark .canvas-gate {
     background-color: var(--mm-canvas, #101010) !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .032)) .6px, transparent 1.1px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .022)) .6px, transparent 1.1px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 

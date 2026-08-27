@@ -5,7 +5,7 @@
     --shadow:rgba(55,65,81,.12); --strong:var(--ui-accent); --strong-text:#ffffff; --accent:var(--ui-accent);
 }
 .theme-dark {
-    --page:var(--ui-surface-canvas); --grid:rgba(255,255,255,.032); --panel:var(--ui-surface-chrome); --card:var(--ui-surface-card);
+    --page:var(--ui-surface-canvas); --grid:rgba(255,255,255,.022); --panel:var(--ui-surface-chrome); --card:var(--ui-surface-card);
     --text:var(--ui-text); --muted:var(--ui-text-secondary); --faint:var(--ui-text-muted); --line:var(--ui-border); --soft:var(--ui-hover);
     --shadow:rgba(0,0,0,.38); --strong:var(--ui-accent); --strong-text:#ffffff; --accent:var(--ui-accent);
 }
@@ -1068,7 +1068,7 @@ video.node-img { object-fit:cover; background:transparent; }
 #composerQualityPanel .quality-choice-grid button,#composerCountPanel .count-cell { min-height:30px; border:0; border-radius:9px; background:transparent; color:var(--ui-text-secondary); font-size:10px; line-height:1; font-weight:445; }#composerQualityPanel .quality-choice-grid button:hover,
 #composerQualityPanel .quality-choice-grid button.active,
 #composerCountPanel .count-cell:hover,
-#composerCountPanel .count-cell.active{ background:transparent; }
+#composerCountPanel .count-cell.active{ background:var(--ui-hover, rgba(255,255,255,.08)); }
 #composerQualityPanel .quality-choice-grid button.active,
 #composerCountPanel .count-cell.active{color:var(--ui-accent);}
 .has-size-choice-glider { position:relative; isolation:isolate; }
