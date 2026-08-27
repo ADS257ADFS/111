@@ -228,7 +228,7 @@ html.lightbox-desktop-native .lightbox-native-window-controls button {
     width: 30px;
     height: 30px;
     border: 0;
-    border-radius: 6px;
+    border-radius: 0;
     background: transparent;
     color: currentColor;
     cursor: default;
@@ -236,7 +236,7 @@ html.lightbox-desktop-native .lightbox-native-window-controls button {
     overflow: visible;
 }
 
-/* 悬停光斑：方框，覆盖略大于图标区 */
+/* 悬停光斑：直角方框，覆盖略大于图标区 */
 html.lightbox-desktop-native .lightbox-native-window-controls button::before {
     content: "";
     position: absolute;
@@ -245,7 +245,7 @@ html.lightbox-desktop-native .lightbox-native-window-controls button::before {
     width: 30px;
     height: 30px;
     transform: translate(-50%, -50%);
-    border-radius: 6px;
+    border-radius: 0;
     background: transparent;
     transition: background-color .15s ease;
 }

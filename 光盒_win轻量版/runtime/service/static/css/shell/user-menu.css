@@ -29,11 +29,20 @@
 }
 
 .shell-user-menu-profile {
-    display: grid;
-    grid-template-columns: calc(var(--ui-control-h-lg) + var(--ui-space-2)) minmax(0, 1fr);
-    align-items: center;
-    gap: var(--ui-space-4);
-    padding: var(--ui-space-2) var(--ui-space-2) var(--ui-space-4);
+    display: block;
+    padding: var(--ui-space-1) var(--ui-space-2) var(--ui-space-3);
+}
+
+.shell-user-id {
+    margin: 0;
+    color: var(--ui-text-muted);
+    font-family: var(--ui-font);
+    font-size: 10px;
+    font-weight: var(--ui-weight-latin, 350);
+    font-variation-settings: "wght" var(--ui-weight-latin, 350);
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+    user-select: text;
 }
 
 .shell-user-avatar {
@@ -135,8 +144,8 @@
     padding: var(--ui-space-3) var(--ui-space-4);
     border: 0;
     border-radius: var(--ui-radius-card);
-    background: var(--ui-hover);
-    color: inherit;
+    background: var(--ui-accent);
+    color: #ffffff;
     font: inherit;
     text-align: left;
     cursor: pointer;
@@ -149,7 +158,7 @@
 .shell-user-points:hover,
 .shell-user-points:focus-visible {
     outline: none;
-    filter: brightness(1.04);
+    filter: brightness(1.06);
 }
 
 .shell-user-points-head,
@@ -171,12 +180,13 @@
 
 .shell-user-points-head {
     justify-content: space-between;
-    color: var(--ui-text-secondary);
+    color: #ffffff;
     font-size: var(--ui-type-meta);
 }
 
 .shell-user-points-head strong {
     font-weight: var(--ui-weight-regular);
+    color: #ffffff;
 }
 
 .shell-user-points-head > span {
@@ -187,30 +197,37 @@
     width: 15px;
     height: 15px;
     stroke-width: 1.55;
+    color: #ffffff;
+    stroke: #ffffff;
 }
 
 .shell-user-points-head strong:last-child {
-    color: var(--ui-text);
+    color: #ffffff;
     font-size: var(--ui-type-control);
     font-weight: var(--ui-weight-regular);
 }
 
 .shell-user-points-track {
-    display: none;
+    display: block;
+    height: 4px;
+    margin-top: var(--ui-space-2);
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .28);
 }
 
 .shell-user-points-track span {
     display: block;
-    width: 0;
+    width: 42%;
     height: 100%;
     border-radius: inherit;
-    background: var(--ui-accent);
+    background: #ffffff;
 }
 
 .shell-user-points-meta {
     justify-content: space-between;
     margin-top: var(--ui-space-2);
-    color: var(--ui-text-muted);
+    color: rgba(255, 255, 255, .82);
     font-size: var(--ui-type-meta);
 }
 
@@ -374,8 +391,20 @@ html.studio-theme-dark .shell-user-menu-item.is-current{color: #f1f2f4;}
 
 html.theme-dark .shell-user-points,
 html.studio-theme-dark .shell-user-points {
-    border-color: rgba(255, 255, 255, .06);
-    background: rgba(255, 255, 255, .055);
+    border-color: transparent;
+    background: var(--ui-accent);
+    color: #ffffff;
+}
+
+html.theme-dark .shell-user-points-head,
+html.theme-dark .shell-user-points-head strong,
+html.theme-dark .shell-user-points-head strong:last-child,
+html.theme-dark .shell-user-points-meta,
+html.studio-theme-dark .shell-user-points-head,
+html.studio-theme-dark .shell-user-points-head strong,
+html.studio-theme-dark .shell-user-points-head strong:last-child,
+html.studio-theme-dark .shell-user-points-meta {
+    color: #ffffff;
 }
 
 html.theme-dark .shell-user-menu-list,

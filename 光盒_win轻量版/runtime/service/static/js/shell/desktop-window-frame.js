@@ -64,13 +64,14 @@
         if (newBtn && newBtn.parentElement !== document.body) {
             document.body.appendChild(newBtn);
         }
-        // 原窗口栏中的精简模式入口移到对话栏标题区，位于“新建对话”左边。
+        // 原窗口栏中的精简模式入口移到对话栏标题区，位于「+」新建与收起之间。
         const compactBtn = document.querySelector('.lightbox-compact-btn');
-        const dockActionAnchor = document.getElementById('dockShellNewBtn') || document.getElementById('gptDockCloseBtn');
-        if (compactBtn && dockActionAnchor && compactBtn.parentElement !== dockActionAnchor.parentElement) {
+        const closeBtn = document.getElementById('gptDockCloseBtn');
+        const dockActions = closeBtn?.parentElement || document.querySelector('.dock-chrome-actions');
+        if (compactBtn && dockActions && closeBtn && compactBtn.parentElement !== dockActions) {
             compactBtn.classList.add('dock-chrome-btn');
             compactBtn.removeAttribute('tabindex');
-            dockActionAnchor.parentElement.insertBefore(compactBtn, dockActionAnchor);
+            dockActions.insertBefore(compactBtn, closeBtn);
         }
     };
     if (document.readyState === 'loading') {

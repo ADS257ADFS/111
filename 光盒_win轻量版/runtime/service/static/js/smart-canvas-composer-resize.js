@@ -22,7 +22,8 @@
         composer.dataset.heightState = isExpanded ? 'expanded' : 'default';
         // Keep bottom edge fixed; height changes only grow/shrink upward.
         composer.style.top = 'auto';
-        composer.style.bottom = '';
+        composer.style.bottom = 'var(--composer-bottom-gap)';
+        composer.style.transformOrigin = 'bottom center';
         toggle.setAttribute('aria-pressed', String(isExpanded));
         toggle.setAttribute('aria-label', isExpanded ? '恢复输入框高度' : '展开输入框');
         toggle.title = isExpanded ? '恢复输入框高度' : '展开输入框';

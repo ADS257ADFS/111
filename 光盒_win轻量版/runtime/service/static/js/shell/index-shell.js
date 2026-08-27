@@ -134,20 +134,26 @@
 
         function formatDockRelativeTime(value) {
             const timestamp = Number(value || 0);
-            if (!timestamp) return '';
-            const diff = Date.now() - timestamp;
-            const sec = Math.floor(diff / 1000);
-            if (sec < 60) return '刚刚';
-            const min = Math.floor(sec / 60);
-            if (min < 60) return `${min} 分钟前`;
-            const hour = Math.floor(min / 60);
-            if (hour < 24) return `${hour} 小时前`;
-            const day = Math.floor(hour / 24);
-            if (day < 30) return `${day} 天前`;
-            const month = Math.floor(day / 30);
-            if (month < 12) return `${month} 个月前`;
-            const year = Math.floor(day / 365);
-            return `${Math.max(year, 1)} 年前`;
+            const elapsed = Math.max(0, Date.now() - timestamp);
+            const minute = 60 * 1000;
+            const hour = 60 * minute;
+            const day = 24 * hour;
+            if (!timestamp || elapsed < minute) return '刚刚';
+            if (elapsed < hour) return `${Math.floor(elapsed / minute)}分钟`;
+            if (elapsed < day) return `${Math.floor(elapsed / hour)}小时`;
+            return `${Math.floor(elapsed / day)}天`;
+        }
+
+        function formatDockConversationMeta(item) {
+            const count = Number(
+                item?.message_count
+                ?? item?.messages_count
+                ?? item?.messageCount
+                ?? (Array.isArray(item?.messages) ? item.messages.length : 0)
+                ?? 0
+            );
+            const time = formatDockRelativeTime(item?.updated_at);
+            return `${count}p · ${time}`;
         }
 
         function normalizeDockMenuTitle(title) {
@@ -176,7 +182,7 @@
                 const id = String(item.id || '');
                 const title = normalizeDockMenuTitle(item.title);
                 const rawTitle = String(item.title || '').trim() || '未命名对话';
-                const time = formatDockRelativeTime(item.updated_at);
+                const time = formatDockConversationMeta(item);
                 const active = id && id === dockShellCurrentConversationId ? ' is-active' : '';
                 return `<div class="dock-chrome-menu-item${active}" role="menuitem">
                     <button type="button" class="dock-chrome-menu-item-open" data-conversation-id="${escapeDockMenuText(id)}" data-conversation-title="${escapeDockMenuText(rawTitle)}">
@@ -347,7 +353,6 @@
         function initDockTitleMenu() {
             const toggleBtn = document.getElementById('dockShellTitleMenuBtn');
             const menu = document.getElementById('dockShellTitleMenu');
-            const newBtn = document.getElementById('dockShellMenuNewBtn');
             const list = document.getElementById('dockShellMenuHistoryList');
             if (!toggleBtn || !menu || toggleBtn.dataset.bound) return;
             toggleBtn.dataset.bound = '1';
@@ -356,12 +361,6 @@
                 event.preventDefault();
                 event.stopPropagation();
                 toggleDockTitleMenu();
-            });
-
-            newBtn?.addEventListener('click', event => {
-                event.preventDefault();
-                postToGptDockFrame({ source: 'shell', type: 'dock-shell-new' });
-                toggleDockTitleMenu(false);
             });
 
             list?.addEventListener('click', event => {
