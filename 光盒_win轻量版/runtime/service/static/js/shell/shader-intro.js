@@ -2,10 +2,8 @@
  * Independent rounded shader startup panel → fullscreen dark software.
  * Waits for the animation to finish before expanding into the app.
  *
- * Perf notes (Windows WebView2):
- * - Fragment shader is fill-rate heavy; render at ~55% CSS pixels, DPR 1.
- * - Stop the rAF/WebGL loop BEFORE native maximize — resize+GL was the stutter.
- * - Exit is opacity/scale only (no blur filters).
+ * Reveal: keep wordmark + shader stage at opacity 0 until the first
+ * WebGL frame paints, then fade both 0→1 together (no early text flash).
  */
 const THREE_URL = "/static/vendor/js/three-0.160.0.module.js?v=2026.08.27.shader3";
 /* One visual shader cycle (~fract period at 60fps), then enter the app. */
@@ -100,12 +98,15 @@ async function boot() {
   if (!root || !stage) return;
 
   document.documentElement.classList.add("lightbox-shader-intro-active");
+  /* Hold text/stage invisible until the first shader frame is ready. */
+  root.classList.remove("is-ready");
 
   let THREE;
   try {
     THREE = await import(THREE_URL);
   } catch (err) {
     console.warn("[shader-intro] three.js load failed", err);
+    root.classList.add("is-ready");
     await enterFullscreenSoftware();
     finishIntro(root);
     return;
@@ -147,6 +148,7 @@ async function boot() {
   let animationId = 0;
   let disposed = false;
   let exitArmed = false;
+  let revealArmed = false;
   let startMs = 0;
   let lastFrameMs = 0;
   /* ~36fps is plenty for this abstract shader; leaves headroom for UI boot. */
@@ -163,6 +165,14 @@ async function boot() {
     uniforms.resolution.value.y = rh;
   };
 
+  const revealWithFirstFrame = () => {
+    if (revealArmed || disposed) return;
+    revealArmed = true;
+    /* Sync: shader stage + wordmark fade 0→1 together once motion exists. */
+    root.classList.add("is-ready");
+    window.setTimeout(() => startExit(root, cleanup), PLAY_MS);
+  };
+
   const animate = (now) => {
     if (disposed) return;
     animationId = requestAnimationFrame(animate);
@@ -173,6 +183,10 @@ async function boot() {
     /* Clock from rAF timestamp — steadier than fixed += 0.05 under jank. */
     uniforms.time.value = 1.0 + (t - startMs) * 0.001 * 3;
     renderer.render(scene, camera);
+    if (!revealArmed) {
+      /* After the first paint, reveal on the next frame so the canvas is on-screen. */
+      requestAnimationFrame(revealWithFirstFrame);
+    }
   };
 
   const cleanup = () => {
@@ -193,18 +207,9 @@ async function boot() {
     } catch (_) {}
   };
 
-  const armExit = () => {
-    if (exitArmed) return;
-    exitArmed = true;
-    // Wait for one shader cycle, then expand into the app (no replay).
-    window.setTimeout(() => startExit(root, cleanup), PLAY_MS);
-  };
-
   onResize();
   window.addEventListener("resize", onResize, { passive: true });
   animate();
-  // Start the play clock only after the first painted frame.
-  requestAnimationFrame(() => requestAnimationFrame(armExit));
 
   window.setTimeout(() => {
     if (!root.classList.contains("is-done")) startExit(root, cleanup);

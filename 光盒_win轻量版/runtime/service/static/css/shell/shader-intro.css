@@ -77,6 +77,12 @@ html.lightbox-shader-intro-active :is(
     height: 100%;
     background: #000;
     overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lightbox-shader-intro.is-ready .lightbox-shader-intro-stage {
+    opacity: 1;
 }
 
 .lightbox-shader-intro-stage canvas {
@@ -85,7 +91,7 @@ html.lightbox-shader-intro-active :is(
     height: 100% !important;
 }
 
-/* Same wordmark as sidebar logo; 1.5× prior intro type size. */
+/* Same wordmark as sidebar logo; opacity-only reveal, gated until shader paints. */
 .lightbox-shader-intro-label {
     position: absolute;
     inset: 0;
@@ -96,8 +102,11 @@ html.lightbox-shader-intro-active :is(
     padding: 0 1.5rem;
     pointer-events: none;
     opacity: 0;
-    transform: translateY(12px) scale(0.97);
-    animation: lightbox-shader-intro-label-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards;
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lightbox-shader-intro.is-ready .lightbox-shader-intro-label {
+    opacity: 1;
 }
 
 .lightbox-shader-intro-label img {
@@ -108,26 +117,16 @@ html.lightbox-shader-intro-active :is(
     max-width: min(86%, 320px);
     object-fit: contain;
     object-position: center;
-    /* Match sidebar dark-mode wordmark (black glyph → white).
-       Isolating the filter avoids refiltering during label opacity anim. */
+    /* Match sidebar dark-mode wordmark (black glyph → white). */
     filter: brightness(0) invert(1);
     transform: translateZ(0);
-    will-change: auto;
     user-select: none;
     -webkit-user-drag: none;
-}
-
-@keyframes lightbox-shader-intro-label-in {
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
 }
 
 .lightbox-shader-intro.is-exiting .lightbox-shader-intro-label {
     opacity: 0;
     transition: opacity 0.35s ease;
-    animation: none;
 }
 
 /* Desktop: fill the already-rounded native intro window — one clip layer only. */
