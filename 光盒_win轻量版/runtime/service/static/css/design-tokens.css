@@ -271,7 +271,7 @@ body.studio-theme-dark {
 :root {
     --ui-titlebar-h: 28px;
     --ui-sidebar-w: 208px;
-    --ui-sidebar-logo-h: 17.5px; /* Welcome mark; +25% vs prior 14px */
+    --ui-sidebar-logo-h: 11.7px; /* Welcome mark; -1/3 vs 17.5px */
     --ui-dock-w: 460px;
     --ui-composer-w: 760px;
     --ui-composer-surface-h: 174px;
