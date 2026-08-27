@@ -3556,6 +3556,32 @@ html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not
     color: var(--ui-text) !important;
 }
 
+/* M43 会把右键菜单文字锁成 --ui-text；禁用项需同级 specificity 才能文字与图标一起变灰。 */
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, [role="menuitem"]):disabled,
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, [role="menuitem"])[aria-disabled="true"],
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, [role="menuitem"]):disabled :where(:not(svg):not(svg *)),
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, [role="menuitem"])[aria-disabled="true"] :where(:not(svg):not(svg *)) {
+    color: var(--ui-text-disabled) !important;
+}
+
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, [role="menuitem"]):disabled :is(i, svg, svg *),
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, [role="menuitem"])[aria-disabled="true"] :is(i, svg, svg *) {
+    color: var(--ui-text-disabled) !important;
+    stroke: currentColor !important;
+}
+
 /* M44：深色模式下发送区只保留积分内容和发送按钮，移除两者外层底框。 */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell
     #composer.composer .composer-footer .composer-actions .composer-run-capsule {
