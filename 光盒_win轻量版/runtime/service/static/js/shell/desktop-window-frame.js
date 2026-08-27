@@ -84,42 +84,10 @@
 
     let compactDockWasCollapsed = false;
     let compactDockWasHidden = false;
-    let compactControlsHome = null;
-    const mountCompactControls = compact => {
-        const controls = document.querySelector('.lightbox-compact-controls');
-        const dockChrome = document.querySelector('.gpt-dock .dock-chrome');
-        if (!controls || !dockChrome) return;
-        if (compact) {
-            if (!compactControlsHome) {
-                compactControlsHome = {
-                    parent: controls.parentElement,
-                    next: controls.nextElementSibling,
-                };
-            }
-            if (controls.parentElement !== dockChrome) {
-                dockChrome.insertBefore(controls, dockChrome.firstChild);
-            }
-            return;
-        }
-        if (compactControlsHome?.parent && controls.parentElement !== compactControlsHome.parent) {
-            const { parent, next } = compactControlsHome;
-            if (next && next.parentElement === parent) parent.insertBefore(controls, next);
-            else parent.appendChild(controls);
-        }
-    };
-
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            relocateTitlebarButtons();
-            if (document.documentElement.classList.contains('lightbox-compact-mode')) {
-                mountCompactControls(true);
-            }
-        });
+        document.addEventListener('DOMContentLoaded', relocateTitlebarButtons);
     } else {
         relocateTitlebarButtons();
-        if (document.documentElement.classList.contains('lightbox-compact-mode')) {
-            mountCompactControls(true);
-        }
     }
 
     // 顶栏日夜切换胶囊：视觉状态由 CSS 跟随主题 class，这里只负责切主题
@@ -145,7 +113,6 @@
             window.openGptDock?.();
         }
         root.classList.toggle('lightbox-compact-mode', compact);
-        mountCompactControls(compact);
         const compactBtn = document.querySelector('.lightbox-compact-btn');
         compactBtn?.classList.toggle('active', compact);
         compactBtn?.setAttribute('aria-pressed', compact ? 'true' : 'false');
@@ -156,7 +123,6 @@
         if(!compact){
             if(compactDockWasCollapsed) window.closeGptDock?.();
             if(compactDockWasHidden) root.classList.add('studio-hide-gpt-dock');
-            document.querySelector('[data-compact-pin]')?.classList.remove('active');
             syncWindowState(await api()?.get_window_state());
         }
     };
@@ -169,17 +135,6 @@
             if(action === 'compact') syncCompactState(await api()?.toggle_compact_window());
             if(action === 'close') api()?.close_window();
         });
-    });
-
-    document.querySelector('[data-compact-pin]')?.addEventListener('click', event => {
-        const button = event.currentTarget;
-        const next = !button.classList.contains('active');
-        api()?.set_window_topmost(next);
-        button.classList.toggle('active', next);
-    });
-
-    document.querySelector('[data-compact-restore]')?.addEventListener('click', async () => {
-        syncCompactState(await api()?.toggle_compact_window());
     });
 
     document.querySelectorAll('[data-native-window-resize]').forEach(handle => {

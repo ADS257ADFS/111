@@ -1442,7 +1442,7 @@ html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark).lightbox-window
 }
 
 /* ---------------------------------------------------------------- */
-/* 精简模式：窗口缩成小窗，只保留对话栏；右上角置顶 + 回归按钮        */
+/* 精简模式：窗口缩成小窗，只保留对话栏                              */
 /* ---------------------------------------------------------------- */
 
 /* 精简模式入口已搬到对话栏标题区，原窗口控制区不再显示它。 */
@@ -1459,8 +1459,6 @@ html.lightbox-desktop-native .lightbox-native-window-controls button.lightbox-co
     stroke-width: 1.7;
 }
 
-.lightbox-compact-controls { display: none; }
-
 /* 对话栏右上角的精简入口与同组按钮保持一致。 */
 html.lightbox-desktop-native .gpt-dock .lightbox-compact-btn {
     display: inline-flex;
@@ -1473,38 +1471,6 @@ html.lightbox-desktop-native .gpt-dock .lightbox-compact-btn.active {
     background: rgba(var(--ui-accent-rgb), .10);
 }
 
-/* 置顶/回归默认隐藏；精简模式下由 dock-chrome 内联展示（见下方合并顶栏规则） */
-html.lightbox-compact-mode .lightbox-compact-controls {
-    display: none;
-}
-
-html.lightbox-compact-mode .lightbox-compact-controls button {
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 0;
-    border-radius: 999px;
-    background: transparent;
-    color: #747b85;
-    cursor: pointer;
-}html.lightbox-compact-mode .lightbox-compact-controls button:hover{
-    background: rgba(0, 0, 0, .08);
-}
-
-html.lightbox-compact-mode .lightbox-compact-controls button.active {
-    color: var(--ui-accent);
-    background: rgba(var(--ui-accent-rgb), .12);
-}
-
-html.lightbox-compact-mode .lightbox-compact-controls button :is(i, svg) {
-    width: 13px;
-    height: 13px;
-    stroke-width: 1.8;
-}html.lightbox-desktop-native.lightbox-compact-mode:is(.theme-dark, .studio-theme-dark) .lightbox-compact-controls button:hover{
-    background: rgba(255, 255, 255, .10);
-}
 
 /* 隐藏完整布局：应用快捷入口、窗口控制、左侧栏、画布、顶部按钮 */
 html.lightbox-compact-mode .lightbox-native-app-actions,
@@ -1632,28 +1598,6 @@ html.lightbox-compact-mode .gpt-dock .dock-chrome-btn {
 html.lightbox-compact-mode .gpt-dock iframe {
     flex: 1 1 auto !important;
     min-height: 0 !important;
-}
-
-/* 置顶/回归并入 dock-chrome 首列 */
-html.lightbox-compact-mode .lightbox-compact-controls {
-    display: flex !important;
-    align-items: center !important;
-    flex: 0 0 auto !important;
-    gap: 0 !important;
-    position: static !important;
-    top: auto !important;
-    left: auto !important;
-    height: 100% !important;
-    margin: 0 !important;
-    padding: 0 0 0 2px !important;
-    z-index: auto !important;
-    pointer-events: auto !important;
-}
-
-html.lightbox-compact-mode .lightbox-compact-controls button {
-    width: 26px !important;
-    height: 26px !important;
-    flex: 0 0 26px !important;
 }
 
 /* 窗口背景与面板同色，避免外框出现异色细边。 */
