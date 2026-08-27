@@ -3080,6 +3080,16 @@ html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-menu
     padding: var(--ui-space-4) !important;
 }
 
+:is(html, html.theme-dark, html.studio-theme-dark) body .canvas-context-menu:not([hidden]) {
+    /* 分割线占高后略加长面板，避免条目挤在一起 */
+    padding-block: calc(var(--ui-space-4) + 4px) !important;
+    padding-inline: var(--ui-space-4) !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body .canvas-context-menu .ui-menu-divider {
+    margin-block: calc(var(--ui-space-2) + 2px) !important;
+}
+
 :is(html, html.theme-dark, html.studio-theme-dark) body .node-context-menu button {
     height: auto !important;
     min-height: calc(var(--ui-control-h) + var(--ui-space-2)) !important;
