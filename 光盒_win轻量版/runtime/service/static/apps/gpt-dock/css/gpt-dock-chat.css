@@ -422,13 +422,13 @@ body .send-btn.is-stopping .send-stop-square { width:11px; height:11px; border-r
 }
 .composer-body {
     height: auto !important;
-    min-height: 178px !important;
+    min-height: 128px !important;
     flex: initial !important;
     padding: 14px !important;
 }
 textarea {
     flex: initial !important;
-    min-height: 84px !important;
+    min-height: 52px !important;
 }
 .composer-inside-foot {
     margin-top: 8px !important;
