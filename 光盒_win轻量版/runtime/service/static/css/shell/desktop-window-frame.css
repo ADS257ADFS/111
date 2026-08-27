@@ -1529,50 +1529,111 @@ html.lightbox-compact-mode .app-shell .stage {
     pointer-events: none !important;
 }
 
-/* 精简模式：对话顶栏并入窗口标题条，避免双层顶栏留白。 */
+/* 精简模式：单行顶栏 = 置顶/回归 + 对话标题 + 操作，去掉双层标题与多余留白。 */
+html.lightbox-compact-mode .lightbox-native-titlebar {
+    display: none !important;
+}
+
+html.lightbox-compact-mode .app-shell {
+    margin-top: 0 !important;
+    height: 100vh !important;
+}
+
 html.lightbox-compact-mode .gpt-dock {
     display: flex !important;
     flex-direction: column !important;
+    position: fixed !important;
     inset: 0 !important;
-    width: auto !important;
-    padding: var(--mm-titlebar-h, 36px) 0 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    padding: 0 !important;
     transform: none !important;
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
     transition: none !important;
     box-sizing: border-box !important;
-    position: relative !important;
+    border: 0 !important;
+    background: #fff !important;
+    overflow: hidden !important;
+}
+
+html.lightbox-compact-mode .gpt-dock::before {
+    inset: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+html.lightbox-compact-mode:is(.theme-dark, .studio-theme-dark) .gpt-dock {
+    background: #1e1f22 !important;
 }
 
 html.lightbox-compact-mode .gpt-dock .dock-chrome {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
     z-index: 6 !important;
+    flex: 0 0 var(--ui-titlebar-h, 28px) !important;
     display: flex !important;
     align-items: center !important;
-    height: var(--mm-titlebar-h, 36px) !important;
-    min-height: var(--mm-titlebar-h, 36px) !important;
-    max-height: var(--mm-titlebar-h, 36px) !important;
-    padding: 0 10px 0 56px !important;
+    gap: 2px !important;
+    height: var(--ui-titlebar-h, 28px) !important;
+    min-height: var(--ui-titlebar-h, 28px) !important;
+    max-height: var(--ui-titlebar-h, 28px) !important;
+    padding: 0 6px 0 2px !important;
     border-bottom: 1px solid var(--ui-border) !important;
-    background: transparent !important;
+    background: inherit !important;
     box-sizing: border-box !important;
+    cursor: default;
 }
 
 html.lightbox-compact-mode .gpt-dock .dock-chrome-spacer {
     margin: 0 !important;
-    min-width: 8px !important;
+    min-width: 4px !important;
     flex: 1 1 auto !important;
 }
 
-html.lightbox-compact-mode .gpt-dock .dock-chrome-title-group,
+html.lightbox-compact-mode .gpt-dock .dock-chrome-title-group {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 100% !important;
+    padding-left: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+html.lightbox-compact-mode .gpt-dock .dock-chrome-title-row,
+html.lightbox-compact-mode .gpt-dock .dock-chrome-title-trigger {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    padding: 0 4px !important;
+    gap: 2px !important;
+}
+
+html.lightbox-compact-mode .gpt-dock .dock-chrome-title {
+    font-size: var(--ui-type-compact-label, 12px) !important;
+    line-height: 1 !important;
+}
+
 html.lightbox-compact-mode .gpt-dock .dock-chrome-actions {
+    flex: 0 0 auto !important;
     height: 100% !important;
     display: flex !important;
     align-items: center !important;
+    gap: 0 !important;
+}
+
+html.lightbox-compact-mode .gpt-dock .dock-chrome-btn {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    padding: 0 !important;
 }
 
 html.lightbox-compact-mode .gpt-dock iframe {
@@ -1580,35 +1641,26 @@ html.lightbox-compact-mode .gpt-dock iframe {
     min-height: 0 !important;
 }
 
-/* 置顶/回归：与标题条同一行靠左 */
+/* 置顶/回归并入 dock-chrome 首列 */
 html.lightbox-compact-mode .lightbox-compact-controls {
     display: flex !important;
     align-items: center !important;
-    gap: 2px !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 8px !important;
-    height: var(--mm-titlebar-h, 36px) !important;
-    z-index: 520 !important;
+    flex: 0 0 auto !important;
+    gap: 0 !important;
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 0 0 2px !important;
+    z-index: auto !important;
     pointer-events: auto !important;
 }
 
 html.lightbox-compact-mode .lightbox-compact-controls button {
-    width: 28px !important;
-    height: 28px !important;
-}
-
-html.lightbox-compact-mode .lightbox-native-titlebar {
-    background: transparent !important;
-    box-shadow: none !important;
-    border: 0 !important;
-    pointer-events: none !important;
-}
-
-html.lightbox-compact-mode .lightbox-native-titlebar-drag,
-html.lightbox-compact-mode .lightbox-native-window-controls,
-html.lightbox-compact-mode .lightbox-native-window-controls * {
-    pointer-events: auto !important;
+    width: 26px !important;
+    height: 26px !important;
+    flex: 0 0 26px !important;
 }
 
 /* 窗口背景与面板同色，避免外框出现异色细边。 */
@@ -1620,10 +1672,6 @@ html.lightbox-compact-mode .app-shell {
 html.lightbox-compact-mode:is(.theme-dark, .studio-theme-dark) body,
 html.lightbox-compact-mode:is(.theme-dark, .studio-theme-dark) .app-shell {
     background: #1e1f22 !important;
-}
-
-html.lightbox-compact-mode .gpt-dock::before {
-    inset: 0 !important;
 }
 
 /* 精简模式下不允许收起对话栏，否则小窗会变成空白 */

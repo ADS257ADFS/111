@@ -26,8 +26,28 @@ body.gpt-dock-canvas-mode { margin:0; height:100vh; overflow:hidden; color:#1718
 .topbar { height:82px; padding:0 clamp(18px,5vw,36px); border-bottom:1px solid var(--ui-border,#eef2f7); background:var(--ui-surface-chrome,#f8fafc); backdrop-filter:none; z-index:5; }
 .topbar-inner { width:min(var(--content-width),100%); height:100%; margin:0 auto; padding-right:52px; display:flex; align-items:center; justify-content:space-between; gap:18px; }
 .title-block { min-width:0; }
-/* 精简模式：左上角标题让位给外层的置顶/回归按钮 */
-html.lightbox-compact-mode .title-block { visibility:hidden; }
+/* 精简模式：壳层 dock-chrome 已接管标题，iframe 内顶栏完全收起 */
+html.lightbox-compact-mode .topbar,
+html.lightbox-compact-mode .topbar-inner,
+html.lightbox-compact-mode .title-block {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+}
+
+html.lightbox-compact-mode .messages {
+    padding-top: 12px !important;
+    padding-bottom: 16px !important;
+}
+
+html.lightbox-compact-mode .composer-wrap {
+    padding-top: 10px !important;
+    padding-bottom: 8px !important;
+}
 .title-block h1 { font-size:14px; font-weight:600; letter-spacing:.28em; text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .title-block p { margin-top:5px; font-size:10px; color:#9aa0a9; font-weight:600; }
 .top-actions { display:flex; align-items:center; gap:10px; position:relative; }

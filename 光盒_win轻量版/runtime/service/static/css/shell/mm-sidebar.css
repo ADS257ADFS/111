@@ -1,6 +1,10 @@
 /* MiniMax 式壳层左侧栏与资产树。 */
 .mm-sidebar { display: none; }
 
+html.lightbox-compact-mode .mm-sidebar {
+    display: none !important;
+}
+
 html.lightbox-desktop-native:not(.lightbox-compact-mode) .mm-sidebar {
     position: fixed;
     top: var(--mm-titlebar-h, 28px);
