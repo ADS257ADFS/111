@@ -3371,7 +3371,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-inpu
 .composer-height-toggle {
     position:absolute;
     right:12px;
-    top:43px;
+    top:37px;
     z-index:6;
     width:26px;
     height:26px;
@@ -3630,7 +3630,12 @@ html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover .has-strong-s
 .shell .composer .composer-footer .composer-footer-bar {
     position:relative;
     isolation:isolate;
-    transform:translateY(-6px);
+    /* Sit on the same baseline as right-dock attach/send (~30px below prior). */
+    transform:translateY(44px);
+}
+.shell .composer .composer-footer .composer-footer-tools {
+    position:relative;
+    top:0;
 }
 .shell .composer .composer-footer .composer-footer-glider {
     display:block;
@@ -3773,7 +3778,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-footer 
     margin-right:8px;
 }
 .shell .composer .composer-card {
-    padding-bottom:16px !important;
+    padding-bottom:8px !important;
 }
 .shell .composer .input-thumbs-row {
     padding:2px 12px 4px 16px;

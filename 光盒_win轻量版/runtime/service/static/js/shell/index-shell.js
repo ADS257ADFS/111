@@ -243,7 +243,7 @@
             const rect = anchor.getBoundingClientRect();
             const gap = 2;
             const edge = 12;
-            const menuWidth = menu.offsetWidth || 280;
+            const menuWidth = menu.offsetWidth || 176;
             const menuHeight = menu.offsetHeight || 240;
             let left = rect.left;
             let top = rect.bottom + gap;
