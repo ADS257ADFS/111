@@ -370,7 +370,7 @@ html.studio-theme-dark body .shell.theme-dark,
 body.studio-theme-dark .shell.theme-dark {
     /* —— 旧通用语义变量（smart-canvas / canvas / index-shell / api-settings）—— */
     --page: var(--mm-canvas) !important;
-    --grid: rgba(255, 255, 255, .055) !important;
+    --grid: rgba(255, 255, 255, .10) !important;
     --panel: rgba(27, 27, 27, .97) !important;
     --card: var(--mm-card) !important;
     --card-solid: var(--mm-card) !important;
@@ -654,7 +654,7 @@ html.studio-theme-dark body .shell .board,
 body.studio-theme-dark .shell .board,
 :is(html.theme-dark, html.studio-theme-dark) body :is(#shell.shell, .shell, .board, .stage) {
     background-color: var(--mm-canvas, #101010) !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .055)) .5px, transparent 1px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .10)) .65px, transparent 1.2px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
@@ -662,7 +662,7 @@ html.studio-theme-dark body .canvas-gate,
 body.studio-theme-dark .canvas-gate,
 :is(html.theme-dark, html.studio-theme-dark) body .canvas-gate {
     background-color: var(--mm-canvas, #101010) !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .055)) .5px, transparent 1px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .10)) .65px, transparent 1.2px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
@@ -5315,16 +5315,16 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     background-image: none !important;
 }
 
-/* 深色网格点：可见但不刺眼（.006 几乎看不见；旧 .08 过亮） */
+/* 深色网格点：必须看得见：约 10% 白点 + 稍大半径（曾误压到 .006/.035） */
 :is(html.theme-dark, html.studio-theme-dark) {
-    --ui-canvas-grid-dot: rgba(255, 255, 255, .055) !important;
-    --grid: rgba(255, 255, 255, .055) !important;
+    --ui-canvas-grid-dot: rgba(255, 255, 255, .10) !important;
+    --grid: rgba(255, 255, 255, .10) !important;
 }
 
 html:not(#ui-grid-dim-1):not(#ui-grid-dim-2):not(#ui-grid-dim-3):not(#ui-grid-dim-4):is(.theme-dark, .studio-theme-dark)
 body :is(#shell.shell, .shell, .board, .stage, .canvas-gate),
 :is(html.theme-dark, html.studio-theme-dark) body :is(#shell.shell, .shell, .board, .stage, .canvas-gate) {
-    background-image: radial-gradient(rgba(255, 255, 255, .035) .5px, transparent 1px) !important;
+    background-image: radial-gradient(rgba(255, 255, 255, .10) .65px, transparent 1.2px) !important;
     background-size: var(--ui-canvas-grid-size, 18px) var(--ui-canvas-grid-size, 18px) !important;
 }
 
