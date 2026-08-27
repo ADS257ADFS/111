@@ -1647,83 +1647,74 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
     button.is-mode-hover,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindTopbar #apiKindToggle.composer-kind-toggle
-    button.is-mode-hover :is(i, svg, span),
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
-    button.active,
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
-    button.active :is(i, svg, span) {
-    color: var(--ui-text) !important;
+    button.is-mode-hover :is(i, svg, span) {
+    color: #747b85 !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindTopbar #apiKindToggle.composer-kind-toggle
-    button:not(.is-mode-hover),
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle
-    button:not(.is-mode-hover) :is(i, svg, span),
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
     button.active,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
     button.active :is(i, svg, span) {
-    color: var(--ui-text) !important;
+    color: #fff !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover):not(.active),
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover):not(.active) :is(i, svg, span) {
+    color: #747b85 !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindTopbar #apiKindToggle.composer-kind-toggle
     button.is-mode-hover :is(i, svg),
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
-    button.active :is(i, svg) {
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover):not(.active) :is(i, svg) {
     stroke: currentColor !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindTopbar #apiKindToggle.composer-kind-toggle
-    button:not(.is-mode-hover) :is(i, svg),
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
     button.active :is(i, svg) {
-    stroke: currentColor !important;
+    stroke: #fff !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover,
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover :is(i, svg, span),
-html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover)) button.active,
-html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover)) button.active :is(i, svg, span) {
-    color: var(--ui-text) !important;
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover :is(i, svg, span) {
+    color: #747b85 !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:not(.is-mode-hover),
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active,
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:not(.is-mode-hover) :is(i, svg, span),
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active :is(i, svg, span) {
+    color: #fff !important;
+}
+
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover) button.active,
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:not(.is-mode-hover):not(.active),
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover) button.active :is(i, svg, span) {
-    color: var(--ui-text) !important;
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:not(.is-mode-hover):not(.active) :is(i, svg, span) {
+    color: #747b85 !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover :is(i, svg),
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover)) button.active :is(i, svg) {
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:not(.is-mode-hover):not(.active) :is(i, svg) {
     stroke: currentColor !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:not(.is-mode-hover) :is(i, svg),
-html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover) button.active :is(i, svg) {
-    stroke: currentColor !important;
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active :is(i, svg) {
+    stroke: #fff !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
@@ -3394,25 +3385,53 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     background: var(--ui-hover) !important;
 }
 
-/* 四模式切换：悬停/选中由 glider 胶囊承载，按钮面保持透明 */
+/* 四模式切换：选中由 glider 胶囊承载；悬停仅白底圆角，文字颜色不变（同批量） */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:is(.active, .is-mode-hover),
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:is(.active, .is-mode-hover):is(:hover, :focus, :focus-visible, :active),
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active:is(:hover, :focus, :focus-visible, :active),
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:is(.active, .is-mode-hover),
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active,
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:is(.active, .is-mode-hover):is(:hover, :focus, :focus-visible, :active) {
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active:is(:hover, :focus, :focus-visible, :active) {
     color: #fff !important;
     background: transparent !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:is(.active, .is-mode-hover) :is(i, svg, span),
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active :is(i, svg, span),
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:is(.active, .is-mode-hover) :is(i, svg, span) {
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active :is(i, svg, span) {
     color: #fff !important;
     stroke: #fff !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover {
+    color: #747b85 !important;
+    background: #ffffff !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover :is(i, svg, span),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover :is(i, svg, span) {
+    color: #747b85 !important;
+    stroke: #747b85 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover {
+    color: var(--ui-text) !important;
+    background: #000000 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover :is(i, svg, span) {
+    color: var(--ui-text) !important;
+    stroke: currentColor !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
@@ -4734,16 +4753,28 @@ html body #shellUserMenu.shell-user-menu .shell-user-points-meta {
     color: rgba(255, 255, 255, .86) !important;
 }
 
-/* 参考/批量/图片/视频：浅色悬停白、深色悬停黑（文件末尾压过其它皮肤）。 */
+/* 参考/批量/图片/视频：浅色悬停白、深色悬停黑（文件末尾压过其它皮肤）。
+   模式按钮悬停排除 .active，避免盖住选中胶囊。 */
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch, #apiKindToggle button):is(:hover, .is-mode-hover) {
+    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch):is(:hover, :focus-visible),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar #apiKindToggle button:is(:hover, .is-mode-hover):not(.active) {
     background: #ffffff !important;
     background-color: #ffffff !important;
     background-image: none !important;
+    color: #747b85 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar #apiKindToggle button:is(:hover, .is-mode-hover):not(.active) :is(i, svg, span) {
+    color: #747b85 !important;
+    stroke: #747b85 !important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch, #apiKindToggle button):is(:hover, .is-mode-hover) {
+    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch):is(:hover, :focus-visible):not(.is-on):not([aria-pressed="true"]),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar #apiKindToggle button:is(:hover, .is-mode-hover):not(.active) {
     background: #000000 !important;
     background-color: #000000 !important;
     background-image: none !important;
