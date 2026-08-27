@@ -14,9 +14,25 @@
     const COLLAPSE_KEY = 'mm_sidebar_collapsed';
     const ASSET_TREE_STATE_KEY = 'mm_sidebar_asset_tree';
     const ASSET_FOLDER_KEY = 'mm_sidebar_asset_folders';
+    const ASSET_KIND_VIEW_KEY = 'mm_sidebar_asset_kind_view';
     const THUMB_CACHE_KEY = 'mm_sidebar_thumbs';
+    const ASSET_KIND_TITLES = {
+        image: '图片资产',
+        prompt: '提示词',
+        video: '视频资产',
+        audio: '音频资产',
+    };
+    const ASSET_KIND_EMPTY = {
+        image: '暂无图片资产',
+        prompt: '暂无提示词',
+        video: '暂无视频资产',
+        audio: '暂无音频资产',
+    };
     let assetFolderMenu = null;
     let assetFolderMenuTarget = null;
+    let activeAssetKind = '';
+    let kindViewMode = 'grid';
+    let kindAssetsLoading = false;
     const VIDEO_URL_RE = /\.(mp4|webm|mov|m4v|avi)([?#]|$)/i;
     let records = [];
     let loading = false;
@@ -105,6 +121,13 @@
         menu.innerHTML = `
             <button class="mm-recent-rename" type="button" role="menuitem"><i data-lucide="pencil"></i><span>重命名</span></button>
             <button class="mm-recent-delete" type="button" role="menuitem"><i data-lucide="trash-2"></i><span>删除</span></button>`;
+        menu.addEventListener('mousedown', event => {
+            event.stopPropagation();
+        });
+        menu.addEventListener('pointerdown', event => {
+            event.stopPropagation();
+        });
+        menu.addEventListener('click', event => event.stopPropagation());
         menu.querySelector('.mm-recent-rename')?.addEventListener('click', event => {
             event.preventDefault();
             event.stopPropagation();
@@ -129,12 +152,17 @@
         const menu = ensureRecentMenu();
         const wasOpen = recentMenuRow === row && !menu.hidden;
         closeRecentMenus();
-        if(wasOpen) return;
+        if(wasOpen || !trigger || !row || !item) return;
         recentMenuItem = item;
         recentMenuRow = row;
         row.classList.add('menu-open');
         trigger.setAttribute('aria-expanded', 'true');
         menu.hidden = false;
+        // Measure after paint so fixed menu is not positioned with a zero box.
+        requestAnimationFrame(() => {
+            if(recentMenuRow !== row || menu.hidden) return;
+            positionRecentMenu(trigger, menu);
+        });
         positionRecentMenu(trigger, menu);
     }
 
@@ -319,14 +347,23 @@
             const item = records.find(record => String(record.id) === row.dataset.canvasId);
             if(!item) return;
             row.querySelector('.mm-recent-open')?.addEventListener('click', event => {
+                // Ignore clicks that actually landed on the ellipsis (or its children).
+                if(event.target?.closest?.('.mm-recent-actions, .mm-recent-menu-trigger')) return;
                 event.preventDefault();
                 void global.SmartCanvasShellHistory?.openCanvasRecord?.({ id: String(item.id) });
                 global.setTimeout(render, 600);
             });
-            row.querySelector('.mm-recent-menu-trigger')?.addEventListener('click', event => {
+            const trigger = row.querySelector('.mm-recent-menu-trigger');
+            if(!trigger) return;
+            trigger.addEventListener('pointerdown', event => {
+                // Keep the document outside-click closer from seeing this press.
+                event.stopPropagation();
+            });
+            trigger.addEventListener('click', event => {
                 event.preventDefault();
                 event.stopPropagation();
-                toggleRecentMenu(event.currentTarget, row, item);
+                event.stopImmediatePropagation?.();
+                toggleRecentMenu(trigger, row, item);
             });
         });
     }
@@ -425,6 +462,139 @@
         tree.classList.toggle('is-collapsed', !open);
         trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
         if(persist) writeAssetTreeState();
+    }
+
+    function readKindViewMode(){
+        try {
+            const saved = localStorage.getItem(ASSET_KIND_VIEW_KEY);
+            return saved === 'list' ? 'list' : 'grid';
+        } catch(_e) {
+            return 'grid';
+        }
+    }
+
+    function writeKindViewMode(mode){
+        kindViewMode = mode === 'list' ? 'list' : 'grid';
+        try { localStorage.setItem(ASSET_KIND_VIEW_KEY, kindViewMode); } catch(_e) {}
+    }
+
+    function setKindViewMode(mode){
+        writeKindViewMode(mode);
+        const body = byId('mmKindPanelBody');
+        const gridBtn = byId('mmKindViewGrid');
+        const listBtn = byId('mmKindViewList');
+        if(body) body.dataset.kindView = kindViewMode;
+        gridBtn?.classList.toggle('is-active', kindViewMode === 'grid');
+        listBtn?.classList.toggle('is-active', kindViewMode === 'list');
+        gridBtn?.setAttribute('aria-pressed', kindViewMode === 'grid' ? 'true' : 'false');
+        listBtn?.setAttribute('aria-pressed', kindViewMode === 'list' ? 'true' : 'false');
+    }
+
+    function mediaKindOfAsset(item){
+        const kind = String(item?.kind || item?.type || item?.media_kind || '').toLowerCase();
+        if(['image', 'prompt', 'video', 'audio'].includes(kind)) return kind;
+        const url = String(item?.url || item?.thumb_url || item?.preview_url || '');
+        if(VIDEO_URL_RE.test(url)) return 'video';
+        if(/\.(mp3|wav|flac|aac|m4a|ogg)([?#]|$)/i.test(url)) return 'audio';
+        if(/\.(png|jpe?g|gif|webp|bmp|svg|psd)([?#]|$)/i.test(url)) return 'image';
+        if(item?.prompt || item?.text) return 'prompt';
+        return 'image';
+    }
+
+    function assetDisplayName(item){
+        return String(item?.name || item?.title || item?.filename || '未命名素材').trim() || '未命名素材';
+    }
+
+    function assetThumbUrl(item){
+        return String(item?.thumb_url || item?.preview_url || item?.url || '').trim();
+    }
+
+    function renderKindPanelItems(items){
+        const empty = byId('mmKindPanelEmpty');
+        const grid = byId('mmKindPanelGrid');
+        if(!empty || !grid) return;
+        const list = Array.isArray(items) ? items : [];
+        if(!list.length){
+            empty.hidden = false;
+            empty.textContent = ASSET_KIND_EMPTY[activeAssetKind] || '暂无内容';
+            grid.hidden = true;
+            grid.innerHTML = '';
+            return;
+        }
+        empty.hidden = true;
+        grid.hidden = false;
+        const icon = {
+            image: 'image',
+            prompt: 'text',
+            video: 'film',
+            audio: 'music-2',
+        }[activeAssetKind] || 'file';
+        grid.innerHTML = list.map(item => {
+            const name = esc(assetDisplayName(item));
+            const thumb = assetThumbUrl(item);
+            const thumbHtml = thumb && activeAssetKind !== 'prompt'
+                ? `<img src="${esc(thumb)}" alt="">`
+                : `<i data-lucide="${icon}"></i>`;
+            return `<button type="button" class="mm-kind-item" title="${name}">
+                <span class="mm-kind-item-thumb">${thumbHtml}</span>
+                <span class="mm-kind-item-name">${name}</span>
+            </button>`;
+        }).join('');
+        try { global.lucide?.createIcons?.(); } catch(_e) {}
+    }
+
+    async function loadKindPanelAssets(kind){
+        if(kindAssetsLoading) return;
+        kindAssetsLoading = true;
+        const empty = byId('mmKindPanelEmpty');
+        if(empty){
+            empty.hidden = false;
+            empty.textContent = '加载中…';
+        }
+        byId('mmKindPanelGrid')?.setAttribute('hidden', '');
+        try {
+            const response = await fetch('/api/local-assets', { cache: 'no-store' });
+            if(!response.ok) throw new Error(await response.text());
+            const data = await response.json();
+            const raw = Array.isArray(data) ? data
+                : Array.isArray(data?.items) ? data.items
+                : Array.isArray(data?.assets) ? data.assets
+                : [];
+            const filtered = raw.filter(item => mediaKindOfAsset(item) === kind);
+            renderKindPanelItems(filtered);
+        } catch(_e) {
+            renderKindPanelItems([]);
+        } finally {
+            kindAssetsLoading = false;
+        }
+    }
+
+    function openAssetKindPanel(kind){
+        const next = String(kind || '').toLowerCase();
+        if(!ASSET_KIND_TITLES[next]) return;
+        activeAssetKind = next;
+        const sidebar = byId('mmSidebar');
+        const panel = byId('mmSidebarKindPanel');
+        const title = byId('mmKindPanelTitle');
+        if(!sidebar || !panel) return;
+        if(title) title.textContent = ASSET_KIND_TITLES[next];
+        setKindViewMode(kindViewMode);
+        sidebar.classList.add('is-kind-panel-open');
+        panel.hidden = false;
+        panel.setAttribute('aria-hidden', 'false');
+        void loadKindPanelAssets(next);
+        try { global.lucide?.createIcons?.(); } catch(_e) {}
+    }
+
+    function closeAssetKindPanel(){
+        activeAssetKind = '';
+        const sidebar = byId('mmSidebar');
+        const panel = byId('mmSidebarKindPanel');
+        sidebar?.classList.remove('is-kind-panel-open');
+        if(panel){
+            panel.hidden = true;
+            panel.setAttribute('aria-hidden', 'true');
+        }
     }
 
     function setAssetFolderOpen(folder, open, persist = true){
@@ -536,6 +706,25 @@
             const tree = byId('mmAssetTree');
             setAssetTreeOpen(Boolean(tree?.classList.contains('is-collapsed')));
         });
+        byId('mmAssetTreeFolders')?.addEventListener('click', event => {
+            const button = event.target.closest('.mm-asset-tree-folder-btn[data-asset-kind]');
+            if(!button) return;
+            event.preventDefault();
+            event.stopPropagation();
+            openAssetKindPanel(button.dataset.assetKind);
+        });
+        byId('mmKindPanelBack')?.addEventListener('click', event => {
+            event.preventDefault();
+            closeAssetKindPanel();
+        });
+        byId('mmKindViewGrid')?.addEventListener('click', event => {
+            event.preventDefault();
+            setKindViewMode('grid');
+        });
+        byId('mmKindViewList')?.addEventListener('click', event => {
+            event.preventDefault();
+            setKindViewMode('list');
+        });
         byId('mmSideSkill')?.addEventListener('click', event => {
             event.preventDefault();
             // Skill 能力位于对话栏 composer：打开对话栏即到达
@@ -573,12 +762,24 @@
                 if(nameEl) nameEl.textContent = event.target.value || '用户';
             }
         });
+        document.addEventListener('pointerdown', event => {
+            const target = event.target;
+            if(!(target instanceof Element)) return;
+            if(!target.closest('.mm-recent-actions, .mm-recent-menu-trigger, .mm-recent-menu')) closeRecentMenus();
+            if(!target.closest('.mm-asset-folder-menu-trigger, .mm-asset-folder-menu')) closeAssetFolderMenu();
+        });
         document.addEventListener('click', event => {
-            if(!event.target?.closest?.('.mm-recent-actions, .mm-recent-menu')) closeRecentMenus();
-            if(!event.target?.closest?.('.mm-asset-folder-menu-trigger, .mm-asset-folder-menu')) closeAssetFolderMenu();
+            const target = event.target;
+            if(!(target instanceof Element)) return;
+            if(!target.closest('.mm-recent-actions, .mm-recent-menu-trigger, .mm-recent-menu')) closeRecentMenus();
+            if(!target.closest('.mm-asset-folder-menu-trigger, .mm-asset-folder-menu')) closeAssetFolderMenu();
         });
         document.addEventListener('keydown', event => {
             if(event.key === 'Escape'){
+                if(activeAssetKind){
+                    closeAssetKindPanel();
+                    return;
+                }
                 closeRecentMenus();
                 closeAssetFolderMenu();
             }
@@ -595,9 +796,11 @@
 
     function init(){
         if(!byId('mmSidebar')) return;
+        kindViewMode = readKindViewMode();
         bind();
         syncUser();
         restoreAssetTreeState();
+        setKindViewMode(kindViewMode);
         try { setSidebarCollapsed(localStorage.getItem(COLLAPSE_KEY) === '1'); } catch(_e) {}
         void load();
     }
@@ -605,5 +808,10 @@
     if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
     else init();
 
-    global.MMSidebar = Object.freeze({ refresh: () => void load(), syncUser });
+    global.MMSidebar = Object.freeze({
+        refresh: () => void load(),
+        syncUser,
+        openAssetKindPanel,
+        closeAssetKindPanel,
+    });
 })(window);

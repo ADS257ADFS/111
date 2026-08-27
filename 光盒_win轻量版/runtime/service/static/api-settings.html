@@ -26,11 +26,11 @@
     <link rel="stylesheet" href="/static/css/theme.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/visual-system-preview.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/visual-typography-system.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/api-settings.css?v=2026.08.11.82">
-<link rel="stylesheet" href="/static/css/dark-desaturated/api-settings.css?v=2026.08.11.82">
-<link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/api-settings.css?v=2026.08.26.apiset1">
+<link rel="stylesheet" href="/static/css/dark-desaturated/api-settings.css?v=2026.08.26.apiset1">
+<link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.26.apiset1">
 <link rel="stylesheet" href="/static/css/ui-primitives.css?v=2026.08.11.82">
-<link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.27.modelhov1">
 </head>
 <body>
     <div class="page">
@@ -38,14 +38,26 @@
             <header class="page-head">
                 <div>
                     <div class="title" data-i18n="api.title">API 设置</div>
-                    <div class="sub" data-i18n="api.subtitle">管理平台地址、模型列表和 Key。Key 写入后端 env，页面不会回显完整内容</div>
+                    <div class="sub">三步完成：添加中转站 → 拉取并选用模型 → 把画布显示名绑到真实模型</div>
                 </div>
-                <div id="status" class="status"></div>
+                <div class="page-head-actions">
+                    <div class="api-mode-tabs" role="tablist" aria-label="API 设置模式">
+                        <button id="apiModePlatformsBtn" class="api-mode-tab is-active" type="button" role="tab" aria-selected="true" onclick="selectPlatformsMode()">
+                            <i data-lucide="server" class="w-3.5 h-3.5"></i>
+                            <span>平台与模型</span>
+                        </button>
+                        <button id="apiModeBindingsBtn" class="api-mode-tab" type="button" role="tab" aria-selected="false" onclick="selectCustomModels()">
+                            <i data-lucide="link-2" class="w-3.5 h-3.5"></i>
+                            <span>画布显示名</span>
+                        </button>
+                    </div>
+                    <div id="status" class="status"></div>
+                </div>
             </header>
 
             <div class="layout">
-                <aside class="sidebar">
-                    <div class="side-section-title" data-i18n="api.providersTitle">平台列表</div>
+                <aside class="sidebar" id="apiPlatformSidebar">
+                    <div class="side-section-title">① 选择平台</div>
                     <div id="providerList" class="provider-list"></div>
                     <button class="add-btn" type="button" onclick="addProvider()">
                         <i data-lucide="plus" class="w-4 h-4"></i>
@@ -57,7 +69,7 @@
                     <div class="content-head">
                         <div>
                             <div id="editorTitle" class="editor-title" data-i18n="api.provider">平台</div>
-                            <div id="editorSub" class="editor-sub" data-i18n="api.editorSub">配置基础信息、API Key 和可用模型</div>
+                            <div id="editorSub" class="editor-sub">先连上中转站，再拉取模型并按用途勾选</div>
                         </div>
                         <div class="content-actions">
                             <button id="deleteBtn" class="action-btn danger-btn api-page-delete-btn" type="button" onclick="deleteProvider()">
@@ -76,8 +88,8 @@
                     <section id="providerBasicBlock" class="block">
                         <div class="block-head">
                             <div>
-                                <div class="block-title" data-i18n="api.basicInfo">基本信息</div>
-                                <div class="block-desc" data-i18n="api.basicHint">平台显示名、唯一 ID 和请求地址</div>
+                                <div class="block-title">② 连接信息</div>
+                                <div class="block-desc">名称、地址、Key、协议；验证通过后再拉模型</div>
                             </div>
                         </div>
                         <div class="form">
@@ -131,8 +143,8 @@
 
                     <div id="modelsHead" class="block models-toolbar">
                         <div>
-                            <div id="modelsHeadTitle" class="block-title" data-i18n="api.modelsTitle">模型列表</div>
-                            <div id="modelsHeadDesc" class="block-desc" data-i18n="api.modelsDesc">从上游 API 自动拉取可用模型，并按 image / chat / video / audio 分类；保存后画布各模式自动汇总所有中转站对应模型</div>
+                            <div id="modelsHeadTitle" class="block-title">③ 选用模型</div>
+                            <div id="modelsHeadDesc" class="block-desc">拉取上游清单后，点「选择模型」勾选要用的项；按生图 / 聊天 / 视频 / 音频分类保存</div>
                         </div>
                         <div class="models-toolbar-actions">
                             <button id="fetchModelsBtn" class="action-btn primary-btn" type="button" onclick="fetchModels()">
@@ -251,6 +263,6 @@
         })();
     </script>
     <script src="/static/js/model-discovery-status.js?v=2026.08.11.82"></script>
-    <script src="/static/js/api-settings.js?v=2026.08.11.82"></script>
+    <script src="/static/js/api-settings.js?v=2026.08.26.apiset1"></script>
 </body>
 </html>
