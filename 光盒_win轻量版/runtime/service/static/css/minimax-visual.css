@@ -300,10 +300,10 @@ html body #shell.shell #composer.composer.open {
     transform: translateX(-50%);
 }
 
-/* 底部框整体紧凑化：只收间距与区块高度，不改任何文字/图标大小 */
+/* 画布底部输入栏：只收文本区与整卡高度，不改右侧对话栏 */
 html body #shell.shell #composer.composer {
-    --composer-prompt-h: 84px;
-    --composer-sheet-min-h: calc(180px + var(--composer-prompt-h, 84px));
+    --composer-prompt-h: 56px;
+    --composer-sheet-min-h: calc(150px + var(--composer-prompt-h, 56px));
 }
 html body #shell.shell #composer.composer .composer-card {
     gap: var(--ui-space-2) !important;
@@ -3895,7 +3895,7 @@ html body #shell.shell #composer.composer.open[data-height-state="default"] {
 
 /* Outer sheet min-height tracks prompt height so the chrome expands upward with the field. */
 html body #shell.shell #composer.composer {
-    --composer-sheet-min-h: calc(180px + var(--composer-prompt-h, 84px));
+    --composer-sheet-min-h: calc(150px + var(--composer-prompt-h, 56px));
 }
 
 html body #shell.shell #composer.composer.open[data-height-state="expanded"] .composer-card,
