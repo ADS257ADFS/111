@@ -5083,15 +5083,22 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     backdrop-filter: blur(18px) saturate(140%) !important;
 }
 
-/* 打组面板：浅色半透明底 + 不透明白边；文字/图标用底部输入栏底色 #1f1f1f */
+/* 打组面板：70% 深色磨砂；边框必须不透明实色（禁止 rgba alpha） */
+html:not(#ui-group-bd-1):not(#ui-group-bd-2):not(#ui-group-bd-3):not(#ui-group-bd-4):is(.theme-dark, .studio-theme-dark) body
+    .image-node.smart-group-node .smart-group-frame-hit.smart-group-frame-hit,
 html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body
     .image-node.smart-group-node .smart-group-frame-hit,
 :is(html.theme-dark, html.studio-theme-dark) body
     .image-node.smart-group-node .smart-group-frame-hit {
-    background: rgba(255, 255, 255, .70) !important;
-    background-color: rgba(255, 255, 255, .70) !important;
+    background: rgba(31, 31, 31, .70) !important;
+    background-color: rgba(31, 31, 31, .70) !important;
     border: 1px solid #ffffff !important;
+    border-top-color: #ffffff !important;
+    border-right-color: #ffffff !important;
+    border-bottom-color: #ffffff !important;
+    border-left-color: #ffffff !important;
     border-color: #ffffff !important;
+    outline: 0 !important;
     box-shadow: none !important;
     -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
     backdrop-filter: blur(18px) saturate(140%) !important;
@@ -5119,8 +5126,8 @@ html:not(#ui-group-fg-1):not(#ui-group-fg-2):not(#ui-group-fg-3):not(#ui-group-f
         .node-actions button,
         .smart-group-member-grab
     ) :is(i, svg, span) {
-    color: #1f1f1f !important;
-    stroke: #1f1f1f !important;
+    color: rgba(241, 241, 241, .86) !important;
+    stroke: currentColor !important;
 }
 
 /* 底部输入栏：实色 #1F1F1F，不磨砂；保留细描边 */
