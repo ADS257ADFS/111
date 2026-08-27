@@ -3086,8 +3086,9 @@ html.studio-theme-dark {
     --canvas-glass-glider-ease: cubic-bezier(0.37, 1.95, 0.66, 0.56);
 }
 
-html.theme-dark body #shell.shell :is(.composer-card, .create-menu, .image-quick-toolbar, .selection-capsule-bar, .image-node.empty-node, .image-node.loop-smart-node, .image-node.group-node, .composer-tool-popover, #composerSizePopover),
-html.studio-theme-dark body #shell.shell :is(.composer-card, .create-menu, .image-quick-toolbar, .selection-capsule-bar, .image-node.empty-node, .image-node.loop-smart-node, .image-node.group-node, .composer-tool-popover, #composerSizePopover) {
+/* composer-card 外层不在此上色：深色只保留顶栏磨砂 + 圆角输入面，避免整块底板。 */
+html.theme-dark body #shell.shell :is(.create-menu, .image-quick-toolbar, .selection-capsule-bar, .image-node.empty-node, .image-node.loop-smart-node, .image-node.group-node, .composer-tool-popover, #composerSizePopover),
+html.studio-theme-dark body #shell.shell :is(.create-menu, .image-quick-toolbar, .selection-capsule-bar, .image-node.empty-node, .image-node.loop-smart-node, .image-node.group-node, .composer-tool-popover, #composerSizePopover) {
     color: var(--canvas-glass-text) !important;
     background: var(--canvas-glass-bg) !important;
     background-image: none !important;
@@ -3110,11 +3111,11 @@ html.studio-theme-dark body #shell.shell #composer.composer .composer-card .prom
 html.theme-dark body #shell.shell #composer.composer .composer-footer .composer-footer-bar,
 html.studio-theme-dark body #shell.shell #composer.composer .composer-footer .composer-footer-bar {
     overflow: hidden;
-    background: var(--canvas-glass-bg) !important;
+    background: transparent !important;
     border-radius: 16px !important;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
-    box-shadow: var(--canvas-glass-shadow) !important;
+    box-shadow: none !important;
 }
 
 html.theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn),

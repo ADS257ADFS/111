@@ -4648,11 +4648,13 @@ body #shell.shell #composer.composer .composer-footer
     gap: var(--ui-space-3) !important;
 }
 
-/* Canvas bottom composer stays near the canvas tone (not the elevated dock face). */
+/* Dark canvas composer: no outer solid plate — keep frosted topbar + rounded input surface only. */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer .composer-card {
-    background: var(--ui-surface-composer) !important;
+    background: transparent !important;
     background-image: none !important;
-    background-color: var(--ui-surface-composer) !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
 }
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-surface {
