@@ -3358,6 +3358,19 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     padding-top: var(--ui-composer-prompt-padding-top) !important;
 }
 
+/* 折叠态强制 48+15：写死 calc，避免任何脚本把 --composer-prompt-h 打回 48 */
+html body #shell.shell #composer.composer:not([data-height-state="expanded"])
+    .composer-card > .prompt-row {
+    min-height: calc(63px + var(--ui-composer-prompt-padding-top)) !important;
+    height: calc(63px + var(--ui-composer-prompt-padding-top)) !important;
+    max-height: calc(63px + var(--ui-composer-prompt-padding-top)) !important;
+}
+
+html body #shell.shell #composer.composer:not([data-height-state="expanded"])
+    .composer-card > .prompt-row > #promptInput.prompt-input {
+    min-height: 63px !important;
+}
+
 /* M66：顶排控件只保留一层总背景；参考、共创和模式切换不再绘制独立底框。 */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card-topbar :is(.composer-asset-shortcuts, .co-create-bar, .composer-kind-toggle) {

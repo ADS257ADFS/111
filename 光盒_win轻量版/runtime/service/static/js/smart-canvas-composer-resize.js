@@ -35,8 +35,9 @@
     function applyHeight(composer, value, expanded = false){
         const height = Math.max(MIN_HEIGHT, Math.round(Number(value) || DEFAULT_HEIGHT));
         const chrome = expanded ? SHEET_CHROME_EXPANDED : 0;
-        composer.style.setProperty('--composer-prompt-h', `${height}px`);
-        composer.style.setProperty('--composer-sheet-min-h', `${chrome + height}px`);
+        /* important: beat any stale stylesheet/inline without !important */
+        composer.style.setProperty('--composer-prompt-h', `${height}px`, 'important');
+        composer.style.setProperty('--composer-sheet-min-h', `${chrome + height}px`, 'important');
         composer.dataset.promptHeight = String(height);
         return height;
     }
