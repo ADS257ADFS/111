@@ -4292,12 +4292,12 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon svg {
     stroke-width: var(--ui-sidebar-nav-icon-stroke) !important;
 }
 
-/* 下拉菜单：紧凑宽度与小字号；行距适中，尾部操作图标略小。 */
+/* 下拉菜单：更小字号；面板内边距略加大。 */
 html.lightbox-desktop-native .gpt-dock .dock-chrome-title-menu {
     width: 168px !important;
     min-width: 152px !important;
     max-width: 168px !important;
-    padding: 4px 2px !important;
+    padding: 6px !important;
     min-height: auto !important;
     gap: 0 !important;
 }
@@ -4312,20 +4312,20 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-list {
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item,
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-open,
 html.lightbox-desktop-native .gpt-dock .dock-chrome-title-menu :is(button, [role="menuitem"]) {
-    min-height: 26px !important;
+    min-height: 24px !important;
     height: auto !important;
     max-height: none !important;
     padding-top: 3px !important;
     padding-bottom: 3px !important;
-    line-height: 1.35 !important;
+    line-height: 1.3 !important;
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item {
     position: relative !important;
-    padding: 3px 4px 3px 6px !important;
+    padding: 3px 8px !important;
     margin: 0 !important;
     gap: 4px !important;
-    font-size: 11px !important;
+    font-size: 10px !important;
     font-weight: 400 !important;
     font-variation-settings: "wght" 400 !important;
     color: var(--ui-text) !important;
@@ -4357,16 +4357,16 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-actions #gptDockCloseBtn {
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-title {
-    font-size: 11px !important;
+    font-size: 10px !important;
     font-weight: 400 !important;
     font-variation-settings: "wght" 400 !important;
-    line-height: 1.35 !important;
+    line-height: 1.3 !important;
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-time {
     /* Match left-sidebar .mm-recent-meta exactly. */
     font-family: var(--ui-font) !important;
-    font-size: 10px !important;
+    font-size: 9px !important;
     font-weight: var(--ui-weight-latin, 350) !important;
     font-variation-settings: "wght" var(--ui-weight-latin, 350) !important;
     line-height: var(--ui-leading-tight, 1.2) !important;
