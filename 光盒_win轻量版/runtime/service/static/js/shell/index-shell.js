@@ -1489,7 +1489,7 @@
         }
 
         function smartCanvasShellUrl(id) {
-            const base = '/static/smart-canvas.html?v=2026.08.26.clip1';
+            const base = '/static/smart-canvas.html?v=2026.08.27.footfix1';
             return id ? `${base}&id=${encodeURIComponent(id)}` : base;
         }
 
