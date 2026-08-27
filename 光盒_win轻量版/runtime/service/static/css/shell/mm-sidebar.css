@@ -215,6 +215,41 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
     font-synthesis: none;
     line-height: var(--ui-leading-tight);
 }
+.mm-kind-panel-tools {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+}
+.mm-kind-add-btn {
+    appearance: none;
+    height: 28px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--ui-active);
+    color: var(--ui-text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    font-family: var(--ui-font);
+    font-size: var(--ui-type-control);
+    font-weight: var(--ui-weight-menu-strong);
+    line-height: 1;
+    white-space: nowrap;
+}
+.mm-kind-add-btn:hover { background: var(--ui-hover); }
+.mm-kind-add-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+.mm-kind-add-btn :is(i, svg) {
+    width: 14px;
+    height: 14px;
+    stroke-width: var(--ui-sidebar-nav-icon-stroke);
+}
 .mm-kind-panel-views {
     display: inline-flex;
     align-items: center;
@@ -253,8 +288,8 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
 }
 .mm-kind-panel-empty {
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 12px;
+    right: 12px;
     top: 28%;
     text-align: center;
     color: var(--ui-text-muted);
@@ -263,9 +298,28 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
     font-weight: var(--ui-weight-menu-strong);
     font-variation-settings: normal;
     font-synthesis: none;
-    line-height: var(--ui-leading-tight);
+    line-height: 1.45;
+    white-space: pre-line;
     pointer-events: none;
 }
+.mm-kind-panel-drop {
+    position: absolute;
+    inset: 4px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px dashed var(--ui-border-strong);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--ui-surface-elevated) 88%, transparent);
+    color: var(--ui-text);
+    font-family: var(--ui-font);
+    font-size: var(--ui-type-control);
+    font-weight: var(--ui-weight-menu-strong);
+    pointer-events: none;
+}
+.mm-kind-panel-drop[hidden] { display: none !important; }
+.mm-kind-panel-body.is-drop-active .mm-kind-panel-drop { display: flex; }
 .mm-kind-panel-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
