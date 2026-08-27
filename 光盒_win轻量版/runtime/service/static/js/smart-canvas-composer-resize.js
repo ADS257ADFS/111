@@ -2,10 +2,10 @@
 (function(global){
     'use strict';
 
-    const DEFAULT_HEIGHT = 56;
-    const MIN_HEIGHT = 56;
-    /** Non-prompt chrome inside the sheet (topbar + footer + paddings/gaps). */
-    const SHEET_CHROME = 150;
+    const DEFAULT_HEIGHT = 48;
+    const MIN_HEIGHT = 48;
+    /** Extra chrome only when expanded so the sheet can grow with the field. */
+    const SHEET_CHROME_EXPANDED = 150;
     const PIN_PROPS = ['top', 'bottom', 'margin-bottom', 'height', 'transform', 'transform-origin'];
 
     function maxHeight(){
@@ -30,10 +30,11 @@
         composer.style.setProperty('transform-origin', 'bottom center', 'important');
     }
 
-    function applyHeight(composer, value){
+    function applyHeight(composer, value, expanded = false){
         const height = Math.max(MIN_HEIGHT, Math.round(Number(value) || DEFAULT_HEIGHT));
+        const chrome = expanded ? SHEET_CHROME_EXPANDED : 0;
         composer.style.setProperty('--composer-prompt-h', `${height}px`);
-        composer.style.setProperty('--composer-sheet-min-h', `${SHEET_CHROME + height}px`);
+        composer.style.setProperty('--composer-sheet-min-h', `${chrome + height}px`);
         composer.dataset.promptHeight = String(height);
         return height;
     }
@@ -52,7 +53,7 @@
     function applyState(composer, toggle, expanded){
         if(!isComposerOpen(composer)){
             clearPinStyles(composer);
-            applyHeight(composer, DEFAULT_HEIGHT);
+            applyHeight(composer, DEFAULT_HEIGHT, false);
             composer.dataset.heightState = 'default';
             toggle.setAttribute('aria-pressed', 'false');
             return;
@@ -60,7 +61,7 @@
         const isExpanded = expanded === true;
         const previousBottom = composer.getBoundingClientRect().bottom;
         pinBottomAnchor(composer);
-        applyHeight(composer, isExpanded ? maxHeight() : DEFAULT_HEIGHT);
+        applyHeight(composer, isExpanded ? maxHeight() : DEFAULT_HEIGHT, isExpanded);
         composer.dataset.heightState = isExpanded ? 'expanded' : 'default';
         toggle.setAttribute('aria-pressed', String(isExpanded));
         toggle.setAttribute('aria-label', isExpanded ? '恢复输入框高度' : '展开输入框');
@@ -79,7 +80,7 @@
         const toggle = document.getElementById('composerHeightToggle');
         if(!composer || !toggle || toggle.dataset.composerHeightBound === '1') return;
         toggle.dataset.composerHeightBound = '1';
-        applyHeight(composer, DEFAULT_HEIGHT);
+        applyHeight(composer, DEFAULT_HEIGHT, false);
         syncOpenState(composer, toggle);
 
         new MutationObserver(() => syncOpenState(composer, toggle)).observe(composer, {
@@ -97,7 +98,7 @@
             if(!isComposerOpen(composer) || composer.dataset.heightState !== 'expanded') return;
             const previousBottom = composer.getBoundingClientRect().bottom;
             pinBottomAnchor(composer);
-            applyHeight(composer, maxHeight());
+            applyHeight(composer, maxHeight(), true);
             lockBottomEdge(composer, previousBottom);
             global.requestAnimationFrame(() => lockBottomEdge(composer, previousBottom));
         });

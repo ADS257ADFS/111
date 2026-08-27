@@ -2914,8 +2914,8 @@ blue primary canvas actions. */.shell .create-card:hover,
 
 /* Canvas composer: gray panel + white input; node text areas keep gray inset */
 .shell .composer {
-    --composer-prompt-h:72px;
-    --composer-sheet-min-h:210px;
+    --composer-prompt-h:48px;
+    --composer-sheet-min-h:0px;
     background:transparent !important;
     border:0 !important;
     box-shadow:none !important;
