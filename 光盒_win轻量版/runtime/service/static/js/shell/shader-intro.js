@@ -72,8 +72,10 @@ function finishIntro(root) {
 function startExit(root, cleanup) {
   if (!root || root.classList.contains("is-exiting") || root.classList.contains("is-done")) return;
   root.classList.add("is-exiting");
-  // Expand host window while the panel zooms/blurs into fullscreen software.
-  enterFullscreenSoftware();
+  /* Expand after the cheap opacity/scale fade starts — avoid resize+blur thrash. */
+  window.setTimeout(() => {
+    enterFullscreenSoftware();
+  }, 120);
   window.setTimeout(() => {
     try {
       cleanup();
@@ -116,17 +118,23 @@ async function boot() {
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  const renderer = new THREE.WebGLRenderer({
+    antialias: false,
+    alpha: false,
+    powerPreference: "high-performance",
+  });
   renderer.setClearColor(0x000000, 1);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  /* Cap DPR — full-window fragment shader at 2x is a common stutter source. */
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
   stage.appendChild(renderer.domElement);
 
   let animationId = 0;
   let disposed = false;
   let exitArmed = false;
+  let startMs = 0;
 
   const onResize = () => {
-    if (disposed) return;
+    if (disposed || root.classList.contains("is-exiting")) return;
     const width = Math.max(1, stage.clientWidth || root.clientWidth || window.innerWidth);
     const height = Math.max(1, stage.clientHeight || root.clientHeight || window.innerHeight);
     renderer.setSize(width, height, false);
@@ -134,10 +142,12 @@ async function boot() {
     uniforms.resolution.value.y = renderer.domElement.height;
   };
 
-  const animate = () => {
+  const animate = (now) => {
     if (disposed) return;
     animationId = requestAnimationFrame(animate);
-    uniforms.time.value += 0.05;
+    if (!startMs) startMs = now || performance.now();
+    /* Clock from rAF timestamp — steadier than fixed += 0.05 under jank. */
+    uniforms.time.value = 1.0 + ((now || performance.now()) - startMs) * 0.001 * 3;
     renderer.render(scene, camera);
   };
 

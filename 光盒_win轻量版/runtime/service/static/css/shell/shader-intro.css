@@ -50,20 +50,19 @@ html.lightbox-shader-intro-active :is(
     background: #000;
     border: 0;
     box-shadow: none;
-    transform: scale(1);
-    filter: blur(0);
+    transform: translateZ(0) scale(1);
     opacity: 1;
-    will-change: transform, opacity, filter;
+    contain: layout paint style;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
     transition:
-        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-        filter 0.7s ease-out;
+        opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .lightbox-shader-intro.is-exiting .lightbox-shader-intro-panel {
     opacity: 0;
-    transform: scale(1.55);
-    filter: blur(30px);
+    transform: translateZ(0) scale(1.28);
     pointer-events: none;
 }
 
