@@ -3274,8 +3274,12 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-to
 }.shell #composer .composer-card-topbar .co-create-switch:hover,
 .shell #composer .composer-card-topbar .co-create-switch:focus-visible{
     border-color:transparent !important;
-    background:rgba(var(--ui-accent-rgb),.06) !important;
+    background:#ffffff !important;
     outline:none !important;
+}
+html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar .co-create-switch:hover,
+html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar .co-create-switch:focus-visible{
+    background:#000000 !important;
 }
 .shell #composer .composer-card-topbar .co-create-switch.is-on,
 .shell #composer .composer-card-topbar .co-create-switch[aria-pressed="true"] {
