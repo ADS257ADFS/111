@@ -1468,14 +1468,15 @@ html.lightbox-desktop-native .gpt-dock .lightbox-compact-btn.active {
     background: rgba(var(--ui-accent-rgb), .10);
 }
 
-/* 置顶/回归放在小窗左上角（原对话标题的位置，与右侧按钮同一行） */
+/* 置顶/回归放在小窗左上角（与标题条同一行） */
 html.lightbox-compact-mode .lightbox-compact-controls {
     display: none;
     align-items: center;
     gap: 6px;
     position: fixed;
-    top: 26px;
-    left: 20px;
+    top: 0;
+    left: 8px;
+    height: var(--mm-titlebar-h, 36px);
     z-index: 500;
 }
 
@@ -1523,9 +1524,10 @@ html.lightbox-compact-mode .app-shell .stage {
     pointer-events: none !important;
 }
 
-/* 精简模式：对话顶栏避开窗口按钮，避免标题和控件叠在一起。 */
+/* 精简模式：对话顶栏并入窗口标题条，避免双层顶栏留白。 */
 html.lightbox-compact-mode .gpt-dock {
     display: flex !important;
+    flex-direction: column !important;
     inset: 0 !important;
     width: auto !important;
     padding: var(--mm-titlebar-h, 36px) 0 0 !important;
@@ -1535,18 +1537,60 @@ html.lightbox-compact-mode .gpt-dock {
     pointer-events: auto !important;
     transition: none !important;
     box-sizing: border-box !important;
+    position: relative !important;
 }
 
 html.lightbox-compact-mode .gpt-dock .dock-chrome {
-    min-height: 44px !important;
-    padding: 8px 108px 8px 12px !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 6 !important;
+    display: flex !important;
+    align-items: center !important;
+    height: var(--mm-titlebar-h, 36px) !important;
+    min-height: var(--mm-titlebar-h, 36px) !important;
+    max-height: var(--mm-titlebar-h, 36px) !important;
+    padding: 0 10px 0 56px !important;
     border-bottom: 1px solid var(--ui-border) !important;
     background: transparent !important;
+    box-sizing: border-box !important;
 }
 
 html.lightbox-compact-mode .gpt-dock .dock-chrome-spacer {
-    margin: -8px 0 !important;
-    min-width: 12px !important;
+    margin: 0 !important;
+    min-width: 8px !important;
+    flex: 1 1 auto !important;
+}
+
+html.lightbox-compact-mode .gpt-dock .dock-chrome-title-group,
+html.lightbox-compact-mode .gpt-dock .dock-chrome-actions {
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+html.lightbox-compact-mode .gpt-dock iframe {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+}
+
+/* 置顶/回归：与标题条同一行靠左 */
+html.lightbox-compact-mode .lightbox-compact-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 2px !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 8px !important;
+    height: var(--mm-titlebar-h, 36px) !important;
+    z-index: 520 !important;
+    pointer-events: auto !important;
+}
+
+html.lightbox-compact-mode .lightbox-compact-controls button {
+    width: 28px !important;
+    height: 28px !important;
 }
 
 html.lightbox-compact-mode .lightbox-native-titlebar {

@@ -5148,7 +5148,7 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     min-height:44px !important;
     height:auto !important;
     padding:8px 12px !important;
-    font-size:13.5px !important;
+    font-size:14px !important;
     font-weight:445 !important;
     border:0 !important;
     background:transparent !important;
@@ -5160,8 +5160,8 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
 /* Hover/focus with description: taller row so two lines fit with breathing room. */
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
-    min-height:58px !important;
-    padding:10px 12px !important;
+    min-height:64px !important;
+    padding:12px 12px !important;
     align-items:flex-start !important;
 }
 
@@ -5183,8 +5183,8 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     .mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible)
     .mode-model-copy {
     justify-content:flex-start;
-    padding-top:1px;
-    min-height:36px;
+    padding-top:2px;
+    min-height:40px;
 }
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-title-row {
@@ -5202,9 +5202,9 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     text-overflow:ellipsis;
     white-space:nowrap;
     text-align:left;
-    font-size:13.5px !important;
-    font-weight:500 !important;
-    font-variation-settings:"wght" 500 !important;
+    font-size:14px !important;
+    font-weight:520 !important;
+    font-variation-settings:"wght" 520 !important;
     line-height:1.25 !important;
     color:inherit !important;
 }
@@ -5214,14 +5214,14 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     top:50%;
     right:0;
     left:0;
-    margin-top:2px;
+    margin-top:4px;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
-    font-size:10px !important;
-    font-weight:320 !important;
-    font-variation-settings:"wght" 320 !important;
-    line-height:1.3 !important;
+    font-size:9.5px !important;
+    font-weight:300 !important;
+    font-variation-settings:"wght" 300 !important;
+    line-height:1.25 !important;
     color:var(--ui-text-muted) !important;
     opacity:0;
     transform:translateY(4px);
@@ -5246,9 +5246,9 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover .mode-model-choice .mode-model-desc {
     color:var(--ui-text-muted) !important;
-    font-size:10px !important;
-    font-weight:320 !important;
-    font-variation-settings:"wght" 320 !important;
+    font-size:9.5px !important;
+    font-weight:300 !important;
+    font-variation-settings:"wght" 300 !important;
 }
 
 /* 行内结构：公司图标 + 名字 + 选中对号 */

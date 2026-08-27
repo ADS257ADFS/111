@@ -711,7 +711,7 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
     font-variation-settings:"wght" var(--ui-weight-latin);
     color:var(--ui-text);
     letter-spacing:0;
-    line-height:1.72;
+    line-height:1.48;
 }
 
 html body.gpt-dock-canvas-mode .chat-shell .composer-body textarea,
@@ -721,7 +721,7 @@ html body.gpt-dock-canvas-mode .chat-shell .composer textarea {
     font-weight:var(--ui-weight-latin) !important;
     font-variation-settings:"wght" var(--ui-weight-latin);
     color:var(--ui-text) !important;
-    line-height:1.72 !important;
+    line-height:1.48 !important;
     letter-spacing:0;
 }
 
