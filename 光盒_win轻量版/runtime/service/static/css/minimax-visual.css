@@ -5307,3 +5307,19 @@ body #shell.shell #composer.composer .composer-footer
     background-color: rgba(255, 255, 255, .12) !important;
 }
 
+/* 左侧栏悬停底：对齐工具栏（新建画布等）rgba(255,255,255,.10)，
+ * 压过 --ui-hover:.07 与全局 #2a2a2a 按钮悬停。 */
+html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .mm-sidebar :is(
+    button,
+    .mm-asset-tree-root,
+    .mm-recent-item,
+    .mm-kind-item,
+    [role="button"]
+):not(:disabled):not(.mm-recent-group-head):is(:hover, :focus-visible),
+html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .mm-sidebar-reopen:is(:hover, :focus-visible) {
+    background: rgba(255, 255, 255, .10) !important;
+    background-color: rgba(255, 255, 255, .10) !important;
+    background-image: none !important;
+    border-color: transparent !important;
+}
+
