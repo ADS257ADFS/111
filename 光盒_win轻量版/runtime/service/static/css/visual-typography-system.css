@@ -1464,7 +1464,8 @@ html body #shellUserMenu.shell-user-menu .shell-user-points {
     margin: 0 0 var(--ui-space-2) !important;
     padding: var(--ui-space-3) var(--ui-space-4) !important;
     border: 0 !important;
-    background: var(--ui-hover) !important;
+    color: #ffffff !important;
+    background: var(--ui-accent, #0a84ff) !important;
 }
 
 html body #shellUserMenu.shell-user-menu .shell-user-menu-list {
@@ -2051,9 +2052,9 @@ html body #shellUserMenu.shell-user-menu {
 }
 
 html body #shellUserMenu.shell-user-menu .shell-user-points {
-    color: var(--ui-text) !important;
+    color: #ffffff !important;
     border-color: transparent !important;
-    background: var(--ui-hover) !important;
+    background: var(--ui-accent, #0a84ff) !important;
     background-image: none !important;
     box-shadow: none !important;
     transition:
@@ -2075,7 +2076,7 @@ html body #shellUserMenu.shell-user-menu .shell-user-points:disabled {
 
 html body #shellUserMenu.shell-user-menu
     .shell-user-points :is(.shell-user-points-head, .shell-user-points-meta, strong, span) {
-    color: var(--ui-text) !important;
+    color: #ffffff !important;
     transition: none !important;
 }
 
@@ -2676,7 +2677,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body
         .shell-project-history-view-toggle
     ) {
     border-color: var(--gh-library-line) !important;
-    background: #fff !important;
+    background-color: #fff !important;
     color: var(--gh-library-primary) !important;
 }
 
@@ -2996,9 +2997,8 @@ html body #shell.shell #composer.composer
     border-radius: 13px !important;
 }
 
-/* Composer size submenu: quality + count options share one typographic scale. */
-html body #shell.shell #composer.composer #composerApiSettingsPopover
-    .composer-mode-model-list .mode-model-choice,
+/* Composer size submenu: quality + count options share one typographic scale.
+   Model rows keep their own name/desc typography — do not flatten menu items. */
 html body #shell.shell #composer.composer #composerSizePopover
     .size-picker-resolution-list .size-picker-option,
 html body #shell.shell #composer.composer #composerSizePopover
