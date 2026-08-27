@@ -285,22 +285,7 @@ function providerDragAttrs(item){
     return ` draggable="true" data-provider-id="${id}" ondragstart="handleProviderDragStart(event,'${id}')" ondragover="handleProviderDragOver(event,'${id}')" ondrop="handleProviderDrop(event,'${id}')" ondragend="handleProviderDragEnd()"`;
 }
 function renderProviderList(){
-    const overviewCard = `
-        <button class="provider-card provider-overview-card ${overviewOpen ? 'active' : ''}" type="button" data-provider-overview="1" onclick="selectOverview()">
-            <span class="provider-mark"><i data-lucide="layout-grid" class="w-4 h-4"></i></span>
-            <span class="provider-info">
-                <div class="provider-name">${escapeHtml(tr('api.overview'))}</div>
-                <div class="provider-meta">${escapeHtml(tr('api.overviewSub'))}</div>
-            </span>
-        </button>`;
-    const customModelsCard = `
-        <button class="provider-card provider-custom-models-card ${customModelsOpen ? 'active' : ''}" type="button" onclick="selectCustomModels()">
-            <span class="provider-mark"><i data-lucide="bookmark" class="w-4 h-4"></i></span>
-            <span class="provider-info">
-                <div class="provider-name">我的模型</div>
-                <div class="provider-meta">固定名字绑定中转站模型</div>
-            </span>
-        </button>`;
+    // 左侧只放真实平台；「总览」已移除，「画布显示名」改到顶栏 Tab。
     const providerCards = sortedProviders().map(item => {
         const active = !overviewOpen && !customModelsOpen && item.id === selectedId ? 'active' : '';
         const stateClass = item.enabled === false ? 'is-disabled' : (item.has_key ? 'has-key' : 'missing-key');
@@ -320,8 +305,35 @@ function renderProviderList(){
             </button>
         `;
     }).join('');
-    providerList.innerHTML = overviewCard + customModelsCard + providerCards;
+    providerList.innerHTML = providerCards || '<div class="provider-empty-hint">还没有平台，点下方新增</div>';
     refreshIcons();
+    syncApiModeTabs();
+}
+
+function syncApiModeTabs(){
+    const platformBtn = document.getElementById('apiModePlatformsBtn');
+    const bindingsBtn = document.getElementById('apiModeBindingsBtn');
+    const sidebar = document.getElementById('apiPlatformSidebar');
+    const onBindings = !!customModelsOpen;
+    platformBtn?.classList.toggle('is-active', !onBindings);
+    bindingsBtn?.classList.toggle('is-active', onBindings);
+    platformBtn?.setAttribute('aria-selected', onBindings ? 'false' : 'true');
+    bindingsBtn?.setAttribute('aria-selected', onBindings ? 'true' : 'false');
+    if(sidebar) sidebar.hidden = onBindings;
+}
+
+function selectPlatformsMode(){
+    if(customModelsOpen || overviewOpen){
+        const first = sortedProviders()[0];
+        if(first) selectProvider(first.id);
+        else {
+            overviewOpen = false;
+            customModelsOpen = false;
+            document.body.classList.remove('show-provider-overview', 'show-custom-models');
+            renderProviderList();
+            syncApiModeTabs();
+        }
+    }
 }
 function handleProviderDragStart(event, id){
     const item = providers.find(provider => provider.id === id);
@@ -368,7 +380,7 @@ function renderEditor(){
     customModelsOpen = false;
     document.body.classList.remove('show-provider-overview', 'show-custom-models');
     editorTitle.textContent = item.name || item.id;
-    if(editorSub) editorSub.textContent = tr('api.editorSub');
+    if(editorSub) editorSub.textContent = '先连上中转站，再拉取模型并按用途勾选';
     nameInput.value = item.name || '';
     idInput.value = item.id || '';
     updateIdPreview();
@@ -472,15 +484,15 @@ async function selectCustomModels(){
     customModelsOpen = true;
     document.body.classList.remove('show-provider-overview');
     document.body.classList.add('show-custom-models');
-    editorTitle.textContent = '我的模型';
-    if(editorSub) editorSub.textContent = '名字固定不变；为每个名字绑定中转站和该站的真实模型名，底部输入栏只显示这些名字';
+    editorTitle.textContent = '画布显示名';
+    if(editorSub) editorSub.textContent = '画布里看到的固定名字 → 绑定到某个平台已选用的真实模型；可一键智能匹配';
     renderProviderList();
     if(!customModels){
         try {
             const data = await fetch('/api/custom-models', {cache:'no-store'}).then(r => r.json());
             customModels = data.models || {};
         } catch(err) {
-            setStatus('加载我的模型失败');
+            setStatus('加载画布显示名失败');
             customModels = null;
             return;
         }
@@ -496,7 +508,7 @@ function renderCustomModelsView(){
         <div class="block-head">
             <div>
                 <div class="block-title">一键智能匹配</div>
-                <div class="block-desc">按名字自动在所有中转站已拉取的模型里匹配未绑定的条目；已手动绑定的不会被覆盖</div>
+                <div class="block-desc">按显示名在所有平台「已选用」的模型里自动匹配未绑定项；已手动绑定的不会被覆盖</div>
             </div>
             <button class="action-btn primary-btn" type="button" onclick="autoMatchCustomModels()"><i data-lucide="wand-2" class="w-3.5 h-3.5"></i><span>一键智能匹配</span></button>
         </div>
@@ -506,8 +518,8 @@ function renderCustomModelsView(){
         return `<section class="block">
             <div class="block-head">
                 <div>
-                    <div class="block-title">${title}模型</div>
-                    <div class="block-desc">选择中转站并填写该站的真实模型名</div>
+                    <div class="block-title">${title}</div>
+                    <div class="block-desc">选择平台 + 填写该平台真实模型名（可从下拉联想）</div>
                 </div>
             </div>
             <div class="model-list">${rows.map((row, index) => {
@@ -545,18 +557,18 @@ function scheduleCustomModelsSave(){
 
 async function saveCustomModels(){
     if(!customModels) return;
-    setStatus('正在保存我的模型...');
+    setStatus('正在保存画布显示名...');
     try {
         const res = await fetch('/api/custom-models', {
             method:'PUT',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({models:customModels})
         });
-        if(!res.ok) throw new Error((await res.json()).detail || '保存我的模型失败');
-        setStatus('我的模型已保存');
+        if(!res.ok) throw new Error((await res.json()).detail || '保存画布显示名失败');
+        setStatus('画布显示名已保存');
         broadcastStudioApiChange('providers-changed');
     } catch(err) {
-        setStatus(err.message || '保存我的模型失败');
+        setStatus(err.message || '保存画布显示名失败');
     }
 }
 

@@ -82,7 +82,7 @@ function ensureCanvasContextMenu(){
         <button class="ui-menu-item" type="button" role="menuitem" data-canvas-context-action="settings"><i data-lucide="settings"></i><span>个人设置</span></button>`;
     canvasContextMenu.addEventListener('click', async event => {
         const button = event.target.closest('[data-canvas-context-action]');
-        if(!button) return;
+        if(!button || button.disabled) return;
         event.preventDefault();
         event.stopPropagation();
         const action = button.dataset.canvasContextAction;
@@ -223,12 +223,32 @@ function openNodeContextMenu(event, nodeId){
     menu.style.top = `${top}px`;
 }
 
+function syncCanvasContextMenuAvailability(menu){
+    if(!menu) return;
+    const canPaste = Boolean(d().nodeClipboard?.nodes?.length);
+    const canUndo = Boolean(d().undoStack?.length);
+    const canArrange = Boolean(d().nodes?.length);
+    const pasteBtn = menu.querySelector('[data-canvas-context-action="paste"]');
+    const undoBtn = menu.querySelector('[data-canvas-context-action="undo"]');
+    const arrangeBtn = menu.querySelector('[data-canvas-context-action="arrange-all"]');
+    [
+        [pasteBtn, canPaste],
+        [undoBtn, canUndo],
+        [arrangeBtn, canArrange]
+    ].forEach(([button, enabled]) => {
+        if(!button) return;
+        button.disabled = !enabled;
+        button.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+    });
+}
+
 function openCanvasContextMenu(event){
     event.preventDefault();
     event.stopPropagation();
     closeNodeContextMenu();
     d().lastMouseWorld = d().screenToWorld?.(event) || d().lastMouseWorld;
     const menu = ensureCanvasContextMenu();
+    syncCanvasContextMenuAvailability(menu);
     menu.hidden = false;
     const rect = menu.getBoundingClientRect();
     const left = Math.max(8, Math.min(event.clientX, global.innerWidth - rect.width - 8));

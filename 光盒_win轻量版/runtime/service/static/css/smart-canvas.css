@@ -721,10 +721,10 @@ video.node-img { object-fit:cover; background:transparent; }
 .compare-toggle:hover { border-color:var(--text); }
 .compare-toggle.active { background:var(--strong); color:var(--strong-text); border-color:var(--strong); }
 .compare-toggle i,.compare-toggle svg { width:14px !important; height:14px !important; stroke-width:2; }
-.composer { --composer-sheet-w:min(var(--ui-composer-w), calc(100vw - 48px)); --composer-sheet-min-h:240px; --composer-prompt-h:84px; --composer-footer-h:40px; --composer-bottom-gap:16px; --ctrl-font:var(--ui-type-control); --ctrl-icon:var(--ui-icon-sm); --ctrl-height:var(--ui-control-h); --ctrl-gap:var(--ui-space-2); --ctrl-xpad:var(--ui-space-4); --ctrl-pop-font:var(--ui-type-control); --ctrl-pop-icon:var(--ui-icon-sm); --ctrl-pop-height:var(--ui-control-h-sm); --ctrl-pop-radius:var(--ui-radius-control); position:absolute; left:50%; right:auto; top:auto; bottom:var(--composer-bottom-gap); z-index:85; width:var(--composer-sheet-w); height:auto; min-height:var(--composer-sheet-min-h); max-height:min(72vh, calc(100vh - 96px)); transform:translate(-50%, calc(100% + var(--composer-bottom-gap))); opacity:0; pointer-events:none; transition:opacity var(--ui-motion-surface) var(--ui-ease-emphasized), transform var(--ui-motion-surface) var(--ui-ease-emphasized); overflow:visible; }
-.composer.open { opacity:1; transform:translate(-50%, 0); pointer-events:auto; }
+.composer { --composer-sheet-w:min(var(--ui-composer-w), calc(100vw - 48px)); --composer-sheet-min-h:240px; --composer-prompt-h:84px; --composer-footer-h:40px; --composer-bottom-gap:16px; --ctrl-font:var(--ui-type-control); --ctrl-icon:var(--ui-icon-sm); --ctrl-height:var(--ui-control-h); --ctrl-gap:var(--ui-space-2); --ctrl-xpad:var(--ui-space-4); --ctrl-pop-font:var(--ui-type-control); --ctrl-pop-icon:var(--ui-icon-sm); --ctrl-pop-height:var(--ui-control-h-sm); --ctrl-pop-radius:var(--ui-radius-control); position:absolute; left:50%; right:auto; top:auto; bottom:var(--composer-bottom-gap); z-index:85; width:var(--composer-sheet-w); height:auto; min-height:var(--composer-sheet-min-h); max-height:min(72vh, calc(100vh - 96px)); transform:translateX(-50%) translateY(calc(100% + var(--composer-bottom-gap))); opacity:0; pointer-events:none; transition:opacity var(--ui-motion-surface) var(--ui-ease-emphasized), transform var(--ui-motion-surface) var(--ui-ease-emphasized); overflow:visible; }
+.composer.open { opacity:1; transform:translateX(-50%); pointer-events:auto; }
 .composer-card { position:relative; box-sizing:border-box; background:var(--ui-surface-elevated); border:1px solid var(--ui-border); border-radius:22px; box-shadow:var(--ui-shadow-pop); padding:8px; display:grid; grid-template-columns:minmax(0, 1fr); grid-template-areas:"prompt" "thumbs" "prompt-preview" "footer"; grid-template-rows:auto auto auto var(--composer-footer-h); gap:8px; align-items:stretch; overflow:visible; height:auto; min-height:var(--composer-sheet-min-h); max-height:inherit; }
-.composer-card .prompt-row { grid-area:prompt; box-sizing:border-box; min-width:0; min-height:var(--composer-prompt-h); height:var(--composer-prompt-h); max-height:var(--composer-prompt-h); padding-top:36px; display:flex; flex-direction:column; overflow:visible; }
+.composer-card .prompt-row { grid-area:prompt; box-sizing:border-box; min-width:0; min-height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px)); height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px)); max-height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px)); padding-top:var(--ui-composer-prompt-padding-top, 40px); display:flex; flex-direction:column; overflow:visible; }
 .composer-card .prompt-input { flex:1 1 auto; min-width:0; min-height:0; max-height:none; height:auto; overflow-x:hidden; overflow-y:auto; background:#fff; border:1px solid rgba(175,179,186,.16); border-radius:22px; box-shadow:none; padding:8px 14px 4px; font-size:14px; line-height:1.65; color:var(--ui-text); }
 .composer-card .prompt-input:focus { border-color:rgba(175,179,186,.16); background:#fff; box-shadow:none; outline:none; }
 .composer-card .prompt-input:empty::before { font-size:14px; }
@@ -1030,7 +1030,7 @@ video.node-img { object-fit:cover; background:transparent; }
 .composer-api-models button.active{ background:rgba(var(--ui-accent-rgb),.1); }
 .composer-api-models button.active{color:var(--ui-accent);}
 .composer-mode-model-list { display:flex; flex-direction:column; gap:4px; width:100%; min-width:0; box-sizing:border-box; }
-.composer-mode-model-list .mode-model-choice { display:block; width:100%; min-height:28px; padding:2px 10px; text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; box-sizing:border-box; }
+.composer-mode-model-list .mode-model-choice { display:block; width:100%; min-height:28px; padding:2px 10px; text-align:left; white-space:normal; overflow:visible; text-overflow:ellipsis; cursor:pointer; box-sizing:border-box; }
 /* 我的模型里未绑定中转站的固定名字：可见但不可选 */
 .composer-mode-model-list .mode-model-choice.is-unbound { opacity:.42; cursor:not-allowed; }
 #composerApiSettingsPopover:has(.composer-model-menu) { width:max-content; min-width:250px; max-width:min(350px, calc(100vw - 64px)); padding:11px; gap:0; overflow:visible; max-height:none; }
@@ -3025,7 +3025,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card > :not(.comp
     z-index:4;
     left:18px;
     right:18px;
-    top:0;
+    top:var(--ui-composer-topbar-offset, 0);
     height:40px;
     display:flex;
     align-items:center;
@@ -3081,8 +3081,12 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card > :not(.comp
 }.shell .composer-card .composer-asset-shortcut:hover,
 .shell .composer-card .composer-asset-shortcut:focus-visible{
     border-color:transparent;
-    background:rgba(var(--ui-accent-rgb),.06);
+    background:#ffffff;
     outline:none;
+}
+html:is(.theme-dark, .studio-theme-dark) .shell .composer-card .composer-asset-shortcut:hover,
+html:is(.theme-dark, .studio-theme-dark) .shell .composer-card .composer-asset-shortcut:focus-visible{
+    background:#000000;
 }
 .shell .composer-card .composer-asset-shortcut :is(i,svg) {
     width:11px !important;
@@ -3270,8 +3274,12 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-to
 }.shell #composer .composer-card-topbar .co-create-switch:hover,
 .shell #composer .composer-card-topbar .co-create-switch:focus-visible{
     border-color:transparent !important;
-    background:rgba(var(--ui-accent-rgb),.06) !important;
+    background:#ffffff !important;
     outline:none !important;
+}
+html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar .co-create-switch:hover,
+html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar .co-create-switch:focus-visible{
+    background:#000000 !important;
 }
 .shell #composer .composer-card-topbar .co-create-switch.is-on,
 .shell #composer .composer-card-topbar .co-create-switch[aria-pressed="true"] {
@@ -3337,10 +3345,10 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card::before {
 .shell .composer-card .prompt-row {
     box-sizing:border-box;
     min-width:0;
-    min-height:var(--composer-prompt-h);
-    height:var(--composer-prompt-h);
-    max-height:var(--composer-prompt-h);
-    padding-top:36px;
+    min-height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px));
+    height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px));
+    max-height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px));
+    padding-top:var(--ui-composer-prompt-padding-top, 40px);
     display:flex;
     flex-direction:column;
     overflow:visible;
@@ -3357,10 +3365,10 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card::before {
     border:0 !important;
     box-shadow:none !important;
     color:#17181b !important;
-    padding:calc(var(--ui-space-5) + var(--ui-space-1)) 46px 4px 14px !important;
+    padding:6px 46px 4px 14px !important;
 }
 html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-input {
-    padding:calc(var(--ui-space-5) + var(--ui-space-1)) 46px 4px 14px !important;
+    padding:6px 46px 4px 14px !important;
 }
 .shell .composer-card .prompt-input:focus {
     background:transparent !important;
@@ -3371,7 +3379,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-inpu
 .composer-height-toggle {
     position:absolute;
     right:12px;
-    top:43px;
+    top:37px;
     z-index:6;
     width:26px;
     height:26px;
@@ -3630,7 +3638,11 @@ html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover .has-strong-s
 .shell .composer .composer-footer .composer-footer-bar {
     position:relative;
     isolation:isolate;
-    transform:translateY(-6px);
+    transform:translateY(-10px);
+}
+.shell .composer .composer-footer .composer-footer-tools {
+    position:relative;
+    top:0;
 }
 .shell .composer .composer-footer .composer-footer-glider {
     display:block;
@@ -3773,7 +3785,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-footer 
     margin-right:8px;
 }
 .shell .composer .composer-card {
-    padding-bottom:16px !important;
+    padding-bottom:8px !important;
 }
 .shell .composer .input-thumbs-row {
     padding:2px 12px 4px 16px;
@@ -3880,8 +3892,9 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-footer 
 }
 html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card .prompt-input:empty::before {
     color:rgba(86,91,99,.48);
-    font-size:11px;
+    font-size:14px;
     font-weight:400;
+    line-height:1.65;
 }
 
 /* Composer prompt must never inherit the native/global focus frame. Keep this
@@ -5142,18 +5155,33 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     align-items:center !important;
     gap:10px !important;
     min-height:44px !important;
-    padding:6px 12px !important;
-    font-size:13px !important;
+    height:auto !important;
+    padding:8px 12px !important;
+    font-size:14px !important;
     font-weight:445 !important;
     border:0 !important;
     background:transparent !important;
     background-image:none !important;
     box-shadow:none !important;
     border-radius:10px !important;
+    overflow:visible !important;
+    white-space:normal !important;
 }
 
-/* 名字 + 一句话说明：复刻引用面板的悬停动效 ——
-   名字行上移 8px，小字从下方 4px 处淡入上滑。 */
+/* Hover/focus with description: keep row height stable; desc is always visible. */
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    min-height:44px !important;
+    padding:8px 12px !important;
+    align-items:center !important;
+}
+
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):has(.mode-model-desc):is(:hover, :focus-visible) {
+    min-height:52px !important;
+}
+
+/* 名字 + 一句话说明：两行常驻展示，小字始终可见。 */
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-copy {
     position:relative;
     flex:1 1 auto;
@@ -5161,52 +5189,68 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     display:flex;
     flex-direction:column;
     justify-content:center;
-    gap:0;
+    gap:2px;
     align-self:stretch;
+    min-height:22px;
 }
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-title-row {
     min-width:0;
     display:flex;
     align-items:center;
-    transform:translateY(0);
-    transition:transform .16s ease;
 }
 
-#composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
-    position:absolute;
-    top:50%;
-    right:0;
-    left:0;
-    margin-top:2px;
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-name {
+    flex:1 1 auto;
+    min-width:0;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
-    font-size:11px;
-    font-weight:400;
-    line-height:1.35;
-    color:#9aa0a9;
-    opacity:0;
-    transform:translateY(4px);
-    pointer-events:none;
-    transition:opacity .14s ease, transform .16s ease;
+    text-align:left;
+    font-size:14px !important;
+    font-weight:520 !important;
+    font-variation-settings:"wght" 520 !important;
+    line-height:1.25 !important;
+    color:inherit !important;
 }
 
-#composerApiSettingsPopover .composer-mode-model-list
-    .mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible)
-    .mode-model-title-row {
-    transform:translateY(-8px);
-}
-
-#composerApiSettingsPopover .composer-mode-model-list
-    .mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible)
-    .mode-model-desc {
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
+    position:static;
+    display:block;
+    margin:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:9.5px !important;
+    font-weight:300 !important;
+    font-variation-settings:"wght" 300 !important;
+    line-height:1.25 !important;
+    color:var(--ui-text-muted) !important;
     opacity:1;
-    transform:translateY(0);
+    transform:none;
+    pointer-events:none;
 }
 
-:is(html.theme-dark, html.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
-    color:rgba(241,241,241,.46);
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:has(.mode-model-desc) {
+    min-height:52px !important;
+    padding:8px 12px !important;
+    align-items:center !important;
+}
+
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:has(.mode-model-desc):is(:hover, :focus-visible) {
+    min-height:52px !important;
+    padding:8px 12px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc,
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice .mode-model-desc {
+    color:var(--ui-text-muted) !important;
+    font-size:9.5px !important;
+    font-weight:300 !important;
+    font-variation-settings:"wght" 300 !important;
 }
 
 /* 行内结构：公司图标 + 名字 + 选中对号 */
@@ -5218,21 +5262,13 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     align-items:center;
     justify-content:center;
     opacity:.85;
+    align-self:center;
 }
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-ico svg {
     width:16px;
     height:16px;
     display:block;
-}
-
-#composerApiSettingsPopover .composer-mode-model-list .mode-model-name {
-    flex:1 1 auto;
-    min-width:0;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    text-align:left;
 }
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-check {
@@ -5243,6 +5279,7 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     display:none;
     align-items:center;
     justify-content:center;
+    align-self:center;
 }
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-check svg {
