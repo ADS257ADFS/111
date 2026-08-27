@@ -50,25 +50,23 @@ html.lightbox-shader-intro-active :is(
     background: #000;
     border: 0;
     box-shadow: none;
-    transform: translateZ(0) scale(1);
+    transform: translateZ(0);
     opacity: 1;
-    contain: layout paint style;
+    contain: strict;
     backface-visibility: hidden;
-    will-change: transform, opacity;
-    transition:
-        opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Only promote during exit — idle will-change wastes GPU memory. */
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .lightbox-shader-intro.is-exiting .lightbox-shader-intro-panel {
     opacity: 0;
-    transform: translateZ(0) scale(1.28);
+    will-change: opacity;
     pointer-events: none;
 }
 
 .lightbox-shader-intro.is-exiting {
     pointer-events: none;
-    transition: background 0.7s ease;
+    transition: background 0.5s ease;
     background: transparent;
 }
 
@@ -110,8 +108,11 @@ html.lightbox-shader-intro-active :is(
     max-width: min(86%, 320px);
     object-fit: contain;
     object-position: center;
-    /* Match sidebar dark-mode wordmark (black glyph → white). */
+    /* Match sidebar dark-mode wordmark (black glyph → white).
+       Isolating the filter avoids refiltering during label opacity anim. */
     filter: brightness(0) invert(1);
+    transform: translateZ(0);
+    will-change: auto;
     user-select: none;
     -webkit-user-drag: none;
 }
@@ -125,8 +126,7 @@ html.lightbox-shader-intro-active :is(
 
 .lightbox-shader-intro.is-exiting .lightbox-shader-intro-label {
     opacity: 0;
-    transform: scale(1.18);
-    transition: opacity 0.4s ease, transform 0.55s ease;
+    transition: opacity 0.35s ease;
     animation: none;
 }
 

@@ -329,7 +329,7 @@ html.theme-dark,
 html.studio-theme-dark,
 body.theme-dark,
 body.studio-theme-dark {
-    --ui-canvas-grid-dot: rgba(255, 255, 255, .035);
+    --ui-canvas-grid-dot: rgba(255, 255, 255, .055);
     --ui-canvas-selection-fill: rgba(var(--ui-accent-rgb), .12);
     --ui-canvas-connection: rgba(255, 255, 255, .24);
 }
