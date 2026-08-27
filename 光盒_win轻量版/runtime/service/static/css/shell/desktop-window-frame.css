@@ -1523,12 +1523,43 @@ html.lightbox-compact-mode .app-shell .stage {
     pointer-events: none !important;
 }
 
-/* 顶部栏只保留拖拽区，视觉上完全透明，露出下面的对话面板 */
+/* 精简模式：对话顶栏避开窗口按钮，避免标题和控件叠在一起。 */
+html.lightbox-compact-mode .gpt-dock {
+    display: flex !important;
+    inset: 0 !important;
+    width: auto !important;
+    padding: var(--mm-titlebar-h, 36px) 0 0 !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transition: none !important;
+    box-sizing: border-box !important;
+}
+
+html.lightbox-compact-mode .gpt-dock .dock-chrome {
+    min-height: 44px !important;
+    padding: 8px 108px 8px 12px !important;
+    border-bottom: 1px solid var(--ui-border) !important;
+    background: transparent !important;
+}
+
+html.lightbox-compact-mode .gpt-dock .dock-chrome-spacer {
+    margin: -8px 0 !important;
+    min-width: 12px !important;
+}
+
 html.lightbox-compact-mode .lightbox-native-titlebar {
     background: transparent !important;
     box-shadow: none !important;
     border: 0 !important;
     pointer-events: none !important;
+}
+
+html.lightbox-compact-mode .lightbox-native-titlebar-drag,
+html.lightbox-compact-mode .lightbox-native-window-controls,
+html.lightbox-compact-mode .lightbox-native-window-controls * {
+    pointer-events: auto !important;
 }
 
 /* 窗口背景与面板同色，避免外框出现异色细边。 */
@@ -1540,19 +1571,6 @@ html.lightbox-compact-mode .app-shell {
 html.lightbox-compact-mode:is(.theme-dark, .studio-theme-dark) body,
 html.lightbox-compact-mode:is(.theme-dark, .studio-theme-dark) .app-shell {
     background: #1e1f22 !important;
-}
-
-/* 对话面板铺满整个直角小窗。 */
-html.lightbox-compact-mode .gpt-dock {
-    display: flex !important;
-    inset: 0 !important;
-    width: auto !important;
-    padding: 0 !important;
-    transform: none !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transition: none !important;
 }
 
 html.lightbox-compact-mode .gpt-dock::before {

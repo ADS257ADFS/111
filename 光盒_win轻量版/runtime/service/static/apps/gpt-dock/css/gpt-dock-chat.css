@@ -51,7 +51,7 @@ html.lightbox-compact-mode .title-block { visibility:hidden; }
 .dock-turn-timing-label svg { width:13px; height:13px; stroke-width:1.8; opacity:.65; }
 .dock-turn-timing[data-state="running"] .dock-turn-timing-text { color:#555b63; font-variant-numeric:tabular-nums; }
 .dock-turn-timing[data-state="complete"] .dock-turn-timing-text { font-variant-numeric:tabular-nums; }
-.bubble { max-width:min(780px,78%); border-radius:24px; padding:15px 18px; font-size:14px; line-height:1.7; white-space:pre-wrap; word-break:break-word; box-shadow:none; }
+.bubble { max-width:min(780px,78%); border-radius:24px; padding:15px 18px; font-size:14px; line-height:1.55; white-space:pre-wrap; word-break:break-word; box-shadow:none; }
 .bubble.user { position:relative; background:rgba(148,163,184,.11); color:#17181b; border-bottom-right-radius:8px; }
 .bubble.assistant { background:#fff; border:1px solid #edf2f7; border-bottom-left-radius:8px; }
 .bubble-text.is-markdown { white-space:normal; }

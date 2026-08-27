@@ -56,12 +56,12 @@
     <script src="/static/js/shell/index-boot.js?v=2026.08.11.82"></script>
     <script src="/static/js/shell/index-shell.js?v=2026.08.27.queueui1" defer></script>
 <link rel="stylesheet" href="/static/css/dark-desaturated/index.css?v=2026.08.26.winbtnsq1">
-    <link rel="stylesheet" href="/static/css/shell/desktop-window-frame.css?v=2026.08.27.queueui1">
+    <link rel="stylesheet" href="/static/css/shell/desktop-window-frame.css?v=2026.08.27.queueui2">
 <link rel="stylesheet" href="/static/css/dark-desaturated/panel-polish.css?v=2026.08.26.dockhdr2">
 <link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.27.topbarfix1">
 <link rel="stylesheet" href="/static/css/ui-primitives.css?v=2026.08.11.82">
-<link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.27.queueui1">
-<link rel="stylesheet" href="/static/css/shell/mm-sidebar.css?v=2026.08.27.assetlbl15">
+<link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.27.queueui2">
+<link rel="stylesheet" href="/static/css/shell/mm-sidebar.css?v=2026.08.27.queueui2">
 <!-- 最高优先级内联CSS：桌面模式画布必须直角，外窗圆角只由 win_launcher SetWindowRgn(18) 提供；勿再写 32px 等大圆角以免上大下小 -->
 <style id="desktop-stage-radius">
 html.lightbox-desktop-native .stage,
@@ -99,9 +99,7 @@ html.lightbox-desktop-native .stage.stage > iframe {
     <div class="lightbox-native-resize-handle" data-native-window-resize="bottom-left"></div>
     <div class="lightbox-native-resize-handle" data-native-window-resize="bottom-right"></div>
     <header class="lightbox-native-titlebar" aria-label="光盒窗口">
-        <div class="lightbox-native-titlebar-drag">
-            <img class="mm-sidebar-logo lightbox-native-titlebar-logo" src="/static/images/gonvox-logo.png?v=2026.08.26.welcome1" alt="Welcome to 光盒" draggable="false">
-        </div>
+        <div class="lightbox-native-titlebar-drag"></div>
         <div class="lightbox-native-topbar-cluster" aria-label="顶栏工具区">
             <div class="lightbox-native-topbar-tools" aria-label="快捷工具">
                 <input class="lightbox-native-search" type="text" placeholder="搜索画布内节点与功能" aria-label="搜索画布内节点与功能">
@@ -144,6 +142,7 @@ html.lightbox-desktop-native .stage.stage > iframe {
 
     <aside class="mm-sidebar" id="mmSidebar" aria-label="全局导航">
         <div class="mm-sidebar-head">
+            <img class="mm-sidebar-logo" src="/static/images/gonvox-logo.png?v=2026.08.26.welcome1" alt="Welcome to 光盒" draggable="false">
             <button id="mmSidebarToggle" class="mm-sidebar-collapse" type="button" title="收起侧栏" aria-label="收起侧栏"><i data-lucide="panel-left"></i></button>
         </div>
         <div class="mm-sidebar-home" id="mmSidebarHome">
@@ -719,7 +718,7 @@ html.lightbox-desktop-native .stage.stage > iframe {
                     </button>
                 </div>
             </div>
-            <iframe id="frame-gpt-dock" data-src="/static/apps/gpt-dock/gpt-chat.html?dock=1&v=2026.08.26.dockcomp1" title="GPT 对话" scrolling="yes"></iframe>
+            <iframe id="frame-gpt-dock" data-src="/static/apps/gpt-dock/gpt-chat.html?dock=1&v=2026.08.27.queueui2" title="GPT 对话" scrolling="yes"></iframe>
         </aside>
         <div class="dock-resizer" id="gptDockResizer" aria-hidden="true"></div>
         <button class="dock-open-btn" id="gptDockOpenBtn" type="button" onclick="openGptDock()" aria-label="对话" title="对话" aria-expanded="false">

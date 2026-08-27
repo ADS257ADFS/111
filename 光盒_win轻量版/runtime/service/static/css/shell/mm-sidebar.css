@@ -21,16 +21,28 @@ html.lightbox-desktop-native:not(.lightbox-compact-mode) .mm-sidebar {
 html.lightbox-desktop-native:not(.lightbox-compact-mode) .mm-sidebar { transition: transform var(--ui-motion-surface) var(--ui-ease-panel); }
 html.mm-sidebar-collapsed .mm-sidebar { transform: translateX(calc(-100% - 2px)); pointer-events: none; }
 
-.mm-sidebar-head { flex: 0 0 auto; display: flex; align-items: center; justify-content: flex-end; gap: var(--ui-space-4); padding: var(--ui-space-2) var(--ui-space-2) var(--ui-space-5) var(--ui-space-5); }
-.mm-sidebar-logo { height: var(--ui-sidebar-logo-h); width: auto; object-fit: contain; user-select: none; -webkit-user-drag: none; pointer-events: none; }
-html:is(.theme-dark, .studio-theme-dark) .mm-sidebar-logo { filter: brightness(0) invert(1); }
-.lightbox-native-titlebar-logo {
-    display: block;
+.mm-sidebar-head {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ui-space-4);
+    /* Align Welcome mark with nav icon column (same left inset as .mm-sidebar-nav > button). */
+    padding: var(--ui-space-3) var(--ui-space-2) var(--ui-space-4) var(--ui-space-5);
+}
+.mm-sidebar-logo {
     height: var(--ui-sidebar-logo-h);
     width: auto;
-    max-width: min(220px, 42vw);
-    margin: 0 0 0 3px;
-    flex: 0 0 auto;
+    max-width: calc(100% - 40px);
+    margin: 0;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+}
+html:is(.theme-dark, .studio-theme-dark) .mm-sidebar-logo { filter: brightness(0) invert(1); }
+.lightbox-native-titlebar-logo {
+    display: none;
 }
 .mm-sidebar-collapse, .mm-sidebar-reopen { appearance: none; width: 30px; height: 30px; flex: 0 0 30px; border: 1px solid var(--ui-border); border-radius: var(--ui-canvas-nav-radius, 10px); background: var(--ui-surface-elevated); color: var(--ui-text-secondary); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
 .mm-sidebar-collapse { margin-top: 4px; }
@@ -289,7 +301,11 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
 .mm-recent-group { display: flex; flex-direction: column; }
 .mm-recent-group + .mm-recent-group { margin-top: var(--ui-space-2); }
 .mm-recent-group-head { appearance: none; display: flex; align-items: center; justify-content: space-between; gap: var(--ui-space-3); height: 26px; padding: 0 var(--ui-space-5); border: 1px solid transparent; border-radius: var(--ui-radius-control); background: transparent; color: var(--ui-text-muted); font-size: 11px; font-weight: 445; text-align: left; cursor: pointer; }
-.mm-recent-group-head:hover { background: var(--ui-hover); }
+.mm-recent-group-head:hover,
+.mm-recent-group-head:focus-visible {
+    background: transparent;
+    border-color: transparent;
+}
 .mm-recent-group-head :is(i, svg) { width: var(--ui-icon-sm); height: var(--ui-icon-sm); flex: 0 0 var(--ui-icon-sm); stroke-width: var(--ui-icon-stroke); }
 .mm-recent-group.is-collapsed .mm-recent-group-head :is(i, svg) { transform: rotate(-90deg); }
 .mm-recent-group.is-collapsed .mm-recent-group-items { display: none; }
