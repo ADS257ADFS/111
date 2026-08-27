@@ -138,6 +138,34 @@
             clearModeHover(group);
             requestAnimationFrame(() => syncModeGlider(group));
         });
+        group.addEventListener('pointerover', event => {
+            const button = modeTargetFrom(event.target, group);
+            if(button){
+                setModeHover(group, button);
+                moveModeGlider(group, button);
+            }
+        });
+        group.addEventListener('pointerout', event => {
+            const nextButton = modeTargetFrom(event.relatedTarget, group);
+            if(nextButton){
+                setModeHover(group, nextButton);
+                moveModeGlider(group, nextButton);
+                return;
+            }
+            clearModeHover(group);
+            requestAnimationFrame(() => syncModeGlider(group));
+        });
+        group.addEventListener('focusin', event => {
+            const button = modeTargetFrom(event.target, group);
+            if(button){
+                setModeHover(group, button);
+                moveModeGlider(group, button);
+            }
+        });
+        group.addEventListener('focusout', () => {
+            clearModeHover(group);
+            requestAnimationFrame(() => syncModeGlider(group));
+        });
         group.addEventListener('composer-kind-sync', () => {
             clearModeHover(group);
             requestAnimationFrame(() => syncModeGlider(group));

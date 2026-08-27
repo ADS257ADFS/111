@@ -3370,22 +3370,7 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar .composer-mode-glider {
-    display: none !important;
-}
-
-/* Default / selected: no fill. Hover fill is set separately below. */
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch, #apiKindToggle button):not(:hover):not(.is-mode-hover),
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch, #apiKindToggle button):is(
-        :focus,
-        :focus-visible,
-        :active,
-        .active,
-        .is-on,
-        [aria-pressed="true"]
-    ):not(:hover):not(.is-mode-hover) {
+    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch, #apiKindToggle button) {
     color: var(--ui-text-secondary) !important;
     border: 0 !important;
     outline: 0 !important;
@@ -3395,42 +3380,45 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     filter: none !important;
     transform: none !important;
     animation: none !important;
-    transition: none !important;
+    transition: background-color var(--ui-motion-fast) var(--ui-ease), color var(--ui-motion-fast) var(--ui-ease) !important;
 }
 
-/* 参考 / 批量 / 图片 / 视频：浅色悬停白底，深色悬停黑底（含 is-mode-hover）。 */
-html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar :is(
-        .composer-asset-shortcut,
-        .co-create-switch,
-        #apiKindToggle button
-    ):is(:hover, .is-mode-hover),
-html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar :is(
-        .composer-asset-shortcut,
-        .co-create-switch,
-        #apiKindToggle button
-    ):is(:hover, .is-mode-hover):is(:focus, :focus-visible, :active, .active, .is-on, [aria-pressed="true"]) {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    background-image: none !important;
+/* 参考 / 批量：悬停浅色底 */
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch):is(:hover, :focus-visible):not(.is-on):not([aria-pressed="true"]) {
+    background: rgba(var(--ui-accent-rgb), .08) !important;
 }
 
-:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar :is(
-        .composer-asset-shortcut,
-        .co-create-switch,
-        #apiKindToggle button
-    ):is(:hover, .is-mode-hover),
-:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar :is(
-        .composer-asset-shortcut,
-        .co-create-switch,
-        #apiKindToggle button
-    ):is(:hover, .is-mode-hover):is(:focus, :focus-visible, :active, .active, .is-on, [aria-pressed="true"]) {
-    background: #000000 !important;
-    background-color: #000000 !important;
-    background-image: none !important;
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch):is(:hover, :focus-visible):not(.is-on):not([aria-pressed="true"]) {
+    background: var(--ui-hover) !important;
+}
+
+/* 四模式切换：悬停/选中由 glider 胶囊承载，按钮面保持透明 */
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:is(.active, .is-mode-hover),
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:is(.active, .is-mode-hover):is(:hover, :focus, :focus-visible, :active),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:is(.active, .is-mode-hover),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:is(.active, .is-mode-hover):is(:hover, :focus, :focus-visible, :active) {
+    color: #fff !important;
+    background: transparent !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:is(.active, .is-mode-hover) :is(i, svg, span),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:is(.active, .is-mode-hover) :is(i, svg, span) {
+    color: #fff !important;
+    stroke: #fff !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch):is(.is-on, [aria-pressed="true"]) {
+    color: #fff !important;
+    background: var(--ui-accent) !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
