@@ -294,15 +294,15 @@ html body #shell.shell #composer.composer {
     );
 }
 
-/* 底部输入栏上移 10px（一级按钮随栏整体上移）。 */
+/* 底部输入栏：只做水平居中，禁止 translateY（高度变化时 %-Y 会带动底边）。 */
 html body #shell.shell #composer.composer.open {
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%);
 }
 
 /* 底部框整体紧凑化：只收间距与区块高度，不改任何文字/图标大小 */
 html body #shell.shell #composer.composer {
     --composer-prompt-h: 84px;
-    --composer-sheet-min-h: 224px;
+    --composer-sheet-min-h: calc(140px + var(--composer-prompt-h, 84px));
 }
 html body #shell.shell #composer.composer .composer-card {
     gap: var(--ui-space-2) !important;
@@ -3800,16 +3800,30 @@ html:not(#ui-composer-hint-1):not(#ui-composer-hint-2):not(#ui-composer-hint-3):
     top:36px !important;
 }
 
-/* Expanded composer grows upward only; keep bottom gap fixed while open.
-   Bottom input bar (primary tools) sits 10px higher than the old dock-align downshift. */
+/* Expanded composer grows upward only; bottom edge must never move.
+   No translateY — percentage-Y transforms shift when height changes. */
 html body #shell.shell #composer.composer.open,
 html body #shell.shell #composer.composer.open[data-height-state="expanded"],
 html body #shell.shell #composer.composer.open[data-height-state="default"] {
     top: auto !important;
     bottom: var(--composer-bottom-gap) !important;
+    margin-top: 0 !important;
     margin-bottom: 0 !important;
-    transform: translateX(-50%) translateY(0) !important;
+    height: auto !important;
+    max-height: min(72vh, calc(100vh - 96px)) !important;
+    transform: translateX(-50%) !important;
     transform-origin: bottom center !important;
+    transition-property: opacity !important;
+}
+
+/* Outer sheet min-height tracks prompt height so the chrome expands upward with the field. */
+html body #shell.shell #composer.composer {
+    --composer-sheet-min-h: calc(140px + var(--composer-prompt-h, 84px));
+}
+
+html body #shell.shell #composer.composer.open[data-height-state="expanded"] .composer-card,
+html body #shell.shell #composer.composer.open[data-height-state="default"] .composer-card {
+    align-content: end !important;
 }
 
 /* M64：选中态直接加粗节点原边框；宽度按 1/world-scale 补偿，屏幕上粗细不随缩放变。 */
