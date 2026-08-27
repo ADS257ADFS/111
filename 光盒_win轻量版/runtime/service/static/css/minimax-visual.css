@@ -3662,7 +3662,7 @@ html body.gpt-dock-canvas-mode .chat-shell .composer textarea {
     font-weight: var(--ui-weight-latin) !important;
     font-variation-settings: "wght" var(--ui-weight-latin) !important;
     color: var(--ui-text) !important;
-    line-height: 1.48 !important;
+    line-height: 1.38 !important;
     letter-spacing: 0 !important;
 }
 
