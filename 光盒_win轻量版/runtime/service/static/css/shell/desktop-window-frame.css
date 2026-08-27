@@ -1270,7 +1270,7 @@ html.lightbox-desktop-native .shell-canvas-project-cluster {
 
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) {
     /* 与 win_launcher.CHROME_BG dark / --ui-surface-shell 一致。 */
-    --lightbox-chrome-bg: #181818;
+    --lightbox-chrome-bg: #1f1f1f;
 }
 
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-titlebar {
