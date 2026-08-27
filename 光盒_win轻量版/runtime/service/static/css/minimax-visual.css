@@ -3814,7 +3814,7 @@ html body #shell.shell #composer.composer.open[data-height-state="default"] {
     transform-origin: bottom center !important;
 }
 
-/* M64：选中态直接加粗节点原边框，不再在节点外追加第二层描边。 */
+/* M64：选中态直接加粗节点原边框；宽度按 1/world-scale 补偿，屏幕上粗细不随缩放变。 */
 html:not(#ui-selection-edge-1):not(#ui-selection-edge-2):not(#ui-selection-edge-3):not(#ui-selection-edge-4) body #shell.shell
     .world .image-node.selected {
     outline:none !important;
@@ -3832,6 +3832,7 @@ html:not(#ui-selection-edge-1):not(#ui-selection-edge-2):not(#ui-selection-edge-
     border-style:solid !important;
     border-color:var(--ui-accent) !important;
     box-shadow:none !important;
+    outline:none !important;
 }
 
 html:not(#ui-selection-edge-1):not(#ui-selection-edge-2):not(#ui-selection-edge-3):not(#ui-selection-edge-4) body #shell.shell
@@ -3852,6 +3853,7 @@ html:not(#ui-selection-edge-1):not(#ui-selection-edge-2):not(#ui-selection-edge-
     border-style:solid !important;
     border-color:var(--ui-accent) !important;
     box-shadow:none !important;
+    outline:none !important;
 }
 
 /* Reference/create picker: slightly taller rhythm without changing width,
