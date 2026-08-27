@@ -22,12 +22,12 @@ html.lightbox-desktop-native:not(.lightbox-compact-mode) .mm-sidebar {
     font-family: var(--ui-font, "MiSans Latin 350", "MiSans CJK 380", "MiSans Variable", "Microsoft YaHei UI", "Segoe UI", sans-serif);
     user-select: none;
 }
-/* 深色：左侧栏不要整圈描边，但保留贴画布的右侧分割线 */
+/* 深色：左侧栏贴画布分割线必须可见 */
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark):not(.lightbox-compact-mode) .mm-sidebar {
     border: 0 !important;
-    border-right: 1px solid rgba(255, 255, 255, .16) !important;
-    border-right-color: rgba(255, 255, 255, .16) !important;
-    box-shadow: none !important;
+    border-right: 1px solid rgba(255, 255, 255, .28) !important;
+    border-right-color: rgba(255, 255, 255, .28) !important;
+    box-shadow: inset -1px 0 0 rgba(255, 255, 255, .28) !important;
 }
 html.lightbox-desktop-native:not(.lightbox-compact-mode) .mm-sidebar { transition: transform var(--ui-motion-surface) var(--ui-ease-panel); }
 html.mm-sidebar-collapsed .mm-sidebar { transform: translateX(calc(-100% - 2px)); pointer-events: none; }

@@ -370,7 +370,7 @@ html.studio-theme-dark body .shell.theme-dark,
 body.studio-theme-dark .shell.theme-dark {
     /* —— 旧通用语义变量（smart-canvas / canvas / index-shell / api-settings）—— */
     --page: var(--mm-canvas) !important;
-    --grid: rgba(255, 255, 255, .006) !important;
+    --grid: rgba(255, 255, 255, .035) !important;
     --panel: rgba(27, 27, 27, .97) !important;
     --card: var(--mm-card) !important;
     --card-solid: var(--mm-card) !important;
@@ -482,7 +482,9 @@ html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-nativ
     background: var(--ui-surface-shell) !important;
     background-image: none !important;
     color: #d9d9d9 !important;
-    box-shadow: none !important;
+    /* keep bottom hairline — do not clear box-shadow here */
+    border-bottom: 1px solid rgba(255, 255, 255, .28) !important;
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .28) !important;
 }
 
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-search {
@@ -652,7 +654,7 @@ html.studio-theme-dark body .shell .board,
 body.studio-theme-dark .shell .board,
 :is(html.theme-dark, html.studio-theme-dark) body :is(#shell.shell, .shell, .board, .stage) {
     background-color: var(--mm-canvas, #101010) !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .006)) .45px, transparent .9px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .035)) .5px, transparent 1px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
@@ -660,7 +662,7 @@ html.studio-theme-dark body .canvas-gate,
 body.studio-theme-dark .canvas-gate,
 :is(html.theme-dark, html.studio-theme-dark) body .canvas-gate {
     background-color: var(--mm-canvas, #101010) !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .006)) .45px, transparent .9px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .035)) .5px, transparent 1px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
@@ -5046,30 +5048,31 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     backdrop-filter: blur(18px) saturate(140%) !important;
 }
 
-/* 顶栏底部分割线 + 左侧栏贴画布分割线（深色恢复） */
-html.lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+/* 顶栏底部分割线 + 左侧栏贴画布分割线（深色：必须看得见） */
+html:not(#ui-chrome-div-1):not(#ui-chrome-div-2):not(#ui-chrome-div-3):not(#ui-chrome-div-4).lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
 .lightbox-native-titlebar {
     border: 0 !important;
-    border-bottom: 1px solid rgba(255, 255, 255, .16) !important;
-    border-bottom-color: rgba(255, 255, 255, .16) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, .28) !important;
+    border-bottom-color: rgba(255, 255, 255, .28) !important;
     outline: 0 !important;
-    box-shadow: none !important;
+    /* inset hairline as backup if border is clipped by window chrome */
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .28) !important;
 }
 
-html.lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+html:not(#ui-chrome-div-1):not(#ui-chrome-div-2):not(#ui-chrome-div-3):not(#ui-chrome-div-4).lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
 .mm-sidebar {
     border: 0 !important;
-    border-right: 1px solid rgba(255, 255, 255, .16) !important;
-    border-right-color: rgba(255, 255, 255, .16) !important;
+    border-right: 1px solid rgba(255, 255, 255, .28) !important;
+    border-right-color: rgba(255, 255, 255, .28) !important;
     outline: 0 !important;
-    box-shadow: none !important;
+    box-shadow: inset -1px 0 0 rgba(255, 255, 255, .28) !important;
 }
 
 /* 右侧栏贴画布：强制左侧分割线（匹配既有三倍 lightbox-desktop-native 权重） */
 html.lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark):not(.lightbox-compact-mode)
 .gpt-dock {
-    border-left: 1px solid rgba(255, 255, 255, .16) !important;
-    border-left-color: rgba(255, 255, 255, .16) !important;
+    border-left: 1px solid rgba(255, 255, 255, .28) !important;
+    border-left-color: rgba(255, 255, 255, .28) !important;
 }
 
 /* 双击引用面板：外壳无边，内层 shell 70% + 18px 磨砂 + 单条细描边 */
@@ -5312,16 +5315,16 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     background-image: none !important;
 }
 
-/* 深色网格点：末层强制压暗到 ~0.6%（暗色皮肤曾写死 --grid:.08 导致一直太亮） */
+/* 深色网格点：可见但不刺眼（.006 几乎看不见；旧 .08 过亮） */
 :is(html.theme-dark, html.studio-theme-dark) {
-    --ui-canvas-grid-dot: rgba(255, 255, 255, .006) !important;
-    --grid: rgba(255, 255, 255, .006) !important;
+    --ui-canvas-grid-dot: rgba(255, 255, 255, .035) !important;
+    --grid: rgba(255, 255, 255, .035) !important;
 }
 
 html:not(#ui-grid-dim-1):not(#ui-grid-dim-2):not(#ui-grid-dim-3):not(#ui-grid-dim-4):is(.theme-dark, .studio-theme-dark)
 body :is(#shell.shell, .shell, .board, .stage, .canvas-gate),
 :is(html.theme-dark, html.studio-theme-dark) body :is(#shell.shell, .shell, .board, .stage, .canvas-gate) {
-    background-image: radial-gradient(rgba(255, 255, 255, .006) .45px, transparent .9px) !important;
+    background-image: radial-gradient(rgba(255, 255, 255, .035) .5px, transparent 1px) !important;
     background-size: var(--ui-canvas-grid-size, 18px) var(--ui-canvas-grid-size, 18px) !important;
 }
 
