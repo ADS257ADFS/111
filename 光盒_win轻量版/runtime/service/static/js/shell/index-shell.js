@@ -133,7 +133,9 @@
         }
 
         function formatDockRelativeTime(value) {
-            const timestamp = Number(value || 0);
+            let timestamp = Number(value || 0);
+            // Support second-based timestamps from older conversation files.
+            if (timestamp > 0 && timestamp < 1e12) timestamp *= 1000;
             const elapsed = Math.max(0, Date.now() - timestamp);
             const minute = 60 * 1000;
             const hour = 60 * minute;
@@ -145,14 +147,18 @@
         }
 
         function formatDockConversationMeta(item) {
+            // Match left-sidebar project meta: "Np · 刚刚/N分钟/N小时/N天" (no 前).
             const count = Number(
                 item?.message_count
                 ?? item?.messages_count
                 ?? item?.messageCount
-                ?? (Array.isArray(item?.messages) ? item.messages.length : 0)
+                ?? item?.count
+                ?? (Array.isArray(item?.messages)
+                    ? item.messages.filter(message => message?.role !== 'system').length
+                    : 0)
                 ?? 0
-            );
-            const time = formatDockRelativeTime(item?.updated_at);
+            ) || 0;
+            const time = formatDockRelativeTime(item?.updated_at ?? item?.updatedAt);
             return `${count}p · ${time}`;
         }
 

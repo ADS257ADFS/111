@@ -1304,13 +1304,17 @@
 
         .dock-chrome-menu-item-time {
             flex: 0 0 auto;
+            max-width: 96px;
+            overflow: hidden;
+            text-overflow: ellipsis;
             font-family: var(--ui-font);
             font-size: 10px;
             font-weight: var(--ui-weight-latin, 350);
             font-variation-settings: "wght" var(--ui-weight-latin, 350);
-            line-height: 1.15;
+            line-height: var(--ui-leading-tight, 1.2);
             color: var(--ui-text-muted);
             white-space: nowrap;
+            pointer-events: none;
         }
 
         .dock-chrome-menu-item-actions {

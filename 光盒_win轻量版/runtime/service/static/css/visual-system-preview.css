@@ -134,8 +134,12 @@ html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-item-time {
     font-weight: 400 !important;
 }
 
-html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-item-time {
-    color: #9aa0a9 !important;
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-item-time,
+html:not(.theme-dark):not(.studio-theme-dark) .mm-recent-meta {
+    color: var(--ui-text-muted) !important;
+    font-size: 10px !important;
+    font-weight: var(--ui-weight-latin, 350) !important;
+    font-variation-settings: "wght" var(--ui-weight-latin, 350) !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-new:hover,

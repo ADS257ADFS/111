@@ -4313,10 +4313,17 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-title {
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-time {
+    /* Match left-sidebar .mm-recent-meta exactly. */
+    font-family: var(--ui-font) !important;
     font-size: 10px !important;
     font-weight: var(--ui-weight-latin, 350) !important;
-    line-height: 1.15 !important;
+    font-variation-settings: "wght" var(--ui-weight-latin, 350) !important;
+    line-height: var(--ui-leading-tight, 1.2) !important;
     color: var(--ui-text-muted) !important;
+    max-width: 96px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
 }
 
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item::after {
