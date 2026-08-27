@@ -11,7 +11,7 @@
 :is(html.theme-dark, html.studio-theme-dark) :is(.prompt-card, .output-card, .ref-card, .drop, .right-empty, .gate-card){box-shadow:inset 0 1px 0 rgba(255, 255, 255, .04)}
 :is(html.theme-dark, html.studio-theme-dark) :is(.prompt-card, .output-card, .ref-card, .gate-card):hover{box-shadow:inset 0 1px 0 rgba(255, 255, 255, .07)}
 :is(html.theme-dark, html.studio-theme-dark) :is(.image-node.group-node, .promptGroup-node){background:rgba(20, 20, 20, .55)}
-:is(html.theme-dark, html.studio-theme-dark) .smart-group-frame-hit{background:linear-gradient(160deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .012));border:.5px solid rgba(255, 255, 255, .32);box-shadow:inset 0 1px 0 rgba(255, 255, 255, .05)}
+:is(html.theme-dark, html.studio-theme-dark) .smart-group-frame-hit{background:rgba(31, 31, 31, .70);border:1px solid #ffffff;box-shadow:none}
 :is(html.theme-dark, html.studio-theme-dark) *{scrollbar-color:rgba(255, 255, 255, .22) transparent}
 :is(html.theme-dark, html.studio-theme-dark) *::-webkit-scrollbar-thumb{background:rgba(255, 255, 255, .22)}
 :is(html.theme-dark, html.studio-theme-dark) *::-webkit-scrollbar-thumb:hover{background:rgba(255, 255, 255, .32)}
