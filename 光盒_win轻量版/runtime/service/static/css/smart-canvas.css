@@ -5,7 +5,7 @@
     --shadow:rgba(55,65,81,.12); --strong:var(--ui-accent); --strong-text:#ffffff; --accent:var(--ui-accent);
 }
 .theme-dark {
-    --page:var(--ui-surface-canvas); --grid:rgba(255,255,255,.012); --panel:var(--ui-surface-chrome); --card:var(--ui-surface-card);
+    --page:var(--ui-surface-canvas); --grid:rgba(255,255,255,.006); --panel:var(--ui-surface-chrome); --card:var(--ui-surface-card);
     --text:var(--ui-text); --muted:var(--ui-text-secondary); --faint:var(--ui-text-muted); --line:var(--ui-border); --soft:var(--ui-hover);
     --shadow:rgba(0,0,0,.38); --strong:var(--ui-accent); --strong-text:#ffffff; --accent:var(--ui-accent);
 }
