@@ -4992,9 +4992,7 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     .node-context-menu,
     .canvas-context-menu,
     .ui-menu.node-context-menu,
-    .create-menu,
-    .mm-sidebar,
-    .lightbox-native-titlebar
+    .create-menu
 ),
 :is(html.theme-dark, html.studio-theme-dark) body :is(
     #imageQuickToolbar.image-quick-toolbar,
@@ -5004,9 +5002,7 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     .node-context-menu,
     .canvas-context-menu,
     .ui-menu.node-context-menu,
-    .create-menu,
-    .mm-sidebar,
-    .lightbox-native-titlebar
+    .create-menu
 ) {
     background: rgba(31, 31, 31, .70) !important;
     background-color: rgba(31, 31, 31, .70) !important;
@@ -5017,6 +5013,26 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     box-shadow: none !important;
     -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
     backdrop-filter: blur(18px) saturate(140%) !important;
+}
+
+/* 顶栏 / 左侧栏：禁止套用浮层细描边（不是浮动面板） */
+html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-titlebar,
+:is(html.theme-dark, html.studio-theme-dark) body .mm-sidebar {
+    border: 0 !important;
+    border-color: transparent !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+/* 左侧栏只保留贴画布的右侧分割线 */
+html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark):not(.lightbox-compact-mode) .mm-sidebar {
+    border-right: 1px solid rgba(255, 255, 255, .16) !important;
+}
+
+/* 右侧栏贴画布：强制左侧分割线（压过被清零/过淡的 border） */
+html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark):not(.lightbox-compact-mode) .gpt-dock {
+    border-left: 1px solid rgba(255, 255, 255, .16) !important;
+    border-left-color: rgba(255, 255, 255, .16) !important;
 }
 
 /* 双击引用面板：外壳无边，内层 shell 70% + 18px 磨砂 + 单条细描边 */
