@@ -3630,8 +3630,7 @@ html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover .has-strong-s
 .shell .composer .composer-footer .composer-footer-bar {
     position:relative;
     isolation:isolate;
-    /* Sit on the same baseline as right-dock attach/send (~30px below prior). */
-    transform:translateY(44px);
+    transform:none;
 }
 .shell .composer .composer-footer .composer-footer-tools {
     position:relative;
