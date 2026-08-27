@@ -1194,23 +1194,31 @@ def install_local_asset_compat(app) -> None:
 # 名字绑定「中转站 + 该站的真实模型名」；底部输入栏永远显示这些名字。
 CUSTOM_MODEL_PRESETS: dict[str, list[str]] = {
     "image": [
-        "Nano Banana 2 Lite", "Seedream 5.0 Lite", "Seedream 5.0 Pro",
-        "Seedream 4.0", "Seedream 4.5", "GPT Image2",
-        "Banana 2", "Banana Pro", "Banana", "MJ V7", "MJ V8.2", "MJ V8.1",
+        "GPT Image2",
+        "Nano Banana PRO",
+        "Seedream 5.0",
+        "Midjourney V7",
     ],
     "video": [
-        "Hailuo-02", "Vidu Q2", "Seedance 2.0", "Seedance 2.0 Fast",
-        "Seedance 2.5", "MiniMax H3", "Kling 3.0 Omni", "Gemini Omni Flash",
-        "Kling 3.0", "HappyHorse 1.0", "HappyHorse 1.1",
+        "Seedance 2.0",
+        "Seedance 2.0 Fast",
+        "Kling 3.0 Omni",
+        "MiniMax H3",
+        "Hailuo 2.3",
+        "Gemini Omni Flash",
     ],
     "audio": [
-        "Mureka V8", "Mureka O2", "Seed Audio 1.0", "MiniMax Music 2.6",
-        "ElevenLabs V3", "Sonilo Music", "Minimax-speech-2.8-hd",
-        "Minimax-speech-2.8-turbo", "Eleven V3", "Eleven Music V3",
+        "Mureka V8",
+        "Seed Audio 1.0",
+        "MiniMax Music 2.6",
+        "ElevenLabs V3",
+        "Minimax-speech-2.8-hd",
     ],
     "text": [
-        "Gemini 3.1 Flash Lite", "DeepSeek V4 Pro", "Gemini 3.1 Pro",
-        "Gemini 3 Flash", "GPT-5.6",
+        "DeepSeek V4",
+        "GPT-5.6 Sol",
+        "GLM-2",
+        "Gemini 3.1 Pro",
     ],
 }
 
