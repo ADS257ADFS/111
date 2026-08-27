@@ -14,7 +14,14 @@ body { margin:0; height:100vh; overflow:hidden; overscroll-behavior:none; color:
 button,input,select,textarea { font:inherit; }
 button { border:0; cursor:pointer; }
 .node-context-menu { position:fixed; width:160px; display:flex; flex-direction:column; gap:var(--ui-space-1); color:var(--ui-text); user-select:none; }
-.canvas-context-menu { width:168px; }
+.canvas-context-menu { width:168px; padding-block: calc(var(--ui-space-4) + 2px); }
+.canvas-context-menu .ui-menu-divider {
+    flex: 0 0 auto;
+    height: 1px;
+    margin: calc(var(--ui-space-2) + 1px) var(--ui-space-3);
+    background: var(--ui-border);
+    opacity: 0.9;
+}
 .node-context-menu[hidden] { display:none; }
 .shell { position:relative; width:100vw; height:100vh; overflow:hidden; overscroll-behavior:none; touch-action:none; background-color:var(--page); background-image:radial-gradient(var(--grid) 1px, transparent 1px); background-size:24px 24px; cursor:default; }
 .shell.panning { cursor:grabbing; }
