@@ -61,7 +61,7 @@
 <link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.27.shellbg1">
 <link rel="stylesheet" href="/static/css/ui-primitives.css?v=2026.08.11.82">
 <link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.27.shellbg1">
-<link rel="stylesheet" href="/static/css/shell/mm-sidebar.css?v=2026.08.27.shellbg1">
+<link rel="stylesheet" href="/static/css/shell/mm-sidebar.css?v=2026.08.27.kindnav1">
 <!-- 最高优先级内联CSS：桌面模式画布必须直角，外窗圆角只由 win_launcher SetWindowRgn(18) 提供；勿再写 32px 等大圆角以免上大下小 -->
 <style id="desktop-stage-radius">
 html.lightbox-desktop-native .stage,
@@ -86,7 +86,7 @@ html.lightbox-desktop-native .stage.stage > iframe {
     -webkit-transition: none !important;
 }
 </style>
-<script src="/static/js/shell/mm-sidebar.js?v=2026.08.26.ellipsis2" defer></script>
+<script src="/static/js/shell/mm-sidebar.js?v=2026.08.27.kindnav1" defer></script>
 </head>
 
 <body>
@@ -146,40 +146,71 @@ html.lightbox-desktop-native .stage.stage > iframe {
         <div class="mm-sidebar-head">
             <button id="mmSidebarToggle" class="mm-sidebar-collapse" type="button" title="收起侧栏" aria-label="收起侧栏"><i data-lucide="panel-left"></i></button>
         </div>
-        <div class="mm-sidebar-nav">
-            <button id="mmSideNewCanvas" type="button"><i data-lucide="plus"></i><span>新建画布</span></button>
-            <div id="mmAssetTree" class="mm-asset-tree is-collapsed">
-                <button id="mmSideAssets" class="mm-asset-tree-root" type="button" aria-expanded="false" aria-controls="mmAssetTreeFolders">
-                    <i data-lucide="folder-open"></i><span>资产中心</span><i class="mm-asset-tree-chevron" data-lucide="chevron-down"></i>
-                </button>
-                <div id="mmAssetTreeFolders" class="mm-asset-tree-folders">
-
-                    <div class="mm-asset-tree-folder" data-asset-kind="image">
-                        <div class="mm-asset-tree-folder-row"><span class="mm-asset-tree-folder-label"><i class="mm-asset-folder-chevron" data-lucide="chevron-down"></i><span>图片资产</span></span></div>
-                    </div>
-                    <div class="mm-asset-tree-folder" data-asset-kind="prompt">
-                        <div class="mm-asset-tree-folder-row"><span class="mm-asset-tree-folder-label"><i class="mm-asset-folder-chevron" data-lucide="chevron-down"></i><span>提示词</span></span></div>
-                    </div>
-                    <div class="mm-asset-tree-folder" data-asset-kind="video">
-                        <div class="mm-asset-tree-folder-row"><span class="mm-asset-tree-folder-label"><i class="mm-asset-folder-chevron" data-lucide="chevron-down"></i><span>视频资产</span></span></div>
-                    </div>
-                    <div class="mm-asset-tree-folder" data-asset-kind="audio">
-                        <div class="mm-asset-tree-folder-row"><span class="mm-asset-tree-folder-label"><i class="mm-asset-folder-chevron" data-lucide="chevron-down"></i><span>音频资产</span></span></div>
+        <div class="mm-sidebar-home" id="mmSidebarHome">
+            <div class="mm-sidebar-nav">
+                <button id="mmSideNewCanvas" type="button"><i data-lucide="plus"></i><span>新建画布</span></button>
+                <div id="mmAssetTree" class="mm-asset-tree is-collapsed">
+                    <button id="mmSideAssets" class="mm-asset-tree-root" type="button" aria-expanded="false" aria-controls="mmAssetTreeFolders">
+                        <i data-lucide="folder-open"></i><span>资产中心</span><i class="mm-asset-tree-chevron" data-lucide="chevron-down"></i>
+                    </button>
+                    <div id="mmAssetTreeFolders" class="mm-asset-tree-folders">
+                        <div class="mm-asset-tree-folder" data-asset-kind="image">
+                            <button class="mm-asset-tree-folder-btn" type="button" data-asset-kind="image">
+                                <span class="mm-asset-tree-folder-label"><span>图片资产</span></span>
+                            </button>
+                        </div>
+                        <div class="mm-asset-tree-folder" data-asset-kind="prompt">
+                            <button class="mm-asset-tree-folder-btn" type="button" data-asset-kind="prompt">
+                                <span class="mm-asset-tree-folder-label"><span>提示词</span></span>
+                            </button>
+                        </div>
+                        <div class="mm-asset-tree-folder" data-asset-kind="video">
+                            <button class="mm-asset-tree-folder-btn" type="button" data-asset-kind="video">
+                                <span class="mm-asset-tree-folder-label"><span>视频资产</span></span>
+                            </button>
+                        </div>
+                        <div class="mm-asset-tree-folder" data-asset-kind="audio">
+                            <button class="mm-asset-tree-folder-btn" type="button" data-asset-kind="audio">
+                                <span class="mm-asset-tree-folder-label"><span>音频资产</span></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
+                <button id="mmSideSkill" type="button"><i data-lucide="sparkles"></i><span>Skill</span></button>
+                <button id="mmSideAll" type="button"><i data-lucide="layout-grid"></i><span>全部创作</span></button>
             </div>
-            <button id="mmSideSkill" type="button"><i data-lucide="sparkles"></i><span>Skill</span></button>
-            <button id="mmSideAll" type="button"><i data-lucide="layout-grid"></i><span>全部创作</span></button>
+            <div class="mm-sidebar-recent">
+                <div class="mm-sidebar-recent-list" id="mmSidebarRecentList" aria-label="最近创作"></div>
+            </div>
+            <div class="mm-sidebar-footer">
+                <button id="shellSidebarUserBtn" class="mm-sidebar-user" type="button" aria-haspopup="menu" aria-expanded="false" title="用户">
+                    <span class="mm-sidebar-avatar" id="mmSidebarAvatar"><img alt="用户头像" hidden><i data-lucide="user-round"></i></span>
+                    <span class="mm-sidebar-username" id="mmSidebarUserName">用户</span>
+                </button>
+                <button id="mmSideSettings" class="mm-sidebar-gear" type="button" title="帮助中心" aria-label="帮助中心"><i data-lucide="circle-help"></i></button>
+            </div>
         </div>
-        <div class="mm-sidebar-recent">
-            <div class="mm-sidebar-recent-list" id="mmSidebarRecentList" aria-label="最近创作"></div>
-        </div>
-        <div class="mm-sidebar-footer">
-            <button id="shellSidebarUserBtn" class="mm-sidebar-user" type="button" aria-haspopup="menu" aria-expanded="false" title="用户">
-                <span class="mm-sidebar-avatar" id="mmSidebarAvatar"><img alt="用户头像" hidden><i data-lucide="user-round"></i></span>
-                <span class="mm-sidebar-username" id="mmSidebarUserName">用户</span>
-            </button>
-            <button id="mmSideSettings" class="mm-sidebar-gear" type="button" title="帮助中心" aria-label="帮助中心"><i data-lucide="circle-help"></i></button>
+        <div class="mm-sidebar-kind-panel" id="mmSidebarKindPanel" hidden aria-hidden="true">
+            <div class="mm-kind-panel-header">
+                <div class="mm-kind-panel-title-group">
+                    <button class="mm-kind-panel-back" id="mmKindPanelBack" type="button" title="返回" aria-label="返回">
+                        <i data-lucide="chevron-left"></i>
+                    </button>
+                    <h2 class="mm-kind-panel-title" id="mmKindPanelTitle">图片资产</h2>
+                </div>
+                <div class="mm-kind-panel-views" role="group" aria-label="视图切换">
+                    <button class="mm-kind-view-btn is-active" id="mmKindViewGrid" type="button" data-kind-view="grid" title="网格视图" aria-label="网格视图" aria-pressed="true">
+                        <i data-lucide="layout-grid"></i>
+                    </button>
+                    <button class="mm-kind-view-btn" id="mmKindViewList" type="button" data-kind-view="list" title="列表视图" aria-label="列表视图" aria-pressed="false">
+                        <i data-lucide="list"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mm-kind-panel-body" id="mmKindPanelBody" data-kind-view="grid">
+                <div class="mm-kind-panel-empty" id="mmKindPanelEmpty">暂无内容</div>
+                <div class="mm-kind-panel-grid" id="mmKindPanelGrid" hidden></div>
+            </div>
         </div>
     </aside>
     <button id="mmSidebarReopen" class="mm-sidebar-reopen" type="button" title="展开侧栏" aria-label="展开侧栏"><i data-lucide="panel-left"></i></button>
