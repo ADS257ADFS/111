@@ -1276,9 +1276,9 @@ function createNode(x, y, images=[], options={}){ return window.SmartCanvasNodeF
 function createPromptNode(x, y, options={}){ return window.SmartCanvasNodeFactory?.createPromptNode?.(x, y, options); }
 function createLoopNode(x, y, options={}){ return window.SmartCanvasNodeFactory?.createLoopNode?.(x, y, options); }
 function cloneSmartNode(node, dx=0, dy=0){ return window.SmartCanvasNodeFactory?.cloneSmartNode?.(node, dx, dy); }
-function copySelectedNodes(){ return window.SmartCanvasNodeClipboard?.copySelectedNodes?.(); }
-function pasteNodes(){ return window.SmartCanvasNodeClipboard?.pasteNodes?.(); }
-function duplicateForAltDrag(node){ return window.SmartCanvasNodeClipboard?.duplicateForAltDrag?.(node); }
+function copySelectedNodes(...args){ return window.SmartCanvasNodeClipboard?.copySelectedNodes?.(...args); }
+function pasteNodes(...args){ return window.SmartCanvasNodeClipboard?.pasteNodes?.(...args); }
+function duplicateForAltDrag(...args){ return window.SmartCanvasNodeClipboard?.duplicateForAltDrag?.(...args); }
 function shellPoint(event){ return window.SmartCanvasOverlayChrome?.shellPoint?.(event); }
 function render(...args){
     return window.SmartCanvasNodesRender?.render?.(...args);
@@ -2168,6 +2168,12 @@ window.addEventListener('message', event => {
     if(event.data?.type === 'asset_library_updated') handleAssetLibraryUpdatedMessage(event.data);
     if(event.data?.type === 'shell-request-canvas-project-state') SmartCanvasHistory?.notifyShellCanvasProject?.();
     if(event.data?.type === 'canvas-clear-selection') clearSelection();
+    if(event.data?.type === 'shell-canvas-clipboard'){
+        const action = String(event.data.action || '').toLowerCase();
+        focusCanvasForShortcuts();
+        if(action === 'copy') copySelectedNodes();
+        else if(action === 'paste') pasteNodes();
+    }
     if(event.data?.type === 'canvas-agent-actions') {
         executeCanvasAgentActions(event.data.actions || [])
             .then(results => window.parent.postMessage({type:'canvas-agent-results', request_id:event.data.request_id || '', results, observation:canvasAgentObservation()}, location.origin))
@@ -2893,7 +2899,8 @@ function registerSmartCanvasModuleDeps(){
         get lastMouseWorld(){ return lastMouseWorld; },
         set lastMouseWorld(v){ lastMouseWorld = v; },
         isEditableTarget, selectedNodeIds, toast, pushUndo, viewportCenter,
-        cloneSmartNode, render, scheduleSave, isNodeSelected,
+        cloneSmartNode, serializableSmartNode, render, scheduleSave, isNodeSelected,
+        tr, trf,
     });
     const nodeFactoryMod = window.SmartCanvasNodeFactory;
     nodeFactoryMod?.registerDeps?.({
@@ -2952,6 +2959,9 @@ function registerSmartCanvasModuleDeps(){
         set lastMouseWorld(v){ lastMouseWorld = v; },
         get undoSuppressed(){ return undoSuppressed; },
         set undoSuppressed(v){ undoSuppressed = v; },
+        get undoStack(){ return undoStack; },
+        get nodeClipboard(){ return nodeClipboard; },
+        set nodeClipboard(v){ nodeClipboard = v; },
         get canvas(){ return canvas; },
         set canvas(v){ canvas = v; },
         get saveTimer(){ return saveTimer; },

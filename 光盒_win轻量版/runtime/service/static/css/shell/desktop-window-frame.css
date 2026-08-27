@@ -7,12 +7,9 @@
 }
 
 html.lightbox-desktop-native {
-    --lightbox-chrome-bg: #dedede;
-    --lightbox-chrome-surface:
-        linear-gradient(to bottom, rgba(255, 255, 255, .96) 0, rgba(255, 255, 255, .55) 14px, rgba(255, 255, 255, 0) 48px),
-        linear-gradient(to right, rgba(255, 255, 255, .84) 0, rgba(255, 255, 255, .36) 12px, rgba(255, 255, 255, 0) 38px),
-        linear-gradient(to left, rgba(255, 255, 255, .84) 0, rgba(255, 255, 255, .36) 12px, rgba(255, 255, 255, 0) 38px),
-        linear-gradient(to top, rgba(255, 255, 255, .84) 0, rgba(255, 255, 255, .36) 12px, rgba(255, 255, 255, 0) 38px);
+    /* 与 win_launcher.CHROME_BG light / --ui-surface-shell 一致，避免圆角抗锯齿补边错色。 */
+    --lightbox-chrome-bg: #fafafb;
+    --lightbox-chrome-surface: none;
     /* 根背景与顶栏同色，避免 WebView2 缩放取整时露出异色细缝。 */
     background: var(--lightbox-chrome-bg) !important;
 }
@@ -229,27 +226,33 @@ html.lightbox-desktop-native .lightbox-native-window-controls button {
     position: relative;
     z-index: 1;
     width: 30px;
-    height: 32px;
+    height: 30px;
     border: 0;
-    border-radius: 999px;
+    border-radius: 0;
     background: transparent;
     color: currentColor;
     cursor: default;
     outline: none;
+    overflow: visible;
 }
 
-/* 悬停光斑：20px 正圆，居中绘制，不再随按钮长宽拉扁 */
+/* 悬停光斑：直角方框，覆盖略大于图标区 */
 html.lightbox-desktop-native .lightbox-native-window-controls button::before {
     content: "";
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     transform: translate(-50%, -50%);
-    border-radius: 50%;
+    border-radius: 0;
     background: transparent;
     transition: background-color .15s ease;
+}
+
+html.lightbox-desktop-native .lightbox-native-window-controls button:is(:hover, :focus-visible, :active),
+html.lightbox-desktop-native .lightbox-native-window-controls button:is(:hover, :focus-visible, :active)::before {
+    border-radius: 0;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button span {
@@ -1266,7 +1269,8 @@ html.lightbox-desktop-native .shell-canvas-project-cluster {
 }
 
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) {
-    --lightbox-chrome-bg: #252528;
+    /* 与 win_launcher.CHROME_BG dark / --ui-surface-shell 一致。 */
+    --lightbox-chrome-bg: #181818;
 }
 
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-titlebar {
@@ -1316,14 +1320,14 @@ html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark):not(.light
     background-repeat: no-repeat !important;
 }
 
-/* 浅色完整窗口：顶部与三侧窗框统一为纯白表面。 */
+/* 浅色完整窗口：顶部与三侧窗框统一为壳层浅灰表面。 */
 html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark):not(.lightbox-compact-mode) {
-    --lightbox-chrome-bg: #fff;
+    --lightbox-chrome-bg: #fafafb;
     --lightbox-chrome-surface: none;
 }
 
 html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark):not(.lightbox-compact-mode) .lightbox-native-titlebar {
-    background-color: #fff !important;
+    background-color: #fafafb !important;
     background-image: none !important;
     box-shadow: none;
 }
@@ -1387,6 +1391,35 @@ html.lightbox-desktop-native [data-native-window-resize^="bottom-"] {
 html.lightbox-desktop-native [data-native-window-resize$="-left"] { left: 0; cursor: nwse-resize; }
 html.lightbox-desktop-native [data-native-window-resize$="-right"] { right: 0; cursor: nesw-resize; }
 
+/* 右侧对话栏展开时：右缘拉伸条收窄到最外 3px，与原生 right_band 对齐。
+ * 不再给 dock/iframe 加右留白，避免输入框左右间距被挤偏。 */
+html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.lightbox-compact-mode)
+    [data-native-window-resize="right"] {
+    width: 3px !important;
+    pointer-events: auto !important;
+    cursor: ew-resize !important;
+}
+
+html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.lightbox-compact-mode)
+    [data-native-window-resize="top-right"],
+html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.lightbox-compact-mode)
+    [data-native-window-resize="bottom-right"] {
+    width: 10px !important;
+    height: 10px !important;
+    pointer-events: auto !important;
+}
+
+html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.lightbox-compact-mode)
+    .gpt-dock {
+    padding-right: 0 !important;
+}
+
+html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.lightbox-compact-mode)
+    .gpt-dock iframe {
+    margin: 0 !important;
+    width: 100% !important;
+}
+
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-window-controls button:hover::before {
     background: rgba(255, 255, 255, .10);
 }
@@ -1440,15 +1473,9 @@ html.lightbox-desktop-native .gpt-dock .lightbox-compact-btn.active {
     background: rgba(var(--ui-accent-rgb), .10);
 }
 
-/* 置顶/回归放在小窗左上角（原对话标题的位置，与右侧按钮同一行） */
+/* 置顶/回归默认隐藏；精简模式下由 dock-chrome 内联展示（见下方合并顶栏规则） */
 html.lightbox-compact-mode .lightbox-compact-controls {
     display: none;
-    align-items: center;
-    gap: 6px;
-    position: fixed;
-    top: 26px;
-    left: 20px;
-    z-index: 500;
 }
 
 html.lightbox-compact-mode .lightbox-compact-controls button {
@@ -1495,12 +1522,138 @@ html.lightbox-compact-mode .app-shell .stage {
     pointer-events: none !important;
 }
 
-/* 顶部栏只保留拖拽区，视觉上完全透明，露出下面的对话面板 */
+/* 精简模式：单行顶栏 = 置顶/回归 + 对话标题 + 操作，去掉双层标题与多余留白。 */
 html.lightbox-compact-mode .lightbox-native-titlebar {
-    background: transparent !important;
-    box-shadow: none !important;
+    display: none !important;
+}
+
+html.lightbox-compact-mode .app-shell {
+    margin-top: 0 !important;
+    height: 100vh !important;
+}
+
+html.lightbox-compact-mode .gpt-dock {
+    display: flex !important;
+    flex-direction: column !important;
+    position: fixed !important;
+    inset: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    padding: 0 !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transition: none !important;
+    box-sizing: border-box !important;
     border: 0 !important;
-    pointer-events: none !important;
+    background: #fff !important;
+    overflow: hidden !important;
+}
+
+html.lightbox-compact-mode .gpt-dock::before {
+    inset: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+html.lightbox-compact-mode:is(.theme-dark, .studio-theme-dark) .gpt-dock {
+    background: #1e1f22 !important;
+}
+
+html.lightbox-compact-mode .gpt-dock .dock-chrome {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    z-index: 6 !important;
+    flex: 0 0 var(--ui-titlebar-h, 28px) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 2px !important;
+    height: var(--ui-titlebar-h, 28px) !important;
+    min-height: var(--ui-titlebar-h, 28px) !important;
+    max-height: var(--ui-titlebar-h, 28px) !important;
+    padding: 0 6px 0 2px !important;
+    border-bottom: 1px solid var(--ui-border) !important;
+    background: inherit !important;
+    box-sizing: border-box !important;
+    cursor: default;
+}
+
+html.lightbox-compact-mode .gpt-dock .dock-chrome-spacer {
+    margin: 0 !important;
+    min-width: 4px !important;
+    flex: 1 1 auto !important;
+}
+
+html.lightbox-compact-mode .gpt-dock .dock-chrome-title-group {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 100% !important;
+    padding-left: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+html.lightbox-compact-mode .gpt-dock .dock-chrome-title-row,
+html.lightbox-compact-mode .gpt-dock .dock-chrome-title-trigger {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    padding: 0 4px !important;
+    gap: 2px !important;
+}
+
+html.lightbox-compact-mode .gpt-dock .dock-chrome-title {
+    font-size: var(--ui-type-compact-label, 12px) !important;
+    line-height: 1 !important;
+}
+
+html.lightbox-compact-mode .gpt-dock .dock-chrome-actions {
+    flex: 0 0 auto !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0 !important;
+}
+
+html.lightbox-compact-mode .gpt-dock .dock-chrome-btn {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    padding: 0 !important;
+}
+
+html.lightbox-compact-mode .gpt-dock iframe {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+}
+
+/* 置顶/回归并入 dock-chrome 首列 */
+html.lightbox-compact-mode .lightbox-compact-controls {
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    gap: 0 !important;
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 0 0 2px !important;
+    z-index: auto !important;
+    pointer-events: auto !important;
+}
+
+html.lightbox-compact-mode .lightbox-compact-controls button {
+    width: 26px !important;
+    height: 26px !important;
+    flex: 0 0 26px !important;
 }
 
 /* 窗口背景与面板同色，避免外框出现异色细边。 */
@@ -1512,23 +1665,6 @@ html.lightbox-compact-mode .app-shell {
 html.lightbox-compact-mode:is(.theme-dark, .studio-theme-dark) body,
 html.lightbox-compact-mode:is(.theme-dark, .studio-theme-dark) .app-shell {
     background: #1e1f22 !important;
-}
-
-/* 对话面板铺满整个直角小窗。 */
-html.lightbox-compact-mode .gpt-dock {
-    display: flex !important;
-    inset: 0 !important;
-    width: auto !important;
-    padding: 0 !important;
-    transform: none !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transition: none !important;
-}
-
-html.lightbox-compact-mode .gpt-dock::before {
-    inset: 0 !important;
 }
 
 /* 精简模式下不允许收起对话栏，否则小窗会变成空白 */

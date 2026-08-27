@@ -64,19 +64,62 @@
         if (newBtn && newBtn.parentElement !== document.body) {
             document.body.appendChild(newBtn);
         }
-        // 原窗口栏中的精简模式入口移到对话栏标题区，位于“新建对话”左边。
+        // 对话栏右侧操作顺序固定：＋新建 → 精简模式 → 收起。
         const compactBtn = document.querySelector('.lightbox-compact-btn');
-        const dockActionAnchor = document.getElementById('dockShellNewBtn') || document.getElementById('gptDockCloseBtn');
-        if (compactBtn && dockActionAnchor && compactBtn.parentElement !== dockActionAnchor.parentElement) {
+        const newChatBtn = document.getElementById('dockShellNewBtn');
+        const closeBtn = document.getElementById('gptDockCloseBtn');
+        const dockActions = closeBtn?.parentElement || document.querySelector('.dock-chrome-actions');
+        if (compactBtn && dockActions) {
             compactBtn.classList.add('dock-chrome-btn');
             compactBtn.removeAttribute('tabindex');
-            dockActionAnchor.parentElement.insertBefore(compactBtn, dockActionAnchor);
+            if (closeBtn) dockActions.insertBefore(compactBtn, closeBtn);
+            else if (compactBtn.parentElement !== dockActions) dockActions.appendChild(compactBtn);
+        }
+        if (newChatBtn && dockActions && compactBtn && newChatBtn.nextElementSibling !== compactBtn) {
+            dockActions.insertBefore(newChatBtn, compactBtn);
+        }
+        // 下拉里不应再出现「新建对话」。
+        document.querySelectorAll('.dock-chrome-menu-new, #dockShellMenuNewBtn').forEach(node => node.remove());
+    };
+
+    let compactDockWasCollapsed = false;
+    let compactDockWasHidden = false;
+    let compactControlsHome = null;
+    const mountCompactControls = compact => {
+        const controls = document.querySelector('.lightbox-compact-controls');
+        const dockChrome = document.querySelector('.gpt-dock .dock-chrome');
+        if (!controls || !dockChrome) return;
+        if (compact) {
+            if (!compactControlsHome) {
+                compactControlsHome = {
+                    parent: controls.parentElement,
+                    next: controls.nextElementSibling,
+                };
+            }
+            if (controls.parentElement !== dockChrome) {
+                dockChrome.insertBefore(controls, dockChrome.firstChild);
+            }
+            return;
+        }
+        if (compactControlsHome?.parent && controls.parentElement !== compactControlsHome.parent) {
+            const { parent, next } = compactControlsHome;
+            if (next && next.parentElement === parent) parent.insertBefore(controls, next);
+            else parent.appendChild(controls);
         }
     };
+
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', relocateTitlebarButtons);
+        document.addEventListener('DOMContentLoaded', () => {
+            relocateTitlebarButtons();
+            if (document.documentElement.classList.contains('lightbox-compact-mode')) {
+                mountCompactControls(true);
+            }
+        });
     } else {
         relocateTitlebarButtons();
+        if (document.documentElement.classList.contains('lightbox-compact-mode')) {
+            mountCompactControls(true);
+        }
     }
 
     // 顶栏日夜切换胶囊：视觉状态由 CSS 跟随主题 class，这里只负责切主题
@@ -84,8 +127,6 @@
         try { window.toggleTheme?.(); } catch (_e) {}
     });
 
-    let compactDockWasCollapsed = false;
-    let compactDockWasHidden = false;
     const notifyDockCompact = compact => {
         // iframe 可能尚未加载完成，多发几次（处理是幂等的）
         const frame = document.getElementById('frame-gpt-dock');
@@ -104,6 +145,7 @@
             window.openGptDock?.();
         }
         root.classList.toggle('lightbox-compact-mode', compact);
+        mountCompactControls(compact);
         const compactBtn = document.querySelector('.lightbox-compact-btn');
         compactBtn?.classList.toggle('active', compact);
         compactBtn?.setAttribute('aria-pressed', compact ? 'true' : 'false');
