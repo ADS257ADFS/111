@@ -106,7 +106,7 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
     min-width: 0;
     color: inherit;
     font-family: var(--ui-font);
-    font-size: var(--ui-type-section);
+    font-size: 15px; /* slightly larger than --ui-type-section (14px) */
     font-weight: var(--ui-weight-menu-strong);
     font-variation-settings: normal;
     font-synthesis: none;
