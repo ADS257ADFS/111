@@ -1080,9 +1080,10 @@
             max-width: 100%;
             padding-left: 0;
             padding-right: 0;
-            font-family: var(--ui-font);
+            font-family: var(--ui-font-variable);
             font-size: var(--ui-type-section);
-            font-weight: var(--ui-weight-menu-strong);
+            font-weight: 300;
+            font-variation-settings: "wght" 300;
             line-height: var(--ui-leading-tight);
             color: var(--ui-text);
             white-space: nowrap;
@@ -1281,9 +1282,9 @@
         .dock-chrome-menu-item-title {
             flex: 1 1 auto;
             min-width: 0;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 400;
-            line-height: 1.35;
+            line-height: 1.3;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -1295,7 +1296,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             font-family: var(--ui-font);
-            font-size: 10px;
+            font-size: 9px;
             font-weight: var(--ui-weight-latin, 350);
             font-variation-settings: "wght" var(--ui-weight-latin, 350);
             line-height: var(--ui-leading-tight, 1.2);
@@ -1413,7 +1414,7 @@
             flex-shrink: 0;
             color: currentColor;
             stroke: currentColor;
-            stroke-width: var(--ui-sidebar-nav-icon-stroke);
+            stroke-width: 1.35;
         }.dock-chrome-btn:not(:disabled):hover,
 .dock-chrome-btn:not(:disabled):focus-visible{
             background: #f9fafb;

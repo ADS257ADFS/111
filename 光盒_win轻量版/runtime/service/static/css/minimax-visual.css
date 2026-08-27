@@ -4008,10 +4008,10 @@ html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-d
 html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
     .gpt-dock .dock-chrome-title-trigger {
     color:var(--ui-text) !important;
-    font-family:var(--ui-font) !important;
+    font-family:var(--ui-font-variable) !important;
     font-size:var(--ui-type-section) !important;
-    font-weight:var(--ui-weight-menu-strong) !important;
-    font-variation-settings:normal !important;
+    font-weight:300 !important;
+    font-variation-settings:"wght" 300 !important;
     font-synthesis:none !important;
     line-height:var(--ui-leading-tight) !important;
 }
@@ -4033,7 +4033,7 @@ html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-d
     flex:0 0 var(--ui-sidebar-nav-icon-size) !important;
     color:currentColor !important;
     stroke:currentColor !important;
-    stroke-width:var(--ui-sidebar-nav-icon-stroke) !important;
+    stroke-width:1.35 !important;
 }
 /* M62：右上画布导航统一尺寸与外框几何。 */
 #shell.shell .canvas-bottom-chrome {
@@ -4257,14 +4257,15 @@ html.lightbox-desktop-native .stage iframe {
 }
 
 /* ================================================================
- * 右侧栏左上角"未命名对话"样式——与左侧栏"新建画布"一致
+ * 右侧栏左上角"未命名对话"：降低字重；右上三角标描边变细
+ * （不与左侧栏强行对齐）
  * ================================================================ */
 html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger,
 html.lightbox-desktop-native .gpt-dock .dock-chrome-title {
-    font-family: var(--ui-font) !important;
+    font-family: var(--ui-font-variable) !important;
     font-size: var(--ui-type-section) !important;
-    font-weight: var(--ui-weight-menu-strong) !important;
-    font-variation-settings: normal !important;
+    font-weight: 300 !important;
+    font-variation-settings: "wght" 300 !important;
     font-synthesis: none !important;
     color: var(--ui-text) !important;
     line-height: var(--ui-leading-tight) !important;
@@ -4277,7 +4278,7 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger:is(:hover, :fo
     box-shadow: none !important;
 }
 
-/* 右侧栏右上角图标：与左侧「新建画布」图标同尺寸、同描边、同颜色 */
+/* 右侧栏右上角三个图标：描边更细 */
 html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .dock-chrome-btn {
     color: var(--ui-text) !important;
 }
@@ -4289,7 +4290,7 @@ html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon svg {
     flex: 0 0 var(--ui-sidebar-nav-icon-size) !important;
     color: var(--ui-text) !important;
     stroke: currentColor !important;
-    stroke-width: var(--ui-sidebar-nav-icon-stroke) !important;
+    stroke-width: 1.35 !important;
 }
 
 /* 下拉菜单：更小字号；面板内边距略加大。 */
