@@ -277,13 +277,14 @@ body.studio-theme-dark {
     --ui-composer-surface-h: 174px;
     --ui-composer-surface-side-inset: 7px;
     --ui-composer-surface-bottom-gap: 15px;
-    --ui-composer-topbar-h: 30px;
-    --ui-composer-topbar-growth: -10px;
-    --ui-composer-topbar-content-inset: 1px;
+    /* Tall enough for 28px 参考/批量/模式 controls; white surface starts below. */
+    --ui-composer-topbar-h: 40px;
+    --ui-composer-topbar-growth: 0px;
+    --ui-composer-topbar-content-inset: 0px;
     --ui-composer-topbar-filter: blur(14px) saturate(120%);
     --ui-composer-topbar-radius: calc(var(--ui-radius-panel) + var(--ui-space-2));
     --ui-composer-surface-top: var(--ui-composer-topbar-h);
-    --ui-composer-prompt-padding-top: var(--ui-space-7);
+    --ui-composer-prompt-padding-top: var(--ui-composer-topbar-h);
     --ui-control-h: 28px;      /* 常规控件高度 */
     --ui-control-h-sm: 24px;   /* 小号（标题栏 / 工具条内） */
     --ui-control-h-lg: 32px;   /* 菜单项 / 强操作行 */
