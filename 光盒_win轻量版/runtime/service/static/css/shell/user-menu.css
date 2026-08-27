@@ -37,7 +37,7 @@
     margin: 0;
     color: var(--ui-text-muted);
     font-family: var(--ui-font);
-    font-size: 9px;
+    font-size: 5px;
     font-weight: var(--ui-weight-latin, 320);
     font-variation-settings: "wght" 320;
     line-height: 1.25;
