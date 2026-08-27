@@ -1060,11 +1060,11 @@ html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .sh
 ) :is(svg, i, i > svg){color:#fff !important;stroke:#fff !important}
 :where(html.theme-dark,html.studio-theme-dark).lightbox-desktop-native body{background:#fff !important}
 :where(html.theme-dark,html.studio-theme-dark).lightbox-desktop-native .lightbox-native-titlebar{background:#fff;color:#252525}
-:where(html.theme-dark,html.studio-theme-dark).lightbox-desktop-native .lightbox-native-window-controls button:hover{background:rgba(0, 0, 0, .08)}:where(html.theme-dark,html.studio-theme-dark).lightbox-desktop-native .lightbox-native-window-controls button[data-native-window-action="close"]:hover{background:#707070;}
+:where(html.theme-dark,html.studio-theme-dark).lightbox-desktop-native .lightbox-native-window-controls button:hover{background:transparent}:where(html.theme-dark,html.studio-theme-dark).lightbox-desktop-native .lightbox-native-window-controls button[data-native-window-action="close"]:hover{background:transparent;}
 :where(html.theme-dark,html.studio-theme-dark).lightbox-desktop-native .app-shell{background:#f7f7f7 !important;box-shadow:0 10px 28px rgba(0, 0, 0, .10)}
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) body{background:#000 !important}
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-titlebar{background:#000;color:#d6d6d6}
-html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-window-controls button:hover{background:rgba(255, 255, 255, .10)}html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-window-controls button[data-native-window-action="close"]:hover{background:rgba(255, 255, 255, .14);}
+html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-window-controls button:hover{background:transparent}html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-window-controls button[data-native-window-action="close"]:hover{background:transparent;}
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .app-shell,html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .stage{background:#090909 !important}
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .app-shell{box-shadow:0 12px 30px rgba(0, 0, 0, .28)}
 html:is(.theme-dark,.studio-theme-dark) #studioGenerationCancel{border-color:rgba(151,151,151,.25)!important;color:#7c7c7c!important;box-shadow:0 10px 28px rgba(29,29,29,.14)!important}
