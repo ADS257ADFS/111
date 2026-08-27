@@ -5,7 +5,7 @@
     const DEFAULT_HEIGHT = 84;
     const MIN_HEIGHT = 84;
     /** Non-prompt chrome inside the sheet (topbar + footer + paddings/gaps). */
-    const SHEET_CHROME = 140;
+    const SHEET_CHROME = 180;
     const PIN_PROPS = ['top', 'bottom', 'margin-bottom', 'height', 'transform', 'transform-origin'];
 
     function maxHeight(){

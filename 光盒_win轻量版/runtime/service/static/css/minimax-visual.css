@@ -303,7 +303,7 @@ html body #shell.shell #composer.composer.open {
 /* 底部框整体紧凑化：只收间距与区块高度，不改任何文字/图标大小 */
 html body #shell.shell #composer.composer {
     --composer-prompt-h: 84px;
-    --composer-sheet-min-h: calc(140px + var(--composer-prompt-h, 84px));
+    --composer-sheet-min-h: calc(180px + var(--composer-prompt-h, 84px));
 }
 html body #shell.shell #composer.composer .composer-card {
     gap: var(--ui-space-2) !important;
@@ -1076,21 +1076,11 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice,
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover .composer-api-branch summary,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover .composer-api-models button,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerApiSettingsPopover .direct-option {
-    font-size: var(--ui-type-meta) !important;
-    font-weight: var(--ui-weight-medium) !important;
-    line-height: var(--ui-leading-tight) !important;
-    letter-spacing: 0 !important;
-}
-
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerSizePopover .size-picker-option.size-picker-option,
+    #composerApiSettingsPopover .direct-option,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerSizePopover .size-picker-option span,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
@@ -3341,9 +3331,9 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .prompt-row {
-    min-height: calc(var(--composer-prompt-h) + var(--ui-composer-topbar-growth)) !important;
-    height: calc(var(--composer-prompt-h) + var(--ui-composer-topbar-growth)) !important;
-    max-height: calc(var(--composer-prompt-h) + var(--ui-composer-topbar-growth)) !important;
+    min-height: calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top)) !important;
+    height: calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top)) !important;
+    max-height: calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top)) !important;
     padding-top: var(--ui-composer-prompt-padding-top) !important;
 }
 
@@ -3855,7 +3845,7 @@ html body #shell.shell #composer.composer.open[data-height-state="default"] {
 
 /* Outer sheet min-height tracks prompt height so the chrome expands upward with the field. */
 html body #shell.shell #composer.composer {
-    --composer-sheet-min-h: calc(140px + var(--composer-prompt-h, 84px));
+    --composer-sheet-min-h: calc(180px + var(--composer-prompt-h, 84px));
 }
 
 html body #shell.shell #composer.composer.open[data-height-state="expanded"] .composer-card,
@@ -4524,9 +4514,16 @@ body #shell.shell #composer.composer .composer-footer
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list
-    .mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
-    min-height: 64px !important;
-    padding: 12px 12px !important;
+    .mode-model-choice:has(.mode-model-desc) {
+    min-height: 52px !important;
+}
+
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer
+    #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:has(.mode-model-desc):is(:hover, :focus-visible) {
+    min-height: 52px !important;
+    padding: 8px 12px !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
