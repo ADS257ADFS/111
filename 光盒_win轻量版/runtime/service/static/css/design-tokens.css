@@ -21,7 +21,7 @@
     /* 表面 */
     --ui-surface-canvas: #fcfcfc;        /* 画布底 */
     --ui-surface-chrome: #f7f7f8;        /* 窗口栏 / 侧栏 / 全局面板 */
-    --ui-surface-shell: #ffffff;         /* 顶部窗口栏 / 左侧主导航；与 win_launcher CHROME_BG light 一致 */
+    --ui-surface-shell: #fafafb;         /* 顶部窗口栏 / 左侧主导航（浅灰壳层，与画布 #fcfcfc 拉开层次） */
     --ui-surface-card: #ffffff;          /* 卡片 / 面板内容底 */
     --ui-surface-elevated: #ffffff;      /* 菜单 / 弹层 */
     --ui-surface-input: #ffffff;         /* 输入框 */

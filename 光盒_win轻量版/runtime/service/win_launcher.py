@@ -199,12 +199,11 @@ def disable_system_window_rounding(hwnd: int) -> None:
         pass
 
 
-# 宿主底色必须与 CSS 窗框色一致：浅色完整窗口栏为纯白 #fff
-# （desktop-window-frame --lightbox-chrome-bg），深色为 #181818
-# （--ui-surface-shell）。WebView2 缩放取整会在窗口左右/底部留下
-# 1px 缝隙，露出宿主色；抗锯齿补边也用同一色，避免上角贴合、下角
-# 错色导致“上圆角更大 + 锯齿”。
-CHROME_BG = {"light": (0xFF, 0xFF, 0xFF), "dark": (0x18, 0x18, 0x18)}
+# 宿主底色必须与 CSS 窗框色一致：浅色完整窗口栏为壳层浅灰 #fafafb
+# （--ui-surface-shell / --lightbox-chrome-bg），深色为 #181818。
+# WebView2 缩放取整会在窗口左右/底部留下 1px 缝隙，露出宿主色；
+# 抗锯齿补边也用同一色，四角同色才不会“上圆角更大 + 锯齿”。
+CHROME_BG = {"light": (0xFA, 0xFA, 0xFB), "dark": (0x18, 0x18, 0x18)}
 _host_theme = "light"
 
 

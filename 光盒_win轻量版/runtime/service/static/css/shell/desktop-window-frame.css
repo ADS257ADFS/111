@@ -7,8 +7,8 @@
 }
 
 html.lightbox-desktop-native {
-    /* 与 win_launcher.CHROME_BG light / 顶栏纯白一致，避免圆角抗锯齿补边错色。 */
-    --lightbox-chrome-bg: #fff;
+    /* 与 win_launcher.CHROME_BG light / --ui-surface-shell 一致，避免圆角抗锯齿补边错色。 */
+    --lightbox-chrome-bg: #fafafb;
     --lightbox-chrome-surface: none;
     /* 根背景与顶栏同色，避免 WebView2 缩放取整时露出异色细缝。 */
     background: var(--lightbox-chrome-bg) !important;
@@ -1315,14 +1315,14 @@ html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark):not(.light
     background-repeat: no-repeat !important;
 }
 
-/* 浅色完整窗口：顶部与三侧窗框统一为纯白表面。 */
+/* 浅色完整窗口：顶部与三侧窗框统一为壳层浅灰表面。 */
 html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark):not(.lightbox-compact-mode) {
-    --lightbox-chrome-bg: #fff;
+    --lightbox-chrome-bg: #fafafb;
     --lightbox-chrome-surface: none;
 }
 
 html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark):not(.lightbox-compact-mode) .lightbox-native-titlebar {
-    background-color: #fff !important;
+    background-color: #fafafb !important;
     background-image: none !important;
     box-shadow: none;
 }

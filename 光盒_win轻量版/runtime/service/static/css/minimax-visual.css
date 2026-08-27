@@ -744,14 +744,14 @@ html.lightbox-desktop-native .lightbox-native-titlebar {
     height: var(--mm-titlebar-h, 28px) !important;
 }
 
-/* 浅色窗框：顶栏 / 宿主抗锯齿补边 / CSS 窗框统一纯白，避免上角贴合下角错色。 */
+/* 浅色窗框：顶栏 / 宿主抗锯齿补边 / CSS 窗框统一壳层浅灰 #fafafb。 */
 html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark):not(.lightbox-compact-mode) {
-    --lightbox-chrome-bg: #fff !important;
+    --lightbox-chrome-bg: var(--ui-surface-shell) !important;
     --lightbox-chrome-surface: none !important;
 }
 
 html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark):not(.lightbox-compact-mode) .lightbox-native-titlebar {
-    background-color: #fff !important;
+    background-color: var(--ui-surface-shell) !important;
     background-image: none !important;
     box-shadow: none !important;
 }
@@ -877,18 +877,26 @@ html.lightbox-desktop-native.gpt-dock-collapsed:not(.lightbox-compact-mode) .gpt
     opacity: 1 !important;
 }
 
-/* 面板卡片层（::before）铺满整块，圆角/投影/四周描边 → 左侧 1px 分割线 */
+/* 面板卡片层（::before）铺满整块；分割线画在 .gpt-dock 自身 border 上，
+   避免被 iframe / dock-chrome 盖住。 */
+html.lightbox-desktop-native.lightbox-desktop-native:not(.lightbox-compact-mode) .gpt-dock {
+    border-left: 1px solid var(--ui-shell-divider, rgba(0, 0, 0, .10)) !important;
+}
+
 html.lightbox-desktop-native.lightbox-desktop-native:not(.lightbox-compact-mode) .gpt-dock::before {
     inset: 0 !important;
     border: 0 !important;
-    border-left: 1px solid rgba(0, 0, 0, .10) !important;
     border-radius: 0 !important;
     box-shadow: none !important;
+    background: var(--ui-surface-elevated, #fff) !important;
+}
+
+html.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark):not(.lightbox-compact-mode) .gpt-dock {
+    border-left-color: var(--mm-border, rgba(255, 255, 255, .08)) !important;
 }
 
 html.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark):not(.lightbox-compact-mode) .gpt-dock::before {
     background: var(--mm-chrome, #1b1b1b) !important;
-    border-left-color: var(--mm-border, rgba(255, 255, 255, .08)) !important;
 }
 
 /* Dock content stays full-bleed and symmetric. Scrollbar vs resize is handled
