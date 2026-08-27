@@ -3612,7 +3612,7 @@ html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not
     color: var(--ui-text) !important;
 }
 
-/* 右侧对话栏：用户输入与助手正文复用“未命名项目”字号/颜色/字重，行距略放开。 */
+/* 右侧对话栏：用户输入与助手正文复用“未命名项目”字号/颜色/字重，行距略收。 */
 html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
     .bubble.user,
     .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
@@ -3627,7 +3627,7 @@ html body.gpt-dock-canvas-mode .chat-shell .composer textarea {
     font-weight: var(--ui-weight-latin) !important;
     font-variation-settings: "wght" var(--ui-weight-latin) !important;
     color: var(--ui-text) !important;
-    line-height: 1.72 !important;
+    line-height: 1.48 !important;
     letter-spacing: 0 !important;
 }
 
