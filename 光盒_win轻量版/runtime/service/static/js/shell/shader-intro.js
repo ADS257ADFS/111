@@ -1,13 +1,20 @@
 /**
  * Independent rounded shader startup panel → fullscreen dark software.
  * Waits for the animation to finish before expanding into the app.
+ *
+ * Perf notes (Windows WebView2):
+ * - Fragment shader is fill-rate heavy; render at ~55% CSS pixels, DPR 1.
+ * - Stop the rAF/WebGL loop BEFORE native maximize — resize+GL was the stutter.
+ * - Exit is opacity/scale only (no blur filters).
  */
-const THREE_URL = "/static/vendor/js/three-0.160.0.module.js?v=2026.08.27.shader2";
+const THREE_URL = "/static/vendor/js/three-0.160.0.module.js?v=2026.08.27.shader3";
 /* One visual shader cycle (~fract period at 60fps), then enter the app. */
 const PLAY_MS = 6200;
-const EXIT_MS = 700;
+const EXIT_MS = 620;
 const ROOT_ID = "lightboxShaderIntro";
 const STAGE_ID = "lightboxShaderIntroStage";
+/* Sub-1 render scale: CSS stretches the canvas; looks soft, runs smooth. */
+const RENDER_SCALE = 0.55;
 
 const vertexShader = `
   void main() {
@@ -19,7 +26,7 @@ const fragmentShader = `
   #define TWO_PI 6.2831853072
   #define PI 3.14159265359
 
-  precision highp float;
+  precision mediump float;
   uniform vec2 resolution;
   uniform float time;
 
@@ -69,17 +76,20 @@ function finishIntro(root) {
   } catch (_) {}
 }
 
-function startExit(root, cleanup) {
+function startExit(root, stopAndCleanup) {
   if (!root || root.classList.contains("is-exiting") || root.classList.contains("is-done")) return;
   root.classList.add("is-exiting");
-  /* Expand after the cheap opacity/scale fade starts — avoid resize+blur thrash. */
+  /* Kill GL immediately so maximize never races a live fragment shader. */
+  try {
+    stopAndCleanup();
+  } catch (_) {}
+  /* Let the opacity fade paint one frame, then expand the native window. */
+  requestAnimationFrame(() => {
+    window.setTimeout(() => {
+      enterFullscreenSoftware();
+    }, 90);
+  });
   window.setTimeout(() => {
-    enterFullscreenSoftware();
-  }, 120);
-  window.setTimeout(() => {
-    try {
-      cleanup();
-    } catch (_) {}
     finishIntro(root);
   }, EXIT_MS);
 }
@@ -121,33 +131,47 @@ async function boot() {
   const renderer = new THREE.WebGLRenderer({
     antialias: false,
     alpha: false,
+    depth: false,
+    stencil: false,
     powerPreference: "high-performance",
   });
   renderer.setClearColor(0x000000, 1);
-  /* Cap DPR — full-window fragment shader at 2x is a common stutter source. */
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
-  stage.appendChild(renderer.domElement);
+  /* Never use devicePixelRatio > 1 for this full-bleed shader. */
+  renderer.setPixelRatio(1);
+  const canvas = renderer.domElement;
+  canvas.style.width = "100%";
+  canvas.style.height = "100%";
+  canvas.style.display = "block";
+  stage.appendChild(canvas);
 
   let animationId = 0;
   let disposed = false;
   let exitArmed = false;
   let startMs = 0;
+  let lastFrameMs = 0;
+  /* ~36fps is plenty for this abstract shader; leaves headroom for UI boot. */
+  const MIN_FRAME_MS = 1000 / 36;
 
   const onResize = () => {
     if (disposed || root.classList.contains("is-exiting")) return;
     const width = Math.max(1, stage.clientWidth || root.clientWidth || window.innerWidth);
     const height = Math.max(1, stage.clientHeight || root.clientHeight || window.innerHeight);
-    renderer.setSize(width, height, false);
-    uniforms.resolution.value.x = renderer.domElement.width;
-    uniforms.resolution.value.y = renderer.domElement.height;
+    const rw = Math.max(1, Math.floor(width * RENDER_SCALE));
+    const rh = Math.max(1, Math.floor(height * RENDER_SCALE));
+    renderer.setSize(rw, rh, false);
+    uniforms.resolution.value.x = rw;
+    uniforms.resolution.value.y = rh;
   };
 
   const animate = (now) => {
     if (disposed) return;
     animationId = requestAnimationFrame(animate);
-    if (!startMs) startMs = now || performance.now();
+    const t = now || performance.now();
+    if (lastFrameMs && t - lastFrameMs < MIN_FRAME_MS) return;
+    lastFrameMs = t;
+    if (!startMs) startMs = t;
     /* Clock from rAF timestamp — steadier than fixed += 0.05 under jank. */
-    uniforms.time.value = 1.0 + ((now || performance.now()) - startMs) * 0.001 * 3;
+    uniforms.time.value = 1.0 + (t - startMs) * 0.001 * 3;
     renderer.render(scene, camera);
   };
 
@@ -155,10 +179,11 @@ async function boot() {
     if (disposed) return;
     disposed = true;
     cancelAnimationFrame(animationId);
+    animationId = 0;
     window.removeEventListener("resize", onResize);
     try {
-      if (renderer.domElement && renderer.domElement.parentNode === stage) {
-        stage.removeChild(renderer.domElement);
+      if (canvas.parentNode === stage) {
+        stage.removeChild(canvas);
       }
     } catch (_) {}
     try {
