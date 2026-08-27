@@ -4752,3 +4752,19 @@ html body #shell.shell #composer.composer
     .composer-api-settings-wrap.open > .composer-api-settings-popover {
     z-index: 50 !important;
 }
+
+/* 右侧栏顶栏：未命名对话降字重；右侧三图标描边变细（末层压过对齐规则） */
+html body .gpt-dock .dock-chrome-title,
+html body .gpt-dock .dock-chrome-title-trigger,
+html.lightbox-desktop-native body .gpt-dock .dock-chrome-title,
+html.lightbox-desktop-native body .gpt-dock .dock-chrome-title-trigger {
+    font-family: var(--ui-font-variable) !important;
+    font-weight: 300 !important;
+    font-variation-settings: "wght" 300 !important;
+    font-synthesis: none !important;
+}
+
+html body .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg),
+html.lightbox-desktop-native body .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg) {
+    stroke-width: 1.35 !important;
+}
