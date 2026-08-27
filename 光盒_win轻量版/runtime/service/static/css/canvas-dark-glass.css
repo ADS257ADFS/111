@@ -1677,11 +1677,11 @@ and these rows must not depend on a travelling glider. */
     gap: 4px !important;
 }
 
+/* Model rows stay borderless/transparent idle; size/quality grids keep quiet chip chrome. */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover :is(
         .composer-api-branch summary,
-        .composer-api-models button,
-        .composer-mode-model-list .mode-model-choice
+        .composer-api-models button
     ):not(:hover):not(:focus-visible),
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerSizePopover :is(

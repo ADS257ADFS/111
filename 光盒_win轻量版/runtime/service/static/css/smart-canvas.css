@@ -5352,14 +5352,11 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     background:rgba(var(--ui-accent-rgb),.08) !important;
 }
 
-:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
-    background:rgba(255,255,255,.08) !important;
-    background-color:rgba(255,255,255,.08) !important;
-}
-
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice.active {
     color:var(--ui-accent) !important;
-    background:rgba(var(--ui-accent-rgb),.16) !important;
+    background:transparent !important;
+    background-color:transparent !important;
+    border-color:transparent !important;
 }
 
 @media (prefers-reduced-motion:reduce) {
