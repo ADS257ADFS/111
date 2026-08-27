@@ -119,8 +119,9 @@
     }
 
     function syncModeGlider(group){
-        const button = group.querySelector(`${modeTargetSelector(group)}.${MODE_HOVER_CLASS}`)
-            || activeModeButton(group);
+        // Selected accent capsule stays on the active mode only.
+        // Hover uses a white pill on the button itself (like 批量), not the glider.
+        const button = activeModeButton(group);
         if(button) moveModeGlider(group, button);
         else group.querySelector('.composer-mode-glider')?.classList.remove('is-visible');
     }
@@ -140,31 +141,22 @@
         });
         group.addEventListener('pointerover', event => {
             const button = modeTargetFrom(event.target, group);
-            if(button){
-                setModeHover(group, button);
-                moveModeGlider(group, button);
-            }
+            if(button) setModeHover(group, button);
         });
         group.addEventListener('pointerout', event => {
             const nextButton = modeTargetFrom(event.relatedTarget, group);
             if(nextButton){
                 setModeHover(group, nextButton);
-                moveModeGlider(group, nextButton);
                 return;
             }
             clearModeHover(group);
-            requestAnimationFrame(() => syncModeGlider(group));
         });
         group.addEventListener('focusin', event => {
             const button = modeTargetFrom(event.target, group);
-            if(button){
-                setModeHover(group, button);
-                moveModeGlider(group, button);
-            }
+            if(button) setModeHover(group, button);
         });
         group.addEventListener('focusout', () => {
             clearModeHover(group);
-            requestAnimationFrame(() => syncModeGlider(group));
         });
         group.addEventListener('composer-kind-sync', () => {
             clearModeHover(group);

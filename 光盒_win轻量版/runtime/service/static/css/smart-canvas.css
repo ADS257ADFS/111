@@ -3183,57 +3183,70 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-to
     opacity:1 !important;
 }
 .shell .composer-card-topbar .composer-kind-toggle button.is-mode-hover,
+.shell .composer-card-topbar #apiKindToggle button.is-mode-hover {
+    color:#747b85;
+    background:#ffffff;
+    border-color:transparent;
+    box-shadow:none;
+    outline:none;
+}
+.shell .composer-card-topbar .composer-kind-toggle button.is-mode-hover :is(i,svg,span),
+.shell .composer-card-topbar #apiKindToggle button.is-mode-hover :is(i,svg,span) {
+    color:#747b85 !important;
+    stroke:#747b85 !important;
+}
 .shell .composer-card-topbar .composer-kind-toggle:not(:has(.is-mode-hover)) button.active,
-.shell .composer-card-topbar #apiKindToggle button.is-mode-hover,
-.shell .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active {
+.shell .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active,
+.shell .composer-card-topbar .composer-kind-toggle:has(.is-mode-hover) button.active,
+.shell .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active {
     color:#fff;
     background:transparent;
     border-color:transparent;
     box-shadow:none;
     outline:none;
 }
-.shell .composer-card-topbar .composer-kind-toggle button.is-mode-hover :is(i,svg,span),
-.shell .composer-card-topbar .composer-kind-toggle:not(:has(.is-mode-hover)) button.active :is(i,svg,span),
-.shell .composer-card-topbar #apiKindToggle button.is-mode-hover :is(i,svg,span),
-.shell .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active :is(i,svg,span) {
+.shell .composer-card-topbar .composer-kind-toggle button.active :is(i,svg,span),
+.shell .composer-card-topbar #apiKindToggle button.active :is(i,svg,span) {
     color:#fff !important;
     stroke:#fff !important;
 }
-.shell .composer-card-topbar .composer-kind-toggle button:not(.is-mode-hover),
-.shell .composer-card-topbar .composer-kind-toggle:has(.is-mode-hover) button.active,
-.shell .composer-card-topbar #apiKindToggle button:not(.is-mode-hover),
-.shell .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active {
+.shell .composer-card-topbar .composer-kind-toggle button:not(.is-mode-hover):not(.active),
+.shell .composer-card-topbar #apiKindToggle button:not(.is-mode-hover):not(.active) {
     color:#747b85;
     background:transparent;
     border-color:transparent;
     box-shadow:none;
 }
-.shell .composer-card-topbar .composer-kind-toggle button:not(.is-mode-hover) :is(i,svg,span),
-.shell .composer-card-topbar .composer-kind-toggle:has(.is-mode-hover) button.active :is(i,svg,span),
-.shell .composer-card-topbar #apiKindToggle button:not(.is-mode-hover) :is(i,svg,span),
-.shell .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active :is(i,svg,span) {
+.shell .composer-card-topbar .composer-kind-toggle button:not(.is-mode-hover):not(.active) :is(i,svg,span),
+.shell .composer-card-topbar #apiKindToggle button:not(.is-mode-hover):not(.active) :is(i,svg,span) {
     color:#747b85 !important;
     stroke:#747b85 !important;
 }
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover,
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active {
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover {
+    color:#747b85 !important;
+    background:#ffffff !important;
+    border-color:transparent !important;
+    box-shadow:none !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover :is(i,svg,span) {
+    color:#747b85 !important;
+    stroke:#747b85 !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.active {
     color:#fff !important;
     background:transparent !important;
     border-color:transparent !important;
     box-shadow:none !important;
 }
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover :is(i,svg,span),
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active :is(i,svg,span) {
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.active :is(i,svg,span) {
     color:#fff !important;
     stroke:#fff !important;
 }
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover),
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active {
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover):not(.active) {
     color:#747b85 !important;
     background:transparent !important;
 }
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover) :is(i,svg,span),
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active :is(i,svg,span) {
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover):not(.active) :is(i,svg,span) {
     color:#747b85 !important;
     stroke:#747b85 !important;
 }
