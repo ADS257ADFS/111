@@ -3618,13 +3618,44 @@ html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not
         .mm-asset-tree-folder-label,
         .mm-asset-tree-folder-label > span,
         .node-context-menu button,
-        .node-context-menu button :where(:not(svg):not(svg *))
+        .node-context-menu button :where(:not(svg):not(svg *)),
+        .canvas-context-menu button,
+        .canvas-context-menu button :where(:not(svg):not(svg *))
     ) {
     font-family: var(--ui-font-body-cjk) !important;
     font-size: var(--ui-type-compact-label) !important;
     font-weight: var(--ui-weight-latin) !important;
     font-variation-settings: "wght" var(--ui-weight-latin) !important;
     color: var(--ui-text) !important;
+}
+
+/* M43 会把右键菜单文字锁成 --ui-text；禁用项（撤销/黏贴等）需同级 specificity
+   才能让文字与图标一起进入不可点击的灰色态。 */
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"]):disabled,
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"])[aria-disabled="true"],
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"]):disabled :where(:not(svg):not(svg *)),
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"])[aria-disabled="true"] :where(:not(svg):not(svg *)) {
+    color: var(--ui-text-disabled) !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"]):disabled :is(i, svg, svg *),
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"])[aria-disabled="true"] :is(i, svg, svg *) {
+    color: var(--ui-text-disabled) !important;
+    stroke: currentColor !important;
 }
 
 /* 右侧对话栏：用户输入与助手正文复用“未命名项目”字号/颜色/字重，行距略收。 */
@@ -4767,4 +4798,15 @@ html.lightbox-desktop-native body .gpt-dock .dock-chrome-title-trigger {
 html body .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg),
 html.lightbox-desktop-native body .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg) {
     stroke-width: 1.35 !important;
+}
+
+/* 右键菜单禁用项：文字与图标同为不可点击灰色（末层压过 M43 文字锁色） */
+html body :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"]):is(:disabled, [aria-disabled="true"]),
+html body :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"]):is(:disabled, [aria-disabled="true"])
+    :is(span, i, svg, svg *) {
+    color: var(--ui-text-disabled) !important;
+    stroke: currentColor !important;
+    cursor: not-allowed !important;
 }
