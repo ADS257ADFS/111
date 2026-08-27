@@ -11,7 +11,7 @@ html.lightbox-desktop-native:not(.lightbox-compact-mode) .mm-sidebar {
     flex-direction: column;
     width: 250px;
     box-sizing: border-box;
-    padding: 10px 8px 8px;
+    padding: 8px 8px 8px;
     background: var(--ui-surface-shell);
     border-right: var(--ui-shell-divider-size) solid var(--ui-shell-divider);
     color: var(--ui-text);
@@ -21,31 +21,38 @@ html.lightbox-desktop-native:not(.lightbox-compact-mode) .mm-sidebar {
 html.lightbox-desktop-native:not(.lightbox-compact-mode) .mm-sidebar { transition: transform var(--ui-motion-surface) var(--ui-ease-panel); }
 html.mm-sidebar-collapsed .mm-sidebar { transform: translateX(calc(-100% - 2px)); pointer-events: none; }
 
+/* Welcome mark sits at the top of the left rail, left-aligned with nav icons. */
 .mm-sidebar-head {
     flex: 0 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--ui-space-4);
-    /* Align Welcome mark with nav icon column (same left inset as .mm-sidebar-nav > button). */
-    padding: var(--ui-space-3) var(--ui-space-2) var(--ui-space-4) var(--ui-space-5);
+    box-sizing: border-box;
+    min-height: 28px;
+    /* Same horizontal inset as .mm-sidebar-nav > button (padding-inline: space-5). */
+    padding: 6px var(--ui-space-2) 10px var(--ui-space-5);
 }
 .mm-sidebar-logo {
+    display: block;
     height: var(--ui-sidebar-logo-h);
     width: auto;
     max-width: calc(100% - 40px);
     margin: 0;
     object-fit: contain;
+    object-position: left center;
     user-select: none;
     -webkit-user-drag: none;
     pointer-events: none;
 }
 html:is(.theme-dark, .studio-theme-dark) .mm-sidebar-logo { filter: brightness(0) invert(1); }
-.lightbox-native-titlebar-logo {
-    display: none;
+/* Titlebar must never keep a second Welcome mark. */
+.lightbox-native-titlebar-logo,
+.lightbox-native-titlebar .mm-sidebar-logo {
+    display: none !important;
 }
 .mm-sidebar-collapse, .mm-sidebar-reopen { appearance: none; width: 30px; height: 30px; flex: 0 0 30px; border: 1px solid var(--ui-border); border-radius: var(--ui-canvas-nav-radius, 10px); background: var(--ui-surface-elevated); color: var(--ui-text-secondary); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
-.mm-sidebar-collapse { margin-top: 4px; }
+.mm-sidebar-collapse { margin-top: 0; }
 .mm-sidebar-collapse:hover, .mm-sidebar-reopen:hover { background: var(--ui-hover); border-color: var(--ui-border); }
 .mm-sidebar-collapse :is(i, svg), .mm-sidebar-reopen :is(i, svg) { width: var(--ui-icon-sm); height: var(--ui-icon-sm); stroke-width: var(--ui-icon-stroke); }
 .mm-sidebar-reopen { display: none; position: fixed; top: calc(var(--mm-titlebar-h, 28px) + 14px); left: 12px; z-index: var(--ui-z-sidebar); }
