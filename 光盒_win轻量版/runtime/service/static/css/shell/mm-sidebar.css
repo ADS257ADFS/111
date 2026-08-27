@@ -135,6 +135,14 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
     font-synthesis: none;
     line-height: var(--ui-leading-tight);
 }
+.mm-asset-tree-folder-label .mm-asset-folder-chevron {
+    width: var(--ui-icon-xs);
+    height: var(--ui-icon-xs);
+    flex: 0 0 var(--ui-icon-xs);
+    stroke-width: var(--ui-icon-stroke);
+    color: var(--ui-text-muted);
+    transform: rotate(-90deg);
+}
 
 /* 资产类目钻入面板：整栏切换，左上角回退 + 标题，右上角网格/列表 */
 .mm-sidebar-kind-panel {
