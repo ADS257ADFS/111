@@ -1675,7 +1675,13 @@
             restoreLocalNav(id);
             const trigger = document.querySelector(`.floating-toolbar [onclick*="'${id}'"],.floating-toolbar [onclick*='"${id}"']`) || document.querySelector(`[onclick*="'${id}'"],[onclick*='"${id}"']`);
             switchUI(trigger, id, { skipRemember:true, deferGptDock:true });
-            document.documentElement.classList.remove('studio-route-booting');
+            const clearBooting = () => document.documentElement.classList.remove('studio-route-booting');
+            if (document.documentElement.classList.contains('lightbox-shader-intro-active')) {
+                window.addEventListener('lightbox-shader-intro-done', clearBooting, { once: true });
+                window.setTimeout(clearBooting, 6500);
+            } else {
+                clearBooting();
+            }
         }
         document.addEventListener('DOMContentLoaded', restoreActivePage, { once:true });
 
