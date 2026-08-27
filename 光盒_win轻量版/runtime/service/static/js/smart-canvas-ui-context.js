@@ -578,6 +578,8 @@
     ctx.createLoopNode = createLoopNode;    ctx.cloneSmartNode = cloneSmartNode;
     ctx.copySelectedNodes = scope.copySelectedNodes;
     ctx.pasteNodes = scope.pasteNodes;
+    ctx.pasteFromClipboard = scope.pasteFromClipboard;
+    ctx.pasteWorkflowFromText = scope.pasteWorkflowFromText;
     ctx.duplicateForAltDrag = scope.duplicateForAltDrag;
     ctx.shellPoint = scope.shellPoint;
     ctx.renderConnections = scope.renderConnections;

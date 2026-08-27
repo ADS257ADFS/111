@@ -41,11 +41,31 @@
 window.addEventListener('paste', e => {
     const current = liveCtx();
     const files = [...(e.clipboardData?.files || [])].filter(current.isSupportedUploadFile);
+    if(!files.length){
+        const items = [...(e.clipboardData?.items || [])];
+        for(const item of items){
+            const type = String(item.type || '').toLowerCase();
+            if(!type.startsWith('image/') && !type.startsWith('video/') && !type.startsWith('audio/')) continue;
+            const file = item.getAsFile?.();
+            if(file && current.isSupportedUploadFile?.(file)){
+                files.push(file);
+                break;
+            }
+        }
+    }
     if(files.length){
         e.preventDefault();
         current.lastImagePasteAt = Date.now();
         current.handleFiles(files, current.selectedId);
         return;
+    }
+    if(!current.isEditableTarget(e.target)){
+        const text = e.clipboardData?.getData?.('text/plain') || '';
+        if(text && current.pasteWorkflowFromText?.(text)){
+            e.preventDefault();
+            current.lastNodePasteAt = Date.now();
+            return;
+        }
     }
     if(current.nodeClipboard?.nodes?.length && !current.isEditableTarget(e.target)){
         e.preventDefault();
@@ -90,14 +110,16 @@ window.addEventListener('keydown', e => {
         current.copySelectedNodes();
         return;
     }
-    if((e.ctrlKey || e.metaKey) && key === 'v' && !current.isEditableTarget(e.target) && current.nodeClipboard?.nodes?.length){
+    if((e.ctrlKey || e.metaKey) && key === 'v' && !current.isEditableTarget(e.target)){
+        e.preventDefault();
         const requestedAt = Date.now();
-        setTimeout(() => {
+        setTimeout(async () => {
             const latest = liveCtx();
             if(latest.lastImagePasteAt >= requestedAt) return;
             if(latest.lastNodePasteAt >= requestedAt) return;
-            latest.pasteNodes();
+            await latest.pasteFromClipboard?.();
         }, 90);
+        return;
     }
     if(e.key === 'Escape' && ctx.imageEditModal?.classList.contains('open')){
         ctx.closeImageEditor();
