@@ -4543,23 +4543,23 @@ body #shell.shell #composer.composer .composer-footer :is(
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice {
-    min-height: 44px !important;
-    padding: 8px 12px !important;
+    min-height: 34px !important;
+    padding: 6px 12px !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:has(.mode-model-desc) {
-    min-height: 52px !important;
+    min-height: 34px !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:has(.mode-model-desc):is(:hover, :focus-visible) {
-    min-height: 52px !important;
-    padding: 8px 12px !important;
+    min-height: 34px !important;
+    padding: 7px 12px !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
@@ -4574,11 +4574,19 @@ body #shell.shell #composer.composer .composer-footer
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
+    display: none !important;
     font-size: 9.5px !important;
     font-weight: 300 !important;
     font-variation-settings: "wght" 300 !important;
     line-height: 1.25 !important;
     color: var(--ui-text-muted) !important;
+}
+
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer
+    #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:is(:hover, :focus-visible) .mode-model-desc {
+    display: block !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)

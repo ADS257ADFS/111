@@ -5154,9 +5154,9 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     display:flex !important;
     align-items:center !important;
     gap:10px !important;
-    min-height:44px !important;
+    min-height:34px !important;
     height:auto !important;
-    padding:8px 12px !important;
+    padding:6px 12px !important;
     font-size:14px !important;
     font-weight:445 !important;
     border:0 !important;
@@ -5168,20 +5168,23 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     white-space:normal !important;
 }
 
-/* Hover/focus with description: keep row height stable; desc is always visible. */
+/* Hover/focus: keep compact row; description reveals below the name. */
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
-    min-height:44px !important;
-    padding:8px 12px !important;
+    min-height:34px !important;
+    padding:6px 12px !important;
     align-items:center !important;
 }
 
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):has(.mode-model-desc):is(:hover, :focus-visible) {
-    min-height:52px !important;
+    min-height:34px !important;
+    align-items:center !important;
+    padding-top:7px !important;
+    padding-bottom:7px !important;
 }
 
-/* 名字 + 一句话说明：两行常驻展示，小字始终可见。 */
+/* 名字常驻；说明小字仅悬停/聚焦时出现。 */
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-copy {
     position:relative;
     flex:1 1 auto;
@@ -5190,8 +5193,8 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     flex-direction:column;
     justify-content:center;
     gap:2px;
-    align-self:stretch;
-    min-height:22px;
+    align-self:center;
+    min-height:0;
 }
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-title-row {
@@ -5216,7 +5219,7 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
 
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
     position:static;
-    display:block;
+    display:none;
     margin:0;
     overflow:hidden;
     text-overflow:ellipsis;
@@ -5232,16 +5235,22 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
 }
 
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:is(:hover, :focus-visible) .mode-model-desc {
+    display:block;
+}
+
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:has(.mode-model-desc) {
-    min-height:52px !important;
-    padding:8px 12px !important;
+    min-height:34px !important;
+    padding:6px 12px !important;
     align-items:center !important;
 }
 
 html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:has(.mode-model-desc):is(:hover, :focus-visible) {
-    min-height:52px !important;
-    padding:8px 12px !important;
+    min-height:34px !important;
+    padding:7px 12px !important;
+    align-items:center !important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc,
