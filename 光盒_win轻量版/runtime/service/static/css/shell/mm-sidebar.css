@@ -223,8 +223,9 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
 }
 .mm-kind-add-btn {
     appearance: none;
+    width: 28px;
     height: 28px;
-    padding: 0 10px;
+    padding: 0;
     border: 0;
     border-radius: 8px;
     background: var(--ui-active);
@@ -232,13 +233,10 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: 0;
     cursor: pointer;
     font-family: var(--ui-font);
-    font-size: var(--ui-type-control);
-    font-weight: var(--ui-weight-menu-strong);
     line-height: 1;
-    white-space: nowrap;
 }
 .mm-kind-add-btn:hover { background: var(--ui-hover); }
 .mm-kind-add-btn:disabled {
@@ -249,6 +247,17 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
     width: 14px;
     height: 14px;
     stroke-width: var(--ui-sidebar-nav-icon-stroke);
+}
+.mm-visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
 }
 .mm-kind-panel-views {
     display: inline-flex;
@@ -369,6 +378,92 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
     white-space: nowrap;
     font-size: var(--ui-type-control);
     font-weight: var(--ui-weight-menu-strong);
+    color: var(--ui-text);
+}
+.mm-kind-item-prompt {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px;
+}
+.mm-kind-item-prompt-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    width: 100%;
+}
+.mm-kind-item-preview {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+    color: var(--ui-text-secondary);
+    font-size: 12px;
+    font-weight: 445;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+.mm-kind-item-prompt.is-editing .mm-kind-item-preview { display: none; }
+.mm-kind-item-editor {
+    width: 100%;
+    min-height: 88px;
+    max-height: 180px;
+    resize: vertical;
+    box-sizing: border-box;
+    padding: 8px 10px;
+    border: 1px solid var(--ui-border);
+    border-radius: 8px;
+    background: var(--ui-surface-input);
+    color: var(--ui-text);
+    font: inherit;
+    font-size: 12px;
+    line-height: 1.45;
+}
+.mm-kind-item-editor:focus {
+    outline: none;
+    border-color: var(--ui-accent);
+}
+.mm-kind-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+.mm-kind-item-action {
+    appearance: none;
+    height: 26px;
+    min-width: 26px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 7px;
+    background: var(--ui-hover);
+    color: var(--ui-text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 500;
+}
+.mm-kind-item-action:hover { background: var(--ui-active); }
+.mm-kind-item-action :is(i, svg) {
+    width: 13px;
+    height: 13px;
+    stroke-width: 1.8;
+}
+.mm-kind-panel-body[data-kind-view="grid"] .mm-kind-item-prompt {
+    grid-column: 1 / -1;
+}
+html.theme-dark .mm-kind-item-thumb,
+html.studio-theme-dark .mm-kind-item-thumb {
+    color: var(--ui-text-secondary);
+}
+html.theme-dark .mm-kind-item-preview,
+html.studio-theme-dark .mm-kind-item-preview {
+    color: #c8cacc;
 }
 
 .mm-asset-folder-menu { position: fixed; z-index: calc(var(--ui-z-chrome) + 20); min-width: 132px; padding: var(--ui-space-2); border: 1px solid var(--ui-border); border-radius: var(--ui-radius-card); background: var(--ui-surface-elevated); box-shadow: var(--ui-shadow-pop); }

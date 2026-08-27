@@ -2174,6 +2174,14 @@ window.addEventListener('message', event => {
         if(action === 'copy') copySelectedNodes();
         else if(action === 'paste') pasteNodes();
     }
+    if(event.data?.type === 'shell-apply-prompt'){
+        const text = String(event.data.text || '');
+        if(text){
+            setPromptText(text);
+            try { document.getElementById('composer')?.classList.add('open'); } catch(_e) {}
+            toast('已引用提示词到输入栏');
+        }
+    }
     if(event.data?.type === 'canvas-agent-actions') {
         executeCanvasAgentActions(event.data.actions || [])
             .then(results => window.parent.postMessage({type:'canvas-agent-results', request_id:event.data.request_id || '', results, observation:canvasAgentObservation()}, location.origin))
