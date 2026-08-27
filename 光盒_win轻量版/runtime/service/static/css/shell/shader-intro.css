@@ -19,16 +19,16 @@ html.lightbox-shader-intro-active :is(
     pointer-events: none !important;
 }
 
-/* Full-window dim stage behind the smaller intro card. */
+/* Single full-bleed stage — no outer gutter / inner card double frame. */
 .lightbox-shader-intro {
     position: fixed;
     inset: 0;
     z-index: 2147483000;
     display: grid;
     place-items: center;
-    padding: clamp(16px, 3.5vh, 28px);
+    padding: 0;
     box-sizing: border-box;
-    background: #0a0a0a;
+    background: #000;
     overflow: hidden;
     opacity: 1;
     pointer-events: auto;
@@ -38,17 +38,18 @@ html.lightbox-shader-intro-active :is(
     display: none !important;
 }
 
-/* Standalone startup panel — smaller than the software chrome, rounded. */
 .lightbox-shader-intro-panel {
     position: relative;
     z-index: 1;
-    width: min(820px, 100%);
-    aspect-ratio: 16 / 9;
-    max-height: min(460px, calc(100vh - 32px));
-    border-radius: 22px;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
     overflow: hidden;
     background: #000;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 0;
+    box-shadow: none;
     transform: scale(1);
     filter: blur(0);
     opacity: 1;
@@ -56,15 +57,13 @@ html.lightbox-shader-intro-active :is(
     transition:
         opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
         transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-        filter 0.7s ease-out,
-        border-radius 0.85s ease;
+        filter 0.7s ease-out;
 }
 
 .lightbox-shader-intro.is-exiting .lightbox-shader-intro-panel {
     opacity: 0;
     transform: scale(1.55);
     filter: blur(30px);
-    border-radius: 8px;
     pointer-events: none;
 }
 
@@ -81,7 +80,6 @@ html.lightbox-shader-intro-active :is(
     height: 100%;
     background: #000;
     overflow: hidden;
-    border-radius: inherit;
 }
 
 .lightbox-shader-intro-stage canvas {
@@ -90,6 +88,7 @@ html.lightbox-shader-intro-active :is(
     height: 100% !important;
 }
 
+/* Same wordmark as sidebar logo; 1.5× prior intro type size. */
 .lightbox-shader-intro-label {
     position: absolute;
     inset: 0;
@@ -98,19 +97,23 @@ html.lightbox-shader-intro-active :is(
     place-items: center;
     margin: 0;
     padding: 0 1.5rem;
-    color: #fff;
-    font-family: "Segoe UI Variable Display", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-    font-size: clamp(2.85rem, 8.5vw, 5.6rem);
-    font-weight: 700;
-    letter-spacing: -0.045em;
-    line-height: 1.05;
-    text-align: center;
-    white-space: pre-wrap;
     pointer-events: none;
-    text-shadow: 0 0 48px rgba(0, 0, 0, 0.5);
     opacity: 0;
     transform: translateY(12px) scale(0.97);
     animation: lightbox-shader-intro-label-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards;
+}
+
+.lightbox-shader-intro-label img {
+    display: block;
+    height: clamp(4.275rem, 12.75vw, 8.4rem);
+    width: auto;
+    max-width: min(86%, 720px);
+    object-fit: contain;
+    object-position: center;
+    /* Match sidebar dark-mode wordmark (black glyph → white). */
+    filter: brightness(0) invert(1);
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 @keyframes lightbox-shader-intro-label-in {
@@ -127,9 +130,9 @@ html.lightbox-shader-intro-active :is(
     animation: none;
 }
 
-/* Desktop intro window is already small — fill it with the rounded panel. */
+/* Desktop: fill the already-rounded native intro window — one clip layer only. */
 html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro {
-    padding: 14px;
+    padding: 0;
 }
 
 html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro-panel {
@@ -139,5 +142,6 @@ html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro
     max-height: none;
     min-height: 0;
     aspect-ratio: auto;
-    border-radius: 18px;
+    border-radius: 0;
+    border: 0;
 }

@@ -3,8 +3,9 @@
  * Waits for the animation to finish before expanding into the app.
  */
 const THREE_URL = "/static/vendor/js/three-0.160.0.module.js?v=2026.08.27.shader2";
-const PLAY_MS = 6500;
-const EXIT_MS = 900;
+/* One visual shader cycle (~fract period at 60fps), then enter the app. */
+const PLAY_MS = 6200;
+const EXIT_MS = 700;
 const ROOT_ID = "lightboxShaderIntro";
 const STAGE_ID = "lightboxShaderIntroStage";
 
@@ -160,7 +161,7 @@ async function boot() {
   const armExit = () => {
     if (exitArmed) return;
     exitArmed = true;
-    // Wait for the shader cycle to play through before expanding.
+    // Wait for one shader cycle, then expand into the app (no replay).
     window.setTimeout(() => startExit(root, cleanup), PLAY_MS);
   };
 
