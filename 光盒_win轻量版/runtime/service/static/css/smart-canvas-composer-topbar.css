@@ -1,7 +1,7 @@
 /* One shared frosted rail for reference, co-create and generation modes.
    Must sit above the white prompt surface, or 参考/批量/模式切换 get covered. */
 .shell #composer .composer-card-topbar {
-    top: 0;
+    top: var(--ui-composer-topbar-offset, 0);
     z-index: calc(var(--ui-z-raised) + 3);
     height: var(--ui-composer-topbar-h, 40px);
     padding: 3px 5px;
