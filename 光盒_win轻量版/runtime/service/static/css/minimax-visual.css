@@ -3264,8 +3264,8 @@ html:not(.theme-dark):not(.studio-theme-dark) body :is(
     letter-spacing: 0 !important;
 }
 
-/* M34：顶部窗口栏与左侧栏共用同一条发丝分割线参数。 */
-html.lightbox-desktop-native .lightbox-native-titlebar {
+/* M34：顶部窗口栏与左侧栏共用同一条发丝分割线参数。深色见文末：禁止顶栏/左侧细描边。 */
+html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark) .lightbox-native-titlebar {
     box-sizing: border-box !important;
     border-bottom: var(--ui-shell-divider-size) solid var(--ui-shell-divider) !important;
 }
@@ -5030,22 +5030,24 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     backdrop-filter: blur(18px) saturate(140%) !important;
 }
 
-/* 顶栏 / 左侧栏：禁止套用浮层细描边（不是浮动面板） */
-html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-titlebar,
-:is(html.theme-dark, html.studio-theme-dark) body .mm-sidebar {
+/* 顶栏 / 左侧栏：深色禁止任何细描边（mm-sidebar.css 在 minimax 之后加载，这里用三倍 class 压过） */
+html.lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.lightbox-native-titlebar,
+html.lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.mm-sidebar {
     border: 0 !important;
+    border-top: 0 !important;
+    border-right: 0 !important;
+    border-bottom: 0 !important;
+    border-left: 0 !important;
     border-color: transparent !important;
     outline: 0 !important;
     box-shadow: none !important;
 }
 
-/* 左侧栏只保留贴画布的右侧分割线 */
-html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark):not(.lightbox-compact-mode) .mm-sidebar {
-    border-right: 1px solid rgba(255, 255, 255, .16) !important;
-}
-
-/* 右侧栏贴画布：强制左侧分割线（压过被清零/过淡的 border） */
-html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark):not(.lightbox-compact-mode) .gpt-dock {
+/* 右侧栏贴画布：强制左侧分割线（匹配既有三倍 lightbox-desktop-native 权重） */
+html.lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark):not(.lightbox-compact-mode)
+.gpt-dock {
     border-left: 1px solid rgba(255, 255, 255, .16) !important;
     border-left-color: rgba(255, 255, 255, .16) !important;
 }
