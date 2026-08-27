@@ -1030,7 +1030,7 @@ video.node-img { object-fit:cover; background:transparent; }
 .composer-api-models button.active{ background:rgba(var(--ui-accent-rgb),.1); }
 .composer-api-models button.active{color:var(--ui-accent);}
 .composer-mode-model-list { display:flex; flex-direction:column; gap:4px; width:100%; min-width:0; box-sizing:border-box; }
-.composer-mode-model-list .mode-model-choice { display:block; width:100%; min-height:28px; padding:2px 10px; text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; box-sizing:border-box; }
+.composer-mode-model-list .mode-model-choice { display:block; width:100%; min-height:28px; padding:2px 10px; text-align:left; white-space:normal; overflow:visible; text-overflow:ellipsis; cursor:pointer; box-sizing:border-box; }
 /* 我的模型里未绑定中转站的固定名字：可见但不可选 */
 .composer-mode-model-list .mode-model-choice.is-unbound { opacity:.42; cursor:not-allowed; }
 #composerApiSettingsPopover:has(.composer-model-menu) { width:max-content; min-width:250px; max-width:min(350px, calc(100vw - 64px)); padding:11px; gap:0; overflow:visible; max-height:none; }
@@ -5163,6 +5163,8 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     background-image:none !important;
     box-shadow:none !important;
     border-radius:10px !important;
+    overflow:visible !important;
+    white-space:normal !important;
 }
 
 /* Hover/focus with description: taller row so two lines fit with breathing room. */

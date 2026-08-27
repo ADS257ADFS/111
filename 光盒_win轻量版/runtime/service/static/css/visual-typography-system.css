@@ -2997,9 +2997,8 @@ html body #shell.shell #composer.composer
     border-radius: 13px !important;
 }
 
-/* Composer size submenu: quality + count options share one typographic scale. */
-html body #shell.shell #composer.composer #composerApiSettingsPopover
-    .composer-mode-model-list .mode-model-choice,
+/* Composer size submenu: quality + count options share one typographic scale.
+   Model rows keep their own name/desc typography — do not flatten menu items. */
 html body #shell.shell #composer.composer #composerSizePopover
     .size-picker-resolution-list .size-picker-option,
 html body #shell.shell #composer.composer #composerSizePopover
