@@ -180,9 +180,9 @@
 }
 
 :is(html.theme-dark, html.studio-theme-dark) .smart-group-frame-hit {
-    background: linear-gradient(160deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .012));
-    border: .5px solid rgba(255, 255, 255, .32);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+    background: rgba(255, 255, 255, .28);
+    border: .5px solid rgba(255, 255, 255, .36);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22);
 }
 
 :is(html.theme-dark, html.studio-theme-dark) * {

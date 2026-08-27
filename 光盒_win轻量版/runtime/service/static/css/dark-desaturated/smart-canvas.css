@@ -8,7 +8,7 @@
 :where(html.theme-dark,html.studio-theme-dark) .image-node.history-group-node{border-color:rgba(166, 166, 166, .34);background:rgba(250, 250, 250, .66)}
 .theme-dark .image-node.history-group-node{border-color:rgba(166, 166, 166, .28);background:rgba(45, 45, 45, .28)}
 :where(html.theme-dark,html.studio-theme-dark) .image-node.group-node:hover,:where(html.theme-dark,html.studio-theme-dark) .image-node.group-node.selected{box-shadow:0 10px 30px rgba(28, 28, 28, .08)}
-:where(html.theme-dark,html.studio-theme-dark) .smart-group-frame-hit{border:.5px solid rgba(255,255,255,.32);background:rgba(250, 250, 250, .5);box-shadow:inset 0 1px 0 rgba(255,255,255,1)}
+:where(html.theme-dark,html.studio-theme-dark) .smart-group-frame-hit{border:.5px solid rgba(255,255,255,.36);background:rgba(255, 255, 255, .28);box-shadow:inset 0 1px 0 rgba(255,255,255,.22)}
 :where(html.theme-dark,html.studio-theme-dark) .smart-group-empty{border:1px dashed rgba(166, 166, 166, .42)}
 :where(html.theme-dark,html.studio-theme-dark) .smart-group-member-grab{background:rgba(28, 28, 28, .08)}
 :where(html.theme-dark,html.studio-theme-dark) .image-node.empty-node:hover{box-shadow:0 10px 30px rgba(28, 28, 28, .08)}
@@ -908,7 +908,7 @@ html:is(.theme-dark,.studio-theme-dark) .asset-category-menu{border-color:#e3e3e
 :is(html.theme-dark, html.studio-theme-dark) :is(.prompt-card, .output-card, .ref-card, .drop, .right-empty, .gate-card){box-shadow:inset 0 1px 0 rgba(255, 255, 255, .04)}
 :is(html.theme-dark, html.studio-theme-dark) :is(.prompt-card, .output-card, .ref-card, .gate-card):hover{box-shadow:inset 0 1px 0 rgba(255, 255, 255, .07)}
 :is(html.theme-dark, html.studio-theme-dark) :is(.image-node.group-node, .promptGroup-node){background:rgba(20, 20, 20, .55)}
-:is(html.theme-dark, html.studio-theme-dark) .smart-group-frame-hit{background:linear-gradient(160deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .012));border:.5px solid rgba(255, 255, 255, .32);box-shadow:inset 0 1px 0 rgba(255, 255, 255, .05)}
+:is(html.theme-dark, html.studio-theme-dark) .smart-group-frame-hit{background:rgba(255, 255, 255, .28);border:.5px solid rgba(255, 255, 255, .36);box-shadow:inset 0 1px 0 rgba(255, 255, 255, .22)}
 :is(html.theme-dark, html.studio-theme-dark) *{scrollbar-color:rgba(255, 255, 255, .22) transparent}
 :is(html.theme-dark, html.studio-theme-dark) *::-webkit-scrollbar-thumb{background:rgba(255, 255, 255, .22)}
 :is(html.theme-dark, html.studio-theme-dark) *::-webkit-scrollbar-thumb:hover{background:rgba(255, 255, 255, .32)}
