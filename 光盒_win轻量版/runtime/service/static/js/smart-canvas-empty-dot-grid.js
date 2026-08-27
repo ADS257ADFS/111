@@ -12,7 +12,7 @@
     const RESISTANCE = 200;
     const SPRING_STRENGTH = 68;
     const SPRING_DAMPING = 3.8;
-    const BASE_RGB = {r:62, g:62, b:62};
+    const BASE_RGB = {r:118, g:118, b:118};
     const ACTIVE_RGB = {r:10, g:132, b:255};
     const LIGHT_BASE_RGB = {r:224, g:225, b:226};
     const LIGHT_ACTIVE_RGB = {r:10, g:132, b:255};
