@@ -4168,9 +4168,9 @@ html:not(#ui-user-menu-logout-type-1):not(#ui-user-menu-logout-type-2):not(#ui-u
    鼠标悬停时都不得新增边框、轮廓或伪描边阴影。
    「最近创作 / 更早」分组小字标题不出现悬停底色（项目行仍保留）。 */
 html:not(.theme-dark):not(.studio-theme-dark) body :where(
-    button:not(:disabled):not(.mm-recent-group-head),
+    button:not(:disabled):not(.mm-recent-group-head):not(.dock-chrome-title-trigger),
     input:is([type="button"], [type="submit"], [type="reset"]):not(:disabled),
-    [role="button"]:not([aria-disabled="true"]):not(.mm-recent-group-head),
+    [role="button"]:not([aria-disabled="true"]):not(.mm-recent-group-head):not(.dock-chrome-title-trigger),
     [role="menuitem"]:not([aria-disabled="true"]),
     [role="option"]:not([aria-disabled="true"]),
     .ui-menu-item:not([aria-disabled="true"]),
@@ -4193,9 +4193,9 @@ html:not(.theme-dark):not(.studio-theme-dark) body :where(
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body :where(
-    button:not(:disabled):not(.mm-recent-group-head),
+    button:not(:disabled):not(.mm-recent-group-head):not(.dock-chrome-title-trigger),
     input:is([type="button"], [type="submit"], [type="reset"]):not(:disabled),
-    [role="button"]:not([aria-disabled="true"]):not(.mm-recent-group-head),
+    [role="button"]:not([aria-disabled="true"]):not(.mm-recent-group-head):not(.dock-chrome-title-trigger),
     [role="menuitem"]:not([aria-disabled="true"]),
     [role="option"]:not([aria-disabled="true"]),
     .ui-menu-item:not([aria-disabled="true"]),
@@ -4707,7 +4707,7 @@ html body #shellUserMenu.shell-user-menu .shell-user-id {
     margin: 0 !important;
     color: var(--ui-text-muted) !important;
     font-family: var(--ui-font) !important;
-    font-size: 5px !important;
+    font-size: 7px !important;
     font-weight: 320 !important;
     font-variation-settings: "wght" 320 !important;
     line-height: 1.25 !important;
@@ -4862,4 +4862,30 @@ html body .image-node.smart-group-node .smart-group-frame-hit,
     backdrop-filter: none !important;
     opacity: 1 !important;
     visibility: visible !important;
+}
+
+/* 右侧栏「未命名对话」：悬停不出现背景 */
+html body .gpt-dock .dock-chrome-title-trigger,
+html body .gpt-dock .dock-chrome-title-trigger:is(:hover, :focus, :focus-visible, :active),
+html.lightbox-desktop-native body .gpt-dock .dock-chrome-title-trigger,
+html.lightbox-desktop-native body .gpt-dock .dock-chrome-title-trigger:is(:hover, :focus, :focus-visible, :active) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* 用户面板 ID：压过全局 14px 字阶重置，缩到一半 */
+html:not(#ui-userid-sz-1):not(#ui-userid-sz-2):not(#ui-userid-sz-3):not(#ui-userid-sz-4) body
+    #shellUserMenu.shell-user-menu .shell-user-id,
+html:not(#ui-userid-sz-1):not(#ui-userid-sz-2):not(#ui-userid-sz-3):not(#ui-userid-sz-4) body
+    #shellUserMenu.shell-user-menu #shellUserIdLabel {
+    font-size: 7px !important;
+    line-height: 1.25 !important;
+    font-weight: 320 !important;
+    font-variation-settings: "wght" 320 !important;
+    letter-spacing: 0 !important;
+    color: var(--ui-text-muted) !important;
 }
