@@ -4977,7 +4977,10 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
     backdrop-filter: var(--ui-panel-frost-blur, blur(18px) saturate(140%)) !important;
 }
 
-/* 双击画布引用/创建面板：外壳无描边，只在内层 shell 留一条细描边（避免叠成粗边） */
+/* 双击画布引用/创建面板：只留内层 shell 一条 1px 细描边。
+   外壳曾被菜单通用规则 + M76 float 阴影叠成“粗边”，这里用同级 :not 前缀压过。 */
+html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body
+    .port-link-pick-menu,
 :is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-menu {
     background: transparent !important;
     background-color: transparent !important;
@@ -4988,6 +4991,8 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
     backdrop-filter: none !important;
 }
 
+html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body
+    .port-link-pick-menu .port-link-pick-shell,
 :is(html.theme-dark, html.studio-theme-dark) body
     .port-link-pick-menu .port-link-pick-shell {
     background: var(--ui-panel-frost, rgba(31, 31, 31, .82)) !important;
