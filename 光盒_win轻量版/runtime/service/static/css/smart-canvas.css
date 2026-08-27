@@ -3025,7 +3025,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card > :not(.comp
     z-index:4;
     left:18px;
     right:18px;
-    top:0;
+    top:var(--ui-composer-topbar-offset, 0);
     height:40px;
     display:flex;
     align-items:center;

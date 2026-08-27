@@ -279,6 +279,7 @@ body.studio-theme-dark {
     --ui-composer-surface-bottom-gap: 15px;
     /* Tall enough for 28px 参考/批量/模式 controls; white surface starts below. */
     --ui-composer-topbar-h: 40px;
+    --ui-composer-topbar-offset: 4px;
     --ui-composer-topbar-growth: 0px;
     --ui-composer-topbar-content-inset: 0px;
     --ui-composer-topbar-filter: blur(14px) saturate(120%);

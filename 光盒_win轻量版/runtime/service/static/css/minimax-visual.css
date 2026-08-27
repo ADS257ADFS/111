@@ -3268,6 +3268,7 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-topbar {
     z-index: calc(var(--ui-z-raised) + 3) !important;
+    top: var(--ui-composer-topbar-offset, 0) !important;
     height: var(--ui-composer-topbar-h) !important;
     padding-top: var(--ui-composer-topbar-content-inset) !important;
 }
@@ -3315,7 +3316,7 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     display: block !important;
     position: absolute !important;
     z-index: var(--ui-z-raised) !important;
-    top: 0 !important;
+    top: var(--ui-composer-topbar-offset, 0) !important;
     left: 18px !important;
     right: 18px !important;
     height: calc(var(--ui-composer-topbar-h) + var(--ui-space-5)) !important;
