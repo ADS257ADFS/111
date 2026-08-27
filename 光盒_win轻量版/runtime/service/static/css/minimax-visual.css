@@ -4977,6 +4977,28 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
     backdrop-filter: var(--ui-panel-frost-blur, blur(18px) saturate(140%)) !important;
 }
 
+/* 双击画布引用/创建面板：外壳无描边，只在内层 shell 留一条细描边（避免叠成粗边） */
+:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-menu {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-menu .port-link-pick-shell {
+    background: var(--ui-panel-frost, rgba(31, 31, 31, .82)) !important;
+    background-color: var(--ui-panel-frost, rgba(31, 31, 31, .82)) !important;
+    border: 1px solid var(--ui-panel-frost-border, rgba(255, 255, 255, .12)) !important;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: var(--ui-panel-frost-blur, blur(18px) saturate(140%)) !important;
+    backdrop-filter: var(--ui-panel-frost-blur, blur(18px) saturate(140%)) !important;
+}
+
 /* 打组面板：更高透明度 + 细描边 */
 :is(html.theme-dark, html.studio-theme-dark) body
     .image-node.smart-group-node .smart-group-frame-hit {
