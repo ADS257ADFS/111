@@ -370,7 +370,7 @@ html.studio-theme-dark body .shell.theme-dark,
 body.studio-theme-dark .shell.theme-dark {
     /* —— 旧通用语义变量（smart-canvas / canvas / index-shell / api-settings）—— */
     --page: var(--mm-canvas) !important;
-    --grid: rgba(255, 255, 255, .055) !important;
+    --grid: rgba(255, 255, 255, .032) !important;
     --panel: rgba(27, 27, 27, .97) !important;
     --card: var(--mm-card) !important;
     --card-solid: var(--mm-card) !important;
@@ -651,14 +651,14 @@ body.studio-theme-dark .shell,
 html.studio-theme-dark body .shell .board,
 body.studio-theme-dark .shell .board {
     background-color: var(--mm-canvas, #101010) !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .055)) .6px, transparent 1.1px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .032)) .6px, transparent 1.1px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
 html.studio-theme-dark body .canvas-gate,
 body.studio-theme-dark .canvas-gate {
     background-color: var(--mm-canvas, #101010) !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .055)) .6px, transparent 1.1px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .032)) .6px, transparent 1.1px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
@@ -3127,14 +3127,24 @@ html body :is(
     filter: none;
 }
 
-/* 连线粗细恒定：路径已带 vector-effect:non-scaling-stroke。
-   切勿再用 stroke-width: calc(... / var(--world-scale)) 反向补偿——
-   会与 non-scaling-stroke 叠加，滚轮缩放时忽粗忽细。 */
+/* 连线粗细与智能参考线一致（0.5px 屏上恒定）。
+   .world 用 CSS transform:scale，SVG vector-effect:non-scaling-stroke
+   对 HTML 祖先变换无效；与端口一样用 --world-scale 反向补偿。 */
 html body #shell.shell .connection-layer .conn-line,
 html body #shell.shell .connection-layer .port-drag-temp,
 html body #shell.shell .connection-layer .port-link-pending-line,
 html body #shell.shell .connection-layer .selection-multi-port-line {
-    vector-effect: non-scaling-stroke;
+    vector-effect: none !important;
+    stroke-width: calc(0.5px / var(--world-scale, 1)) !important;
+}
+
+html body #shell.shell .connection-layer .conn-hit {
+    stroke-width: calc(14px / var(--world-scale, 1)) !important;
+}
+
+html body #shell.shell .connection-layer .conn-end {
+    vector-effect: none !important;
+    stroke-width: calc(0.5px / var(--world-scale, 1)) !important;
 }
 
 /* 全局统一：浅色主题所有普通按钮、菜单项和工具栏项的悬停底色与
@@ -4595,7 +4605,7 @@ body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:has(.mode-model-desc):is(:hover, :focus-visible) {
     min-height: 34px !important;
-    padding: 7px 12px !important;
+    padding: 6px 12px !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
@@ -4607,10 +4617,14 @@ body #shell.shell #composer.composer .composer-footer
     line-height: 1.25 !important;
 }
 
+/* Keep desc in layout always so hover only changes opacity, not row height. */
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
-    display: none !important;
+    display: block !important;
+    max-height: 1.25em !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
     font-size: 9.5px !important;
     font-weight: 300 !important;
     font-variation-settings: "wght" 300 !important;
@@ -4622,7 +4636,7 @@ html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list
     .mode-model-choice:is(:hover, :focus-visible) .mode-model-desc {
-    display: block !important;
+    opacity: 1 !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)

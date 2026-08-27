@@ -276,10 +276,9 @@ function ensurePortDragPathElement(){
         path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         path.setAttribute('class', 'port-drag-temp conn-pending');
         path.setAttribute('stroke', 'rgba(135,145,158,0.62)');
-        path.setAttribute('stroke-width', '1.15');
+        path.setAttribute('stroke-width', '0.5');
         path.setAttribute('fill', 'none');
         path.setAttribute('stroke-linecap', 'round');
-        path.setAttribute('vector-effect', 'non-scaling-stroke');
         svg.appendChild(path);
     }
     return path;
