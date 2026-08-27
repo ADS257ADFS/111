@@ -4889,3 +4889,20 @@ html:not(#ui-userid-sz-1):not(#ui-userid-sz-2):not(#ui-userid-sz-3):not(#ui-user
     letter-spacing: 0 !important;
     color: var(--ui-text-muted) !important;
 }
+
+/* 底部输入栏左下角工具按钮：悬停圆角略收 */
+html body #shell.shell #composer.composer .composer-footer
+    :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn),
+html body #shell.shell #composer.composer .composer-footer
+    :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn)
+    :is(:hover, :focus-visible, :active),
+html body #shell.shell #composer.composer .composer-footer
+    .composer-tool-wrap.open > :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn),
+html body #shell.shell #composer.composer .composer-footer .composer-footer-glider {
+    border-radius: 10px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-footer-glider {
+    border-radius: 12px !important;
+}

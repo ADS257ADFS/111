@@ -1791,7 +1791,7 @@ html body #shell.shell #composer .composer-footer :is(
     letter-spacing: 0 !important;
     font-synthesis: none !important;
     font-variant-numeric: tabular-nums !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
 html body #shell.shell #composer .composer-footer :is(
@@ -1837,7 +1837,7 @@ html body #shell.shell #composer .composer-footer :is(
 ){
     background: #f9fafb !important;
     border: 1px solid rgba(148, 163, 184, .44) !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
     box-shadow: none !important;
     transform: none !important;
 }
@@ -2911,7 +2911,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     mix-blend-mode: normal !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
 /* Composer size menu: ratio frame + ratio only; no descriptive/pixel subtitles. */
@@ -2975,7 +2975,7 @@ html body #shell.shell #composer.composer
     font-synthesis: none !important;
     font-variant-numeric: tabular-nums !important;
     color: #50565e !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
 html body #shell.shell #composer.composer
@@ -2994,7 +2994,7 @@ html body #shell.shell #composer.composer
 
 html body #shell.shell #composer.composer
     .composer-footer .composer-footer-glider {
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
 /* Composer size submenu: quality + count options share one typographic scale.
@@ -3151,7 +3151,7 @@ html.studio-theme-dark body #shell.shell #composer.composer .composer-footer .co
     visibility: visible !important;
     opacity: 0 !important;
     border: 0 !important;
-    border-radius: 16px !important;
+    border-radius: 12px !important;
     background: var(--canvas-glass-glider-bg) !important;
     background-image: var(--canvas-glass-glider-bg) !important;
     box-shadow: var(--canvas-glass-glider-shadow) !important;
