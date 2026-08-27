@@ -18,7 +18,9 @@ html.studio-theme-dark {
 
 :is(html.theme-dark, html.studio-theme-dark) :is(.stage, .board, #shell.shell, .shell) {
     background-color: #090909 !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12.5' cy='12.5' r='.35' fill='%238f8f8f'/%3E%3C/svg%3E") !important;
+    /* Dim white dots (~1.2%): must stay in sync with --ui-canvas-grid-dot.
+       Hardcoded SVG fill previously ignored token dimming. */
+    background-image: radial-gradient(rgba(255, 255, 255, .012) .55px, transparent 1.05px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
     background-position: 0 0 !important;
 }
@@ -36,7 +38,7 @@ html.studio-theme-dark {
 
 :is(html.theme-dark, html.studio-theme-dark).canvas-empty-dot-grid-active #shell.shell {
     background-color: #090909 !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12.5' cy='12.5' r='.35' fill='%238f8f8f'/%3E%3C/svg%3E") !important;
+    background-image: radial-gradient(rgba(255, 255, 255, .012) .55px, transparent 1.05px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
     background-position: 0 0 !important;
 }

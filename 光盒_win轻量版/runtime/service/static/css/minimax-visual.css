@@ -370,7 +370,7 @@ html.studio-theme-dark body .shell.theme-dark,
 body.studio-theme-dark .shell.theme-dark {
     /* —— 旧通用语义变量（smart-canvas / canvas / index-shell / api-settings）—— */
     --page: var(--mm-canvas) !important;
-    --grid: rgba(255, 255, 255, .022) !important;
+    --grid: rgba(255, 255, 255, .012) !important;
     --panel: rgba(27, 27, 27, .97) !important;
     --card: var(--mm-card) !important;
     --card-solid: var(--mm-card) !important;
@@ -649,16 +649,18 @@ body.studio-theme-dark .shell,
 .theme-dark .shell,
 .shell.theme-dark,
 html.studio-theme-dark body .shell .board,
-body.studio-theme-dark .shell .board {
+body.studio-theme-dark .shell .board,
+:is(html.theme-dark, html.studio-theme-dark) body :is(#shell.shell, .shell, .board, .stage) {
     background-color: var(--mm-canvas, #101010) !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .022)) .6px, transparent 1.1px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .012)) .55px, transparent 1.05px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
 html.studio-theme-dark body .canvas-gate,
-body.studio-theme-dark .canvas-gate {
+body.studio-theme-dark .canvas-gate,
+:is(html.theme-dark, html.studio-theme-dark) body .canvas-gate {
     background-color: var(--mm-canvas, #101010) !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .022)) .6px, transparent 1.1px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .012)) .55px, transparent 1.05px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
@@ -5242,5 +5244,16 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     background: #f1f3f6 !important;
     background-color: #f1f3f6 !important;
     background-image: none !important;
+}
+
+/* 深色网格点：末层强制压暗（压过 canvas-dark-glass 旧 SVG 点阵） */
+:is(html.theme-dark, html.studio-theme-dark) {
+    --ui-canvas-grid-dot: rgba(255, 255, 255, .012) !important;
+    --grid: rgba(255, 255, 255, .012) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body :is(#shell.shell, .shell, .board, .stage, .canvas-gate) {
+    background-image: radial-gradient(rgba(255, 255, 255, .012) .55px, transparent 1.05px) !important;
+    background-size: var(--ui-canvas-grid-size, 18px) var(--ui-canvas-grid-size, 18px) !important;
 }
 
