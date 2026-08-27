@@ -1561,8 +1561,7 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover :is(
         .composer-api-branch summary,
-        .composer-api-models button,
-        .composer-mode-model-list .mode-model-choice
+        .composer-api-models button
     ):not(:hover):not(:focus-visible),:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerSizePopover :is(
         .size-picker-option,

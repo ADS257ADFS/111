@@ -5284,8 +5284,8 @@ body #shell.shell #composer.composer .composer-footer
     #composerKindPopover,
     #composerVideoReferencePopover
 )
-:is(button, summary, [role="button"], .mode-model-choice, .size-picker-option, .count-cell)
-:not(:disabled):not(.is-unbound):not([aria-disabled="true"]):not(.composer-tool-btn):not(.composer-height-toggle)
+:is(button, summary, [role="button"], .size-picker-option, .count-cell)
+:not(:disabled):not(.is-unbound):not([aria-disabled="true"]):not(.composer-tool-btn):not(.composer-height-toggle):not(.mode-model-choice)
 :is(:hover, :focus-visible) {
     background: rgba(255, 255, 255, .10) !important;
     background-color: rgba(255, 255, 255, .10) !important;
@@ -5300,8 +5300,8 @@ body #shell.shell #composer.composer .composer-footer
     #composerKindPopover,
     #composerVideoReferencePopover
 )
-:is(button, summary, [role="button"], .mode-model-choice, .size-picker-option, .count-cell).active
-:not(:disabled):not(.is-unbound):is(:hover, :focus-visible) {
+:is(button, summary, [role="button"], .size-picker-option, .count-cell).active
+:not(:disabled):not(.is-unbound):not(.mode-model-choice):is(:hover, :focus-visible) {
     /* Keep selected readable; still show a hover lift above idle */
     background: rgba(255, 255, 255, .12) !important;
     background-color: rgba(255, 255, 255, .12) !important;
@@ -5321,5 +5321,48 @@ html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .mm-sidebar-reo
     background-color: rgba(255, 255, 255, .10) !important;
     background-image: none !important;
     border-color: transparent !important;
+}
+
+/* 模型选择上拉：默认无边框无底色（含已选）；悬停对齐一级按钮黑底+微内发光 */
+html:not(#ui-model-hov-1):not(#ui-model-hov-2):not(#ui-model-hov-3):not(#ui-model-hov-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer #composerApiSettingsPopover
+.composer-mode-model-list
+.mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice,
+html:not(#ui-model-hov-1):not(#ui-model-hov-2):not(#ui-model-hov-3):not(#ui-model-hov-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer #composerApiSettingsPopover
+.composer-mode-model-list
+.mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice.active,
+html:not(#ui-model-hov-1):not(#ui-model-hov-2):not(#ui-model-hov-3):not(#ui-model-hov-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer #composerApiSettingsPopover
+.composer-mode-model-list
+.mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:is(.selected, [aria-selected="true"], [aria-checked="true"]) {
+    border: 0 !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+html:not(#ui-model-hov-1):not(#ui-model-hov-2):not(#ui-model-hov-3):not(#ui-model-hov-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer #composerApiSettingsPopover
+.composer-mode-model-list
+.mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    border: 1px solid rgba(255, 255, 255, .08) !important;
+    border-radius: 10px !important;
+    background: radial-gradient(
+        ellipse at 50% 42%,
+        rgba(12, 12, 12, .94) 0 58%,
+        rgba(35, 35, 35, .82) 100%
+    ) !important;
+    background-color: transparent !important;
+    background-image: radial-gradient(
+        ellipse at 50% 42%,
+        rgba(12, 12, 12, .94) 0 58%,
+        rgba(35, 35, 35, .82) 100%
+    ) !important;
+    box-shadow:
+        inset 0 0 10px rgba(255, 255, 255, .10),
+        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
 }
 
