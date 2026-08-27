@@ -4709,7 +4709,19 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     background-image: none !important;
 }
 
-/* 底栏上拉菜单打开时：顶栏参考/批量/模式保持可见且可点（压过 popover z-index 20）。 */
+/* 底栏上拉菜单打开时：
+   顶栏(30)仍高于白色输入面，保持参考/批量/模式可见；
+   footer(40)+菜单(50)更高，避免被顶栏按钮挡住。 */
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-tool-wrap.open)
+    .composer-footer,
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-api-settings-wrap.open)
+    .composer-footer {
+    position: relative !important;
+    z-index: 40 !important;
+}
+
 html body #shell.shell #composer.composer.open
     .composer-card:has(.composer-tool-wrap.open)
     .composer-card-topbar,
@@ -4731,4 +4743,11 @@ html body #shell.shell #composer.composer.open
     .composer-card-topbar
     :is(.composer-card-topbar-left, .composer-card-topbar-right, .composer-asset-shortcut, .co-create-switch, .composer-kind-toggle, .composer-kind-toggle button) {
     pointer-events: auto !important;
+}
+
+html body #shell.shell #composer.composer
+    .composer-tool-wrap.open > .composer-tool-popover,
+html body #shell.shell #composer.composer
+    .composer-api-settings-wrap.open > .composer-api-settings-popover {
+    z-index: 50 !important;
 }
