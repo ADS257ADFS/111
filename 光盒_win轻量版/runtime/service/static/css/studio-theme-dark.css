@@ -44,7 +44,7 @@
 
     /* Existing views consume these compatibility tokens. */
     --studio-dark-page: var(--sc-page);
-    --studio-dark-grid: rgba(255, 255, 255, .08);
+    --studio-dark-grid: rgba(255, 255, 255, .006);
     --studio-dark-panel: var(--sc-surface);
     --studio-dark-card: var(--sc-surface-soft);
     --studio-dark-soft: var(--sc-surface-soft);
