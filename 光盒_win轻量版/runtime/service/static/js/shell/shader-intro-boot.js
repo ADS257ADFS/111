@@ -1,12 +1,12 @@
 /**
- * Startup intro — raw WebGL (no Three.js).
- * Prepares during page load; playback starts only when the native window is shown.
+ * Startup intro — raw WebGL, playback starts when native window is shown.
  */
 (function (global) {
   "use strict";
 
   var PLAY_MS = 6200;
   var EXIT_MS = 620;
+  var LOGO_FADE_MS = 2000;
   var ROOT_ID = "lightboxShaderIntro";
   var STAGE_ID = "lightboxShaderIntroStage";
   var RENDER_SCALE = 0.7;
@@ -34,7 +34,6 @@
     "}",
   ].join("\n");
 
-  var introSurfaceNotified = false;
   var playbackStarted = false;
   var prepState = null;
 
@@ -52,25 +51,6 @@
   function ensureIntroDomReadyNotified() {
     if (!notifyIntroDomReady()) {
       global.setTimeout(ensureIntroDomReadyNotified, 16);
-    }
-  }
-
-  function notifyIntroSurfaceReady() {
-    if (introSurfaceNotified) return true;
-    try {
-      var api = global.pywebview && global.pywebview.api;
-      if (api && typeof api.notify_intro_surface_ready === "function") {
-        api.notify_intro_surface_ready();
-        introSurfaceNotified = true;
-        return true;
-      }
-    } catch (_) {}
-    return false;
-  }
-
-  function ensureIntroSurfaceNotified() {
-    if (!notifyIntroSurfaceReady()) {
-      global.setTimeout(ensureIntroSurfaceNotified, 16);
     }
   }
 
@@ -131,13 +111,18 @@
     return program;
   }
 
-  function preloadLogo(root) {
-    var img = root && root.querySelector(".lightbox-shader-intro-label img");
-    if (!img || img.complete) return;
-    try {
-      var preload = new Image();
-      preload.src = img.currentSrc || img.src;
-    } catch (_) {}
+  function fadeInLogo(root) {
+    var label = root.querySelector(".lightbox-shader-intro-label");
+    var img = label && label.querySelector("img");
+    if (!label || !img) return;
+    root.classList.add("is-label-visible");
+    label.style.visibility = "visible";
+    label.style.opacity = "1";
+    img.style.transition = "opacity " + LOGO_FADE_MS + "ms cubic-bezier(0.22, 1, 0.36, 1)";
+    img.style.opacity = "0";
+    global.requestAnimationFrame(function () {
+      img.style.opacity = "1";
+    });
   }
 
   function startPlayback() {
@@ -149,9 +134,7 @@
     var frame = prepState.frame;
     var resize = prepState.resize;
 
-    preloadLogo(root);
-    root.classList.add("is-label-visible");
-    ensureIntroSurfaceNotified();
+    fadeInLogo(root);
     resize();
 
     global.setTimeout(function () {
@@ -175,7 +158,6 @@
 
     document.documentElement.classList.add("lightbox-shader-intro-active");
     root.classList.remove("is-shader-live", "is-label-visible", "is-exiting", "is-done");
-    preloadLogo(root);
 
     var canvas = document.createElement("canvas");
     canvas.style.width = "100%";
@@ -197,8 +179,7 @@
         cleanup: function () {},
         resize: function () {},
         frame: function () {
-          root.classList.add("is-label-visible");
-          ensureIntroSurfaceNotified();
+          fadeInLogo(root);
           global.setTimeout(function () {
             enterFullscreenSoftware().then(function () { finishIntro(root); });
           }, PLAY_MS);
@@ -277,15 +258,6 @@
     global.addEventListener("resize", resize, { passive: true });
     ensureIntroDomReadyNotified();
   }
-
-  global.__lightboxIntroGo = false;
-  (function pollIntroGo() {
-    if (global.__lightboxIntroGo) {
-      startPlayback();
-      return;
-    }
-    global.requestAnimationFrame(pollIntroGo);
-  })();
 
   boot();
 })(window);

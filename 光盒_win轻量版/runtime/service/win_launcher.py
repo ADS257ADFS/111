@@ -623,7 +623,6 @@ class DesktopBridge:
         self._maximized = False
         self._restore_bounds = None
         self._move_thread = None
-        self._intro_surface_ready = threading.Event()
         self._intro_dom_ready = threading.Event()
         self._window_shown = False
 
@@ -631,40 +630,31 @@ class DesktopBridge:
         """JS intro shell is in the DOM and WebGL is prepared."""
         self._intro_dom_ready.set()
 
-    def notify_intro_surface_ready(self) -> None:
-        """JS calls on first intro shader frame after playback starts."""
-        self._intro_surface_ready.set()
-
     def _kick_intro_playback(self) -> None:
         if self._window is None:
             return
 
-        def attempt(remaining: int = 60) -> None:
+        def attempt(remaining: int = 80) -> None:
             if remaining <= 0:
                 return
             try:
-                self._window.evaluate_js("window.__lightboxIntroGo = true;")
                 self._window.evaluate_js(
                     "window.lightboxStartIntroPlayback && window.lightboxStartIntroPlayback();"
                 )
             except Exception:
-                threading.Timer(0.08, lambda: attempt(remaining - 1)).start()
+                threading.Timer(0.05, lambda: attempt(remaining - 1)).start()
 
-        threading.Timer(0.04, lambda: attempt()).start()
+        threading.Timer(0.02, lambda: attempt()).start()
 
-    def _ensure_window_visible(self, kick_playback: bool = False) -> None:
-        if self._window is None or self._window_shown:
-            if kick_playback:
-                self._kick_intro_playback()
+    def _show_centered_intro_window(self) -> None:
+        if self._window is None:
             return
-        self._window_shown = True
-        try:
-            self.show_intro_window()
+        self.show_intro_window()
+        if not self._window_shown:
+            self._window_shown = True
             self._window.show()
-            if kick_playback:
-                self._kick_intro_playback()
-        except Exception:
-            traceback.print_exc()
+        else:
+            self.show_intro_window()
 
     def _hwnd(self) -> int:
         if self._window is None or self._window.native is None:
@@ -2029,16 +2019,8 @@ def main() -> None:
             try:
                 configure_opaque_form(window)
                 bridge.set_window_backdrop(initial_theme)
-                bridge._ensure_window_visible(kick_playback=True)
-            except Exception:
-                traceback.print_exc()
-
-        def show_intro_shell_early() -> None:
-            """Black intro panel immediately — playback starts once JS is ready."""
-            try:
-                configure_opaque_form(window)
-                bridge.set_window_backdrop(initial_theme)
-                bridge._ensure_window_visible(kick_playback=False)
+                bridge._show_centered_intro_window()
+                bridge._kick_intro_playback()
             except Exception:
                 traceback.print_exc()
 
@@ -2049,12 +2031,15 @@ def main() -> None:
             main_window_ready.set()
 
         def finish_startup() -> None:
-            show_intro_shell_early()
+            startup_finished.wait(timeout=2.0)
             bridge._intro_dom_ready.wait(timeout=12.0)
-            bridge._kick_intro_playback()
-            startup_finished.wait(timeout=1.0)
             try:
-                time.sleep(0.08)
+                configure_opaque_form(window)
+                bridge.set_window_backdrop(initial_theme)
+                bridge._show_centered_intro_window()
+                time.sleep(0.06)
+                bridge.show_intro_window()
+                bridge._kick_intro_playback()
                 main_window_ready.wait(timeout=10.0)
                 bridge.enable_standard_taskbar_behavior()
                 configure_opaque_form(window)
@@ -2091,7 +2076,7 @@ def main() -> None:
         window.events.loaded += mark_main_window_ready
         window.events.closing += request_shutdown
         threading.Thread(target=finish_startup, name="LightboxStartupTransition", daemon=True).start()
-        threading.Timer(8.0, force_show_window).start()
+        threading.Timer(10.0, force_show_window).start()
 
         support_root = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local")) / "Lightbox-Windows-Clean"
         webview.start(
