@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>视觉样板 B · 浮层与交互组件</title>
-  <link rel="stylesheet" href="spectrum-tokens-prototype.css">
-  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-  <style>
+<style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: var(--lb-font);
@@ -259,6 +257,254 @@
       border: 1px solid var(--lb-border);
     }
   </style>
+<style>
+/* === 内嵌 Token === */
+/**
+ * 光盒 · Spectrum 2 桌面创作版 · 视觉样板 Token
+ * 参考：Adobe Spectrum 2（medium 桌面尺度）+ Express 友好圆角浮层
+ * 亮/暗仅颜色不同，结构尺寸完全相同
+ */
+
+:root {
+  /* —— 品牌强调色（保留光盒蓝，结构对齐 Spectrum accent） —— */
+  --lb-accent: #0a84ff;
+  --lb-accent-hover: #339dff;
+  --lb-accent-subtle: rgba(10, 132, 255, 0.12);
+  --lb-accent-rgb: 10, 132, 255;
+
+  /* —— 亮色 · Spectrum 灰阶语义 —— */
+  --lb-bg-canvas: #f5f5f5;
+  --lb-bg-chrome: #f8f8f8;
+  --lb-bg-shell: #fafafa;
+  --lb-bg-elevated: #ffffff;
+  --lb-bg-input: #ffffff;
+  --lb-bg-composer: #ffffff;
+  --lb-bg-composer-top: rgba(245, 245, 247, 0.72);
+
+  --lb-text: #292929;
+  --lb-text-secondary: #505050;
+  --lb-text-muted: #717171;
+  --lb-text-disabled: #c6c6c6;
+  --lb-text-on-accent: #ffffff;
+
+  --lb-border: #dadada;
+  --lb-border-strong: #c6c6c6;
+  --lb-divider: #e8e8e8;
+
+  --lb-hover: #efefef;
+  --lb-pressed: #e3e3e3;
+  --lb-selected: rgba(10, 132, 255, 0.12);
+  --lb-focus-ring: rgba(10, 132, 255, 0.35);
+  --lb-danger: #e34850;
+  --lb-danger-subtle: rgba(227, 72, 80, 0.1);
+  --lb-success: #2d9d78;
+  --lb-backdrop: rgba(0, 0, 0, 0.42);
+
+  --lb-shadow-float: 0 2px 8px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.06);
+  --lb-shadow-dialog: 0 4px 16px rgba(0, 0, 0, 0.08), 0 16px 48px rgba(0, 0, 0, 0.1);
+
+  /* —— 字号（桌面创作工具密度，比手机 App 更紧凑） —— */
+  --lb-font: "MiSans Variable", "MiSans", "Segoe UI", "Microsoft YaHei UI", sans-serif;
+  --lb-type-title: 14px;
+  --lb-type-body: 13px;
+  --lb-type-compact: 12px;
+  --lb-type-meta: 11px;
+  --lb-weight-body: 400;
+  --lb-weight-medium: 500;
+  --lb-weight-title: 600;
+  --lb-leading-tight: 1.25;
+  --lb-leading-body: 1.45;
+
+  /* —— 圆角：结构区克制，浮层更圆润（Express 方向） —— */
+  --lb-radius-chrome: 6px;
+  --lb-radius-control: 8px;
+  --lb-radius-card: 10px;
+  --lb-radius-float: 12px;
+  --lb-radius-dialog: 14px;
+  --lb-radius-pill: 999px;
+
+  /* —— 控件高度（Spectrum desktop medium 略收紧） —— */
+  --lb-control-sm: 24px;
+  --lb-control-md: 30px;
+  --lb-control-lg: 32px;
+  --lb-menu-item-h: 32px;
+
+  /* —— 间距（4px 网格） —— */
+  --lb-space-1: 4px;
+  --lb-space-2: 6px;
+  --lb-space-3: 8px;
+  --lb-space-4: 12px;
+  --lb-space-5: 16px;
+  --lb-space-6: 20px;
+  --lb-space-7: 24px;
+  --lb-space-8: 32px;
+
+  /* —— 布局尺寸 —— */
+  --lb-titlebar-h: 28px;
+  --lb-sidebar-w: 232px;
+  --lb-panel-w: 320px;
+  --lb-composer-w: 720px;
+  --lb-icon: 16px;
+  --lb-icon-sm: 14px;
+  --lb-icon-xs: 12px;
+  --lb-icon-stroke: 1.75;
+
+  --lb-motion-fast: 120ms ease;
+  --lb-motion-base: 160ms ease;
+}
+
+html.theme-dark {
+  --lb-bg-canvas: #111111;
+  --lb-bg-chrome: #1b1b1b;
+  --lb-bg-shell: #181818;
+  --lb-bg-elevated: #262626;
+  --lb-bg-input: #1e1e1e;
+  --lb-bg-composer: #1a1a1a;
+  --lb-bg-composer-top: rgba(255, 255, 255, 0.04);
+
+  --lb-text: #dbdbdb;
+  --lb-text-secondary: #b3b3b3;
+  --lb-text-muted: #8f8f8f;
+  --lb-text-disabled: #5c5c5c;
+
+  --lb-border: #3a3a3a;
+  --lb-border-strong: #484848;
+  --lb-divider: #2a2a2a;
+
+  --lb-hover: rgba(255, 255, 255, 0.07);
+  --lb-pressed: rgba(255, 255, 255, 0.11);
+  --lb-selected: rgba(10, 132, 255, 0.18);
+  --lb-focus-ring: rgba(10, 132, 255, 0.42);
+  --lb-danger: #ff6b6b;
+  --lb-danger-subtle: rgba(255, 107, 107, 0.14);
+  --lb-backdrop: rgba(0, 0, 0, 0.58);
+
+  --lb-shadow-float: 0 2px 8px rgba(0, 0, 0, 0.28), 0 8px 24px rgba(0, 0, 0, 0.22);
+  --lb-shadow-dialog: 0 4px 16px rgba(0, 0, 0, 0.32), 0 16px 48px rgba(0, 0, 0, 0.36);
+}
+
+/* —— 基础组件（样板专用） —— */
+
+.lb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--lb-space-2);
+  height: var(--lb-control-md);
+  padding: 0 var(--lb-space-4);
+  border: 1px solid transparent;
+  border-radius: var(--lb-radius-control);
+  background: transparent;
+  color: var(--lb-text);
+  font-family: var(--lb-font);
+  font-size: var(--lb-type-body);
+  font-weight: var(--lb-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--lb-motion-fast), border-color var(--lb-motion-fast);
+}
+.lb-btn:hover { background: var(--lb-hover); }
+.lb-btn:active { background: var(--lb-pressed); }
+.lb-btn:focus-visible { outline: 2px solid var(--lb-focus-ring); outline-offset: 1px; }
+.lb-btn:disabled { color: var(--lb-text-disabled); pointer-events: none; }
+.lb-btn.is-primary { background: var(--lb-accent); color: var(--lb-text-on-accent); }
+.lb-btn.is-primary:hover { background: var(--lb-accent-hover); }
+.lb-btn.is-secondary { border-color: var(--lb-border-strong); background: var(--lb-bg-elevated); }
+.lb-btn.is-tonal { background: var(--lb-accent-subtle); color: var(--lb-accent); }
+.lb-btn.is-danger { color: var(--lb-danger); }
+.lb-btn.is-danger:hover { background: var(--lb-danger-subtle); }
+.lb-btn.is-sm { height: var(--lb-control-sm); padding: 0 var(--lb-space-3); font-size: var(--lb-type-compact); }
+.lb-btn.is-icon { width: var(--lb-control-md); padding: 0; }
+.lb-btn.is-icon.is-sm { width: var(--lb-control-sm); }
+
+.lb-input {
+  height: var(--lb-control-md);
+  padding: 0 var(--lb-space-3);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-radius-control);
+  background: var(--lb-bg-input);
+  color: var(--lb-text);
+  font-family: var(--lb-font);
+  font-size: var(--lb-type-body);
+  transition: border-color var(--lb-motion-fast), box-shadow var(--lb-motion-fast);
+}
+.lb-input::placeholder { color: var(--lb-text-muted); }
+.lb-input:hover { border-color: var(--lb-border-strong); }
+.lb-input:focus { outline: none; border-color: var(--lb-accent); box-shadow: 0 0 0 2px var(--lb-focus-ring); }
+
+.lb-menu {
+  min-width: 168px;
+  padding: var(--lb-space-1);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-radius-float);
+  background: var(--lb-bg-elevated);
+  box-shadow: var(--lb-shadow-float);
+}
+.lb-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--lb-space-3);
+  width: 100%;
+  height: var(--lb-menu-item-h);
+  padding: 0 var(--lb-space-3);
+  border: none;
+  border-radius: var(--lb-radius-chrome);
+  background: transparent;
+  color: var(--lb-text);
+  font-family: var(--lb-font);
+  font-size: var(--lb-type-body);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--lb-motion-fast);
+}
+.lb-menu-item:hover { background: var(--lb-hover); }
+.lb-menu-item.is-active { background: var(--lb-selected); color: var(--lb-accent); }
+.lb-menu-item.is-danger { color: var(--lb-danger); }
+.lb-menu-divider { height: 1px; margin: var(--lb-space-1) var(--lb-space-2); background: var(--lb-divider); }
+
+.lb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lb-space-2);
+  height: var(--lb-control-sm);
+  padding: 0 var(--lb-space-3);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-radius-pill);
+  background: var(--lb-bg-elevated);
+  color: var(--lb-text-secondary);
+  font-size: var(--lb-type-compact);
+  cursor: pointer;
+  transition: background-color var(--lb-motion-fast), border-color var(--lb-motion-fast);
+}
+.lb-chip:hover { background: var(--lb-hover); }
+.lb-chip.is-selected { border-color: transparent; background: var(--lb-selected); color: var(--lb-accent); }
+
+.lb-switch {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  border-radius: var(--lb-radius-pill);
+  background: var(--lb-border);
+  cursor: pointer;
+  transition: background-color var(--lb-motion-base);
+}
+.lb-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform var(--lb-motion-base);
+}
+.lb-switch.is-on { background: var(--lb-accent); }
+.lb-switch.is-on::after { transform: translateX(14px); }
+
+.ico { display:inline-flex; align-items:center; justify-content:center; width:14px; font-size:12px; line-height:1; opacity:.85; }
+</style>
 </head>
 <body>
   <div class="proto-badge">视觉样板 B · 浮层与交互组件（Express 圆润浮层）</div>
@@ -268,7 +514,7 @@
       <h1>浮层与交互组件</h1>
       <p>菜单、工具栏、弹窗、输入框等浮层使用更明显的圆角（12～14px），形成层级</p>
     </div>
-    <button class="lb-btn is-secondary" id="themeToggle" type="button"><i data-lucide="sun"></i> 切换主题</button>
+    <button class="lb-btn is-secondary" id="themeToggle" type="button"><span class="ico" aria-hidden="true">☀</span> 切换主题</button>
   </header>
 
   <div class="sections">
@@ -283,7 +529,7 @@
             <div class="state-item"><span class="state-label">文字</span><button class="lb-btn" type="button">了解更多</button></div>
             <div class="state-item"><span class="state-label">色调</span><button class="lb-btn is-tonal" type="button">已选中工具</button></div>
             <div class="state-item"><span class="state-label">危险</span><button class="lb-btn is-danger" type="button">删除</button></div>
-            <div class="state-item"><span class="state-label">图标</span><button class="lb-btn is-icon" type="button"><i data-lucide="settings"></i></button></div>
+            <div class="state-item"><span class="state-label">图标</span><button class="lb-btn is-icon" type="button"><span class="ico" aria-hidden="true">⚙</span></button></div>
             <div class="state-item"><span class="state-label">禁用</span><button class="lb-btn is-primary" type="button" disabled>不能点击</button></div>
           </div>
         </div>
@@ -344,16 +590,16 @@
       <div class="section-title">浮层组合（圆角 12px + 轻阴影）</div>
       <div class="float-stage">
         <div class="float-menu lb-menu">
-          <button class="lb-menu-item" type="button"><i data-lucide="copy"></i> 复制</button>
-          <button class="lb-menu-item" type="button"><i data-lucide="download"></i> 下载</button>
+          <button class="lb-menu-item" type="button"><span class="ico" aria-hidden="true">⎘</span> 复制</button>
+          <button class="lb-menu-item" type="button"><span class="ico" aria-hidden="true">↓</span> 下载</button>
           <div class="lb-menu-divider"></div>
-          <button class="lb-menu-item is-danger" type="button"><i data-lucide="trash-2"></i> 删除</button>
+          <button class="lb-menu-item is-danger" type="button"><span class="ico" aria-hidden="true">🗑</span> 删除</button>
         </div>
         <div class="float-toolbar">
-          <button class="lb-btn is-icon is-sm" type="button"><i data-lucide="crop"></i></button>
-          <button class="lb-btn is-icon is-sm" type="button"><i data-lucide="expand"></i></button>
-          <button class="lb-btn is-icon is-sm is-tonal" type="button"><i data-lucide="wand-2"></i></button>
-          <button class="lb-btn is-icon is-sm" type="button"><i data-lucide="more-horizontal"></i></button>
+          <button class="lb-btn is-icon is-sm" type="button"><span class="ico" aria-hidden="true">⌗</span></button>
+          <button class="lb-btn is-icon is-sm" type="button"><span class="ico" aria-hidden="true">⤢</span></button>
+          <button class="lb-btn is-icon is-sm is-tonal" type="button"><span class="ico" aria-hidden="true">✨</span></button>
+          <button class="lb-btn is-icon is-sm" type="button"><span class="ico" aria-hidden="true">⋯</span></button>
         </div>
         <div class="float-popover">
           <div class="float-popover-title">生成参数</div>
@@ -372,7 +618,7 @@
       <div class="section-title">特殊状态</div>
       <div class="grid-2">
         <div class="card-demo empty-state">
-          <i data-lucide="inbox"></i>
+          <span class="ico" aria-hidden="true">📥</span>
           <div>暂无数据</div>
           <button class="lb-btn is-tonal" type="button" style="margin-top:12px">新建项目</button>
         </div>
@@ -413,7 +659,7 @@
     <div class="dialog" role="dialog">
       <div class="dialog-head">
         <span>确认删除</span>
-        <button class="lb-btn is-icon is-sm" id="closeDialog" type="button"><i data-lucide="x"></i></button>
+        <button class="lb-btn is-icon is-sm" id="closeDialog" type="button"><span class="ico" aria-hidden="true">×</span></button>
       </div>
       <div class="dialog-body">删除后无法恢复，是否继续？</div>
       <div class="dialog-foot">
@@ -423,7 +669,7 @@
     </div>
   </div>
 
-  <div class="toast" id="toast"><i data-lucide="check-circle"></i> 已保存到画布</div>
+  <div class="toast" id="toast"><span class="ico" aria-hidden="true">✓</span> 已保存到画布</div>
 
   <div class="proto-nav">
     <a class="lb-btn is-secondary" href="spectrum-workspace-shell.html">← 样板 A</a>
@@ -433,9 +679,7 @@
   <script>
     const html = document.documentElement;
     document.getElementById('themeToggle').addEventListener('click', () => {
-      html.classList.toggle('theme-dark');
-      if (window.lucide) lucide.createIcons();
-    });
+      html.classList.toggle('theme-dark');});
     const dialog = document.getElementById('dialog');
     document.getElementById('openDialog').addEventListener('click', () => dialog.classList.add('is-open'));
     document.getElementById('closeDialog').addEventListener('click', () => dialog.classList.remove('is-open'));
@@ -444,8 +688,6 @@
       const t = document.getElementById('toast');
       t.classList.add('is-show');
       setTimeout(() => t.classList.remove('is-show'), 2200);
-    });
-    if (window.lucide) lucide.createIcons();
-  </script>
+    });</script>
 </body>
 </html>

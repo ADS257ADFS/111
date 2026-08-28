@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>视觉样板 A · 创作工作区壳层</title>
-  <link rel="stylesheet" href="spectrum-tokens-prototype.css">
-  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-  <style>
+<style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; overflow: hidden; }
     body {
@@ -340,6 +338,254 @@
       z-index: 100;
     }
   </style>
+<style>
+/* === 内嵌 Token === */
+/**
+ * 光盒 · Spectrum 2 桌面创作版 · 视觉样板 Token
+ * 参考：Adobe Spectrum 2（medium 桌面尺度）+ Express 友好圆角浮层
+ * 亮/暗仅颜色不同，结构尺寸完全相同
+ */
+
+:root {
+  /* —— 品牌强调色（保留光盒蓝，结构对齐 Spectrum accent） —— */
+  --lb-accent: #0a84ff;
+  --lb-accent-hover: #339dff;
+  --lb-accent-subtle: rgba(10, 132, 255, 0.12);
+  --lb-accent-rgb: 10, 132, 255;
+
+  /* —— 亮色 · Spectrum 灰阶语义 —— */
+  --lb-bg-canvas: #f5f5f5;
+  --lb-bg-chrome: #f8f8f8;
+  --lb-bg-shell: #fafafa;
+  --lb-bg-elevated: #ffffff;
+  --lb-bg-input: #ffffff;
+  --lb-bg-composer: #ffffff;
+  --lb-bg-composer-top: rgba(245, 245, 247, 0.72);
+
+  --lb-text: #292929;
+  --lb-text-secondary: #505050;
+  --lb-text-muted: #717171;
+  --lb-text-disabled: #c6c6c6;
+  --lb-text-on-accent: #ffffff;
+
+  --lb-border: #dadada;
+  --lb-border-strong: #c6c6c6;
+  --lb-divider: #e8e8e8;
+
+  --lb-hover: #efefef;
+  --lb-pressed: #e3e3e3;
+  --lb-selected: rgba(10, 132, 255, 0.12);
+  --lb-focus-ring: rgba(10, 132, 255, 0.35);
+  --lb-danger: #e34850;
+  --lb-danger-subtle: rgba(227, 72, 80, 0.1);
+  --lb-success: #2d9d78;
+  --lb-backdrop: rgba(0, 0, 0, 0.42);
+
+  --lb-shadow-float: 0 2px 8px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.06);
+  --lb-shadow-dialog: 0 4px 16px rgba(0, 0, 0, 0.08), 0 16px 48px rgba(0, 0, 0, 0.1);
+
+  /* —— 字号（桌面创作工具密度，比手机 App 更紧凑） —— */
+  --lb-font: "MiSans Variable", "MiSans", "Segoe UI", "Microsoft YaHei UI", sans-serif;
+  --lb-type-title: 14px;
+  --lb-type-body: 13px;
+  --lb-type-compact: 12px;
+  --lb-type-meta: 11px;
+  --lb-weight-body: 400;
+  --lb-weight-medium: 500;
+  --lb-weight-title: 600;
+  --lb-leading-tight: 1.25;
+  --lb-leading-body: 1.45;
+
+  /* —— 圆角：结构区克制，浮层更圆润（Express 方向） —— */
+  --lb-radius-chrome: 6px;
+  --lb-radius-control: 8px;
+  --lb-radius-card: 10px;
+  --lb-radius-float: 12px;
+  --lb-radius-dialog: 14px;
+  --lb-radius-pill: 999px;
+
+  /* —— 控件高度（Spectrum desktop medium 略收紧） —— */
+  --lb-control-sm: 24px;
+  --lb-control-md: 30px;
+  --lb-control-lg: 32px;
+  --lb-menu-item-h: 32px;
+
+  /* —— 间距（4px 网格） —— */
+  --lb-space-1: 4px;
+  --lb-space-2: 6px;
+  --lb-space-3: 8px;
+  --lb-space-4: 12px;
+  --lb-space-5: 16px;
+  --lb-space-6: 20px;
+  --lb-space-7: 24px;
+  --lb-space-8: 32px;
+
+  /* —— 布局尺寸 —— */
+  --lb-titlebar-h: 28px;
+  --lb-sidebar-w: 232px;
+  --lb-panel-w: 320px;
+  --lb-composer-w: 720px;
+  --lb-icon: 16px;
+  --lb-icon-sm: 14px;
+  --lb-icon-xs: 12px;
+  --lb-icon-stroke: 1.75;
+
+  --lb-motion-fast: 120ms ease;
+  --lb-motion-base: 160ms ease;
+}
+
+html.theme-dark {
+  --lb-bg-canvas: #111111;
+  --lb-bg-chrome: #1b1b1b;
+  --lb-bg-shell: #181818;
+  --lb-bg-elevated: #262626;
+  --lb-bg-input: #1e1e1e;
+  --lb-bg-composer: #1a1a1a;
+  --lb-bg-composer-top: rgba(255, 255, 255, 0.04);
+
+  --lb-text: #dbdbdb;
+  --lb-text-secondary: #b3b3b3;
+  --lb-text-muted: #8f8f8f;
+  --lb-text-disabled: #5c5c5c;
+
+  --lb-border: #3a3a3a;
+  --lb-border-strong: #484848;
+  --lb-divider: #2a2a2a;
+
+  --lb-hover: rgba(255, 255, 255, 0.07);
+  --lb-pressed: rgba(255, 255, 255, 0.11);
+  --lb-selected: rgba(10, 132, 255, 0.18);
+  --lb-focus-ring: rgba(10, 132, 255, 0.42);
+  --lb-danger: #ff6b6b;
+  --lb-danger-subtle: rgba(255, 107, 107, 0.14);
+  --lb-backdrop: rgba(0, 0, 0, 0.58);
+
+  --lb-shadow-float: 0 2px 8px rgba(0, 0, 0, 0.28), 0 8px 24px rgba(0, 0, 0, 0.22);
+  --lb-shadow-dialog: 0 4px 16px rgba(0, 0, 0, 0.32), 0 16px 48px rgba(0, 0, 0, 0.36);
+}
+
+/* —— 基础组件（样板专用） —— */
+
+.lb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--lb-space-2);
+  height: var(--lb-control-md);
+  padding: 0 var(--lb-space-4);
+  border: 1px solid transparent;
+  border-radius: var(--lb-radius-control);
+  background: transparent;
+  color: var(--lb-text);
+  font-family: var(--lb-font);
+  font-size: var(--lb-type-body);
+  font-weight: var(--lb-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--lb-motion-fast), border-color var(--lb-motion-fast);
+}
+.lb-btn:hover { background: var(--lb-hover); }
+.lb-btn:active { background: var(--lb-pressed); }
+.lb-btn:focus-visible { outline: 2px solid var(--lb-focus-ring); outline-offset: 1px; }
+.lb-btn:disabled { color: var(--lb-text-disabled); pointer-events: none; }
+.lb-btn.is-primary { background: var(--lb-accent); color: var(--lb-text-on-accent); }
+.lb-btn.is-primary:hover { background: var(--lb-accent-hover); }
+.lb-btn.is-secondary { border-color: var(--lb-border-strong); background: var(--lb-bg-elevated); }
+.lb-btn.is-tonal { background: var(--lb-accent-subtle); color: var(--lb-accent); }
+.lb-btn.is-danger { color: var(--lb-danger); }
+.lb-btn.is-danger:hover { background: var(--lb-danger-subtle); }
+.lb-btn.is-sm { height: var(--lb-control-sm); padding: 0 var(--lb-space-3); font-size: var(--lb-type-compact); }
+.lb-btn.is-icon { width: var(--lb-control-md); padding: 0; }
+.lb-btn.is-icon.is-sm { width: var(--lb-control-sm); }
+
+.lb-input {
+  height: var(--lb-control-md);
+  padding: 0 var(--lb-space-3);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-radius-control);
+  background: var(--lb-bg-input);
+  color: var(--lb-text);
+  font-family: var(--lb-font);
+  font-size: var(--lb-type-body);
+  transition: border-color var(--lb-motion-fast), box-shadow var(--lb-motion-fast);
+}
+.lb-input::placeholder { color: var(--lb-text-muted); }
+.lb-input:hover { border-color: var(--lb-border-strong); }
+.lb-input:focus { outline: none; border-color: var(--lb-accent); box-shadow: 0 0 0 2px var(--lb-focus-ring); }
+
+.lb-menu {
+  min-width: 168px;
+  padding: var(--lb-space-1);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-radius-float);
+  background: var(--lb-bg-elevated);
+  box-shadow: var(--lb-shadow-float);
+}
+.lb-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--lb-space-3);
+  width: 100%;
+  height: var(--lb-menu-item-h);
+  padding: 0 var(--lb-space-3);
+  border: none;
+  border-radius: var(--lb-radius-chrome);
+  background: transparent;
+  color: var(--lb-text);
+  font-family: var(--lb-font);
+  font-size: var(--lb-type-body);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--lb-motion-fast);
+}
+.lb-menu-item:hover { background: var(--lb-hover); }
+.lb-menu-item.is-active { background: var(--lb-selected); color: var(--lb-accent); }
+.lb-menu-item.is-danger { color: var(--lb-danger); }
+.lb-menu-divider { height: 1px; margin: var(--lb-space-1) var(--lb-space-2); background: var(--lb-divider); }
+
+.lb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lb-space-2);
+  height: var(--lb-control-sm);
+  padding: 0 var(--lb-space-3);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-radius-pill);
+  background: var(--lb-bg-elevated);
+  color: var(--lb-text-secondary);
+  font-size: var(--lb-type-compact);
+  cursor: pointer;
+  transition: background-color var(--lb-motion-fast), border-color var(--lb-motion-fast);
+}
+.lb-chip:hover { background: var(--lb-hover); }
+.lb-chip.is-selected { border-color: transparent; background: var(--lb-selected); color: var(--lb-accent); }
+
+.lb-switch {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  border-radius: var(--lb-radius-pill);
+  background: var(--lb-border);
+  cursor: pointer;
+  transition: background-color var(--lb-motion-base);
+}
+.lb-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform var(--lb-motion-base);
+}
+.lb-switch.is-on { background: var(--lb-accent); }
+.lb-switch.is-on::after { transform: translateX(14px); }
+
+.ico { display:inline-flex; align-items:center; justify-content:center; width:14px; font-size:12px; line-height:1; opacity:.85; }
+</style>
 </head>
 <body>
   <div class="proto-badge">视觉样板 A · 创作工作区壳层（Spectrum 2 桌面版）</div>
@@ -349,9 +595,9 @@
       <div class="titlebar-drag"></div>
       <div class="titlebar-tools">
         <input class="titlebar-search" type="text" placeholder="搜索画布内节点与功能">
-        <button class="lb-btn is-icon is-sm" type="button" title="用户"><i data-lucide="user-round"></i></button>
-        <button class="lb-btn is-icon is-sm" type="button" title="历史"><i data-lucide="history"></i></button>
-        <button class="lb-btn is-icon is-sm" id="themeToggle" type="button" title="切换主题"><i data-lucide="sun"></i></button>
+        <button class="lb-btn is-icon is-sm" type="button" title="用户"><span class="ico" aria-hidden="true">👤</span></button>
+        <button class="lb-btn is-icon is-sm" type="button" title="历史"><span class="ico" aria-hidden="true">🕐</span></button>
+        <button class="lb-btn is-icon is-sm" id="themeToggle" type="button" title="切换主题"><span class="ico" aria-hidden="true">☀</span></button>
         <button class="window-btn" type="button">—</button>
         <button class="window-btn" type="button">□</button>
         <button class="window-btn" type="button">×</button>
@@ -361,29 +607,29 @@
     <aside class="sidebar">
       <div class="sidebar-head">
         <span class="sidebar-logo">光盒</span>
-        <button class="lb-btn is-icon is-sm" type="button"><i data-lucide="panel-left"></i></button>
+        <button class="lb-btn is-icon is-sm" type="button"><span class="ico" aria-hidden="true">☰</span></button>
       </div>
       <nav class="nav-list">
-        <button class="nav-item" type="button"><i data-lucide="plus"></i><span>新建画布</span></button>
-        <button class="nav-item" type="button"><i data-lucide="folder-open"></i><span>资产中心</span></button>
-        <button class="nav-item" type="button"><i data-lucide="sparkles"></i><span>Skill</span></button>
-        <button class="nav-item is-active" type="button"><i data-lucide="layout-grid"></i><span>全部创作</span></button>
+        <button class="nav-item" type="button"><span class="ico" aria-hidden="true">+</span><span>新建画布</span></button>
+        <button class="nav-item" type="button"><span class="ico" aria-hidden="true">📁</span><span>资产中心</span></button>
+        <button class="nav-item" type="button"><span class="ico" aria-hidden="true">✦</span><span>Skill</span></button>
+        <button class="nav-item is-active" type="button"><span class="ico" aria-hidden="true">▦</span><span>全部创作</span></button>
       </nav>
       <div class="recent-section">
         <div class="recent-label">最近创作</div>
         <div class="recent-list">
           <div class="recent-row is-active">
-            <div class="recent-thumb"><i data-lucide="image"></i></div>
+            <div class="recent-thumb"><span class="ico" aria-hidden="true">🖼</span></div>
             <span class="recent-name">未命名项目</span>
             <span class="recent-meta">12p · 刚刚</span>
           </div>
           <div class="recent-row">
-            <div class="recent-thumb"><i data-lucide="image"></i></div>
+            <div class="recent-thumb"><span class="ico" aria-hidden="true">🖼</span></div>
             <span class="recent-name">电商主图方案</span>
             <span class="recent-meta">8p · 2小时</span>
           </div>
           <div class="recent-row">
-            <div class="recent-thumb"><i data-lucide="video"></i></div>
+            <div class="recent-thumb"><span class="ico" aria-hidden="true">▶</span></div>
             <span class="recent-name">产品宣传短片</span>
             <span class="recent-meta">5p · 昨天</span>
           </div>
@@ -394,7 +640,7 @@
           <span class="user-avatar"></span>
           <span>用户</span>
         </button>
-        <button class="lb-btn is-icon is-sm" type="button"><i data-lucide="circle-help"></i></button>
+        <button class="lb-btn is-icon is-sm" type="button"><span class="ico" aria-hidden="true">?</span></button>
       </div>
     </aside>
 
@@ -404,16 +650,16 @@
 
       <div class="canvas-nav">
         <div class="nav-capsule">
-          <button class="lb-btn is-icon is-sm" type="button" title="整理"><i data-lucide="layout-grid"></i></button>
-          <button class="lb-btn is-icon is-sm" type="button" title="下载"><i data-lucide="download"></i></button>
-          <button class="lb-btn is-icon is-sm" type="button" title="小地图"><i data-lucide="map"></i></button>
-          <button class="lb-btn is-icon is-sm" type="button" title="重置视角"><i data-lucide="locate-fixed"></i></button>
+          <button class="lb-btn is-icon is-sm" type="button" title="整理"><span class="ico" aria-hidden="true">▦</span></button>
+          <button class="lb-btn is-icon is-sm" type="button" title="下载"><span class="ico" aria-hidden="true">↓</span></button>
+          <button class="lb-btn is-icon is-sm" type="button" title="小地图"><span class="ico" aria-hidden="true">🗺</span></button>
+          <button class="lb-btn is-icon is-sm" type="button" title="重置视角"><span class="ico" aria-hidden="true">◎</span></button>
           <span class="v-divider"></span>
           <button class="lb-btn is-icon is-sm" type="button">−</button>
           <span class="zoom-label">100%</span>
           <button class="lb-btn is-icon is-sm" type="button">+</button>
         </div>
-        <button class="lb-btn is-tonal" type="button"><i data-lucide="message-circle"></i> 对话</button>
+        <button class="lb-btn is-tonal" type="button"><span class="ico" aria-hidden="true">💬</span> 对话</button>
       </div>
 
       <div class="composer-wrap">
@@ -425,7 +671,7 @@
               <button class="lb-chip" type="button">Audio</button>
               <button class="lb-chip" type="button">Text</button>
             </div>
-            <button class="lb-chip" type="button"><i data-lucide="images"></i> 参考</button>
+            <button class="lb-chip" type="button"><span class="ico" aria-hidden="true">🖼</span> 参考</button>
           </div>
           <div class="composer-body">
             <textarea class="composer-prompt" rows="2" placeholder="描述你想生成的内容，或 @ 引用画布素材…"></textarea>
@@ -439,7 +685,7 @@
             </div>
             <div class="composer-run">
               <span class="composer-cost">约 12 积分</span>
-              <button class="lb-btn is-primary is-icon" type="button"><i data-lucide="arrow-up"></i></button>
+              <button class="lb-btn is-primary is-icon" type="button"><span class="ico" aria-hidden="true">↑</span></button>
             </div>
           </div>
         </div>
@@ -449,7 +695,7 @@
     <aside class="right-panel">
       <div class="panel-head">
         <span class="panel-title">未命名对话</span>
-        <button class="lb-btn is-icon is-sm" type="button"><i data-lucide="more-horizontal"></i></button>
+        <button class="lb-btn is-icon is-sm" type="button"><span class="ico" aria-hidden="true">⋯</span></button>
       </div>
       <div class="panel-body">
         <div class="chat-bubble-user">帮我把选中的图片改成白底产品图</div>
@@ -471,11 +717,7 @@
     document.getElementById('themeToggle').addEventListener('click', () => {
       const html = document.documentElement;
       const dark = html.classList.toggle('theme-dark');
-      const icon = document.querySelector('#themeToggle i');
-      icon.setAttribute('data-lucide', dark ? 'moon' : 'sun');
-      if (window.lucide) lucide.createIcons();
-    });
-    if (window.lucide) lucide.createIcons();
-  </script>
+      document.getElementById('themeToggle').textContent = dark ? '🌙' : '☀';
+});</script>
 </body>
 </html>

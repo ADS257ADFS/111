@@ -4,30 +4,41 @@
 > 参考：Adobe Spectrum 2 桌面端 + Express 圆润浮层  
 > **不修改正式产品代码。**
 
-## 怎么打开（3 选 1）
+## 怎么打开（推荐）
 
-### 方式 1：双击打开（最简单）
+### 方式 1：双击 bat 文件（最简单）
 
 1. 打开文件夹：`光盒_win轻量版/docs/prototypes/`
-2. 双击 **`index.html`**
-3. 会自动用默认浏览器打开，再点进样板 A 或 B
+2. 双击 **`打开视觉样板.bat`**
+3. 浏览器会自动打开入口页，再点进样板 A 或 B
 
-### 方式 2：直接打开某个样板
+### 方式 2：双击 HTML
 
 在同一文件夹里双击：
 
-- `spectrum-workspace-shell.html` — 样板 A
-- `spectrum-floating-ui.html` — 样板 B
+- `index.html` — 入口页
+- `spectrum-workspace-shell.html` — 样板 A（工作区壳层）
+- `spectrum-floating-ui.html` — 样板 B（浮层组件）
 
-### 方式 3：本地小服务器（可选）
+### 方式 3：右键用浏览器打开
 
-如果双击后样式异常，在该文件夹打开终端执行：
+如果双击后没反应或样式不对：
 
-```bash
-python -m http.server 8765
-```
+1. 右键 `index.html`
+2. 选「打开方式」→ **Chrome** 或 **Edge**
 
-浏览器访问：`http://localhost:8765/`
+---
+
+## 常见问题
+
+| 情况 | 原因 | 怎么办 |
+|------|------|--------|
+| 双击没反应 | 系统没关联浏览器 | 用方式 3 右键打开 |
+| 页面空白/没样式 | 只复制了一个 html 文件 | 要整个 `prototypes` 文件夹都在 |
+| 在光盒里打不开 | 样板不在软件里 | 在文件夹里用浏览器打开 |
+| 网上链接打不开 | 样板是本地文件 | 只能在自己电脑文件夹里打开 |
+
+更详细的图文说明见同目录 **`使用说明.txt`**。
 
 ---
 
@@ -35,10 +46,11 @@ python -m http.server 8765
 
 | 文件 | 说明 |
 |------|------|
+| `打开视觉样板.bat` | 一键用浏览器打开（Windows） |
 | `index.html` | 入口页 |
 | `spectrum-workspace-shell.html` | 样板 A · 工作区壳层 |
 | `spectrum-floating-ui.html` | 样板 B · 浮层组件 |
-| `spectrum-tokens-prototype.css` | 样板专用样式（与软件无关） |
+| `spectrum-tokens-prototype.css` | 样板样式参考（已内嵌进 html，可忽略） |
 
 页面内可切换 **亮色 / 深色** 主题。
 
