@@ -133,6 +133,10 @@ html.lightbox-shader-intro-active :is(
 
 .lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label {
     visibility: visible;
+    opacity: 1;
+}
+
+.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label img {
     animation: lightbox-shader-intro-logo-fade 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
@@ -152,10 +156,12 @@ html.lightbox-shader-intro-active :is(
     max-width: min(86%, 320px);
     object-fit: contain;
     object-position: center;
+    opacity: 0;
     filter: brightness(0) invert(1);
     transform: translateZ(0);
     user-select: none;
     -webkit-user-drag: none;
+    will-change: opacity;
 }
 
 .lightbox-shader-intro.is-exiting .lightbox-shader-intro-label {

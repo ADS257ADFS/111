@@ -645,14 +645,17 @@ class DesktopBridge:
 
         threading.Timer(0.04, lambda: attempt()).start()
 
-    def _ensure_window_visible(self) -> None:
+    def _ensure_window_visible(self, kick_playback: bool = False) -> None:
         if self._window is None or self._window_shown:
+            if kick_playback:
+                self._kick_intro_playback()
             return
         self._window_shown = True
         try:
             self.show_intro_window()
             self._window.show()
-            self._kick_intro_playback()
+            if kick_playback:
+                self._kick_intro_playback()
         except Exception:
             traceback.print_exc()
 
@@ -2019,7 +2022,16 @@ def main() -> None:
             try:
                 configure_opaque_form(window)
                 bridge.set_window_backdrop(initial_theme)
-                bridge._ensure_window_visible()
+                bridge._ensure_window_visible(kick_playback=True)
+            except Exception:
+                traceback.print_exc()
+
+        def show_intro_shell_early() -> None:
+            """Black intro panel immediately — playback starts once JS is ready."""
+            try:
+                configure_opaque_form(window)
+                bridge.set_window_backdrop(initial_theme)
+                bridge._ensure_window_visible(kick_playback=False)
             except Exception:
                 traceback.print_exc()
 
@@ -2030,19 +2042,13 @@ def main() -> None:
             main_window_ready.set()
 
         def finish_startup() -> None:
-            startup_finished.wait(timeout=6.0)
-            # Show intro as soon as the lightweight shell is ready — don't wait for the full app.
-            deadline = time.time() + 8.0
-            while time.time() < deadline:
-                if bridge._intro_dom_ready.is_set() or main_window_ready.is_set():
-                    break
-                time.sleep(0.03)
+            show_intro_shell_early()
+            bridge._intro_dom_ready.wait(timeout=12.0)
+            bridge._kick_intro_playback()
+            startup_finished.wait(timeout=1.0)
             try:
-                configure_opaque_form(window)
-                bridge.set_window_backdrop(initial_theme)
-                bridge._ensure_window_visible()
-                time.sleep(0.12)
-                main_window_ready.wait(timeout=12.0)
+                time.sleep(0.08)
+                main_window_ready.wait(timeout=10.0)
                 bridge.enable_standard_taskbar_behavior()
                 configure_opaque_form(window)
                 install_window_frame_refresh(window, bridge)
@@ -2078,7 +2084,7 @@ def main() -> None:
         window.events.loaded += mark_main_window_ready
         window.events.closing += request_shutdown
         threading.Thread(target=finish_startup, name="LightboxStartupTransition", daemon=True).start()
-        threading.Timer(10.0, force_show_window).start()
+        threading.Timer(8.0, force_show_window).start()
 
         support_root = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local")) / "Lightbox-Windows-Clean"
         webview.start(

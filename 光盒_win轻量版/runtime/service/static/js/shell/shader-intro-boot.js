@@ -9,7 +9,7 @@
   var EXIT_MS = 620;
   var ROOT_ID = "lightboxShaderIntro";
   var STAGE_ID = "lightboxShaderIntroStage";
-  var RENDER_SCALE = 0.55;
+  var RENDER_SCALE = 0.7;
 
   var VERT = [
     "attribute vec2 a_pos;",
@@ -36,7 +36,6 @@
 
   var introSurfaceNotified = false;
   var playbackStarted = false;
-  var prepared = false;
   var prepState = null;
 
   function notifyIntroDomReady() {
@@ -132,18 +131,26 @@
     return program;
   }
 
+  function preloadLogo(root) {
+    var img = root && root.querySelector(".lightbox-shader-intro-label img");
+    if (!img || img.complete) return;
+    try {
+      var preload = new Image();
+      preload.src = img.currentSrc || img.src;
+    } catch (_) {}
+  }
+
   function startPlayback() {
     if (playbackStarted || !prepState) return;
     playbackStarted = true;
 
     var root = prepState.root;
-    var stage = prepState.stage;
-    var gl = prepState.gl;
     var cleanup = prepState.cleanup;
     var frame = prepState.frame;
     var resize = prepState.resize;
 
-    root.classList.add("is-shader-live", "is-label-visible");
+    preloadLogo(root);
+    root.classList.add("is-label-visible");
     ensureIntroSurfaceNotified();
     resize();
 
@@ -165,10 +172,10 @@
     var stage = document.getElementById(STAGE_ID);
     if (!root || !stage) return;
     global.__shaderIntroBooted = true;
-    prepared = true;
 
     document.documentElement.classList.add("lightbox-shader-intro-active");
     root.classList.remove("is-shader-live", "is-label-visible", "is-exiting", "is-done");
+    preloadLogo(root);
 
     var canvas = document.createElement("canvas");
     canvas.style.width = "100%";
@@ -187,12 +194,10 @@
     if (!gl) {
       prepState = {
         root: root,
-        stage: stage,
-        gl: null,
         cleanup: function () {},
         resize: function () {},
         frame: function () {
-          root.classList.add("is-shader-live", "is-label-visible");
+          root.classList.add("is-label-visible");
           ensureIntroSurfaceNotified();
           global.setTimeout(function () {
             enterFullscreenSoftware().then(function () { finishIntro(root); });
@@ -220,9 +225,8 @@
 
     var animationId = 0;
     var disposed = false;
+    var shaderLive = false;
     var startMs = 0;
-    var lastFrameMs = 0;
-    var MIN_FRAME_MS = 1000 / 36;
 
     function resize() {
       if (disposed || root.classList.contains("is-exiting")) return;
@@ -254,17 +258,17 @@
       if (disposed || !playbackStarted) return;
       animationId = global.requestAnimationFrame(frame);
       var t = now || performance.now();
-      if (lastFrameMs && t - lastFrameMs < MIN_FRAME_MS) return;
-      lastFrameMs = t;
       if (!startMs) startMs = t;
       gl.uniform1f(timeLoc, 1.0 + (t - startMs) * 0.001 * 3);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
+      if (!shaderLive) {
+        shaderLive = true;
+        root.classList.add("is-shader-live");
+      }
     }
 
     prepState = {
       root: root,
-      stage: stage,
-      gl: gl,
       cleanup: cleanup,
       resize: resize,
       frame: frame,
