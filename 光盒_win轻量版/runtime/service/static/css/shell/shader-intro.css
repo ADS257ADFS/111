@@ -1,4 +1,4 @@
-/* Independent rounded startup panel → zoom/blur into fullscreen software. */
+/* Independent rounded startup panel → zoom into fullscreen software. */
 
 html.lightbox-shader-intro-active,
 html.lightbox-shader-intro-active body {
@@ -19,7 +19,6 @@ html.lightbox-shader-intro-active :is(
     pointer-events: none !important;
 }
 
-/* Single full-bleed stage — no outer gutter / inner card double frame. */
 .lightbox-shader-intro {
     position: fixed;
     inset: 0;
@@ -69,7 +68,7 @@ html.lightbox-shader-intro-active :is(
     background: transparent;
 }
 
-/* Shader: show at full opacity as soon as the first frame paints (no fade). */
+/* Stage: CSS motion visible instantly; WebGL canvas stacks on top when live. */
 .lightbox-shader-intro-stage {
     position: absolute;
     inset: 0;
@@ -80,13 +79,45 @@ html.lightbox-shader-intro-active :is(
     opacity: 1;
 }
 
+.lightbox-shader-intro-stage::before {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        repeating-conic-gradient(
+            from 0deg at 50% 50%,
+            #000 0deg 6deg,
+            #141414 6deg 12deg,
+            #2a2a2a 12deg 18deg,
+            #0a0a0a 18deg 24deg
+        );
+    animation: lightbox-shader-intro-css-motion 5s linear infinite;
+    opacity: 1;
+}
+
+.lightbox-shader-intro.is-shader-live .lightbox-shader-intro-stage::before {
+    opacity: 0;
+    visibility: hidden;
+    animation: none;
+}
+
+@keyframes lightbox-shader-intro-css-motion {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .lightbox-shader-intro-stage canvas {
+    position: relative;
+    z-index: 1;
     display: block;
     width: 100% !important;
     height: 100% !important;
 }
 
-/* Logo：动效先出；LOGO 从完全透明慢慢淡到清晰可见（仅 opacity，无位移/缩放）。 */
+/* Logo: opacity 0→1 over 2s, synced with motion start. */
 .lightbox-shader-intro-label {
     position: absolute;
     inset: 0;
@@ -102,7 +133,7 @@ html.lightbox-shader-intro-active :is(
 
 .lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label {
     visibility: visible;
-    animation: lightbox-shader-intro-logo-fade 1.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: lightbox-shader-intro-logo-fade 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes lightbox-shader-intro-logo-fade {
@@ -133,7 +164,6 @@ html.lightbox-shader-intro-active :is(
     transition: opacity 0.35s ease;
 }
 
-/* Desktop: fill the already-rounded native intro window — one clip layer only. */
 html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro {
     padding: 0;
 }
