@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>光盒 · 字体说明</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", "Microsoft YaHei UI", "MiSans Variable", sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #292929;
+      background: #f5f5f5;
+      padding: 32px 24px 48px;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    h1 { font-size: 20px; margin-bottom: 8px; }
+    .sub { color: #717171; font-size: 13px; margin-bottom: 28px; }
+    h2 { font-size: 15px; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid #e8e8e8; }
+    p { margin-bottom: 10px; color: #505050; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+    th, td { padding: 10px 12px; text-align: left; border: 1px solid #e8e8e8; }
+    th { background: #fafafa; font-weight: 600; }
+    .sample { margin: 8px 0 16px; padding: 14px 16px; background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; }
+    .s16 { font-size: 16px; }
+    .s14 { font-size: 14px; }
+    .s125 { font-size: 12.5px; }
+    .s11 { font-size: 11px; color: #717171; }
+    .w380 { font-weight: 380; }
+    .w350 { font-weight: 350; }
+    .w250 { font-weight: 250; color: #a0a0a0; }
+    .note { padding: 12px 14px; background: #eef6ff; border-radius: 8px; font-size: 13px; color: #333; margin: 16px 0; }
+    .toolbar { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+    a.btn {
+      display: inline-flex; align-items: center; height: 30px; padding: 0 12px;
+      border: 1px solid #dadada; border-radius: 8px; background: #fff;
+      color: #292929; text-decoration: none; font-size: 13px;
+    }
+    a.btn:hover { background: #efefef; }
+    a.btn.primary { background: #0a84ff; border-color: #0a84ff; color: #fff; }
+    code { font-size: 12px; background: #efefef; padding: 2px 6px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="toolbar">
+      <a class="btn primary" href="spectrum-full-shell.html">← 返回完整样板</a>
+      <a class="btn" href="index.html">样板入口</a>
+    </div>
+
+    <h1>光盒字体说明</h1>
+    <p class="sub">这份说明告诉你：软件里用什么字体、多大、用在哪里。亮/暗主题只有颜色不同，字号和字重完全相同。</p>
+
+    <div class="note">
+      <strong>正式字体名称：</strong>MiSans（小米字体）<br>
+      软件里会根据中英文自动切换合适字重，你不需要自己选。
+    </div>
+
+    <h2>一、字体家族（用在哪里）</h2>
+    <table>
+      <tr><th>名称</th><th>说明</th><th>用在</th></tr>
+      <tr>
+        <td><strong>MiSans</strong></td>
+        <td>界面主字体，中英文混排</td>
+        <td>全部界面：按钮、菜单、侧栏、画布、对话栏</td>
+      </tr>
+      <tr>
+        <td><strong>JetBrains Mono</strong></td>
+        <td>等宽字体（每个字一样宽）</td>
+        <td>代码、技术参数（很少出现）</td>
+      </tr>
+    </table>
+    <p>如果电脑没装 MiSans，会自动用 <code>微软雅黑 UI</code> 或 <code>Segoe UI</code> 代替，看起来差不多。</p>
+
+    <h2>二、字号（多大）</h2>
+    <table>
+      <tr><th>大小</th><th>名称</th><th>用在哪里</th><th>预览</th></tr>
+      <tr>
+        <td><strong>16px</strong></td>
+        <td>展示标题</td>
+        <td>页面大标题、弹窗主标题</td>
+        <td class="sample s16 w380">光盒视觉样板标题</td>
+      </tr>
+      <tr>
+        <td><strong>14px</strong></td>
+        <td>正文 / 控件</td>
+        <td>按钮文字、输入框、菜单项、对话内容、侧栏导航</td>
+        <td class="sample s14 w380">新建画布 · 描述你想生成的图片</td>
+      </tr>
+      <tr>
+        <td><strong>12.5px</strong></td>
+        <td>紧凑标签</td>
+        <td>最近项目名、画布底栏按钮、媒体工具栏、缩放比例</td>
+        <td class="sample s125 w350">未命名画布 · 100% · 裁切</td>
+      </tr>
+      <tr>
+        <td><strong>11px</strong></td>
+        <td>次要信息</td>
+        <td>快捷键提示、时间戳、积分角标、分组小标题</td>
+        <td class="sample s11 w350">Ctrl + Z · 预计消耗 5 积分</td>
+      </tr>
+    </table>
+
+    <h2>三、字重（粗细）</h2>
+    <table>
+      <tr><th>字重</th><th>适用</th><th>预览（14px）</th></tr>
+      <tr>
+        <td><strong>380</strong></td>
+        <td>中文正文、按钮、菜单（默认）</td>
+        <td class="sample s14 w380">中文界面默认粗细</td>
+      </tr>
+      <tr>
+        <td><strong>350</strong></td>
+        <td>英文、数字（比中文略细一点）</td>
+        <td class="sample s14 w350">Lightbox 2365 100%</td>
+      </tr>
+      <tr>
+        <td><strong>250</strong></td>
+        <td>输入框占位提示（灰色说明文字）</td>
+        <td class="sample s14 w250">描述你想生成或编辑的图片…</td>
+      </tr>
+    </table>
+
+    <h2>四、各区域对照表</h2>
+    <table>
+      <tr><th>界面区域</th><th>字号</th><th>字重</th></tr>
+      <tr><td>顶栏搜索框</td><td>12.5px</td><td>380</td></tr>
+      <tr><td>左侧导航（新建画布等）</td><td>14px</td><td>380</td></tr>
+      <tr><td>最近创作项目名</td><td>12.5px</td><td>350</td></tr>
+      <tr><td>左下角用户名</td><td>14px</td><td>380</td></tr>
+      <tr><td>用户面板菜单项</td><td>14px</td><td>380</td></tr>
+      <tr><td>画布节点标题</td><td>12.5px</td><td>380</td></tr>
+      <tr><td>媒体上方工具栏</td><td>12.5px</td><td>380</td></tr>
+      <tr><td>双击/右键菜单</td><td>14px</td><td>380</td></tr>
+      <tr><td>画布右上缩放</td><td>11px</td><td>350</td></tr>
+      <tr><td>底部生成栏输入</td><td>14px</td><td>380（占位 250）</td></tr>
+      <tr><td>底部生成栏按钮</td><td>12px</td><td>600（偏粗）</td></tr>
+      <tr><td>右侧对话标题</td><td>12.5px</td><td>380</td></tr>
+      <tr><td>右侧对话内容</td><td>14px</td><td>380</td></tr>
+      <tr><td>右侧对话输入框</td><td>14px</td><td>380（占位 250）</td></tr>
+    </table>
+
+    <h2>五、重要原则</h2>
+    <ul style="padding-left:20px;color:#505050;font-size:13px">
+      <li style="margin-bottom:8px"><strong>亮/暗主题</strong>：只有颜色变，字号和字重不变</li>
+      <li style="margin-bottom:8px"><strong>全软件统一</strong>：不按页面单独设计字体</li>
+      <li style="margin-bottom:8px"><strong>创作工具密度</strong>：比手机 App 更紧凑，比管理后台更透气</li>
+      <li style="margin-bottom:8px"><strong>只有 4 档字号</strong>：16 / 14 / 12.5 / 11，不再增加新尺寸</li>
+    </ul>
+
+    <p style="margin-top:32px;font-size:12px;color:#999">看完字体说明后，请回到 <a href="spectrum-full-shell.html">完整壳层样板</a> 看整体效果，直接说感受即可。</p>
+  </div>
+</body>
+</html>
