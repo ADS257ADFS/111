@@ -2,13 +2,20 @@
 
 from __future__ import annotations
 
+import os
+import sys
+
+# This file can also be launched directly during development. Disable bytecode
+# writes before importing the rest of the application so the bundled Python
+# runtime does not dirty the Git working tree.
+os.environ.setdefault("PYTHONDONTWRITEBYTECODE", "1")
+sys.dont_write_bytecode = True
+
 import json
 import mimetypes
-import os
 import re
 import socket
 import subprocess
-import sys
 import threading
 import time
 import traceback
