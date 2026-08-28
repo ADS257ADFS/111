@@ -90,7 +90,12 @@ export async function bootIntro(threePromise) {
   if (!root || !stage) return;
 
   document.documentElement.classList.add("lightbox-shader-intro-active");
-  root.classList.remove("is-shader-live", "is-label-visible");
+  root.classList.remove("is-shader-live");
+  if (!root.classList.contains("is-label-visible")) {
+    root.classList.add("is-label-visible");
+  }
+
+  const playStartMs = performance.now();
 
   let THREE;
   try {
@@ -156,10 +161,9 @@ export async function bootIntro(threePromise) {
     if (revealArmed || disposed) return;
     revealArmed = true;
     root.classList.add("is-shader-live");
-    requestAnimationFrame(() => {
-      root.classList.add("is-label-visible");
-    });
-    window.setTimeout(() => startExit(root, cleanup), PLAY_MS);
+    const elapsed = performance.now() - playStartMs;
+    const remaining = Math.max(0, PLAY_MS - elapsed);
+    window.setTimeout(() => startExit(root, cleanup), remaining);
   };
 
   const animate = (now) => {

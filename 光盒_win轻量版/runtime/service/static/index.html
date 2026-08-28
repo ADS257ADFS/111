@@ -74,10 +74,14 @@
             var BOOT_URL = "/static/js/shell/shader-intro.js?v=2026.08.28.introfast1";
             window.__shaderIntroThreePromise = import(THREE_URL);
             function bootWhenIntroReady() {
-                if (!document.getElementById("lightboxShaderIntro") || !document.getElementById("lightboxShaderIntroStage")) {
+                var root = document.getElementById("lightboxShaderIntro");
+                var stage = document.getElementById("lightboxShaderIntroStage");
+                if (!root || !stage) {
                     requestAnimationFrame(bootWhenIntroReady);
                     return;
                 }
+                /* Motion (CSS) + logo fade start the instant the panel DOM exists. */
+                root.classList.add("is-label-visible");
                 if (window.__shaderIntroBooting) return;
                 window.__shaderIntroBooting = true;
                 import(BOOT_URL).then(function (mod) {
