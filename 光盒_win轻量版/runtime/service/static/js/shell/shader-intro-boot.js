@@ -1,6 +1,6 @@
 /**
- * Startup intro — raw WebGL (no Three.js). Boots synchronously when parsed.
- * First frame: shader motion + logo opacity 0→1 (2s) together.
+ * Startup intro — raw WebGL (no Three.js).
+ * Prepares during page load; playback starts only when the native window is shown.
  */
 (function (global) {
   "use strict";
@@ -35,6 +35,26 @@
   ].join("\n");
 
   var introSurfaceNotified = false;
+  var playbackStarted = false;
+  var prepared = false;
+  var prepState = null;
+
+  function notifyIntroDomReady() {
+    try {
+      var api = global.pywebview && global.pywebview.api;
+      if (api && typeof api.notify_intro_dom_ready === "function") {
+        api.notify_intro_dom_ready();
+        return true;
+      }
+    } catch (_) {}
+    return false;
+  }
+
+  function ensureIntroDomReadyNotified() {
+    if (!notifyIntroDomReady()) {
+      global.setTimeout(ensureIntroDomReadyNotified, 16);
+    }
+  }
 
   function notifyIntroSurfaceReady() {
     if (introSurfaceNotified) return true;
@@ -51,7 +71,7 @@
 
   function ensureIntroSurfaceNotified() {
     if (!notifyIntroSurfaceReady()) {
-      global.setTimeout(ensureIntroSurfaceNotified, 12);
+      global.setTimeout(ensureIntroSurfaceNotified, 16);
     }
   }
 
@@ -112,15 +132,43 @@
     return program;
   }
 
+  function startPlayback() {
+    if (playbackStarted || !prepState) return;
+    playbackStarted = true;
+
+    var root = prepState.root;
+    var stage = prepState.stage;
+    var gl = prepState.gl;
+    var cleanup = prepState.cleanup;
+    var frame = prepState.frame;
+    var resize = prepState.resize;
+
+    root.classList.add("is-shader-live", "is-label-visible");
+    ensureIntroSurfaceNotified();
+    resize();
+
+    global.setTimeout(function () {
+      startExit(root, cleanup);
+    }, PLAY_MS);
+
+    frame();
+    global.setTimeout(function () {
+      if (!root.classList.contains("is-done")) startExit(root, cleanup);
+    }, PLAY_MS + EXIT_MS + 4000);
+  }
+
+  global.lightboxStartIntroPlayback = startPlayback;
+
   function boot() {
     if (global.__shaderIntroBooted) return;
     var root = document.getElementById(ROOT_ID);
     var stage = document.getElementById(STAGE_ID);
     if (!root || !stage) return;
     global.__shaderIntroBooted = true;
+    prepared = true;
 
     document.documentElement.classList.add("lightbox-shader-intro-active");
-    root.classList.remove("is-shader-live", "is-label-visible");
+    root.classList.remove("is-shader-live", "is-label-visible", "is-exiting", "is-done");
 
     var canvas = document.createElement("canvas");
     canvas.style.width = "100%";
@@ -135,10 +183,23 @@
       stencil: false,
       powerPreference: "high-performance",
     });
+
     if (!gl) {
-      root.classList.add("is-shader-live", "is-label-visible");
-      ensureIntroSurfaceNotified();
-      enterFullscreenSoftware().then(function () { finishIntro(root); });
+      prepState = {
+        root: root,
+        stage: stage,
+        gl: null,
+        cleanup: function () {},
+        resize: function () {},
+        frame: function () {
+          root.classList.add("is-shader-live", "is-label-visible");
+          ensureIntroSurfaceNotified();
+          global.setTimeout(function () {
+            enterFullscreenSoftware().then(function () { finishIntro(root); });
+          }, PLAY_MS);
+        },
+      };
+      ensureIntroDomReadyNotified();
       return;
     }
 
@@ -159,9 +220,7 @@
 
     var animationId = 0;
     var disposed = false;
-    var started = false;
     var startMs = 0;
-    var playStartMs = 0;
     var lastFrameMs = 0;
     var MIN_FRAME_MS = 1000 / 36;
 
@@ -191,20 +250,8 @@
       } catch (_) {}
     }
 
-    function beginPlayback(now) {
-      if (started) return;
-      started = true;
-      playStartMs = now || performance.now();
-      root.classList.add("is-shader-live", "is-label-visible");
-      ensureIntroSurfaceNotified();
-      var remaining = PLAY_MS;
-      global.setTimeout(function () {
-        startExit(root, cleanup);
-      }, remaining);
-    }
-
     function frame(now) {
-      if (disposed) return;
+      if (disposed || !playbackStarted) return;
       animationId = global.requestAnimationFrame(frame);
       var t = now || performance.now();
       if (lastFrameMs && t - lastFrameMs < MIN_FRAME_MS) return;
@@ -212,17 +259,29 @@
       if (!startMs) startMs = t;
       gl.uniform1f(timeLoc, 1.0 + (t - startMs) * 0.001 * 3);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
-      if (!started) beginPlayback(t);
     }
 
-    resize();
-    global.addEventListener("resize", resize, { passive: true });
-    frame();
+    prepState = {
+      root: root,
+      stage: stage,
+      gl: gl,
+      cleanup: cleanup,
+      resize: resize,
+      frame: frame,
+    };
 
-    global.setTimeout(function () {
-      if (!root.classList.contains("is-done")) startExit(root, cleanup);
-    }, PLAY_MS + EXIT_MS + 4000);
+    global.addEventListener("resize", resize, { passive: true });
+    ensureIntroDomReadyNotified();
   }
+
+  global.__lightboxIntroGo = false;
+  (function pollIntroGo() {
+    if (global.__lightboxIntroGo) {
+      startPlayback();
+      return;
+    }
+    global.requestAnimationFrame(pollIntroGo);
+  })();
 
   boot();
 })(window);

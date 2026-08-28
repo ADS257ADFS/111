@@ -617,11 +617,33 @@ class DesktopBridge:
         self._restore_bounds = None
         self._move_thread = None
         self._intro_surface_ready = threading.Event()
+        self._intro_dom_ready = threading.Event()
         self._window_shown = False
 
+    def notify_intro_dom_ready(self) -> None:
+        """JS intro shell is in the DOM and WebGL is prepared."""
+        self._intro_dom_ready.set()
+
     def notify_intro_surface_ready(self) -> None:
-        """JS calls on first intro shader frame (telemetry / optional early show)."""
+        """JS calls on first intro shader frame after playback starts."""
         self._intro_surface_ready.set()
+
+    def _kick_intro_playback(self) -> None:
+        if self._window is None:
+            return
+
+        def attempt(remaining: int = 60) -> None:
+            if remaining <= 0:
+                return
+            try:
+                self._window.evaluate_js("window.__lightboxIntroGo = true;")
+                self._window.evaluate_js(
+                    "window.lightboxStartIntroPlayback && window.lightboxStartIntroPlayback();"
+                )
+            except Exception:
+                threading.Timer(0.08, lambda: attempt(remaining - 1)).start()
+
+        threading.Timer(0.04, lambda: attempt()).start()
 
     def _ensure_window_visible(self) -> None:
         if self._window is None or self._window_shown:
@@ -630,6 +652,7 @@ class DesktopBridge:
         try:
             self.show_intro_window()
             self._window.show()
+            self._kick_intro_playback()
         except Exception:
             traceback.print_exc()
 
@@ -2008,14 +2031,18 @@ def main() -> None:
 
         def finish_startup() -> None:
             startup_finished.wait(timeout=6.0)
-            main_window_ready.wait(timeout=15.0)
-            # Prefer showing after first shader frame, but never block launch.
-            bridge._intro_surface_ready.wait(timeout=1.2)
+            # Show intro as soon as the lightweight shell is ready — don't wait for the full app.
+            deadline = time.time() + 8.0
+            while time.time() < deadline:
+                if bridge._intro_dom_ready.is_set() or main_window_ready.is_set():
+                    break
+                time.sleep(0.03)
             try:
                 configure_opaque_form(window)
                 bridge.set_window_backdrop(initial_theme)
                 bridge._ensure_window_visible()
                 time.sleep(0.12)
+                main_window_ready.wait(timeout=12.0)
                 bridge.enable_standard_taskbar_behavior()
                 configure_opaque_form(window)
                 install_window_frame_refresh(window, bridge)
