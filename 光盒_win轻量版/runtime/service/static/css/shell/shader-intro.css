@@ -1,4 +1,4 @@
-/* Independent rounded startup panel → zoom/blur into fullscreen software. */
+/* Independent rounded startup panel → zoom into fullscreen software. */
 
 html.lightbox-shader-intro-active,
 html.lightbox-shader-intro-active body {
@@ -19,7 +19,6 @@ html.lightbox-shader-intro-active :is(
     pointer-events: none !important;
 }
 
-/* Single full-bleed stage — no outer gutter / inner card double frame. */
 .lightbox-shader-intro {
     position: fixed;
     inset: 0;
@@ -54,7 +53,6 @@ html.lightbox-shader-intro-active :is(
     opacity: 1;
     contain: strict;
     backface-visibility: hidden;
-    /* Only promote during exit — idle will-change wastes GPU memory. */
     transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -70,6 +68,7 @@ html.lightbox-shader-intro-active :is(
     background: transparent;
 }
 
+/* Stage: CSS motion visible instantly; WebGL canvas stacks on top when live. */
 .lightbox-shader-intro-stage {
     position: absolute;
     inset: 0;
@@ -77,15 +76,48 @@ html.lightbox-shader-intro-active :is(
     height: 100%;
     background: #000;
     overflow: hidden;
+    opacity: 1;
+}
+
+.lightbox-shader-intro-stage::before {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        repeating-conic-gradient(
+            from 0deg at 50% 50%,
+            #000 0deg 6deg,
+            #141414 6deg 12deg,
+            #2a2a2a 12deg 18deg,
+            #0a0a0a 18deg 24deg
+        );
+    animation: lightbox-shader-intro-css-motion 5s linear infinite;
+    opacity: 1;
+}
+
+.lightbox-shader-intro.is-shader-live .lightbox-shader-intro-stage::before {
+    opacity: 0;
+    visibility: hidden;
+    animation: none;
+}
+
+@keyframes lightbox-shader-intro-css-motion {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .lightbox-shader-intro-stage canvas {
+    position: relative;
+    z-index: 1;
     display: block;
     width: 100% !important;
     height: 100% !important;
 }
 
-/* Same wordmark as sidebar logo; 1.5× prior intro type size. */
+/* Logo: opacity 0→1 over 2s, synced with motion start. */
 .lightbox-shader-intro-label {
     position: absolute;
     inset: 0;
@@ -96,41 +128,42 @@ html.lightbox-shader-intro-active :is(
     padding: 0 1.5rem;
     pointer-events: none;
     opacity: 0;
-    transform: translateY(12px) scale(0.97);
-    animation: lightbox-shader-intro-label-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards;
+    visibility: hidden;
+}
+
+.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label {
+    visibility: visible;
+    animation: lightbox-shader-intro-logo-fade 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes lightbox-shader-intro-logo-fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .lightbox-shader-intro-label img {
     display: block;
-    /* Welcome mark another ~1/3 smaller (×2/3 again) */
     height: clamp(1.9rem, 5.67vw, 3.73rem);
     width: auto;
     max-width: min(86%, 320px);
     object-fit: contain;
     object-position: center;
-    /* Match sidebar dark-mode wordmark (black glyph → white).
-       Isolating the filter avoids refiltering during label opacity anim. */
     filter: brightness(0) invert(1);
     transform: translateZ(0);
-    will-change: auto;
     user-select: none;
     -webkit-user-drag: none;
 }
 
-@keyframes lightbox-shader-intro-label-in {
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
 .lightbox-shader-intro.is-exiting .lightbox-shader-intro-label {
     opacity: 0;
-    transition: opacity 0.35s ease;
     animation: none;
+    transition: opacity 0.35s ease;
 }
 
-/* Desktop: fill the already-rounded native intro window — one clip layer only. */
 html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro {
     padding: 0;
 }
