@@ -617,10 +617,21 @@ class DesktopBridge:
         self._restore_bounds = None
         self._move_thread = None
         self._intro_surface_ready = threading.Event()
+        self._window_shown = False
 
     def notify_intro_surface_ready(self) -> None:
-        """JS calls on first intro shader frame — window can show with motion already live."""
+        """JS calls on first intro shader frame (telemetry / optional early show)."""
         self._intro_surface_ready.set()
+
+    def _ensure_window_visible(self) -> None:
+        if self._window is None or self._window_shown:
+            return
+        self._window_shown = True
+        try:
+            self.show_intro_window()
+            self._window.show()
+        except Exception:
+            traceback.print_exc()
 
     def _hwnd(self) -> int:
         if self._window is None or self._window.native is None:
@@ -1977,8 +1988,17 @@ def main() -> None:
             text_select=False,
         )
         bridge._window = window
+        bridge._window_shown = False
         # 启动即按初始主题设置宿主底色，JS 就绪后 set_window_backdrop 会继续跟随主题
         configure_opaque_form(window, initial_theme)
+
+        def force_show_window() -> None:
+            try:
+                configure_opaque_form(window)
+                bridge.set_window_backdrop(initial_theme)
+                bridge._ensure_window_visible()
+            except Exception:
+                traceback.print_exc()
 
         def request_shutdown() -> None:
             server.should_exit = True
@@ -1989,13 +2009,12 @@ def main() -> None:
         def finish_startup() -> None:
             startup_finished.wait(timeout=6.0)
             main_window_ready.wait(timeout=15.0)
-            # Wait for first WebGL frame so the user never sees a static black panel.
-            bridge._intro_surface_ready.wait(timeout=5.0)
+            # Prefer showing after first shader frame, but never block launch.
+            bridge._intro_surface_ready.wait(timeout=1.2)
             try:
                 configure_opaque_form(window)
-                bridge.show_intro_window()
                 bridge.set_window_backdrop(initial_theme)
-                window.show()
+                bridge._ensure_window_visible()
                 time.sleep(0.12)
                 bridge.enable_standard_taskbar_behavior()
                 configure_opaque_form(window)
@@ -2032,6 +2051,7 @@ def main() -> None:
         window.events.loaded += mark_main_window_ready
         window.events.closing += request_shutdown
         threading.Thread(target=finish_startup, name="LightboxStartupTransition", daemon=True).start()
+        threading.Timer(10.0, force_show_window).start()
 
         support_root = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local")) / "Lightbox-Windows-Clean"
         webview.start(
