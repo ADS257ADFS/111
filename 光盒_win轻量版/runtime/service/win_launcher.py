@@ -616,6 +616,11 @@ class DesktopBridge:
         self._maximized = False
         self._restore_bounds = None
         self._move_thread = None
+        self._intro_surface_ready = threading.Event()
+
+    def notify_intro_surface_ready(self) -> None:
+        """JS calls on first intro shader frame — window can show with motion already live."""
+        self._intro_surface_ready.set()
 
     def _hwnd(self) -> int:
         if self._window is None or self._window.native is None:
@@ -1984,6 +1989,8 @@ def main() -> None:
         def finish_startup() -> None:
             startup_finished.wait(timeout=6.0)
             main_window_ready.wait(timeout=15.0)
+            # Wait for first WebGL frame so the user never sees a static black panel.
+            bridge._intro_surface_ready.wait(timeout=5.0)
             try:
                 configure_opaque_form(window)
                 bridge.show_intro_window()

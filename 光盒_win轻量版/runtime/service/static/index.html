@@ -30,101 +30,68 @@
             } catch(e) {}
         })();
     </script>
-    <link rel="modulepreload" href="/static/vendor/js/three-0.160.0.module.js?v=2026.08.27.shader3">
     <style id="shader-intro-critical">
-        /* Paint intro + instant CSS motion before heavy CSS/JS finishes loading. */
+        html, body { background: #000 !important; }
         #lightboxShaderIntro.lightbox-shader-intro {
-            position: fixed;
-            inset: 0;
-            z-index: 2147483000;
-            display: block;
-            background: #000;
-            overflow: hidden;
+            position: fixed; inset: 0; z-index: 2147483000;
+            display: block; background: #000; overflow: hidden;
         }
         #lightboxShaderIntro .lightbox-shader-intro-panel {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            background: #000;
+            position: relative; width: 100%; height: 100%; background: #000;
         }
         #lightboxShaderIntroStage.lightbox-shader-intro-stage {
-            position: absolute;
-            inset: 0;
-            background: #000;
-            overflow: hidden;
-        }
-        #lightboxShaderIntroStage.lightbox-shader-intro-stage::before {
-            content: "";
-            position: absolute;
-            inset: -30%;
-            background: repeating-conic-gradient(from 0deg at 50% 50%, #000 0deg 6deg, #141414 6deg 12deg, #2a2a2a 12deg 18deg, #0a0a0a 18deg 24deg);
-            animation: lightbox-shader-intro-css-motion 5s linear infinite;
-        }
-        @keyframes lightbox-shader-intro-css-motion {
-            to { transform: rotate(360deg); }
+            position: absolute; inset: 0; background: #000; overflow: hidden;
         }
         #lightboxShaderIntro .lightbox-shader-intro-label {
+            opacity: 0; visibility: hidden;
+        }
+        #lightboxShaderIntro .lightbox-shader-intro-label img {
             opacity: 0;
-            visibility: hidden;
         }
     </style>
+    <link rel="stylesheet" href="/static/css/shell/shader-intro.css?v=2026.08.28.introfast3">
     <script>
-        (function () {
-            var THREE_URL = "/static/vendor/js/three-0.160.0.module.js?v=2026.08.27.shader3";
-            var BOOT_URL = "/static/js/shell/shader-intro.js?v=2026.08.28.introfast1";
-            window.__shaderIntroThreePromise = import(THREE_URL);
-            function bootWhenIntroReady() {
-                var root = document.getElementById("lightboxShaderIntro");
-                var stage = document.getElementById("lightboxShaderIntroStage");
-                if (!root || !stage) {
-                    requestAnimationFrame(bootWhenIntroReady);
-                    return;
-                }
-                /* Motion (CSS) + logo fade start the instant the panel DOM exists. */
-                root.classList.add("is-label-visible");
-                if (window.__shaderIntroBooting) return;
-                window.__shaderIntroBooting = true;
-                import(BOOT_URL).then(function (mod) {
-                    mod.bootIntro(window.__shaderIntroThreePromise);
-                }).catch(function (err) {
-                    console.warn("[shader-intro] early boot failed", err);
-                });
-            }
-            bootWhenIntroReady();
-        })();
+        document.write(
+            '<div id="lightboxShaderIntro" class="lightbox-shader-intro" aria-hidden="false" role="presentation">' +
+            '<div class="lightbox-shader-intro-panel">' +
+            '<div id="lightboxShaderIntroStage" class="lightbox-shader-intro-stage" aria-hidden="true"></div>' +
+            '<div class="lightbox-shader-intro-label">' +
+            '<img src="/static/images/gonvox-logo.png?v=2026.08.27.welcomeside1" alt="" draggable="false">' +
+            '</div></div></div>' +
+            '<script src="/static/js/shell/shader-intro-boot.js?v=2026.08.28.introfast3"><\/script>'
+        );
     </script>
-    <script src="/static/vendor/js/mutation-observer-guard.js?v=2026.08.11.82"></script>
-    <script src="/static/vendor/js/lucide.js?v=2026.08.11.82"></script>
-    <script src="/static/js/theme.js?v=2026.08.11.82"></script>
-    <link rel="stylesheet" href="/static/css/studio-theme-dark.css?v=2026.08.27.gridvis3">
-    <script src="/static/js/i18n.js?v=2026.08.11.82"></script>
-    <script src="/static/js/shell/icons.js?v=2026.08.11.82"></script>
-    <link rel="stylesheet" href="/static/css/shell/storage-location.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/shell/index-shell.css?v=2026.08.27.docklight1">
-    <link rel="stylesheet" href="/static/css/shell/user-menu.css?v=2026.08.27.useridhalf1">
-    <link rel="stylesheet" href="/static/css/visual-system-preview.css?v=2026.08.27.dockmeta2">
-    <link rel="stylesheet" href="/static/css/shell/gpt-dock-liquid-frame.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/visual-typography-system.css?v=2026.08.27.usermenu2">
-    <link rel="stylesheet" href="/static/css/canvas-dark-glass.css?v=2026.08.27.gridvis3">
-    <link rel="stylesheet" href="/static/css/shell/settings.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/canvas-clear-glass.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/shell/layout-refinement.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/shell/canvas-project-chrome.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/shell/history.css?v=2026.08.26.hist2">
+    <script defer src="/static/vendor/js/mutation-observer-guard.js?v=2026.08.11.82"></script>
+    <script defer src="/static/vendor/js/lucide.js?v=2026.08.11.82"></script>
+    <script defer src="/static/js/theme.js?v=2026.08.11.82"></script>
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/studio-theme-dark.css?v=2026.08.27.gridvis3">
+    <script defer src="/static/js/i18n.js?v=2026.08.11.82"></script>
+    <script defer src="/static/js/shell/icons.js?v=2026.08.11.82"></script>
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/shell/storage-location.css?v=2026.08.11.82">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/shell/index-shell.css?v=2026.08.27.docklight1">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/shell/user-menu.css?v=2026.08.27.useridhalf1">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/visual-system-preview.css?v=2026.08.27.dockmeta2">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/shell/gpt-dock-liquid-frame.css?v=2026.08.11.82">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/visual-typography-system.css?v=2026.08.27.usermenu2">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/canvas-dark-glass.css?v=2026.08.27.gridvis3">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/shell/settings.css?v=2026.08.11.82">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/canvas-clear-glass.css?v=2026.08.11.82">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/shell/layout-refinement.css?v=2026.08.11.82">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/shell/canvas-project-chrome.css?v=2026.08.11.82">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/shell/history.css?v=2026.08.26.hist2">
     <script src="/static/js/shell/history.js?v=2026.08.11.82" defer></script>
     <script src="/static/js/shell/storage-location.js?v=2026.08.11.82" defer></script>
     <script src="/static/js/shell/settings.js?v=2026.08.11.82" defer></script>
     <script src="/static/js/shell/user-menu.js?v=2026.08.27.usermenu2" defer></script>
-    <script src="/static/js/shell/index-boot.js?v=2026.08.11.82"></script>
+    <script defer src="/static/js/shell/index-boot.js?v=2026.08.11.82"></script>
     <script src="/static/js/shell/index-shell.js?v=2026.08.27.shader2" defer></script>
-<link rel="stylesheet" href="/static/css/dark-desaturated/index.css?v=2026.08.27.groupbd1">
-    <link rel="stylesheet" href="/static/css/shell/desktop-window-frame.css?v=2026.08.27.panel1f1">
-<link rel="stylesheet" href="/static/css/dark-desaturated/panel-polish.css?v=2026.08.26.dockhdr2">
-<link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.27.gridvis3">
-<link rel="stylesheet" href="/static/css/ui-primitives.css?v=2026.08.11.82">
-<link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.27.divthin1">
-<link rel="stylesheet" href="/static/css/shell/mm-sidebar.css?v=2026.08.27.divthin1">
-<link rel="stylesheet" href="/static/css/shell/shader-intro.css?v=2026.08.28.introfast1">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/dark-desaturated/index.css?v=2026.08.27.groupbd1">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/shell/desktop-window-frame.css?v=2026.08.27.panel1f1">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/dark-desaturated/panel-polish.css?v=2026.08.26.dockhdr2">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/design-tokens.css?v=2026.08.27.gridvis3">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/ui-primitives.css?v=2026.08.11.82">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/minimax-visual.css?v=2026.08.27.divthin1">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="/static/css/shell/mm-sidebar.css?v=2026.08.27.divthin1">
 <!-- 最高优先级内联CSS：桌面模式画布必须直角，外窗圆角只由 win_launcher SetWindowRgn(18) 提供；勿再写 32px 等大圆角以免上大下小 -->
 <style id="desktop-stage-radius">
 html.lightbox-desktop-native .stage,
@@ -153,14 +120,6 @@ html.lightbox-desktop-native .stage.stage > iframe {
 </head>
 
 <body>
-    <div id="lightboxShaderIntro" class="lightbox-shader-intro" aria-hidden="false" role="presentation">
-        <div class="lightbox-shader-intro-panel">
-            <div id="lightboxShaderIntroStage" class="lightbox-shader-intro-stage" aria-hidden="true"></div>
-            <div class="lightbox-shader-intro-label" style="opacity:0">
-                <img src="/static/images/gonvox-logo.png?v=2026.08.27.welcomeside1" alt="Welcome to 光盒" draggable="false">
-            </div>
-        </div>
-    </div>
     <div class="lightbox-native-resize-handle" data-native-window-resize="top"></div>
     <div class="lightbox-native-resize-handle" data-native-window-resize="right"></div>
     <div class="lightbox-native-resize-handle" data-native-window-resize="bottom"></div>
