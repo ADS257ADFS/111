@@ -1,8 +1,0 @@
-# Repo-wide ignores (see also 光盒_win轻量版/.gitignore)
-__pycache__/
-*.py[cod]
-*$py.class
-*.pyd
-.DS_Store
-Thumbs.db
-desktop.ini

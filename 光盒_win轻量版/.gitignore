@@ -4,14 +4,3 @@ Thumbs.db
 .env.*
 *.log
 
-# Python bytecode — regenerated every run; never commit
-__pycache__/
-*.py[cod]
-*$py.class
-*.pyd
-
-# Windows / editor noise
-desktop.ini
-*.swp
-*~
-
