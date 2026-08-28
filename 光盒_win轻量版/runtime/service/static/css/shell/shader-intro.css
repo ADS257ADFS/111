@@ -54,7 +54,6 @@ html.lightbox-shader-intro-active :is(
     opacity: 1;
     contain: strict;
     backface-visibility: hidden;
-    /* Only promote during exit — idle will-change wastes GPU memory. */
     transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -70,6 +69,7 @@ html.lightbox-shader-intro-active :is(
     background: transparent;
 }
 
+/* Shader: show at full opacity as soon as the first frame paints (no fade). */
 .lightbox-shader-intro-stage {
     position: absolute;
     inset: 0;
@@ -77,11 +77,6 @@ html.lightbox-shader-intro-active :is(
     height: 100%;
     background: #000;
     overflow: hidden;
-    opacity: 0;
-    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.lightbox-shader-intro.is-ready .lightbox-shader-intro-stage {
     opacity: 1;
 }
 
@@ -91,7 +86,7 @@ html.lightbox-shader-intro-active :is(
     height: 100% !important;
 }
 
-/* Same wordmark as sidebar logo; opacity-only reveal, gated until shader paints. */
+/* Logo：动效先出；LOGO 从完全透明慢慢淡到清晰可见（仅 opacity，无位移/缩放）。 */
 .lightbox-shader-intro-label {
     position: absolute;
     inset: 0;
@@ -102,22 +97,30 @@ html.lightbox-shader-intro-active :is(
     padding: 0 1.5rem;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    visibility: hidden;
 }
 
-.lightbox-shader-intro.is-ready .lightbox-shader-intro-label {
-    opacity: 1;
+.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label {
+    visibility: visible;
+    animation: lightbox-shader-intro-logo-fade 1.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes lightbox-shader-intro-logo-fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .lightbox-shader-intro-label img {
     display: block;
-    /* Welcome mark another ~1/3 smaller (×2/3 again) */
     height: clamp(1.9rem, 5.67vw, 3.73rem);
     width: auto;
     max-width: min(86%, 320px);
     object-fit: contain;
     object-position: center;
-    /* Match sidebar dark-mode wordmark (black glyph → white). */
     filter: brightness(0) invert(1);
     transform: translateZ(0);
     user-select: none;
@@ -126,6 +129,7 @@ html.lightbox-shader-intro-active :is(
 
 .lightbox-shader-intro.is-exiting .lightbox-shader-intro-label {
     opacity: 0;
+    animation: none;
     transition: opacity 0.35s ease;
 }
 
