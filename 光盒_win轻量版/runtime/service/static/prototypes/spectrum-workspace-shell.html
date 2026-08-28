@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>视觉样板 A · 创作工作区壳层</title>
+  <link rel="stylesheet" href="/static/prototypes/spectrum-tokens-prototype.css">
+  <script src="/static/vendor/js/lucide.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: var(--lb-font);
+      font-size: var(--lb-type-body);
+      color: var(--lb-text);
+      background: var(--lb-bg-canvas);
+    }
+
+    .proto-badge {
+      position: fixed;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      padding: 4px 12px;
+      border-radius: var(--lb-radius-pill);
+      background: var(--lb-accent);
+      color: #fff;
+      font-size: var(--lb-type-meta);
+      font-weight: var(--lb-weight-medium);
+      pointer-events: none;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: var(--lb-sidebar-w) 1fr var(--lb-panel-w);
+      grid-template-rows: var(--lb-titlebar-h) 1fr;
+      height: 100vh;
+    }
+
+    /* 顶栏 */
+    .titlebar {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--lb-titlebar-h);
+      padding: 0 var(--lb-space-3);
+      background: var(--lb-bg-shell);
+      border-bottom: 1px solid var(--lb-divider);
+    }
+    .titlebar-drag { flex: 1; height: 100%; -webkit-app-region: drag; }
+    .titlebar-tools {
+      display: flex;
+      align-items: center;
+      gap: var(--lb-space-2);
+    }
+    .titlebar-search {
+      width: 200px;
+      height: var(--lb-control-sm);
+      padding: 0 var(--lb-space-3);
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-control);
+      background: var(--lb-bg-input);
+      color: var(--lb-text);
+      font-size: var(--lb-type-compact);
+    }
+    .titlebar-search::placeholder { color: var(--lb-text-muted); }
+    .titlebar-search:focus { outline: none; border-color: var(--lb-accent); box-shadow: 0 0 0 2px var(--lb-focus-ring); }
+    .window-btn {
+      width: 28px; height: 22px;
+      border: none; border-radius: 4px;
+      background: transparent; color: var(--lb-text-secondary);
+      cursor: pointer;
+    }
+    .window-btn:hover { background: var(--lb-hover); }
+
+    /* 左侧栏 */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      background: var(--lb-bg-shell);
+      border-right: 1px solid var(--lb-divider);
+      padding: var(--lb-space-3);
+      overflow: hidden;
+    }
+    .sidebar-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--lb-space-1) var(--lb-space-2) var(--lb-space-4);
+    }
+    .sidebar-logo {
+      font-size: var(--lb-type-compact);
+      font-weight: var(--lb-weight-title);
+      color: var(--lb-text-secondary);
+      letter-spacing: 0.02em;
+    }
+    .nav-list { display: flex; flex-direction: column; gap: 2px; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--lb-space-3);
+      height: var(--lb-control-md);
+      padding: 0 var(--lb-space-3);
+      border: none;
+      border-radius: var(--lb-radius-chrome);
+      background: transparent;
+      color: var(--lb-text);
+      font-family: var(--lb-font);
+      font-size: var(--lb-type-body);
+      font-weight: var(--lb-weight-medium);
+      text-align: left;
+      cursor: pointer;
+      transition: background-color var(--lb-motion-fast);
+    }
+    .nav-item:hover { background: var(--lb-hover); }
+    .nav-item.is-active { background: var(--lb-selected); color: var(--lb-accent); }
+    .nav-item svg { width: var(--lb-icon-sm); height: var(--lb-icon-sm); stroke-width: var(--lb-icon-stroke); flex-shrink: 0; }
+
+    .recent-section { flex: 1; min-height: 0; margin-top: var(--lb-space-4); display: flex; flex-direction: column; }
+    .recent-label {
+      padding: var(--lb-space-2) var(--lb-space-3);
+      font-size: var(--lb-type-meta);
+      color: var(--lb-text-muted);
+    }
+    .recent-list { flex: 1; overflow: auto; display: flex; flex-direction: column; gap: 2px; }
+    .recent-row {
+      display: flex;
+      align-items: center;
+      gap: var(--lb-space-2);
+      height: var(--lb-control-md);
+      padding: 0 var(--lb-space-2);
+      border-radius: var(--lb-radius-chrome);
+      cursor: pointer;
+      transition: background-color var(--lb-motion-fast);
+    }
+    .recent-row:hover { background: var(--lb-hover); }
+    .recent-row.is-active { background: var(--lb-selected); }
+    .recent-thumb {
+      width: 22px; height: 22px;
+      border-radius: var(--lb-radius-chrome);
+      background: var(--lb-bg-elevated);
+      border: 1px solid var(--lb-divider);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--lb-text-muted);
+    }
+    .recent-thumb svg { width: 12px; height: 12px; }
+    .recent-name { flex: 1; font-size: var(--lb-type-compact); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .recent-meta { font-size: var(--lb-type-meta); color: var(--lb-text-muted); }
+
+    .sidebar-footer {
+      display: flex;
+      align-items: center;
+      gap: var(--lb-space-2);
+      padding-top: var(--lb-space-3);
+      border-top: 1px solid var(--lb-divider);
+    }
+    .user-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: var(--lb-space-2);
+      height: 32px;
+      padding: 0 var(--lb-space-2);
+      border: none;
+      border-radius: var(--lb-radius-chrome);
+      background: transparent;
+      color: var(--lb-text);
+      font-size: var(--lb-type-compact);
+      cursor: pointer;
+    }
+    .user-btn:hover { background: var(--lb-hover); }
+    .user-avatar {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--lb-accent), #6eb6ff);
+    }
+
+    /* 画布区 — 干净克制，无圆角卡片 */
+    .canvas-area {
+      position: relative;
+      background: var(--lb-bg-canvas);
+      overflow: hidden;
+    }
+    .canvas-grid {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, var(--lb-border) 0.6px, transparent 0.6px);
+      background-size: 18px 18px;
+      opacity: 0.55;
+    }
+    .canvas-hint {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--lb-text-muted);
+      font-size: var(--lb-type-body);
+      pointer-events: none;
+    }
+
+    /* 右上导航胶囊 */
+    .canvas-nav {
+      position: absolute;
+      top: var(--lb-space-3);
+      right: var(--lb-space-3);
+      display: flex;
+      align-items: center;
+      gap: var(--lb-space-2);
+    }
+    .nav-capsule {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 3px;
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-card);
+      background: var(--lb-bg-elevated);
+      box-shadow: var(--lb-shadow-float);
+    }
+    .nav-capsule .lb-btn.is-icon.is-sm { border-radius: var(--lb-radius-chrome); }
+    .nav-capsule .zoom-label {
+      width: 36px;
+      text-align: center;
+      font-size: var(--lb-type-meta);
+      color: var(--lb-text-muted);
+    }
+    .nav-capsule .v-divider { width: 1px; height: 16px; background: var(--lb-divider); margin: 0 2px; }
+
+    /* 底部输入栏 */
+    .composer-wrap {
+      position: absolute;
+      left: 50%;
+      bottom: var(--lb-space-5);
+      transform: translateX(-50%);
+      width: min(var(--lb-composer-w), calc(100% - 48px));
+    }
+    .composer {
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-card);
+      background: var(--lb-bg-composer);
+      box-shadow: var(--lb-shadow-float);
+      overflow: hidden;
+    }
+    .composer-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 30px;
+      padding: 0 var(--lb-space-3);
+      background: var(--lb-bg-composer-top);
+      border-bottom: 1px solid var(--lb-divider);
+    }
+    .composer-modes { display: flex; gap: var(--lb-space-1); }
+    .composer-body {
+      padding: var(--lb-space-4) var(--lb-space-4) var(--lb-space-3);
+      min-height: 88px;
+    }
+    .composer-prompt {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: var(--lb-text);
+      font-family: var(--lb-font);
+      font-size: var(--lb-type-body);
+      line-height: var(--lb-leading-body);
+      resize: none;
+      outline: none;
+    }
+    .composer-prompt::placeholder { color: var(--lb-text-muted); }
+    .composer-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--lb-space-3) var(--lb-space-3);
+    }
+    .composer-params { display: flex; gap: var(--lb-space-1); flex-wrap: wrap; }
+    .composer-run { display: flex; align-items: center; gap: var(--lb-space-3); }
+    .composer-cost { font-size: var(--lb-type-meta); color: var(--lb-text-muted); }
+
+    /* 右侧属性/对话面板 */
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      background: var(--lb-bg-chrome);
+      border-left: 1px solid var(--lb-divider);
+    }
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 40px;
+      padding: 0 var(--lb-space-4);
+      border-bottom: 1px solid var(--lb-divider);
+    }
+    .panel-title { font-size: var(--lb-type-body); font-weight: var(--lb-weight-medium); }
+    .panel-body { flex: 1; overflow: auto; padding: var(--lb-space-4); display: flex; flex-direction: column; gap: var(--lb-space-3); }
+    .chat-bubble-user {
+      align-self: flex-end;
+      max-width: 85%;
+      padding: var(--lb-space-2) var(--lb-space-3);
+      border-radius: var(--lb-radius-card) var(--lb-radius-card) 4px var(--lb-radius-card);
+      background: var(--lb-hover);
+      font-size: var(--lb-type-body);
+      line-height: var(--lb-leading-body);
+    }
+    .chat-bubble-ai {
+      align-self: flex-start;
+      max-width: 90%;
+      font-size: var(--lb-type-body);
+      line-height: var(--lb-leading-body);
+      color: var(--lb-text);
+    }
+    .panel-input-wrap {
+      padding: var(--lb-space-3);
+      border-top: 1px solid var(--lb-divider);
+    }
+    .panel-input-box {
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-card);
+      background: var(--lb-bg-input);
+      padding: var(--lb-space-3);
+      min-height: 72px;
+    }
+    .panel-input-box textarea {
+      width: 100%; border: none; background: transparent;
+      font-family: var(--lb-font); font-size: var(--lb-type-body);
+      color: var(--lb-text); resize: none; outline: none; min-height: 40px;
+    }
+    .panel-input-box textarea::placeholder { color: var(--lb-text-muted); }
+
+    .proto-toolbar {
+      position: fixed;
+      bottom: var(--lb-space-3);
+      right: calc(var(--lb-panel-w) + var(--lb-space-3));
+      display: flex;
+      gap: var(--lb-space-2);
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+  <div class="proto-badge">视觉样板 A · 创作工作区壳层（Spectrum 2 桌面版）</div>
+
+  <div class="workspace">
+    <header class="titlebar">
+      <div class="titlebar-drag"></div>
+      <div class="titlebar-tools">
+        <input class="titlebar-search" type="text" placeholder="搜索画布内节点与功能">
+        <button class="lb-btn is-icon is-sm" type="button" title="用户"><i data-lucide="user-round"></i></button>
+        <button class="lb-btn is-icon is-sm" type="button" title="历史"><i data-lucide="history"></i></button>
+        <button class="lb-btn is-icon is-sm" id="themeToggle" type="button" title="切换主题"><i data-lucide="sun"></i></button>
+        <button class="window-btn" type="button">—</button>
+        <button class="window-btn" type="button">□</button>
+        <button class="window-btn" type="button">×</button>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <span class="sidebar-logo">光盒</span>
+        <button class="lb-btn is-icon is-sm" type="button"><i data-lucide="panel-left"></i></button>
+      </div>
+      <nav class="nav-list">
+        <button class="nav-item" type="button"><i data-lucide="plus"></i><span>新建画布</span></button>
+        <button class="nav-item" type="button"><i data-lucide="folder-open"></i><span>资产中心</span></button>
+        <button class="nav-item" type="button"><i data-lucide="sparkles"></i><span>Skill</span></button>
+        <button class="nav-item is-active" type="button"><i data-lucide="layout-grid"></i><span>全部创作</span></button>
+      </nav>
+      <div class="recent-section">
+        <div class="recent-label">最近创作</div>
+        <div class="recent-list">
+          <div class="recent-row is-active">
+            <div class="recent-thumb"><i data-lucide="image"></i></div>
+            <span class="recent-name">未命名项目</span>
+            <span class="recent-meta">12p · 刚刚</span>
+          </div>
+          <div class="recent-row">
+            <div class="recent-thumb"><i data-lucide="image"></i></div>
+            <span class="recent-name">电商主图方案</span>
+            <span class="recent-meta">8p · 2小时</span>
+          </div>
+          <div class="recent-row">
+            <div class="recent-thumb"><i data-lucide="video"></i></div>
+            <span class="recent-name">产品宣传短片</span>
+            <span class="recent-meta">5p · 昨天</span>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <button class="user-btn" type="button">
+          <span class="user-avatar"></span>
+          <span>用户</span>
+        </button>
+        <button class="lb-btn is-icon is-sm" type="button"><i data-lucide="circle-help"></i></button>
+      </div>
+    </aside>
+
+    <main class="canvas-area">
+      <div class="canvas-grid"></div>
+      <div class="canvas-hint">双击开启无限创作模式</div>
+
+      <div class="canvas-nav">
+        <div class="nav-capsule">
+          <button class="lb-btn is-icon is-sm" type="button" title="整理"><i data-lucide="layout-grid"></i></button>
+          <button class="lb-btn is-icon is-sm" type="button" title="下载"><i data-lucide="download"></i></button>
+          <button class="lb-btn is-icon is-sm" type="button" title="小地图"><i data-lucide="map"></i></button>
+          <button class="lb-btn is-icon is-sm" type="button" title="重置视角"><i data-lucide="locate-fixed"></i></button>
+          <span class="v-divider"></span>
+          <button class="lb-btn is-icon is-sm" type="button">−</button>
+          <span class="zoom-label">100%</span>
+          <button class="lb-btn is-icon is-sm" type="button">+</button>
+        </div>
+        <button class="lb-btn is-tonal" type="button"><i data-lucide="message-circle"></i> 对话</button>
+      </div>
+
+      <div class="composer-wrap">
+        <div class="composer">
+          <div class="composer-topbar">
+            <div class="composer-modes">
+              <button class="lb-chip is-selected" type="button">Image</button>
+              <button class="lb-chip" type="button">Video</button>
+              <button class="lb-chip" type="button">Audio</button>
+              <button class="lb-chip" type="button">Text</button>
+            </div>
+            <button class="lb-chip" type="button"><i data-lucide="images"></i> 参考</button>
+          </div>
+          <div class="composer-body">
+            <textarea class="composer-prompt" rows="2" placeholder="描述你想生成的内容，或 @ 引用画布素材…"></textarea>
+          </div>
+          <div class="composer-footer">
+            <div class="composer-params">
+              <button class="lb-chip is-selected" type="button">Seedream 5.0</button>
+              <button class="lb-chip" type="button">Auto</button>
+              <button class="lb-chip" type="button">2K</button>
+              <button class="lb-chip" type="button">×1</button>
+            </div>
+            <div class="composer-run">
+              <span class="composer-cost">约 12 积分</span>
+              <button class="lb-btn is-primary is-icon" type="button"><i data-lucide="arrow-up"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="right-panel">
+      <div class="panel-head">
+        <span class="panel-title">未命名对话</span>
+        <button class="lb-btn is-icon is-sm" type="button"><i data-lucide="more-horizontal"></i></button>
+      </div>
+      <div class="panel-body">
+        <div class="chat-bubble-user">帮我把选中的图片改成白底产品图</div>
+        <div class="chat-bubble-ai">好的，我会基于当前选中的 2 张图片生成白底电商主图。需要我同时输出 1:1 和 3:4 两个尺寸吗？</div>
+      </div>
+      <div class="panel-input-wrap">
+        <div class="panel-input-box">
+          <textarea rows="2" placeholder="输入消息…"></textarea>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="proto-toolbar">
+    <a class="lb-btn is-secondary" href="spectrum-floating-ui.html">查看样板 B →</a>
+  </div>
+
+  <script>
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const html = document.documentElement;
+      const dark = html.classList.toggle('theme-dark');
+      const icon = document.querySelector('#themeToggle i');
+      icon.setAttribute('data-lucide', dark ? 'moon' : 'sun');
+      if (window.lucide) lucide.createIcons();
+    });
+    if (window.lucide) lucide.createIcons();
+  </script>
+</body>
+</html>

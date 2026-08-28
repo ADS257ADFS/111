@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>视觉样板 B · 浮层与交互组件</title>
+  <link rel="stylesheet" href="/static/prototypes/spectrum-tokens-prototype.css">
+  <script src="/static/vendor/js/lucide.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--lb-font);
+      font-size: var(--lb-type-body);
+      color: var(--lb-text);
+      background: var(--lb-bg-canvas);
+      min-height: 100vh;
+      padding: 48px 32px 80px;
+    }
+
+    .proto-badge {
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      padding: 4px 12px;
+      border-radius: var(--lb-radius-pill);
+      background: var(--lb-accent);
+      color: #fff;
+      font-size: var(--lb-type-meta);
+    }
+
+    .proto-header {
+      max-width: 960px;
+      margin: 0 auto 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .proto-header h1 { font-size: var(--lb-type-title); font-weight: var(--lb-weight-title); }
+    .proto-header p { margin-top: 4px; font-size: var(--lb-type-compact); color: var(--lb-text-muted); }
+
+    .sections {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .section-title {
+      font-size: var(--lb-type-compact);
+      font-weight: var(--lb-weight-medium);
+      color: var(--lb-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--lb-space-4);
+    }
+
+    .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--lb-space-3); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--lb-space-5); }
+    @media (max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .card-demo {
+      padding: var(--lb-space-5);
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-card);
+      background: var(--lb-bg-elevated);
+    }
+
+    /* 状态演示行 */
+    .state-row { display: flex; flex-direction: column; gap: var(--lb-space-2); }
+    .state-label { font-size: var(--lb-type-meta); color: var(--lb-text-muted); width: 72px; flex-shrink: 0; }
+    .state-item { display: flex; align-items: center; gap: var(--lb-space-4); }
+
+    /* 浮层演示区 */
+    .float-stage {
+      position: relative;
+      min-height: 280px;
+      padding: var(--lb-space-5);
+      border: 1px dashed var(--lb-border);
+      border-radius: var(--lb-radius-card);
+      background: var(--lb-bg-chrome);
+    }
+
+    .float-menu {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+    }
+
+    .float-toolbar {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: flex;
+      gap: 2px;
+      padding: 4px;
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-float);
+      background: var(--lb-bg-elevated);
+      box-shadow: var(--lb-shadow-float);
+    }
+    .float-toolbar .lb-btn.is-icon.is-sm { border-radius: var(--lb-radius-chrome); }
+
+    .float-popover {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 220px;
+      padding: var(--lb-space-3);
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-float);
+      background: var(--lb-bg-elevated);
+      box-shadow: var(--lb-shadow-float);
+    }
+    .float-popover-title {
+      font-size: var(--lb-type-meta);
+      color: var(--lb-text-muted);
+      margin-bottom: var(--lb-space-2);
+    }
+    .float-popover .row { gap: var(--lb-space-2); }
+
+    /* 对话框 */
+    .dialog-backdrop {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: var(--lb-backdrop);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+    }
+    .dialog-backdrop.is-open { display: flex; }
+    .dialog {
+      width: min(420px, calc(100vw - 48px));
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-dialog);
+      background: var(--lb-bg-elevated);
+      box-shadow: var(--lb-shadow-dialog);
+      overflow: hidden;
+    }
+    .dialog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--lb-space-4) var(--lb-space-5);
+      border-bottom: 1px solid var(--lb-divider);
+      font-weight: var(--lb-weight-medium);
+    }
+    .dialog-body { padding: var(--lb-space-5); color: var(--lb-text-secondary); line-height: var(--lb-leading-body); }
+    .dialog-foot {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--lb-space-2);
+      padding: var(--lb-space-3) var(--lb-space-5) var(--lb-space-5);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: var(--lb-space-3);
+      padding: var(--lb-space-3) var(--lb-space-4);
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-float);
+      background: var(--lb-bg-elevated);
+      box-shadow: var(--lb-shadow-float);
+      font-size: var(--lb-type-compact);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--lb-motion-base);
+      z-index: 150;
+    }
+    .toast.is-show { opacity: 1; }
+    .toast svg { width: 16px; height: 16px; color: var(--lb-success); }
+
+    /* 颜色选择器 mock */
+    .color-picker {
+      display: grid;
+      grid-template-columns: repeat(8, 24px);
+      gap: 6px;
+    }
+    .swatch {
+      width: 24px; height: 24px;
+      border-radius: var(--lb-radius-chrome);
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform var(--lb-motion-fast);
+    }
+    .swatch:hover { transform: scale(1.08); }
+    .swatch.is-selected { border-color: var(--lb-accent); box-shadow: 0 0 0 2px var(--lb-focus-ring); }
+
+    .select-mock {
+      position: relative;
+      min-width: 160px;
+    }
+    .select-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: var(--lb-control-md);
+      padding: 0 var(--lb-space-3);
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-control);
+      background: var(--lb-bg-input);
+      font-size: var(--lb-type-body);
+      cursor: pointer;
+    }
+    .select-trigger:hover { border-color: var(--lb-border-strong); }
+    .select-dropdown {
+      margin-top: 4px;
+      padding: var(--lb-space-1);
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-float);
+      background: var(--lb-bg-elevated);
+      box-shadow: var(--lb-shadow-float);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: var(--lb-space-7);
+      color: var(--lb-text-muted);
+    }
+    .empty-state svg { width: 40px; height: 40px; margin-bottom: var(--lb-space-3); opacity: 0.5; }
+
+    .proto-nav {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      display: flex;
+      gap: var(--lb-space-2);
+    }
+
+    .token-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--lb-type-compact);
+    }
+    .token-table th, .token-table td {
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--lb-divider);
+    }
+    .token-table th { color: var(--lb-text-muted); font-weight: var(--lb-weight-medium); }
+    .token-swatch {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-right: 6px;
+      border: 1px solid var(--lb-border);
+    }
+  </style>
+</head>
+<body>
+  <div class="proto-badge">视觉样板 B · 浮层与交互组件（Express 圆润浮层）</div>
+
+  <header class="proto-header">
+    <div>
+      <h1>浮层与交互组件</h1>
+      <p>菜单、工具栏、弹窗、输入框等浮层使用更明显的圆角（12～14px），形成层级</p>
+    </div>
+    <button class="lb-btn is-secondary" id="themeToggle" type="button"><i data-lucide="sun"></i> 切换主题</button>
+  </header>
+
+  <div class="sections">
+    <!-- 按钮 -->
+    <section>
+      <div class="section-title">按钮 · 5 种类型 × 完整状态</div>
+      <div class="grid-2">
+        <div class="card-demo">
+          <div class="state-row">
+            <div class="state-item"><span class="state-label">主要</span><button class="lb-btn is-primary" type="button">确认保存</button></div>
+            <div class="state-item"><span class="state-label">次要</span><button class="lb-btn is-secondary" type="button">取消</button></div>
+            <div class="state-item"><span class="state-label">文字</span><button class="lb-btn" type="button">了解更多</button></div>
+            <div class="state-item"><span class="state-label">色调</span><button class="lb-btn is-tonal" type="button">已选中工具</button></div>
+            <div class="state-item"><span class="state-label">危险</span><button class="lb-btn is-danger" type="button">删除</button></div>
+            <div class="state-item"><span class="state-label">图标</span><button class="lb-btn is-icon" type="button"><i data-lucide="settings"></i></button></div>
+            <div class="state-item"><span class="state-label">禁用</span><button class="lb-btn is-primary" type="button" disabled>不能点击</button></div>
+          </div>
+        </div>
+        <div class="card-demo">
+          <div class="section-title" style="margin-bottom:12px">尺寸</div>
+          <div class="row">
+            <button class="lb-btn is-primary is-sm" type="button">小 24px</button>
+            <button class="lb-btn is-primary" type="button">中 30px</button>
+            <button class="lb-btn is-primary" style="height:32px" type="button">大 32px</button>
+          </div>
+          <p style="margin-top:16px;font-size:11px;color:var(--lb-text-muted)">鼠标放上去 / 按下：只改背景色，不改文字颜色</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 输入 -->
+    <section>
+      <div class="section-title">输入类组件</div>
+      <div class="grid-2">
+        <div class="card-demo row" style="flex-direction:column;align-items:stretch">
+          <input class="lb-input" type="text" placeholder="普通输入框">
+          <input class="lb-input" type="text" value="已输入内容" style="margin-top:8px">
+          <input class="lb-input" type="text" placeholder="报错状态" style="border-color:var(--lb-danger);margin-top:8px">
+          <div class="row" style="margin-top:12px">
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px"><input type="checkbox" checked> 复选框</label>
+            <div class="lb-switch is-on" role="switch" aria-checked="true" tabindex="0"></div>
+            <span style="font-size:12px;color:var(--lb-text-muted)">开关</span>
+          </div>
+        </div>
+        <div class="card-demo">
+          <div class="select-mock">
+            <div class="select-trigger">Seedream 5.0 <i data-lucide="chevron-down" style="width:14px"></i></div>
+            <div class="select-dropdown lb-menu" style="margin-top:6px">
+              <button class="lb-menu-item is-active" type="button">Seedream 5.0</button>
+              <button class="lb-menu-item" type="button">Nano Banana 2</button>
+              <button class="lb-menu-item" type="button">GPT Image 2</button>
+            </div>
+          </div>
+          <div style="margin-top:20px">
+            <div class="section-title" style="margin-bottom:8px">颜色选择器</div>
+            <div class="color-picker">
+              <div class="swatch is-selected" style="background:#0a84ff"></div>
+              <div class="swatch" style="background:#292929"></div>
+              <div class="swatch" style="background:#ffffff;border-color:#dadada"></div>
+              <div class="swatch" style="background:#e34850"></div>
+              <div class="swatch" style="background:#2d9d78"></div>
+              <div class="swatch" style="background:#f5a623"></div>
+              <div class="swatch" style="background:#8b5cf6"></div>
+              <div class="swatch" style="background:#ec4899"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 浮层组合 -->
+    <section>
+      <div class="section-title">浮层组合（圆角 12px + 轻阴影）</div>
+      <div class="float-stage">
+        <div class="float-menu lb-menu">
+          <button class="lb-menu-item" type="button"><i data-lucide="copy"></i> 复制</button>
+          <button class="lb-menu-item" type="button"><i data-lucide="download"></i> 下载</button>
+          <div class="lb-menu-divider"></div>
+          <button class="lb-menu-item is-danger" type="button"><i data-lucide="trash-2"></i> 删除</button>
+        </div>
+        <div class="float-toolbar">
+          <button class="lb-btn is-icon is-sm" type="button"><i data-lucide="crop"></i></button>
+          <button class="lb-btn is-icon is-sm" type="button"><i data-lucide="expand"></i></button>
+          <button class="lb-btn is-icon is-sm is-tonal" type="button"><i data-lucide="wand-2"></i></button>
+          <button class="lb-btn is-icon is-sm" type="button"><i data-lucide="more-horizontal"></i></button>
+        </div>
+        <div class="float-popover">
+          <div class="float-popover-title">生成参数</div>
+          <div class="row">
+            <button class="lb-chip is-selected" type="button">2K</button>
+            <button class="lb-chip" type="button">4K</button>
+            <button class="lb-chip" type="button">×1</button>
+            <button class="lb-chip" type="button">×2</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 特殊状态 -->
+    <section>
+      <div class="section-title">特殊状态</div>
+      <div class="grid-2">
+        <div class="card-demo empty-state">
+          <i data-lucide="inbox"></i>
+          <div>暂无数据</div>
+          <button class="lb-btn is-tonal" type="button" style="margin-top:12px">新建项目</button>
+        </div>
+        <div class="card-demo" style="display:flex;align-items:center;justify-content:center;gap:12px">
+          <svg width="20" height="20" viewBox="0 0 24 24" style="animation:spin 1s linear infinite"><circle cx="12" cy="12" r="10" fill="none" stroke="var(--lb-accent)" stroke-width="2" stroke-dasharray="32" stroke-linecap="round"/></svg>
+          <span style="color:var(--lb-text-muted)">加载中…</span>
+        </div>
+      </div>
+      <div style="margin-top:16px">
+        <button class="lb-btn is-primary" id="openDialog" type="button">打开确认弹窗</button>
+        <button class="lb-btn is-secondary" id="showToast" type="button" style="margin-left:8px">显示提示消息</button>
+      </div>
+    </section>
+
+    <!-- Token 参数表 -->
+    <section>
+      <div class="section-title">本样板采用的参数（亮/暗仅颜色不同）</div>
+      <table class="token-table card-demo" style="display:table">
+        <thead>
+          <tr><th>项目</th><th>数值</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>控件高度</td><td>24 / 30 / 32 px</td><td>小 / 中 / 大</td></tr>
+          <tr><td>结构圆角</td><td>6 px</td><td>侧栏行、列表项</td></tr>
+          <tr><td>控件圆角</td><td>8 px</td><td>按钮、输入框</td></tr>
+          <tr><td>浮层圆角</td><td>12 px</td><td>菜单、工具栏、提示</td></tr>
+          <tr><td>弹窗圆角</td><td>14 px</td><td>对话框</td></tr>
+          <tr><td>正文字号</td><td>13 px</td><td>菜单、按钮、输入</td></tr>
+          <tr><td>辅助字号</td><td>11 px</td><td>时间、状态</td></tr>
+          <tr><td>主色</td><td><span class="token-swatch" style="background:#0a84ff"></span>#0a84ff</td><td>光盒品牌蓝</td></tr>
+          <tr><td>阴影</td><td>仅浮层</td><td>平面风格，画布无阴影</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <div class="dialog-backdrop" id="dialog">
+    <div class="dialog" role="dialog">
+      <div class="dialog-head">
+        <span>确认删除</span>
+        <button class="lb-btn is-icon is-sm" id="closeDialog" type="button"><i data-lucide="x"></i></button>
+      </div>
+      <div class="dialog-body">删除后无法恢复，是否继续？</div>
+      <div class="dialog-foot">
+        <button class="lb-btn" id="closeDialog2" type="button">取消</button>
+        <button class="lb-btn is-danger" type="button">删除</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><i data-lucide="check-circle"></i> 已保存到画布</div>
+
+  <div class="proto-nav">
+    <a class="lb-btn is-secondary" href="spectrum-workspace-shell.html">← 样板 A</a>
+  </div>
+
+  <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+  <script>
+    const html = document.documentElement;
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      html.classList.toggle('theme-dark');
+      if (window.lucide) lucide.createIcons();
+    });
+    const dialog = document.getElementById('dialog');
+    document.getElementById('openDialog').addEventListener('click', () => dialog.classList.add('is-open'));
+    document.getElementById('closeDialog').addEventListener('click', () => dialog.classList.remove('is-open'));
+    document.getElementById('closeDialog2').addEventListener('click', () => dialog.classList.remove('is-open'));
+    document.getElementById('showToast').addEventListener('click', () => {
+      const t = document.getElementById('toast');
+      t.classList.add('is-show');
+      setTimeout(() => t.classList.remove('is-show'), 2200);
+    });
+    if (window.lucide) lucide.createIcons();
+  </script>
+</body>
+</html>
