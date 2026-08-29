@@ -633,28 +633,48 @@ html:is(.theme-dark, .studio-theme-dark) body :is(input, select, textarea, [cont
     background: #232323 !important;
 }
 
-/* 菜单 / 右键菜单 / 弹层（照 MiniMax「添加节点」菜单） */
+/* 菜单 / 右键菜单 / 弹层：深色统一半透明磨砂（勿用实色 elevated） */
 html:is(.theme-dark, .studio-theme-dark) :is(
     .node-context-menu, .canvas-context-menu, .create-menu, .port-link-pick-menu,
     .iqt-dropdown-menu, .history-popover, .skill-menu, .shell-user-menu,
-    .dock-chrome-title-menu, .emoji-picker
+    .dock-chrome-title-menu, .emoji-picker,
+    .composer-tool-popover, .composer-api-settings-popover,
+    #composerApiSettingsPopover, #composerSizePopover, #composerKindPopover,
+    #composerVideoReferencePopover,
+    #imageQuickToolbar.image-quick-toolbar, .image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar, .selection-capsule-bar,
+    .selection-capsule-menu, .selection-capsule-popover, .selection-capsule-dropdown
 ),
 body.studio-theme-dark :is(
     .node-context-menu, .canvas-context-menu, .create-menu, .port-link-pick-menu,
     .iqt-dropdown-menu, .history-popover, .skill-menu, .shell-user-menu,
-    .dock-chrome-title-menu, .emoji-picker
+    .dock-chrome-title-menu, .emoji-picker,
+    .composer-tool-popover, .composer-api-settings-popover,
+    #composerApiSettingsPopover, #composerSizePopover, #composerKindPopover,
+    #composerVideoReferencePopover,
+    #imageQuickToolbar.image-quick-toolbar, .image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar, .selection-capsule-bar,
+    .selection-capsule-menu, .selection-capsule-popover, .selection-capsule-dropdown
 ),
 .theme-dark :is(
     .node-context-menu, .canvas-context-menu, .create-menu, .port-link-pick-menu,
     .iqt-dropdown-menu, .history-popover, .skill-menu, .shell-user-menu,
-    .dock-chrome-title-menu, .emoji-picker
+    .dock-chrome-title-menu, .emoji-picker,
+    .composer-tool-popover, .composer-api-settings-popover,
+    #composerApiSettingsPopover, #composerSizePopover, #composerKindPopover,
+    #composerVideoReferencePopover,
+    #imageQuickToolbar.image-quick-toolbar, .image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar, .selection-capsule-bar,
+    .selection-capsule-menu, .selection-capsule-popover, .selection-capsule-dropdown
 ) {
-    background: var(--mm-elevated, #232323) !important;
-    border: 1px solid rgba(255, 255, 255, .10) !important;
+    background: rgba(31, 31, 31, .55) !important;
+    background-color: rgba(31, 31, 31, .55) !important;
+    background-image: none !important;
+    border: 1px solid rgba(255, 255, 255, .16) !important;
     color: var(--mm-text, #ededed) !important;
-    box-shadow: var(--mm-shadow-pop, 0 12px 32px rgba(0, 0, 0, .5)) !important;
-    -webkit-backdrop-filter: none!important;
-    backdrop-filter: none!important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: blur(60px) saturate(140%) !important;
+    backdrop-filter: blur(60px) saturate(140%) !important;
 }html:is(.theme-dark, .studio-theme-dark) .node-context-menu button:hover,
 html:is(.theme-dark, .studio-theme-dark) .node-context-menu button:focus-visible,
 html:is(.theme-dark, .studio-theme-dark) .create-menu button:hover,
@@ -5165,13 +5185,13 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
     --mm-chrome: #1f1f1f;
     --mm-elevated: #1f1f1f;
     --mm-card: #1f1f1f;
-    --panel: rgba(31, 31, 31, .80) !important;
-    --sc-glass: rgba(31, 31, 31, .80);
+    --panel: rgba(31, 31, 31, .55) !important;
+    --sc-glass: rgba(31, 31, 31, .55);
     --sc-blur: 60px;
     --sc-border: rgba(255, 255, 255, .16);
     --lightbox-chrome-bg: #1f1f1f;
-    --ui-panel-frost: rgba(31, 31, 31, .80);
-    --ui-panel-frost-blur: blur(60px);
+    --ui-panel-frost: rgba(31, 31, 31, .55);
+    --ui-panel-frost-blur: blur(60px) saturate(140%);
     --ui-panel-frost-border: rgba(255, 255, 255, .16);
 }
 
@@ -5235,15 +5255,15 @@ html.canvas-performance-mode:is(.theme-dark, .studio-theme-dark) body :is(
     #composerVideoReferencePopover,
     .iqt-dropdown-menu
 ) {
-    background: rgba(31, 31, 31, .80) !important;
-    background-color: rgba(31, 31, 31, .80) !important;
+    background: rgba(31, 31, 31, .55) !important;
+    background-color: rgba(31, 31, 31, .55) !important;
     background-image: none !important;
     border: 1px solid rgba(255, 255, 255, .16) !important;
     border-color: rgba(255, 255, 255, .16) !important;
     outline: 0 !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: blur(60px) !important;
-    backdrop-filter: blur(60px) !important;
+    -webkit-backdrop-filter: blur(60px) saturate(140%) !important;
+    backdrop-filter: blur(60px) saturate(140%) !important;
 }
 
 /* 浅色浮层同规格：白 80% + blur(60px) */
@@ -5747,11 +5767,12 @@ html.canvas-performance-mode body #shell.shell #composer.composer .input-thumb-u
 /* Float frost tokens on; never apply backdrop-filter via body *. */
 html, html.theme-dark, html.studio-theme-dark,
 html body, html.theme-dark body, html.studio-theme-dark body {
-    --ui-panel-frost-blur: blur(60px) !important;
+    --ui-panel-frost: rgba(31, 31, 31, .55) !important;
+    --ui-panel-frost-blur: blur(60px) saturate(140%) !important;
     --ui-composer-topbar-filter: none !important;
     --sc-blur: 60px !important;
-    --vs-glass-blur: blur(60px) !important;
-    --canvas-glass-blur: blur(60px) !important;
+    --vs-glass-blur: blur(60px) saturate(140%) !important;
+    --canvas-glass-blur: blur(60px) saturate(140%) !important;
 }
 
 /* 底部一级按钮小箭头：上拉展开朝下，收起朝上 */
