@@ -281,7 +281,7 @@
 :where(html.theme-dark,html.studio-theme-dark) .composer-template-btn{background:linear-gradient(145deg, #fff, #f3f3f3);border:1px solid rgba(255,255,255,.94);color:#7d7d7d;box-shadow:6px 8px 17px rgba(147, 147, 147, .18), -5px -5px 13px rgba(255,255,255,.98), inset 0 1px 0 #fff}
 :where(html.theme-dark,html.studio-theme-dark) .composer-template-btn.active{box-shadow:0 8px 18px rgba(28, 28, 28, .14)}
 .theme-dark .composer-template-btn{background:#292929;border-color:#2e2e2e;color:#a2a2a2}.theme-dark .composer-template-btn:hover,
-.theme-dark .composer-template-btn:focus-visible{background:#313131;border-color:#3d3d3d;}
+.theme-dark .composer-template-btn:focus-visible{background:transparent;border-color:#3d3d3d;}
 :where(html.theme-dark,html.studio-theme-dark) .mention-image-token img,:where(html.theme-dark,html.studio-theme-dark) .mention-image-token video{background:#1c1c1c}
 :where(html.theme-dark,html.studio-theme-dark) .mention-source-tab.active{box-shadow:0 3px 8px rgba(28, 28, 28, .16)}
 .theme-dark .prompt-preset-panel-head button{background:rgba(28, 28, 28, .45);color:#a2a2a2;border-color:rgba(166, 166, 166, .24)}.theme-dark .prompt-preset-panel-head button:hover{background:rgba(180, 180, 180, .18);border-color:rgba(180, 180, 180, .34)}
@@ -507,7 +507,7 @@
 .theme-dark #assetToggle:hover,
 .theme-dark #assetToggle:focus-visible,
 .theme-dark #emptyHintDouble:hover,
-.theme-dark #emptyHintDouble:focus-visible{background:#313131 !important;border-color:#3d3d3d !important}.theme-dark .new-canvas-toggle:hover svg,
+.theme-dark #emptyHintDouble:focus-visible{background:transparent !important;border-color:#3d3d3d !important}.theme-dark .new-canvas-toggle:hover svg,
 .theme-dark .organize-canvas-toggle:hover svg,
 .theme-dark .asset-toggle:hover svg,
 .theme-dark .empty-hint-chip:hover svg,
@@ -516,7 +516,7 @@
 .theme-dark #assetToggle:hover svg,
 .theme-dark #emptyHintDouble:hover svg{stroke:#f3f3f3 !important}
 .theme-dark .asset-toggle.active{color:#fff !important;background:#0a84ff !important;border-color:#0a84ff !important}
-.theme-dark :is(.smart-pill,.asset-mini-btn,.asset-soft-btn,.preview-icon-btn,.image-edit-btn,.grid-preset-btn,.canvas-history-delete,.canvas-history-rename-btn,.mini-x,.node-resize-handle,.loop-smart-add-prompt,.loop-smart-token,.upload-node-main){background:#292929 !important;border:1px solid #2e2e2e !important;color:#a2a2a2 !important}.theme-dark :is(.smart-pill,.asset-mini-btn,.asset-soft-btn,.preview-icon-btn,.image-edit-btn,.grid-preset-btn,.mini-x,.loop-smart-add-prompt,.loop-smart-token,.upload-node-main):hover{background:#313131 !important;border-color:#3d3d3d !important;}
+.theme-dark :is(.smart-pill,.asset-mini-btn,.asset-soft-btn,.preview-icon-btn,.image-edit-btn,.grid-preset-btn,.canvas-history-delete,.canvas-history-rename-btn,.mini-x,.node-resize-handle,.loop-smart-add-prompt,.loop-smart-token,.upload-node-main){background:#292929 !important;border:1px solid #2e2e2e !important;color:#a2a2a2 !important}.theme-dark :is(.smart-pill,.asset-mini-btn,.asset-soft-btn,.preview-icon-btn,.image-edit-btn,.grid-preset-btn,.mini-x,.loop-smart-add-prompt,.loop-smart-token,.upload-node-main):hover{background:transparent !important;border-color:#3d3d3d !important;}
 .theme-dark :is(.smart-pill,.asset-soft-btn,.image-edit-btn,.grid-preset-btn).active,.theme-dark :is(.asset-soft-btn,.image-edit-btn).primary,.theme-dark .loop-smart-run,.theme-dark .composer-hd-btn{background:#0a84ff !important;border-color:#0a84ff !important;color:#fff !important}
 .theme-dark .image-node.empty-node,.theme-dark .image-node.prompt-smart-node,.theme-dark .image-node.loop-smart-node,.theme-dark .image-node.group-node,.theme-dark .image-node.history-group-node{background:#252525 !important;border:1px solid #2e2e2e !important}
 .theme-dark .create-card{background:#292929 !important;border:1px solid #2e2e2e !important}
@@ -530,11 +530,11 @@
 .theme-dark .image-edit-panel.quick-tool-panel,.theme-dark .image-edit-panel.quick-tool-panel .image-edit-stage,.theme-dark .image-edit-panel.quick-tool-panel .image-edit-tools{background:#252525 !important;border-color:#2e2e2e !important}
 .theme-dark .canvas-empty-hint{color:#a2a2a2}
 .theme-dark .empty-hint-chip{color:#a2a2a2 !important}.theme-dark .shell button:not(:disabled):not(.active):not(.primary):not(.is-primary):not(.confirm-danger):not(.loop-smart-run):not(.cascade-run-btn):not(.regenerate-btn):not(.composer-hd-btn):not(.run-inline-cancel):hover,
-.theme-dark .shell button:not(:disabled):not(.active):not(.primary):not(.is-primary):not(.confirm-danger):not(.loop-smart-run):not(.cascade-run-btn):not(.regenerate-btn):not(.composer-hd-btn):not(.run-inline-cancel):focus-visible{background:#313131 !important;border-color:#3d3d3d !important}.theme-dark .shell .create-card:hover,
-.theme-dark .shell .create-card:focus-visible{background:#313131 !important;border-color:#3d3d3d !important}.theme-dark .shell .create-card:hover .create-card-icon,
+.theme-dark .shell button:not(:disabled):not(.active):not(.primary):not(.is-primary):not(.confirm-danger):not(.loop-smart-run):not(.cascade-run-btn):not(.regenerate-btn):not(.composer-hd-btn):not(.run-inline-cancel):focus-visible{background:transparent !important;border-color:#3d3d3d !important}.theme-dark .shell .create-card:hover,
+.theme-dark .shell .create-card:focus-visible{background:transparent !important;border-color:#3d3d3d !important}.theme-dark .shell .create-card:hover .create-card-icon,
 .theme-dark .shell .create-card:focus-visible .create-card-icon{background:#0a84ff !important;border-color:#0a84ff !important}.theme-dark .shell .smart-top-actions button:not(:disabled):hover,
-.theme-dark .shell .smart-top-actions button:not(:disabled):focus-visible{background:#313131 !important;border-color:#3d3d3d !important}.theme-dark .asset-prompt-detail-popover button:not(:disabled):hover,
-.theme-dark .asset-prompt-detail-popover button:not(:disabled):focus-visible{background:#313131 !important;border-color:#3d3d3d !important;}
+.theme-dark .shell .smart-top-actions button:not(:disabled):focus-visible{background:transparent !important;border-color:#3d3d3d !important}.theme-dark .asset-prompt-detail-popover button:not(:disabled):hover,
+.theme-dark .asset-prompt-detail-popover button:not(:disabled):focus-visible{background:transparent !important;border-color:#3d3d3d !important;}
 .theme-dark .node-port{background:#292929 !important;border-color:#0a84ff !important}
 :where(html.theme-dark,html.studio-theme-dark) .shell .composer-card{background:linear-gradient(145deg, rgba(255,255,255,.98), rgba(249, 249, 249, .94)) !important;border:1px solid rgba(255,255,255,.92) !important}
 :where(html.theme-dark,html.studio-theme-dark) .image-node.typed-placeholder-node{border:1px solid rgba(169, 169, 169, .3);background:rgba(255,255,255,.5);box-shadow:0 16px 38px rgba(119, 119, 119, .1), inset 0 1px 0 rgba(255,255,255,.9)}
@@ -573,7 +573,7 @@
 .theme-dark .composer-tool-wrap.open .composer-tool-btn,
 .theme-dark .composer-api-settings-btn:hover,
 .theme-dark .composer-api-settings-btn:focus-visible,
-.theme-dark .composer-api-settings-wrap.open .composer-api-settings-btn{background:#383838 !important;}
+.theme-dark .composer-api-settings-wrap.open .composer-api-settings-btn{background:transparent !important;}
 .theme-dark .composer-tool-wrap.open .composer-tool-btn,
 .theme-dark .composer-api-settings-wrap.open .composer-api-settings-btn{color:#f0f0f0 !important;}
 .theme-dark .composer-kind-toggle{background:#fff;border-color:rgba(166, 166, 166, .35);box-shadow:inset 0 2px 4px rgba(28, 28, 28, .12)}
@@ -782,7 +782,7 @@ html:is(.theme-dark,.studio-theme-dark) .canvas-empty-hint.empty-canvas-split-me
 .theme-dark .port-link-pick-title{color:#f3f3f3}
 .theme-dark .port-link-pick-desc{color:#a2a2a2}
 .theme-dark .port-link-pick-badge{background:rgba(255, 255, 255, 0.08);color:#8f8f8f}.theme-dark .port-link-pick-item.is-hover,
-.theme-dark .port-link-pick-item:hover{background:#313131;border-color:#3d3d3d;}
+.theme-dark .port-link-pick-item:hover{background:transparent;border-color:#3d3d3d;}
 .theme-dark .port-link-pick-item.is-hover{color:#f3f3f3;}.theme-dark .port-link-pick-item.is-hover .port-link-pick-title,
 .theme-dark .port-link-pick-item:hover .port-link-pick-title{}
 .theme-dark .port-link-pick-item.is-hover .port-link-pick-title{color:#f3f3f3;}.theme-dark .port-link-pick-item.is-hover .port-link-pick-desc,
@@ -816,7 +816,7 @@ html:is(.theme-dark,.studio-theme-dark) .canvas-empty-hint.empty-canvas-split-me
 :where(html.theme-dark,html.studio-theme-dark) .asset-prompt-main:hover,:where(html.theme-dark,html.studio-theme-dark) .asset-prompt-main:focus-visible{border-color:rgba(10,132,255,.52) !important;box-shadow:inset 0 0 0 1px rgba(10,132,255,.08) !important}
 :where(html.theme-dark,html.studio-theme-dark) .asset-prompt-detail button:not(:disabled):hover,:where(html.theme-dark,html.studio-theme-dark) .asset-prompt-detail button:not(:disabled):focus-visible{background:rgba(255,255,255,.52) !important;border-color:rgba(10,132,255,.56) !important;box-shadow:inset 0 0 0 1px rgba(10,132,255,.08) !important}
 .theme-dark .asset-prompt-main,.theme-dark .asset-prompt-detail-text{background:#292929 !important;border:1px solid #2e2e2e !important;color:#f3f3f3 !important}.theme-dark .asset-prompt-detail button:not(:disabled):hover,
-.theme-dark .asset-prompt-detail button:not(:disabled):focus-visible{background:#313131 !important;border-color:#3d3d3d !important}
+.theme-dark .asset-prompt-detail button:not(:disabled):focus-visible{background:transparent !important;border-color:#3d3d3d !important}
 :where(html.theme-dark,html.studio-theme-dark) .asset-panel .asset-title{color:#575757}
 :where(html.theme-dark,html.studio-theme-dark) .asset-panel .asset-tab{color:#7d7d7d}:where(html.theme-dark,html.studio-theme-dark) .asset-panel .asset-tab:hover{background:rgba(166, 166, 166, .07);}
 :where(html.theme-dark,html.studio-theme-dark) .asset-panel .asset-tab.active{border-color:rgba(166, 166, 166, .22);background:rgba(166, 166, 166, .07);color:#3a3a3a}
@@ -1247,12 +1247,7 @@ html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode .chat-shell .composer-foot-left .attach-btn:active,
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
-    body.gpt-dock-canvas-mode .chat-shell #skillBtn[aria-expanded="true"]{border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    body.gpt-dock-canvas-mode .chat-shell #skillBtn[aria-expanded="true"]{border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode .chat-shell .composer-foot-left .attach-btn:active,
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
@@ -1274,12 +1269,7 @@ html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode #skillMenu.skill-menu :is(
         .skill-menu-head button,
         .skill-menu-item
-    ):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    ):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-item:is(:hover, :focus-visible) .skill-menu-icon{border-color:rgba(255, 255, 255, .10) !important;background:rgba(255, 255, 255, .10) !important}
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-item.selected{color:rgba(241, 241, 241, .74) !important;border-color:rgba(255, 255, 255, .08) !important;background:rgba(255, 255, 255, .025) !important}
@@ -1356,8 +1346,7 @@ html.theme-dark,html.studio-theme-dark{--canvas-glass-glider-shadow:inset 0 1px 
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
     #imageQuickToolbar.image-quick-toolbar .iqt-glass-glider,
     #selectionBoxCapsule .selection-capsule-glider
-){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
     #imageQuickToolbar.image-quick-toolbar button:not(.active):not(.open):not([aria-pressed="true"]),
     #selectionBoxCapsule .selection-capsule-btn:not(.active):not(.open):not([aria-pressed="true"])
 ),
@@ -1381,12 +1370,9 @@ html.theme-dark,html.studio-theme-dark{--canvas-glass-glider-shadow:inset 0 1px 
 ){color:rgba(241, 241, 241, .74) !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
     .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]),
     .canvas-bottom-help-btn
-):is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
-:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]){color:rgba(241, 241, 241, .74) !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]):is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
-:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #canvasSmartGuidesToggle[aria-pressed="true"]{color:rgba(241, 241, 241, .74) !important;border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+):is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]){color:rgba(241, 241, 241, .74) !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]):is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #canvasSmartGuidesToggle[aria-pressed="true"]{color:rgba(241, 241, 241, .74) !important;border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell .image-node.typed-placeholder-node{background:linear-gradient(155deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .014) 46%, rgba(255, 255, 255, .035)),
         rgba(var(--sc-base-rgb), .76) !important;box-shadow:inset 0 1px 0 rgba(255, 255, 255, .09) !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
@@ -1467,16 +1453,7 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
         #composerVideoReferencePopover,
         #composerKindPopover,
         #composerSizePopover
-    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;background-image:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;background-image:none !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer :is(
         #composerApiSettingsPopover,
@@ -1504,27 +1481,13 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
 :is(html.theme-dark, html.studio-theme-dark).studio-page-canvas body
     .app-shell.app-shell .floating-toolbar.floating-toolbar
     :is(#toolbarAssetBtn, #toolbarCanvasHistoryBtn, #toolbarSettingsBtn):is(:hover, :focus-visible),:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-footer .composer-tool-wrap > .composer-tool-btn:is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;background-image:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;background-image:none !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-desc{color:rgba(241, 241, 241, .46) !important}:is(html.theme-dark, html.studio-theme-dark) body
     .port-link-pick-item:not(:disabled):hover,
 :is(html.theme-dark, html.studio-theme-dark) body
     .port-link-pick-item:not(:disabled):focus-visible,
 :is(html.theme-dark, html.studio-theme-dark) body
-    .port-link-pick-item:not(:disabled).is-hover{border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    .port-link-pick-item:not(:disabled).is-hover{border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body
     .port-link-pick-item:not(:disabled).is-hover{color:rgba(241, 241, 241, .74) !important;}:is(html.theme-dark, html.studio-theme-dark) body
     .port-link-pick-item:not(:disabled):hover
@@ -1552,12 +1515,7 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer .composer-tool-wrap > .composer-tool-btn:is(:hover, :focus-visible, :active),:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer .composer-tool-wrap.open > .composer-tool-btn,:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-footer .composer-tool-wrap > .composer-tool-btn[aria-expanded="true"]{border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    .composer-footer .composer-tool-wrap > .composer-tool-btn[aria-expanded="true"]{border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover :is(
         .composer-api-branch summary,
@@ -1595,24 +1553,14 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
         #composerSizeBtn,
         #composerVideoReferenceBtn,
         #composerKindBtn
-    ){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    ){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer :is(
         #composerApiSettingsPopover,
         #composerVideoReferencePopover,
         #composerKindPopover,
         #composerSizePopover
-    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :where(html.theme-dark,html.studio-theme-dark) body #shell.shell #composer.composer
     #composerAssetPreviewBody .composer-preview-asset-name{color:#fff !important;background:linear-gradient(to bottom, transparent, rgba(0,0,0,.72)) !important}
 :where(html.theme-dark,html.studio-theme-dark) .composer-asset-hover-preview{border:1px solid rgba(255,255,255,.12);background:#1f1f1f;box-shadow:0 22px 54px rgba(0,0,0,.42)}

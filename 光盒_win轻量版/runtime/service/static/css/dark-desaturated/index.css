@@ -521,12 +521,7 @@ html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode .chat-shell .composer-foot-left .attach-btn:active,
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
-    body.gpt-dock-canvas-mode .chat-shell #skillBtn[aria-expanded="true"]{border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    body.gpt-dock-canvas-mode .chat-shell #skillBtn[aria-expanded="true"]{border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode .chat-shell .composer-foot-left .attach-btn:active,
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
@@ -548,12 +543,7 @@ html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode #skillMenu.skill-menu :is(
         .skill-menu-head button,
         .skill-menu-item
-    ):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    ):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-item:is(:hover, :focus-visible) .skill-menu-icon{border-color:rgba(255, 255, 255, .10) !important;background:rgba(255, 255, 255, .10) !important}
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-item.selected{color:rgba(241, 241, 241, .74) !important;border-color:rgba(255, 255, 255, .08) !important;background:rgba(255, 255, 255, .025) !important}
@@ -630,8 +620,7 @@ html.theme-dark,html.studio-theme-dark{--canvas-glass-glider-shadow:inset 0 1px 
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
     #imageQuickToolbar.image-quick-toolbar .iqt-glass-glider,
     #selectionBoxCapsule .selection-capsule-glider
-){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
     #imageQuickToolbar.image-quick-toolbar button:not(.active):not(.open):not([aria-pressed="true"]),
     #selectionBoxCapsule .selection-capsule-btn:not(.active):not(.open):not([aria-pressed="true"])
 ),
@@ -655,12 +644,9 @@ html.theme-dark,html.studio-theme-dark{--canvas-glass-glider-shadow:inset 0 1px 
 ){color:rgba(241, 241, 241, .74) !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
     .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]),
     .canvas-bottom-help-btn
-):is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
-:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]){color:rgba(241, 241, 241, .74) !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]):is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
-:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #canvasSmartGuidesToggle[aria-pressed="true"]{color:rgba(241, 241, 241, .74) !important;border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+):is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]){color:rgba(241, 241, 241, .74) !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]):is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #canvasSmartGuidesToggle[aria-pressed="true"]{color:rgba(241, 241, 241, .74) !important;border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell .image-node.typed-placeholder-node{background:linear-gradient(155deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .014) 46%, rgba(255, 255, 255, .035)),
         rgba(var(--sc-base-rgb), .76) !important;box-shadow:inset 0 1px 0 rgba(255, 255, 255, .09) !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
@@ -741,16 +727,7 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
         #composerVideoReferencePopover,
         #composerKindPopover,
         #composerSizePopover
-    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;background-image:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;background-image:none !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer :is(
         #composerApiSettingsPopover,
@@ -778,27 +755,13 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
 :is(html.theme-dark, html.studio-theme-dark).studio-page-canvas body
     .app-shell.app-shell .floating-toolbar.floating-toolbar
     :is(#toolbarAssetBtn, #toolbarCanvasHistoryBtn, #toolbarSettingsBtn):is(:hover, :focus-visible),:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-footer .composer-tool-wrap > .composer-tool-btn:is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;background-image:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;background-image:none !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-desc{color:rgba(241, 241, 241, .46) !important}:is(html.theme-dark, html.studio-theme-dark) body
     .port-link-pick-item:not(:disabled):hover,
 :is(html.theme-dark, html.studio-theme-dark) body
     .port-link-pick-item:not(:disabled):focus-visible,
 :is(html.theme-dark, html.studio-theme-dark) body
-    .port-link-pick-item:not(:disabled).is-hover{border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    .port-link-pick-item:not(:disabled).is-hover{border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body
     .port-link-pick-item:not(:disabled).is-hover{color:rgba(241, 241, 241, .74) !important;}:is(html.theme-dark, html.studio-theme-dark) body
     .port-link-pick-item:not(:disabled):hover
@@ -826,12 +789,7 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer .composer-tool-wrap > .composer-tool-btn:is(:hover, :focus-visible, :active),:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer .composer-tool-wrap.open > .composer-tool-btn,:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-footer .composer-tool-wrap > .composer-tool-btn[aria-expanded="true"]{border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    .composer-footer .composer-tool-wrap > .composer-tool-btn[aria-expanded="true"]{border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover :is(
         .composer-api-branch summary,
@@ -870,24 +828,14 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
         #composerSizeBtn,
         #composerVideoReferenceBtn,
         #composerKindBtn
-    ){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    ){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer :is(
         #composerApiSettingsPopover,
         #composerVideoReferencePopover,
         #composerKindPopover,
         #composerSizePopover
-    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-modal{color:#3a3a3a}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-backdrop{background:rgba(39, 39, 39, .28)}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-dialog{border:1px solid rgba(255, 255, 255, .92);background:#fafafa;box-shadow:0 32px 100px rgba(43, 43, 43, .24)}
@@ -1025,8 +973,7 @@ html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-canvas-project-n
 ){color:rgba(241, 241, 241, .74) !important}:is(html.theme-dark, html.studio-theme-dark) :is(
     .shell-primary-rail-item:not(.active):not([data-shell-primary-active="true"]):not([aria-pressed="true"]):hover,
     .shell-primary-rail-item:not(.active):not([data-shell-primary-active="true"]):not([aria-pressed="true"]):focus-visible
-){background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;border-color:rgba(255, 255, 255, .08) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+){background:transparent !important;border-color:rgba(255, 255, 255, .08) !important;box-shadow:none !important}
 :where(html.theme-dark,html.studio-theme-dark) .shell-primary-rail-item[data-shell-primary-active="true"],:where(html.theme-dark,html.studio-theme-dark) .shell-primary-rail-item.active,:where(html.theme-dark,html.studio-theme-dark) .shell-primary-rail-item[aria-pressed="true"]{color:#fff !important;background:#0a84ff !important;border-color:#0a84ff !important}:where(html.theme-dark,html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-new,
 :where(html.theme-dark,html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-new:hover,
 :where(html.theme-dark,html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-new:focus-visible{background:#fff !important;box-shadow:0 2px 6px rgba(0, 0, 0, .04) !important}
@@ -1044,8 +991,7 @@ html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .sh
 :where(html.theme-dark,html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user,
 html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user{color:rgba(255, 255, 255, .82) !important;}
 :where(html.theme-dark,html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:hover,:where(html.theme-dark,html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:focus-visible{background:rgba(0, 0, 0, .46) !important}html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:hover,
-html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:focus-visible{background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;border-color:rgba(255, 255, 255, .08) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item,
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:focus-visible{background:transparent !important;border-color:rgba(255, 255, 255, .08) !important;box-shadow:none !important}html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item,
 html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item:is(:hover, :focus-visible){}
 html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item{color:rgba(241, 241, 241, .74) !important;}
 :where(html.theme-dark,html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item:is(

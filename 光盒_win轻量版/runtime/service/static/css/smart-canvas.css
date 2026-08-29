@@ -3480,7 +3480,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-inpu
 .theme-dark .composer-api-settings-btn:hover,
 .theme-dark .composer-api-settings-btn:focus-visible,
 .theme-dark .composer-api-settings-wrap.open .composer-api-settings-btn{
-    background:#383838 !important;
+    background:transparent !important;
     border-color:transparent !important;
     box-shadow:none !important;
 }
