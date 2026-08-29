@@ -5600,3 +5600,24 @@ html body, html.theme-dark body, html.studio-theme-dark body {
     --vs-glass-blur: none !important;
     --canvas-glass-blur: none !important;
 }
+
+/* 底部一级按钮小箭头：上拉展开朝下，收起朝上 */
+html body #shell.shell #composer.composer .composer-footer
+    :is(.composer-tool-btn, .composer-api-settings-btn) .composer-tool-caret {
+    transform: rotate(0deg) !important;
+    transform-origin: center center !important;
+    transition: transform var(--ui-motion-base, .18s) var(--ui-ease-emphasized, ease) !important;
+}
+html body #shell.shell #composer.composer .composer-footer
+    :is(.composer-tool-wrap.open, .composer-api-settings-wrap.open)
+    :is(.composer-tool-btn, .composer-api-settings-btn) .composer-tool-caret,
+html body #shell.shell #composer.composer .composer-footer
+    :is(.composer-tool-btn, .composer-api-settings-btn)[aria-expanded="true"] .composer-tool-caret {
+    transform: rotate(180deg) !important;
+}
+@media (prefers-reduced-motion: reduce) {
+    html body #shell.shell #composer.composer .composer-footer
+        :is(.composer-tool-btn, .composer-api-settings-btn) .composer-tool-caret {
+        transition: none !important;
+    }
+}

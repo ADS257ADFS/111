@@ -747,8 +747,28 @@ video.node-img { object-fit:cover; background:transparent; }
 .composer-api-settings-btn { display:inline-flex; align-items:center; gap:6px; height:var(--composer-footer-h); padding:0 14px; border:0; border-radius:999px; background:var(--ui-surface-chrome); color:var(--ui-text-secondary); font-size:12px; font-weight:600; line-height:1; cursor:pointer; box-shadow:none; transition:background-color var(--ui-motion-fast) var(--ui-ease), box-shadow var(--ui-motion-fast) var(--ui-ease); }
 .composer-tool-btn i,.composer-tool-btn svg,
 .composer-api-settings-btn i,.composer-api-settings-btn svg { width:16px !important; height:16px !important; stroke-width:1.5px !important; flex-shrink:0; }
-.composer-tool-btn .composer-tool-caret { width:11px !important; height:11px !important; margin-left:1px; stroke-width:1.6px !important; transition:transform var(--ui-motion-base) var(--ui-ease-emphasized); }
-.composer-tool-wrap.open .composer-tool-caret { transform:rotate(180deg); }
+.composer-tool-btn .composer-tool-caret,
+.composer-api-settings-btn .composer-tool-caret {
+    width: 11px !important;
+    height: 11px !important;
+    margin-left: 1px;
+    stroke-width: 1.6px !important;
+    transform: rotate(0deg);
+    transform-origin: center;
+    transition: transform var(--ui-motion-base) var(--ui-ease-emphasized);
+}
+.composer-tool-btn .composer-tool-caret svg,
+.composer-api-settings-btn .composer-tool-caret svg {
+    transform: inherit;
+    transform-origin: center;
+}
+/* 上拉展开：chevron-up 翻转为朝下；收起回归朝上 */
+.composer-tool-wrap.open .composer-tool-caret,
+.composer-api-settings-wrap.open .composer-tool-caret,
+.composer-tool-btn[aria-expanded="true"] .composer-tool-caret,
+.composer-api-settings-btn[aria-expanded="true"] .composer-tool-caret {
+    transform: rotate(180deg) !important;
+}
 .composer-tool-btn span { max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }.composer-tool-btn:hover,
 .composer-tool-btn:focus-visible,
 .composer-tool-wrap.open .composer-tool-btn,
