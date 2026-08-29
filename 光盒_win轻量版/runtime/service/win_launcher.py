@@ -785,6 +785,58 @@ class DesktopBridge:
             configure_opaque_form(self._window)
         apply_solid_window_frame(hwnd, show_shadow=True)
 
+    def _stamp_normal_placement(self, bounds=None) -> None:
+        """Force Win32 rcNormalPosition away from the create-time 880×520 intro size.
+
+        Any later SW_RESTORE / Form.WindowState=Normal will use this placement
+        instead of snapping back to the startup panel.
+        """
+        hwnd = self._hwnd()
+        if not hwnd:
+            return
+        if not bounds or len(bounds) != 4:
+            bounds = self._default_window_bounds()
+        bounds = self._normalize_restore_bounds(bounds)
+        x, y, width, height = bounds
+        user32 = ctypes.windll.user32
+
+        class WINDOWPLACEMENT(ctypes.Structure):
+            _fields_ = [
+                ("length", ctypes.wintypes.UINT),
+                ("flags", ctypes.wintypes.UINT),
+                ("showCmd", ctypes.wintypes.UINT),
+                ("ptMinPosition", ctypes.wintypes.POINT),
+                ("ptMaxPosition", ctypes.wintypes.POINT),
+                ("rcNormalPosition", ctypes.wintypes.RECT),
+            ]
+
+        place = WINDOWPLACEMENT()
+        place.length = ctypes.sizeof(WINDOWPLACEMENT)
+        if not user32.GetWindowPlacement(hwnd, ctypes.byref(place)):
+            return
+        place.rcNormalPosition.left = int(x)
+        place.rcNormalPosition.top = int(y)
+        place.rcNormalPosition.right = int(x + width)
+        place.rcNormalPosition.bottom = int(y + height)
+        # Keep showCmd as-is when maximized; only rewrite the restore target.
+        user32.SetWindowPlacement(hwnd, ctypes.byref(place))
+
+    def _guard_against_intro_shrink(self, remaining: int = 40) -> None:
+        """Watchdog: if we shrink to intro panel size after enter, snap back fullscreen."""
+        if not self._app_entered or remaining <= 0:
+            return
+        try:
+            rect = self._window_rect()
+            if rect:
+                _x, _y, width, height = rect
+                if width <= INTRO_WINDOW_WIDTH + 80 and height <= INTRO_WINDOW_HEIGHT + 80:
+                    self._restore_bounds = self._default_window_bounds()
+                    self._stamp_normal_placement(self._restore_bounds)
+                    self.maximize_to_work_area(remember=False)
+        except Exception:
+            traceback.print_exc()
+        threading.Timer(0.4, lambda: self._guard_against_intro_shrink(remaining - 1)).start()
+
     def enter_app_from_intro(self) -> str:
         """After welcome animation: restore min size and open fullscreen software."""
         self._app_entered = True
@@ -792,20 +844,13 @@ class DesktopBridge:
         # Never remember the intro panel size as the restore target — that made
         # the first windowed toggle shrink to the tiny startup panel.
         self._restore_bounds = self._default_window_bounds()
+        self._stamp_normal_placement(self._restore_bounds)
         self.maximize_to_work_area(remember=False)
-        # Late startup threads (finish_startup / force_show) can SW_RESTORE to the
-        # original 880×520 create size a few seconds later — re-assert fullscreen.
-        def _reassert_fullscreen(remaining: int = 6) -> None:
-            if not self._app_entered or remaining <= 0:
-                return
-            try:
-                if not self._is_work_area_maximized():
-                    self.maximize_to_work_area(remember=False)
-            except Exception:
-                traceback.print_exc()
-            threading.Timer(0.35, lambda: _reassert_fullscreen(remaining - 1)).start()
-
-        threading.Timer(0.2, lambda: _reassert_fullscreen()).start()
+        # Stamp again after maximize — some Win32 paths rewrite placement on size change.
+        self._stamp_normal_placement(self._restore_bounds)
+        # Late startup threads can still SW_RESTORE / re-show intro size for a few
+        # seconds after enter — keep a hard watchdog until they settle.
+        self._guard_against_intro_shrink()
         return "maximized"
 
     def show_default_window(self) -> None:
@@ -843,8 +888,8 @@ class DesktopBridge:
                 self._restore_bounds = self._normalize_restore_bounds(current)
         hwnd = self._hwnd()
         self._set_resize_style(False)
-        if ctypes.windll.user32.IsZoomed(hwnd):
-            ctypes.windll.user32.ShowWindow(hwnd, 9)
+        # Do NOT ShowWindow(SW_RESTORE) first — that reloads the create-time
+        # 880×520 intro placement and is what users see as "shrunk after enter".
         x, y, width, height = self._work_area()
         ctypes.windll.user32.SetWindowPos(hwnd, 0, x, y, width, height, 0x0004)
         self._maximized = True
@@ -2066,37 +2111,36 @@ def main() -> None:
         def finish_startup() -> None:
             startup_finished.wait(timeout=2.0)
             bridge._intro_dom_ready.wait(timeout=12.0)
+
+            def settle_entered_app() -> None:
+                bridge.enable_standard_taskbar_behavior()
+                configure_opaque_form(window)
+                install_window_frame_refresh(window, bridge)
+                hwnd = bridge._hwnd()
+                if hwnd:
+                    apply_solid_window_frame(hwnd, show_shadow=False)
+                    window_shadow.attach(window)
+                bridge._restore_bounds = bridge._default_window_bounds()
+                bridge._stamp_normal_placement(bridge._restore_bounds)
+                bridge.maximize_to_work_area(remember=False)
+                bridge._stamp_normal_placement(bridge._restore_bounds)
+
             try:
                 if bridge._app_entered:
-                    bridge.enable_standard_taskbar_behavior()
-                    configure_opaque_form(window)
-                    install_window_frame_refresh(window, bridge)
-                    hwnd = bridge._hwnd()
-                    if hwnd:
-                        apply_solid_window_frame(hwnd, show_shadow=False)
-                        window_shadow.attach(window)
-                    bridge.maximize_to_work_area(remember=False)
+                    settle_entered_app()
                     return
                 configure_opaque_form(window)
                 bridge.set_window_backdrop(initial_theme)
                 bridge._show_centered_intro_window()
                 time.sleep(0.06)
                 if bridge._app_entered:
-                    bridge.maximize_to_work_area(remember=False)
+                    settle_entered_app()
                     return
                 bridge.show_intro_window()
                 bridge._kick_intro_playback()
                 main_window_ready.wait(timeout=10.0)
                 if bridge._app_entered:
-                    # App already fullscreen — never SW_RESTORE back to intro size.
-                    bridge.enable_standard_taskbar_behavior()
-                    configure_opaque_form(window)
-                    install_window_frame_refresh(window, bridge)
-                    hwnd = bridge._hwnd()
-                    if hwnd:
-                        apply_solid_window_frame(hwnd, show_shadow=False)
-                        window_shadow.attach(window)
-                    bridge.maximize_to_work_area(remember=False)
+                    settle_entered_app()
                     return
                 bridge.enable_standard_taskbar_behavior()
                 configure_opaque_form(window)
@@ -2105,12 +2149,9 @@ def main() -> None:
                 # Transparent EdgeChromium sometimes leaves the form parked at
                 # (-32000,-32000) after the library's hide/show hack — force it
                 # back onto a real windowed placement.
-                if hwnd:
-                    # Re-check after every wait — user may have entered mid-startup.
-                    if bridge._app_entered:
-                        apply_solid_window_frame(hwnd, show_shadow=False)
-                        bridge.maximize_to_work_area(remember=False)
-                        return
+                # NEVER use SW_RESTORE here: it reloads the create-time 880×520
+                # size and will fight enter_app_from_intro a few seconds later.
+                if hwnd and not bridge._app_entered:
                     rect = bridge._window_rect()
                     if (
                         not rect
@@ -2118,36 +2159,34 @@ def main() -> None:
                         or rect[1] < -10000
                         or rect[2] < 320
                         or rect[3] < 240
+                        or (
+                            rect[2] <= INTRO_WINDOW_WIDTH + 40
+                            and rect[3] <= INTRO_WINDOW_HEIGHT + 40
+                        )
                     ):
                         if not bridge._app_entered:
                             bridge.show_intro_window()
                     if bridge._app_entered:
-                        apply_solid_window_frame(hwnd, show_shadow=False)
-                        bridge.maximize_to_work_area(remember=False)
+                        settle_entered_app()
                     else:
-                        ctypes.windll.user32.ShowWindow(hwnd, 9)  # SW_RESTORE
-                        # SW_RESTORE can revive the create-time 880×520 size if the
-                        # user entered during this window — bail out immediately.
-                        if bridge._app_entered:
-                            bridge.maximize_to_work_area(remember=False)
-                            return
                         ctypes.windll.user32.SetForegroundWindow(hwnd)
                         configure_opaque_form(window)
                         apply_solid_window_frame(hwnd, show_shadow=True)
                         window_shadow.attach(window)
                         apply_solid_window_frame(hwnd, show_shadow=True)
-                        # pywebview may re-apply Padding after Navigating — punch again.
                         time.sleep(0.08)
                         if bridge._app_entered:
-                            bridge.maximize_to_work_area(remember=False)
+                            settle_entered_app()
                             return
                         configure_opaque_form(window)
                         apply_solid_window_frame(hwnd, show_shadow=True)
+                elif bridge._app_entered:
+                    settle_entered_app()
             finally:
                 stop_startup.set()
                 if bridge._app_entered:
                     try:
-                        bridge.maximize_to_work_area(remember=False)
+                        settle_entered_app()
                     except Exception:
                         traceback.print_exc()
 
