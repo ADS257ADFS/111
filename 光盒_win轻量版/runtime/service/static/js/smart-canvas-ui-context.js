@@ -575,7 +575,8 @@
     ctx.inheritNodeMetaFromImage = scope.inheritNodeMetaFromImage;
     ctx.createNode = scope.createNode;
     ctx.createPromptNode = scope.createPromptNode;
-    ctx.createLoopNode = createLoopNode;    ctx.cloneSmartNode = cloneSmartNode;
+    ctx.createLoopNode = scope.createLoopNode;
+    ctx.cloneSmartNode = scope.cloneSmartNode;
     ctx.copySelectedNodes = scope.copySelectedNodes;
     ctx.pasteNodes = scope.pasteNodes;
     ctx.duplicateForAltDrag = scope.duplicateForAltDrag;

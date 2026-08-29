@@ -4,3 +4,11 @@ Thumbs.db
 .env.*
 *.log
 
+# Service-layer bytecode only (bundled runtime/python is shipped as-is)
+runtime/service/**/__pycache__/
+runtime/service/**/*.py[cod]
+
+# Windows / editor noise
+desktop.ini
+*.swp
+*~
