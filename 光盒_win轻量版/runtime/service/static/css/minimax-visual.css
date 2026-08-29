@@ -5245,9 +5245,9 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
     --sc-blur: 60px;
     --sc-border: rgba(255, 255, 255, .16);
     --lightbox-chrome-bg: #1f1f1f;
-    --ui-panel-frost: rgba(31, 31, 31, .42);
-    --ui-panel-frost-blur: blur(60px) saturate(140%);
-    --ui-panel-frost-border: rgba(255, 255, 255, .16);
+    --ui-panel-frost: rgba(20, 20, 20, .32);
+    --ui-panel-frost-blur: blur(60px) saturate(160%);
+    --ui-panel-frost-border: rgba(255, 255, 255, .18);
 }
 
 html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body :is(
@@ -5811,8 +5811,8 @@ html.canvas-performance-mode body #shell.shell #composer.composer .input-thumb-u
 /* Float frost tokens on; never apply backdrop-filter via body *. */
 html, html.theme-dark, html.studio-theme-dark,
 html body, html.theme-dark body, html.studio-theme-dark body {
-    --ui-panel-frost: rgba(31, 31, 31, .42) !important;
-    --ui-panel-frost-blur: blur(60px) saturate(140%) !important;
+    --ui-panel-frost: rgba(20, 20, 20, .32) !important;
+    --ui-panel-frost-blur: blur(60px) saturate(160%) !important;
     --ui-composer-topbar-filter: none !important;
     --sc-blur: 60px !important;
     --vs-glass-blur: blur(60px) saturate(140%) !important;
