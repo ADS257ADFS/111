@@ -1031,8 +1031,8 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
  * 二级/三级被 canvas-dark-glass / visual-typography-system 用
  * 10px !important 钉死。压缩 :is() 会丢掉中间类、输掉优先级，
  * 所以这里复刻完整 ID+类链，并多写一档同类名，保证后加载胜出。
- * 一级 footer 保持 --ui-type-section；上拉菜单选项用 --ui-type-meta，
- * 避免和一级按钮一样大。
+ * 一级 footer 保持 --ui-type-section；其它上拉菜单选项用 --ui-type-meta。
+ * 模式切换上拉与一级按钮同字号（--ui-type-section）。
  * ================================================================ */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer .composer-tool-wrap > .composer-tool-btn,
@@ -1126,8 +1126,17 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
     letter-spacing: 0 !important;
 }
 
+/* 模式切换上拉：字号与一级 #composerKindBtn（--ui-type-section）一致 */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindPopover .composer-kind-toggle button,
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindPopover .composer-kind-toggle button span {
+    font-size: var(--ui-type-section) !important;
+    font-weight: var(--ui-weight-menu-strong) !important;
+    line-height: var(--ui-leading-tight) !important;
+    letter-spacing: 0 !important;
+}
+
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerVideoReferencePopover .video-reference-option,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
@@ -4597,6 +4606,7 @@ html:is(.theme-dark, .studio-theme-dark):not(#ui-shadow-reset-1):not(#ui-shadow-
  * M83：底部一级按钮上拉菜单小于一级，并使用 --ui-shadow-float。
  * 选项文字走 --ui-type-meta（11px），行高走紧凑控件档；面板内边距
  * 与宽度一并收一档。一级 footer 按钮尺寸与字号不变。
+ * 例外：#composerKindPopover 模式切换与一级按钮同字号（--ui-type-section）。
  * ================================================================ */
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer :is(
@@ -4633,15 +4643,22 @@ body #shell.shell #composer.composer .composer-footer #composerVideoReferencePop
     min-width: 200px !important;
 }
 
-/* 紧凑字号：排除模型名/说明，避免悬停两行被压成同字号 */
+/* 紧凑字号：排除模型名/说明，避免悬停两行被压成同字号。
+   模式切换菜单单独保持与一级按钮相同的 --ui-type-section。 */
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer :is(
     #composerApiSettingsPopover,
     #composerSizePopover,
-    #composerKindPopover,
     #composerVideoReferencePopover
 ) :where(:not(svg):not(svg *):not(.mode-model-name):not(.mode-model-desc):not(.mode-model-copy):not(.mode-model-title-row)) {
     font-size: var(--ui-type-meta) !important;
+    line-height: var(--ui-leading-tight) !important;
+}
+
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer #composerKindPopover
+    :where(:not(svg):not(svg *)) {
+    font-size: var(--ui-type-section) !important;
     line-height: var(--ui-leading-tight) !important;
 }
 
