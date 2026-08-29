@@ -6332,3 +6332,15 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover
     color: inherit !important;
 }
 
+
+/* 右侧栏：去掉「已完成」与气泡之间的分割线 */
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages .dock-turn-timing,
+:is(html.theme-dark, html.studio-theme-dark) body.gpt-dock-canvas-mode .chat-shell #messages.messages .dock-turn-timing,
+html.studio-theme-dark .dock-turn-timing,
+body.studio-theme-dark .dock-turn-timing,
+html.theme-dark .dock-turn-timing {
+    border-bottom: 0 !important;
+    border-bottom-width: 0 !important;
+    border-bottom-color: transparent !important;
+    box-shadow: none !important;
+}

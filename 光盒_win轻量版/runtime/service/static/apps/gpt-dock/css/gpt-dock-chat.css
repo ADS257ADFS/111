@@ -66,7 +66,7 @@ html.lightbox-compact-mode .composer-wrap {
 .bubble-row { width:min(var(--content-width),100%); display:flex; gap:12px; align-items:flex-end; }
 .bubble-row.user { justify-content:flex-end; }
 .bubble-row.user.has-message-attachments { flex-direction:column; align-items:flex-end; gap:8px; }
-.dock-turn-timing { width:min(var(--content-width),100%); padding:0 2px 12px; border-bottom:1px solid rgba(15,23,42,.10); }
+.dock-turn-timing { width:min(var(--content-width),100%); padding:0 2px 12px; border-bottom:0; }
 .dock-turn-timing-label { min-height:20px; display:flex; align-items:center; gap:3px; color:#747b85; font-size:12px; line-height:20px; }
 .dock-turn-timing-label svg { width:13px; height:13px; stroke-width:1.8; opacity:.65; }
 .dock-turn-timing[data-state="running"] .dock-turn-timing-text { color:#555b63; font-variant-numeric:tabular-nums; }
@@ -640,7 +640,7 @@ body.studio-theme-dark .bubble.assistant {
 html.studio-theme-dark .dock-message-source-chip,
 body.studio-theme-dark .dock-message-source-chip { background:rgba(30,41,59,.78); border-color:rgba(148,163,184,.2); color:#9aa0a9; }
 html.studio-theme-dark .dock-turn-timing,
-body.studio-theme-dark .dock-turn-timing { border-bottom-color:rgba(255,255,255,.12); }
+body.studio-theme-dark .dock-turn-timing { border-bottom:0 !important; }
 html.studio-theme-dark .dock-turn-timing-label,
 body.studio-theme-dark .dock-turn-timing-label { color:#8f96a3; }html.studio-theme-dark a.dock-message-source-chip:hover,
 body.studio-theme-dark a.dock-message-source-chip:hover{ background:rgba(var(--ui-accent-rgb),.22); border-color:rgba(var(--ui-accent-rgb),.42); }
@@ -1084,4 +1084,11 @@ html.studio-theme-dark .ecommerce-confirm-edit,
 body.studio-theme-dark .ecommerce-confirm-edit { border-color:#45484e; color:#d4d4d8; background:#34353a; }
 @media (max-width:720px){
     .ecommerce-wizard-choice-grid-three { grid-template-columns:minmax(0,1fr); }
+}
+
+/* Kill turn-timing divider under 已完成 */
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages .dock-turn-timing,
+:is(html.theme-dark, html.studio-theme-dark) .dock-turn-timing {
+    border-bottom: 0 !important;
+    box-shadow: none !important;
 }
