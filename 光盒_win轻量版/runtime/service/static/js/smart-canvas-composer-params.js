@@ -478,7 +478,23 @@ let _jimengLastVideoCommand = null;
             apiButton.title = apiText;
             apiButton.setAttribute('aria-label', `当前模型：${apiText}`);
         }
-        if(kindLabel) kindLabel.textContent = ({text:'文本', image:'图片', video:'视频', audio:'音频'})[activeKind] || '图片';
+        if(kindLabel) kindLabel.textContent = ({text:'文本生成', image:'图片生成', video:'视频生成', audio:'音频生成'})[activeKind] || '图片生成';
+        const kindBtn = document.getElementById('composerKindBtn');
+        if(kindBtn){
+            const kindIcons = {text:'message-square-text', image:'image', video:'film', audio:'music-2'};
+            const iconName = kindIcons[activeKind] || 'image';
+            const iconEl = kindBtn.querySelector('i[data-lucide], svg');
+            if(iconEl){
+                if(iconEl.tagName === 'I' || iconEl.tagName === 'i'){
+                    iconEl.setAttribute('data-lucide', iconName);
+                } else {
+                    iconEl.outerHTML = `<i data-lucide="${iconName}"></i>`;
+                }
+                try { window.lucide?.createIcons?.({ nodes: [kindBtn] }); } catch(_e) {}
+            }
+            kindBtn.title = '模式切换';
+            kindBtn.setAttribute('aria-label', '模式切换');
+        }
         if(sizeLabel){
             const prefix = currentSizePrefix();
             if(settings?.apiKind === 'video'){
@@ -732,7 +748,7 @@ let _jimengLastVideoCommand = null;
                     <div class="composer-submenu-label">模型选择</div>
                     <div class="composer-mode-model-list" data-mode-model-list="${escapeHtml(mode)}">${customs.map((entry, idx) => bound(entry)
                         ? `<button type="button" class="mode-model-choice ${idx === activeIdx ? 'active' : ''}" data-mode-model-select="${escapeHtml(mode)}" data-mode-model-value="${escapeHtml(entry.name)}">${modeModelChoiceInner(entry.name, escapeHtml)}</button>`
-                        : `<button type="button" class="mode-model-choice is-unbound" disabled title="未绑定，请在 API 设置 · 我的模型中绑定中转站">${modeModelChoiceInner(entry.name, escapeHtml)}</button>`
+                        : `<button type="button" class="mode-model-choice is-unbound" disabled title="未绑定，请在 API 设置 · 画布显示名中绑定平台">${modeModelChoiceInner(entry.name, escapeHtml)}</button>`
                     ).join('')}</div>
                 </div>
             </div>`;
@@ -1646,7 +1662,11 @@ let _jimengLastVideoCommand = null;
             composerHeadParams.innerHTML = renderModeModelList('image');
         }
         if(typeof bindSmartControlPills === 'function') bindSmartControlPills(composerHeadParams);
-        if(global.lucide) lucide.createIcons();
+        if(global.lucide?.createIcons){
+            const root = (typeof d === 'function' ? d()?.composer : null) || global.document?.getElementById?.('composer') || undefined;
+            try { lucide.createIcons(root ? { root } : undefined); }
+            catch(_e){ lucide.createIcons(); }
+        }
     }
 
     function renderApiParams(){
@@ -2012,14 +2032,14 @@ let _jimengLastVideoCommand = null;
         const deps = d();
         const settings = deps?.settings;
         const apiKindToggle = deps?.apiKindToggle;
-        const isApiLikeEngine = deps?.isApiLikeEngine;
         if(!settings || !apiKindToggle) return;
-        const topbarHost = document.getElementById('composerKindTopbar');
-        if(topbarHost && apiKindToggle.parentElement !== topbarHost) topbarHost.appendChild(apiKindToggle);
-        apiKindToggle.setAttribute('aria-label', 'Generation type');
-        const topbarKindLabels = {audio:'Audio', text:'Text', image:'Image', video:'Video'};
+        // 顶部窄条不再展示四模式；底部 footer「模式切换」上拉菜单常驻。
+        const popoverHost = document.getElementById('composerKindPopover');
+        if(popoverHost && apiKindToggle.parentElement !== popoverHost) popoverHost.appendChild(apiKindToggle);
+        apiKindToggle.setAttribute('aria-label', '模式切换');
+        const kindLabels = {image:'图片生成', video:'视频生成', text:'文本生成', audio:'音频生成'};
         apiKindToggle.querySelectorAll('[data-kind]').forEach(button => {
-            const label = topbarKindLabels[button.dataset.kind];
+            const label = kindLabels[button.dataset.kind];
             if(!label) return;
             const text = button.querySelector('span');
             if(text) text.textContent = label;
@@ -2027,13 +2047,11 @@ let _jimengLastVideoCommand = null;
             button.setAttribute('aria-label', label);
         });
         const node = deps.selectedNode?.();
-        const textMode = global.SmartCanvasComposerText?.isTextSubject?.(node) === true;
         const activeKind = global.SmartCanvasComposerText?.modeFor?.(node) || settings.apiKind || 'image';
         const imageBlocked = global.SmartCanvasModeBindings?.hasVideoMaterial?.(node) === true;
-        const visible = textMode || activeKind === 'audio' || (typeof isApiLikeEngine === 'function' && isApiLikeEngine(settings.engine));
-        apiKindToggle.style.display = visible ? 'inline-flex' : 'none';
+        apiKindToggle.style.display = 'flex';
         const kindWrap = document.getElementById('composerKindWrap');
-        if(kindWrap) kindWrap.hidden = !visible;
+        if(kindWrap) kindWrap.hidden = false;
         apiKindToggle.querySelectorAll('[data-kind]').forEach(btn => {
             const disabled = imageBlocked && btn.dataset.kind === 'image';
             btn.disabled = disabled;
@@ -2422,7 +2440,11 @@ let _jimengLastVideoCommand = null;
             syncApiKindToggleVisibility();
             global.SmartCanvasComposerText.syncComposer(selected);
             bindComposerApiSettings();
-            if(global.lucide) lucide.createIcons();
+            if(global.lucide?.createIcons){
+            const root = (typeof d === 'function' ? d()?.composer : null) || global.document?.getElementById?.('composer') || undefined;
+            try { lucide.createIcons(root ? { root } : undefined); }
+            catch(_e){ lucide.createIcons(); }
+        }
             const scheduleComposerReposition = deps.scheduleComposerReposition;
             if(composer?.classList.contains('open') && typeof scheduleComposerReposition === 'function') scheduleComposerReposition(selected);
             return;
@@ -2464,7 +2486,11 @@ let _jimengLastVideoCommand = null;
         syncComposerToolVisibility();
         syncSizeChoiceGliders();
         if(typeof deps.persistActiveSmartSettings === 'function') deps.persistActiveSmartSettings();
-        if(global.lucide) lucide.createIcons();
+        if(global.lucide?.createIcons){
+            const root = (typeof d === 'function' ? d()?.composer : null) || global.document?.getElementById?.('composer') || undefined;
+            try { lucide.createIcons(root ? { root } : undefined); }
+            catch(_e){ lucide.createIcons(); }
+        }
         const selectedNode = deps.selectedNode;
         const scheduleComposerReposition = deps.scheduleComposerReposition;
         const openNode = typeof selectedNode === 'function' ? selectedNode() : null;

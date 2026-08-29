@@ -8,8 +8,10 @@
     <script>
         (function(){
             document.documentElement.classList.add('canvas-empty-chrome-recessed');
+            /* WebView2: enable perf mode before any stylesheet paints glass/animations. */
+            document.documentElement.classList.add('canvas-performance-mode');
             try {
-                var theme = localStorage.getItem('studio_theme') || localStorage.getItem('canvas_theme') || 'dark';
+                var theme = localStorage.getItem('studio_theme') || localStorage.getItem('canvas_theme') || 'light';
                 if(theme === 'dark') {
                     document.documentElement.classList.add('theme-dark');
                     document.documentElement.classList.add('studio-theme-dark');
@@ -21,33 +23,33 @@
     <script src="/static/vendor/js/lucide.js?v=2026.08.11.82"></script>
     <script src="/static/js/theme.js?v=2026.08.11.82"></script>
     <script charset="utf-8" src="/static/js/i18n.js?v=2026.08.11.82"></script>
-<link rel="stylesheet" href="/static/css/smart-canvas.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/smart-canvas.css?v=2026.08.29.lagkill2">
     <link rel="stylesheet" href="/static/css/image-quick-toolbar.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/image-edit-overlay.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/smart-canvas-image-lightbox.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/image-edit-overlay.css?v=2026.08.29.nofrost1">
+    <link rel="stylesheet" href="/static/css/smart-canvas-image-lightbox.css?v=2026.08.29.nofrost1">
     <link rel="stylesheet" href="/static/css/smart-canvas-inline-brush.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-inline-image-tools.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-video-tools.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-multi-view.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/smart-canvas-co-create.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-co-create.css?v=2026.08.29.cocreate2">
     <link rel="stylesheet" href="/static/css/smart-canvas-port-magnet.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/smart-canvas-port-link-menu.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-port-link-menu.css?v=2026.08.29.froston1">
     <link rel="stylesheet" href="/static/css/smart-canvas-selection-capsule.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-multi-select-compose.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-asset-prompt-ui.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-asset-library-ui.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-left-rail.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/smart-canvas-bottom-chrome.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-bottom-chrome.css?v=2026.08.26.top15">
     <link rel="stylesheet" href="/static/css/smart-canvas-download-center.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-connection-selection.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/studio-theme-dark.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/visual-system-preview.css?v=2026.08.11.82">
-<link rel="stylesheet" href="/static/css/visual-typography-system.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/canvas-dark-glass.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/studio-theme-dark.css?v=2026.08.29.nofrost1">
+    <link rel="stylesheet" href="/static/css/visual-system-preview.css?v=2026.08.29.nofrost1">
+<link rel="stylesheet" href="/static/css/visual-typography-system.css?v=2026.08.29.nofrost1">
+    <link rel="stylesheet" href="/static/css/canvas-dark-glass.css?v=2026.08.29.nofrost1">
     <link rel="stylesheet" href="/static/css/canvas-clear-glass.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-footer-previews.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-control-metrics.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/smart-canvas-composer-topbar.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/smart-canvas-composer-topbar.css?v=2026.08.29.lagkill2">
     <link rel="stylesheet" href="/static/css/smart-canvas-shell-chrome.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-control-weight.css?v=2026.08.11.82">
     <script>
@@ -55,12 +57,12 @@
             if(window.lucide) window.lucide.createIcons();
         });
     </script>
-<link rel="stylesheet" href="/static/css/dark-desaturated/smart-canvas.css?v=2026.08.11.82">
+<link rel="stylesheet" href="/static/css/dark-desaturated/smart-canvas.css?v=2026.08.29.froston1">
 <link rel="stylesheet" href="/static/css/dark-desaturated/panel-polish.css?v=2026.08.11.82">
 <link rel="stylesheet" href="/static/css/native-ui-zoom.css?v=2026.08.11.82">
-<link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.26.5">
-<link rel="stylesheet" href="/static/css/ui-primitives.css?v=2026.08.26.5">
-  <link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.26.5">
+<link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.29.noblur1">
+  <link rel="stylesheet" href="/static/css/ui-primitives.css?v=2026.08.11.82">
+  <link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.29.lagkill2">
   <style id="canvasZoomCompactType">
     #shell.shell #canvasZoomMenuBtn.canvas-zoom-value-btn {
       font-size: 11px !important;
@@ -104,6 +106,26 @@
       line-height: 1.2 !important;
     }
   </style>
+  <style id="darkCanvasGridDimForce">
+    /* Last-load lock: dark grid dots must stay clearly visible (~10%). */
+    html.theme-dark, html.studio-theme-dark {
+      --ui-canvas-grid-dot: rgba(255, 255, 255, .10) !important;
+      --grid: rgba(255, 255, 255, .10) !important;
+    }
+    html.theme-dark #shell.shell,
+    html.studio-theme-dark #shell.shell,
+    html.theme-dark .shell,
+    html.studio-theme-dark .shell,
+    html.theme-dark .board,
+    html.studio-theme-dark .board,
+    html.theme-dark .stage,
+    html.studio-theme-dark .stage,
+    html.theme-dark .canvas-gate,
+    html.studio-theme-dark .canvas-gate {
+      background-image: radial-gradient(rgba(255, 255, 255, .10) .65px, transparent 1.2px) !important;
+      background-size: var(--ui-canvas-grid-size, 18px) var(--ui-canvas-grid-size, 18px) !important;
+    }
+  </style>
     </head>
 <body>
     <div id="shell" class="shell" tabindex="-1">
@@ -116,14 +138,16 @@
                 <div class="composer-card">
                     <span class="composer-card-material" aria-hidden="true"></span>
                     <span class="composer-card-surface" aria-hidden="true"></span>
-                    <div class="composer-card-topbar" aria-label="Generation mode and co-create mode">
+                    <div class="composer-card-topbar" aria-label="资产库与共创">
                         <div class="composer-card-topbar-left">
+                            <div id="inputThumbsRow" class="input-thumbs-row"></div>
+                        </div>
+                        <div class="composer-card-topbar-right">
                             <div class="composer-asset-shortcuts" aria-label="输入区功能快捷入口">
-                                <button class="composer-asset-shortcut" type="button" data-composer-asset-library aria-label="参考" title="打开参考素材"><i data-lucide="circle-plus"></i><span>参考</span></button>
+                                <button class="composer-asset-shortcut" type="button" data-composer-asset-library aria-label="资产库" title="打开资产库"><i data-lucide="circle-plus"></i><span>资产库</span></button>
                             </div>
                             <div id="composerCoCreateSlot" class="composer-co-create-slot"></div>
                         </div>
-                        <div id="composerKindTopbar" class="composer-card-topbar-right"></div>
                     </div>
                     <div class="prompt-row">
                         <div id="promptInput" class="prompt-input" contenteditable="true" data-i18n-placeholder="smart.promptPlaceholder" data-placeholder="描述你想生成或编辑的图片..."></div>
@@ -133,11 +157,23 @@
                         </button>
                         <div id="mentionPicker" class="mention-picker"></div>
                     </div>
-                    <div id="inputThumbsRow" class="input-thumbs-row"></div>
                     <div id="inputPromptPreview" class="input-prompt-preview"></div>
                     <div class="composer-footer">
                         <div class="composer-footer-bar">
                             <div class="composer-footer-tools">
+                                <div id="composerKindWrap" class="composer-tool-wrap composer-kind-wrap">
+                                    <button id="composerKindBtn" class="composer-tool-btn" type="button" title="模式切换" aria-label="模式切换" aria-haspopup="true" aria-expanded="false">
+                                        <i data-lucide="image"></i><span id="composerKindBtnLabel">图片生成</span><i data-lucide="chevron-up" class="composer-tool-caret"></i>
+                                    </button>
+                                    <div id="composerKindPopover" class="composer-tool-popover" role="menu" aria-label="模式切换">
+                                        <div id="apiKindToggle" class="composer-kind-toggle" role="group" aria-label="模式切换">
+                                            <button type="button" data-kind="image" class="active" title="图片生成" aria-label="图片生成" role="menuitem"><i data-lucide="image"></i><span>图片生成</span></button>
+                                            <button type="button" data-kind="video" title="视频生成" aria-label="视频生成" role="menuitem"><i data-lucide="film"></i><span>视频生成</span></button>
+                                            <button type="button" data-kind="text" title="文本生成" aria-label="文本生成" role="menuitem"><i data-lucide="message-square-text"></i><span>文本生成</span></button>
+                                            <button type="button" data-kind="audio" title="音频生成" aria-label="音频生成" role="menuitem"><i data-lucide="music-2"></i><span>音频生成</span></button>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div id="composerApiSettingsWrap" class="composer-tool-wrap">
                                     <button id="composerApiSettingsBtn" class="composer-tool-btn" type="button" title="API设置" aria-label="API设置">
                                         <span id="composerApiSettingsBtnIcon" class="composer-model-brand-icon" aria-hidden="true"><i data-lucide="settings-2"></i></span><span id="composerApiSettingsBtnLabel">API设置</span><i data-lucide="chevron-up" class="composer-tool-caret"></i>
@@ -153,19 +189,6 @@
                                     </button>
                                     <div id="composerVideoReferencePopover" class="composer-tool-popover composer-video-reference-popover">
                                         <div id="composerVideoReferencePanel" class="composer-video-reference-panel"></div>
-                                    </div>
-                                </div>
-                                <div id="composerKindWrap" class="composer-tool-wrap composer-kind-wrap">
-                                    <button id="composerKindBtn" class="composer-tool-btn" type="button" title="生成类型" aria-label="生成类型">
-                                        <i data-lucide="image"></i><span id="composerKindBtnLabel">图片</span><i data-lucide="chevron-up" class="composer-tool-caret"></i>
-                                    </button>
-                                    <div id="composerKindPopover" class="composer-tool-popover">
-                                        <div id="apiKindToggle" class="composer-kind-toggle" role="group" aria-label="生成类型">
-                                            <button type="button" data-kind="audio" title="音频" aria-label="音频"><i data-lucide="music-2"></i><span>音频</span></button>
-                                            <button type="button" data-kind="text" title="文本" aria-label="文本"><i data-lucide="message-square-text"></i><span>文本</span></button>
-                                            <button type="button" data-kind="image" class="active" title="图片" aria-label="图片"><i data-lucide="image"></i><span>图片</span></button>
-                                            <button type="button" data-kind="video" title="视频" aria-label="视频"><i data-lucide="film"></i><span>视频</span></button>
-                                        </div>
                                     </div>
                                 </div>
                                 <div id="composerSizeWrap" class="composer-tool-wrap">
@@ -493,7 +516,7 @@
         <div id="mentionPreview" class="mention-preview"><img alt="preview"></div>
     </div>
     <script src="/static/js/smart-canvas-core.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-empty-dot-grid.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-empty-dot-grid.js?v=2026.08.29.laghard1"></script>
     <script src="/static/js/smart-canvas-canvas-hint.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-ui-feedback.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-string-utils.js?v=2026.08.11.82"></script>
@@ -506,35 +529,35 @@
     <script src="/static/js/smart-canvas-settings-recent.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-settings-storage.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-composer-settings.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-composer-text.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-composer-text.js?v=2026.08.29.lagfix1"></script>
 <script src="/static/js/smart-canvas-node-merge.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-persistence.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-history.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-composer.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-composer.js?v=2026.08.29.thumbrot1"></script>
     <script src="/static/js/smart-canvas-composer-input-thumbs.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-music.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-music.js?v=2026.08.29.lagkill2"></script>
     <script src="/static/js/smart-canvas-runninghub.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-comfy-params.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-run-state.js?v=2026.08.11.82"></script>
-    <script src="/static/js/model-brand-icons.js?v=2026.08.11.82"></script>
-  <script src="/static/js/smart-canvas-composer-params.js?v=2026.08.11.82"></script>
+    <script src="/static/js/model-brand-icons.js?v=2026.08.27.modelpresets1"></script>
+  <script src="/static/js/smart-canvas-composer-params.js?v=2026.08.29.perf1"></script>
     <script src="/static/js/smart-canvas-prompt-templates.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-ui-chrome.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-composer-resize.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-ui-chrome.js?v=2026.08.26.clip1"></script>
+    <script src="/static/js/smart-canvas-composer-resize.js?v=2026.08.27.h71"></script>
     <script src="/static/js/smart-canvas-overlay-chrome.js?v=2026.08.11.82"></script>
     <script src="/static/js/image-quick-toolbar.js?v=2026.08.11.82"></script>
-    <script src="/static/js/composer-footer-glider.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-smart-guides.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-ui-canvas.js?v=2026.08.11.82"></script>
+    <script src="/static/js/composer-footer-glider.js?v=2026.08.27.modehovwhite1"></script>
+    <script src="/static/js/smart-canvas-smart-guides.js?v=2026.08.29.lagkill2"></script>
+    <script src="/static/js/smart-canvas-ui-canvas.js?v=2026.08.29.lagkill2"></script>
     <script src="/static/js/smart-canvas-asset-open-guard.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-ui-bindings.js?v=2026.08.11.82"></script>
     <script src="/static/js/magic-wand.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-co-create-render.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-co-create.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-co-create.js?v=2026.08.29.cocreate2"></script>
     <script src="/static/js/smart-canvas-image-lightbox.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-dblclick-viewport.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-port-magnet.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-port-link-menu.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-port-magnet.js?v=2026.08.29.lagerad1"></script>
+    <script src="/static/js/smart-canvas-port-link-menu.js?v=2026.08.29.portslim1"></script>
     <script src="/static/js/smart-canvas-smart-group-membership.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-empty-node-chrome.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-asset-library.js?v=2026.08.11.82"></script>
@@ -577,28 +600,28 @@
 <script src="/static/js/smart-canvas-cascade.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-workflow-import.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-node-outputs.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-smart-group.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-smart-group.js?v=2026.08.27.grouppanel1"></script>
         <script src="/static/js/smart-canvas-generation-log.js?v=2026.08.11.82"></script>
   <script src="/static/js/smart-canvas-generation.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-multi-view.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-upload.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-ui-context.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-ui-context.js?v=2026.08.26.clip1"></script>
     <script src="/static/js/smart-canvas-agent-actions.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-node-delete.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-node-events.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-node-events.js?v=2026.08.27.hovergrid1"></script>
                 <script src="/static/js/smart-canvas-node-selection.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-node-model.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-node-factory.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-node-toolbar.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-node-clipboard.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-node-clipboard.js?v=2026.08.26.clip1"></script>
     <script src="/static/js/smart-canvas-node-meta.js?v=2026.08.11.82"></script>
 <script src="/static/js/smart-canvas-selection-box.js?v=2026.08.11.82"></script>
 <script src="/static/js/smart-canvas-multi-select-compose.js?v=2026.08.11.82"></script>
-<script src="/static/js/smart-canvas-viewport.js?v=2026.08.11.82"></script>
-<script src="/static/js/smart-canvas-nodes-render.js?v=2026.08.11.82"></script>
-  <script src="/static/js/smart-canvas.js?v=2026.08.11.82"></script>
+<script src="/static/js/smart-canvas-viewport.js?v=2026.08.29.lagerad1"></script>
+<script src="/static/js/smart-canvas-nodes-render.js?v=2026.08.29.lagkill2"></script>
+  <script src="/static/js/smart-canvas.js?v=2026.08.29.lagkill2"></script>
     <script src="/static/js/smart-canvas-footer-previews.js?v=2026.08.11.82"></script>
     <script src="/static/js/smart-canvas-connection-selection.js?v=2026.08.11.82"></script>
-    <script src="/static/js/smart-canvas-director3d-bridge.js?v=2026.08.11.82"></script>
+    <script src="/static/js/smart-canvas-director3d-bridge.js?v=2026.08.29.lagkill2"></script>
 </body>
 </html>
