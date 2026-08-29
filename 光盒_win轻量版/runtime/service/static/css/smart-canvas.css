@@ -5,7 +5,7 @@
     --shadow:rgba(55,65,81,.12); --strong:var(--ui-accent); --strong-text:#ffffff; --accent:var(--ui-accent);
 }
 .theme-dark {
-    --page:var(--ui-surface-canvas); --grid:rgba(255,255,255,.08); --panel:var(--ui-surface-chrome); --card:var(--ui-surface-card);
+    --page:var(--ui-surface-canvas); --grid:rgba(255,255,255,.10); --panel:var(--ui-surface-chrome); --card:var(--ui-surface-card);
     --text:var(--ui-text); --muted:var(--ui-text-secondary); --faint:var(--ui-text-muted); --line:var(--ui-border); --soft:var(--ui-hover);
     --shadow:rgba(0,0,0,.38); --strong:var(--ui-accent); --strong-text:#ffffff; --accent:var(--ui-accent);
 }
@@ -14,7 +14,14 @@ body { margin:0; height:100vh; overflow:hidden; overscroll-behavior:none; color:
 button,input,select,textarea { font:inherit; }
 button { border:0; cursor:pointer; }
 .node-context-menu { position:fixed; width:160px; display:flex; flex-direction:column; gap:var(--ui-space-1); color:var(--ui-text); user-select:none; }
-.canvas-context-menu { width:168px; }
+.canvas-context-menu { width:168px; padding-block: calc(var(--ui-space-4) + 2px); }
+.canvas-context-menu .ui-menu-divider {
+    flex: 0 0 auto;
+    height: 1px;
+    margin: calc(var(--ui-space-2) + 1px) var(--ui-space-3);
+    background: var(--ui-border);
+    opacity: 0.9;
+}
 .node-context-menu[hidden] { display:none; }
 .shell { position:relative; width:100vw; height:100vh; overflow:hidden; overscroll-behavior:none; touch-action:none; background-color:var(--page); background-image:radial-gradient(var(--grid) 1px, transparent 1px); background-size:24px 24px; cursor:default; }
 .shell.panning { cursor:grabbing; }
@@ -111,10 +118,12 @@ body.smart-node-drag .image-wrap:hover .image-resolution-badge { opacity:0 !impo
     z-index:0;
     pointer-events:auto;
     cursor:default;
-    border:.5px solid rgba(255,255,255,.32);
+    border:.5px solid rgba(255,255,255,.42);
     border-radius:28px;
-    background:rgba(248,249,251,.5);
-    box-shadow:none;
+    background:rgba(255,255,255,.30);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.35);
+    -webkit-backdrop-filter:none;
+    backdrop-filter:none;
 }
 .image-node.smart-group-node .node-head,
 .image-node.smart-group-node .node-body,
@@ -341,7 +350,7 @@ video.node-img { object-fit:cover; background:transparent; }
 .media-video-card { position:relative; align-items:stretch; justify-content:stretch; overflow:hidden; border:0; border-radius:18px; background:transparent; box-sizing:border-box; }
 .theme-dark .media-video-card { border-color:rgba(148,163,184,.3); }
 .media-video-card video { width:100%; height:100%; object-fit:cover; background:transparent; display:block; border-radius:inherit; }
-.smart-video-play { position:absolute; z-index:3; left:calc(50% - 18px); top:calc(50% - 18px); width:36px; height:36px; padding:0; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.36); border-radius:999px; background:rgba(15,23,42,.72) !important; color:#fff !important; box-shadow:var(--ui-shadow-pop); backdrop-filter:blur(10px); transform:none !important; animation:none !important; }
+.smart-video-play { position:absolute; z-index:3; left:calc(50% - 18px); top:calc(50% - 18px); width:36px; height:36px; padding:0; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.36); border-radius:999px; background:rgba(15,23,42,.72) !important; color:#fff !important; box-shadow:var(--ui-shadow-pop); backdrop-filter: none; transform:none !important; animation:none !important; }
 .smart-video-play:is(:hover,:focus-visible,:active),
 .smart-video-play:is(:hover,:focus-visible,:active) :is(i,svg) { transform:none !important; animation:none !important; }
 .smart-video-play :is(i,svg) { width:16px; height:16px; margin-left:1px; pointer-events:none; transform:none !important; }
@@ -721,10 +730,10 @@ video.node-img { object-fit:cover; background:transparent; }
 .compare-toggle:hover { border-color:var(--text); }
 .compare-toggle.active { background:var(--strong); color:var(--strong-text); border-color:var(--strong); }
 .compare-toggle i,.compare-toggle svg { width:14px !important; height:14px !important; stroke-width:2; }
-.composer { --composer-sheet-w:min(var(--ui-composer-w), calc(100vw - 48px)); --composer-sheet-min-h:240px; --composer-prompt-h:84px; --composer-footer-h:40px; --composer-bottom-gap:16px; --ctrl-font:var(--ui-type-control); --ctrl-icon:var(--ui-icon-sm); --ctrl-height:var(--ui-control-h); --ctrl-gap:var(--ui-space-2); --ctrl-xpad:var(--ui-space-4); --ctrl-pop-font:var(--ui-type-control); --ctrl-pop-icon:var(--ui-icon-sm); --ctrl-pop-height:var(--ui-control-h-sm); --ctrl-pop-radius:var(--ui-radius-control); position:absolute; left:50%; right:auto; top:auto; bottom:var(--composer-bottom-gap); z-index:85; width:var(--composer-sheet-w); height:auto; min-height:var(--composer-sheet-min-h); max-height:min(72vh, calc(100vh - 96px)); transform:translate(-50%, calc(100% + var(--composer-bottom-gap))); opacity:0; pointer-events:none; transition:opacity var(--ui-motion-surface) var(--ui-ease-emphasized), transform var(--ui-motion-surface) var(--ui-ease-emphasized); overflow:visible; }
-.composer.open { opacity:1; transform:translate(-50%, 0); pointer-events:auto; }
-.composer-card { position:relative; box-sizing:border-box; background:var(--ui-surface-elevated); border:1px solid var(--ui-border); border-radius:22px; box-shadow:var(--ui-shadow-pop); padding:8px; display:grid; grid-template-columns:minmax(0, 1fr); grid-template-areas:"prompt" "thumbs" "prompt-preview" "footer"; grid-template-rows:auto auto auto var(--composer-footer-h); gap:8px; align-items:stretch; overflow:visible; height:auto; min-height:var(--composer-sheet-min-h); max-height:inherit; }
-.composer-card .prompt-row { grid-area:prompt; box-sizing:border-box; min-width:0; min-height:var(--composer-prompt-h); height:var(--composer-prompt-h); max-height:var(--composer-prompt-h); padding-top:36px; display:flex; flex-direction:column; overflow:visible; }
+.composer { --composer-sheet-w:min(var(--ui-composer-w), calc(100vw - 48px)); --composer-sheet-min-h:240px; --composer-prompt-h:84px; --composer-footer-h:40px; --composer-bottom-gap:16px; --ctrl-font:var(--ui-type-control); --ctrl-icon:var(--ui-icon-sm); --ctrl-height:var(--ui-control-h); --ctrl-gap:var(--ui-space-2); --ctrl-xpad:var(--ui-space-4); --ctrl-pop-font:var(--ui-type-control); --ctrl-pop-icon:var(--ui-icon-sm); --ctrl-pop-height:var(--ui-control-h-sm); --ctrl-pop-radius:var(--ui-radius-control); position:absolute; left:50%; right:auto; top:auto; bottom:var(--composer-bottom-gap); z-index:85; width:var(--composer-sheet-w); height:auto; min-height:var(--composer-sheet-min-h); max-height:min(72vh, calc(100vh - 96px)); transform:translateX(-50%) translateY(calc(100% + var(--composer-bottom-gap))); opacity:0; pointer-events:none; transition:opacity var(--ui-motion-surface) var(--ui-ease-emphasized), transform var(--ui-motion-surface) var(--ui-ease-emphasized); overflow:visible; }
+.composer.open { opacity:1; transform:translateX(-50%); pointer-events:auto; }
+.composer-card { position:relative; box-sizing:border-box; background:var(--ui-surface-elevated); border:1px solid var(--ui-border); border-radius:22px; box-shadow:var(--ui-shadow-pop); padding:8px; display:grid; grid-template-columns:minmax(0, 1fr); grid-template-areas:"prompt" "prompt-preview" "footer"; grid-template-rows:auto auto var(--composer-footer-h); gap:8px; align-items:stretch; overflow:visible; height:auto; min-height:var(--composer-sheet-min-h); max-height:inherit; }
+.composer-card .prompt-row { grid-area:prompt; box-sizing:border-box; min-width:0; min-height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px)); height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px)); max-height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px)); padding-top:var(--ui-composer-prompt-padding-top, 40px); display:flex; flex-direction:column; overflow:visible; }
 .composer-card .prompt-input { flex:1 1 auto; min-width:0; min-height:0; max-height:none; height:auto; overflow-x:hidden; overflow-y:auto; background:#fff; border:1px solid rgba(175,179,186,.16); border-radius:22px; box-shadow:none; padding:8px 14px 4px; font-size:14px; line-height:1.65; color:var(--ui-text); }
 .composer-card .prompt-input:focus { border-color:rgba(175,179,186,.16); background:#fff; box-shadow:none; outline:none; }
 .composer-card .prompt-input:empty::before { font-size:14px; }
@@ -738,8 +747,28 @@ video.node-img { object-fit:cover; background:transparent; }
 .composer-api-settings-btn { display:inline-flex; align-items:center; gap:6px; height:var(--composer-footer-h); padding:0 14px; border:0; border-radius:999px; background:var(--ui-surface-chrome); color:var(--ui-text-secondary); font-size:12px; font-weight:600; line-height:1; cursor:pointer; box-shadow:none; transition:background-color var(--ui-motion-fast) var(--ui-ease), box-shadow var(--ui-motion-fast) var(--ui-ease); }
 .composer-tool-btn i,.composer-tool-btn svg,
 .composer-api-settings-btn i,.composer-api-settings-btn svg { width:16px !important; height:16px !important; stroke-width:1.5px !important; flex-shrink:0; }
-.composer-tool-btn .composer-tool-caret { width:11px !important; height:11px !important; margin-left:1px; stroke-width:1.6px !important; transition:transform var(--ui-motion-base) var(--ui-ease-emphasized); }
-.composer-tool-wrap.open .composer-tool-caret { transform:rotate(180deg); }
+.composer-tool-btn .composer-tool-caret,
+.composer-api-settings-btn .composer-tool-caret {
+    width: 11px !important;
+    height: 11px !important;
+    margin-left: 1px;
+    stroke-width: 1.6px !important;
+    transform: rotate(0deg);
+    transform-origin: center;
+    transition: transform var(--ui-motion-base) var(--ui-ease-emphasized);
+}
+.composer-tool-btn .composer-tool-caret svg,
+.composer-api-settings-btn .composer-tool-caret svg {
+    transform: inherit;
+    transform-origin: center;
+}
+/* 上拉展开：chevron-up 翻转为朝下；收起回归朝上 */
+.composer-tool-wrap.open .composer-tool-caret,
+.composer-api-settings-wrap.open .composer-tool-caret,
+.composer-tool-btn[aria-expanded="true"] .composer-tool-caret,
+.composer-api-settings-btn[aria-expanded="true"] .composer-tool-caret {
+    transform: rotate(180deg) !important;
+}
 .composer-tool-btn span { max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }.composer-tool-btn:hover,
 .composer-tool-btn:focus-visible,
 .composer-tool-wrap.open .composer-tool-btn,
@@ -752,7 +781,18 @@ video.node-img { object-fit:cover; background:transparent; }
 .composer-api-settings-wrap.open .composer-api-settings-btn { color:var(--ui-text); }
 .composer-tool-popover,
 .composer-api-settings-popover { position:absolute; left:0; bottom:calc(100% + 8px); z-index:130; width:max-content; min-width:180px; max-width:min(320px, calc(100vw - 64px)); max-height:min(250px, 42vh); overflow:auto; padding:8px; border-radius:var(--ui-radius-card); background:var(--panel); border:1px solid var(--line); box-shadow:var(--ui-shadow-pop); backdrop-filter:none; display:flex; flex-direction:column; gap:6px; opacity:0; visibility:hidden; pointer-events:none; transform:translateY(7px) scale(.985); transform-origin:left bottom; transition:opacity var(--ui-motion-base) var(--ui-ease-emphasized), transform var(--ui-motion-base) var(--ui-ease-emphasized), visibility 0s linear var(--ui-motion-base); }
-#composerKindPopover { width:166px; min-width:166px; }
+#composerKindPopover { width:180px; min-width:180px; }
+#composerKindPopover .composer-kind-toggle { width:100%; height:auto; padding:5px; flex-direction:column; align-items:stretch; gap:3px; border:1px solid rgba(150,158,171,.2); border-radius:12px; background:rgba(241,243,246,.9); box-shadow:none; display:flex; }
+#composerKindPopover .composer-kind-toggle button { width:100%; height:34px; justify-content:flex-start; padding:0 12px; border-radius:9px; font-size:var(--ui-type-control, 13px); }
+#composerKindPopover .composer-kind-toggle button i,#composerKindPopover .composer-kind-toggle button svg { width:14px !important; height:14px !important; }
+.shell .composer-card #composerKindWrap {
+    display:inline-flex !important;
+}
+.theme-dark #composerKindPopover .composer-kind-toggle,
+html.studio-theme-dark #composerKindPopover .composer-kind-toggle {
+    border-color: rgba(255,255,255,.12);
+    background: rgba(40,40,40,.96);
+}
 #composerSizePopover { width:min(340px, calc(100vw - 64px)); }
 #composerApiSettingsPopover { width:min(248px, calc(100vw - 64px)); }
 #composerSizeBtn { width:auto; min-width:0; justify-content:center; padding-inline:12px; }
@@ -1012,9 +1052,6 @@ video.node-img { object-fit:cover; background:transparent; }
 .composer.composer-text-mode #composerQualityBtnLabel {
     display:none !important;
 }
-#composerKindPopover .composer-kind-toggle { width:100%; height:auto; padding:5px; flex-direction:column; align-items:stretch; gap:3px; border:1px solid rgba(150,158,171,.2); border-radius:12px; background:rgba(241,243,246,.9); box-shadow:none; }
-#composerKindPopover .composer-kind-toggle button { width:100%; height:34px; justify-content:flex-start; padding:0 12px; border-radius:9px; font-size:11px; }
-#composerKindPopover .composer-kind-toggle button i,#composerKindPopover .composer-kind-toggle button svg { width:14px !important; height:14px !important; }
 
 .composer-api-tree { display:flex; width:100%; min-width:0; flex-direction:column; gap:4px; padding:5px; box-sizing:border-box; border:1px solid rgba(150,158,171,.2); border-radius:12px; background:rgba(241,243,246,.9); }
 .composer-api-tree-title { padding:2px 7px 5px; color:var(--ui-text-muted); font-size:10px; font-weight:600; letter-spacing:.05em; }
@@ -1030,7 +1067,7 @@ video.node-img { object-fit:cover; background:transparent; }
 .composer-api-models button.active{ background:rgba(var(--ui-accent-rgb),.1); }
 .composer-api-models button.active{color:var(--ui-accent);}
 .composer-mode-model-list { display:flex; flex-direction:column; gap:4px; width:100%; min-width:0; box-sizing:border-box; }
-.composer-mode-model-list .mode-model-choice { display:block; width:100%; min-height:28px; padding:2px 10px; text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; box-sizing:border-box; }
+.composer-mode-model-list .mode-model-choice { display:block; width:100%; min-height:28px; padding:2px 10px; text-align:left; white-space:normal; overflow:visible; text-overflow:ellipsis; cursor:pointer; box-sizing:border-box; }
 /* 我的模型里未绑定中转站的固定名字：可见但不可选 */
 .composer-mode-model-list .mode-model-choice.is-unbound { opacity:.42; cursor:not-allowed; }
 #composerApiSettingsPopover:has(.composer-model-menu) { width:max-content; min-width:250px; max-width:min(350px, calc(100vw - 64px)); padding:11px; gap:0; overflow:visible; max-height:none; }
@@ -1059,12 +1096,16 @@ video.node-img { object-fit:cover; background:transparent; }
 #composerQualityPanel .quality-choice-grid button,#composerCountPanel .count-cell { min-height:30px; border:0; border-radius:9px; background:transparent; color:var(--ui-text-secondary); font-size:10px; line-height:1; font-weight:445; }#composerQualityPanel .quality-choice-grid button:hover,
 #composerQualityPanel .quality-choice-grid button.active,
 #composerCountPanel .count-cell:hover,
-#composerCountPanel .count-cell.active{ background:transparent; }
+#composerCountPanel .count-cell.active{ background:var(--ui-hover, rgba(255,255,255,.08)); }
 #composerQualityPanel .quality-choice-grid button.active,
 #composerCountPanel .count-cell.active{color:var(--ui-accent);}
 .has-size-choice-glider { position:relative; isolation:isolate; }
 .has-size-choice-glider > button { position:relative; z-index:1; }
-.has-size-choice-glider > button.active,.has-size-choice-glider > button:hover,.has-size-choice-glider > button:focus-visible { background:transparent !important; border-color:transparent !important; }.has-strong-size-glider > button:hover,
+.has-size-choice-glider > button.active { background:transparent !important; border-color:transparent !important; }
+/* Hover fill is owned by minimax-visual (match first-level menu). Do not force transparent. */
+.has-size-choice-glider > button:hover,
+.has-size-choice-glider > button:focus-visible { border-color:transparent !important; }
+.has-strong-size-glider > button:hover,
 .has-strong-size-glider > button:focus-visible{ }.has-soft-size-glider > button:hover,
 .has-soft-size-glider > button:focus-visible{ }
 .size-choice-glider { position:absolute; left:0; top:0; z-index:0; width:var(--size-glider-width, 0px); height:var(--size-glider-height, 0px); box-sizing:border-box; border-radius:9px; pointer-events:none; transform:translate3d(var(--size-glider-x, 0px), var(--size-glider-y, 0px), 0) scale(1); transition:transform .5s cubic-bezier(.37,1.55,.66,.96), width .38s cubic-bezier(.37,1.35,.66,.96), height .38s cubic-bezier(.37,1.35,.66,.96), background .28s ease, box-shadow .28s ease; will-change:transform,width,height; }
@@ -1135,21 +1176,34 @@ body.input-thumb-pointer-dragging, body.input-thumb-pointer-dragging * { cursor:
     justify-content:center;
     padding:0;
     overflow:hidden;
-    border:1px dashed var(--ui-border-strong);
-    background:var(--ui-surface-input);
-    color:var(--ui-text-secondary);
+    border:1px dashed var(--ui-border-strong, rgba(148,163,184,.55));
+    background:rgba(31,31,31,.92);
+    color:rgba(241,241,241,.86);
     box-shadow:none;
     backdrop-filter:none;
     -webkit-backdrop-filter:none;
 }
-.input-thumb-upload svg { width:16px; height:16px; stroke-width:1.35; pointer-events:none; }.input-thumb-upload:hover,
+.input-thumb-upload svg { width:16px; height:16px; stroke-width:1.35; pointer-events:none; transform:none; }
+.input-thumb-upload:hover,
 .input-thumb-upload:focus-visible{
-    border-color:rgba(255,255,255,.98);
-    background:rgba(255,255,255,.76);
+    border-color:rgba(100,116,139,.72);
+    background:rgba(45,45,45,.94);
     box-shadow:none;
     outline:none;
 }
-.theme-dark .input-thumb-upload { background:rgba(42,42,42,.72); border-color:rgba(148,163,184,.42); color:#a1a1aa; }
+.theme-dark .input-thumb-upload,
+html.studio-theme-dark .input-thumb-upload,
+.theme-dark .input-thumb-upload:hover,
+.theme-dark .input-thumb-upload:focus-visible,
+html.studio-theme-dark .input-thumb-upload:hover,
+html.studio-theme-dark .input-thumb-upload:focus-visible {
+    background:rgba(31,31,31,.92) !important;
+    border:1px dashed rgba(166,166,166,.55) !important;
+    color:rgba(241,241,241,.86) !important;
+    box-shadow:none !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+}
 .composer-head { grid-area:head; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 2px; min-width:0; }
 .composer-head-left { min-width:0; display:flex; align-items:center; gap:6px; flex:1 1 auto; overflow:visible; }
 .composer-head-right { flex:0 0 auto; display:flex; align-items:center; justify-content:flex-end; margin-left:8px; }
@@ -1678,13 +1732,13 @@ input[type=range].smart-range::-webkit-slider-thumb { -webkit-appearance:none; w
 .new-canvas-toggle,.organize-canvas-toggle { height:40px; padding:0 15px; border-radius:999px; background:var(--panel); color:var(--text); border:1px solid var(--line); box-shadow:var(--ui-shadow-pop); backdrop-filter:none; display:flex; align-items:center; gap:8px; font-size:12px; font-weight:445; }
 .new-canvas-toggle:hover,.organize-canvas-toggle:hover { border-color:var(--text); transform:translateY(-1px); }
 .new-canvas-toggle i,.new-canvas-toggle svg,.organize-canvas-toggle i,.organize-canvas-toggle svg { width:16px; height:16px; }
-.log-modal { position:absolute; inset:0; z-index:86; display:none; align-items:center; justify-content:center; padding:28px; background:rgba(248,250,252,.42); backdrop-filter:blur(28px) saturate(115%); cursor:default; }
+.log-modal { position:absolute; inset:0; z-index:86; display:none; align-items:center; justify-content:center; padding:28px; background:rgba(248,250,252,.42); backdrop-filter: none; cursor:default; }
 .theme-dark .log-modal { background:rgba(2,6,23,.54); }
 .log-modal.open { display:flex; }
 .log-panel { width:min(860px, 94vw); max-height:86vh; display:flex; flex-direction:column; border-radius:22px; background:var(--card); border:1px solid var(--line); box-shadow:var(--ui-shadow-dialog); overflow:hidden; }
 .log-head { height:58px; padding:0 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
 .log-title { font-size:14px; font-weight:600; color:var(--text); }
-.shortcut-modal { position:absolute; inset:0; z-index:86; display:none; align-items:flex-start; justify-content:flex-end; padding:76px 232px 28px 28px; background:rgba(248,250,252,.18); backdrop-filter:blur(8px); cursor:default; }
+.shortcut-modal { position:absolute; inset:0; z-index:86; display:none; align-items:flex-start; justify-content:flex-end; padding:76px 232px 28px 28px; background:rgba(248,250,252,.18); backdrop-filter: none; cursor:default; }
 .theme-dark .shortcut-modal { background:rgba(2,6,23,.32); }
 .shortcut-modal.open { display:flex; }
 .shortcut-panel { width:min(480px, calc(100vw - 44px)); max-height:calc(100vh - 104px); display:flex; flex-direction:column; border-radius:18px; background:var(--card); border:1px solid var(--line); box-shadow:var(--ui-shadow-dialog); overflow:hidden; }
@@ -1785,7 +1839,7 @@ input[type=range].smart-range::-webkit-slider-thumb { -webkit-appearance:none; w
 .asset-soft-btn.is-primary { background:var(--strong); color:var(--strong-text); border-color:var(--strong); }
 .asset-soft-btn svg { width:13px; height:13px; flex:0 0 auto; }
 .theme-dark .asset-item, .theme-dark .asset-category-select { background:var(--card); }
-.asset-dialog-backdrop { position:absolute; inset:0; z-index:90; display:none; align-items:center; justify-content:center; padding:24px; background:rgba(15,23,42,.22); backdrop-filter:blur(28px) saturate(115%); }
+.asset-dialog-backdrop { position:absolute; inset:0; z-index:90; display:none; align-items:center; justify-content:center; padding:24px; background:rgba(15,23,42,.22); backdrop-filter: none; }
 .asset-dialog-backdrop.open { display:flex; }
 .asset-dialog { width:min(360px, calc(100vw - 48px)); border-radius:18px; background:var(--panel); border:1px solid var(--line); box-shadow:var(--ui-shadow-dialog); padding:14px; }
 .asset-dialog-title { display:flex; align-items:center; gap:8px; color:var(--text); font-size:13px; font-weight:600; margin-bottom:10px; }
@@ -1882,7 +1936,7 @@ input[type=range].smart-range::-webkit-slider-thumb { -webkit-appearance:none; w
 .preview-nav-btn.next { right:18px; }
 .preview-nav-btn i,.preview-nav-btn svg { width:20px !important; height:20px !important; stroke-width:2.4; }
 .theme-dark .preview-nav-btn { background:rgba(15,23,42,.78); border-color:rgba(148,163,184,.28); }.theme-dark .preview-nav-btn:hover{ background:#e5e7eb; border-color:#e5e7eb; box-shadow:none; }
-.image-edit-modal { position:absolute; inset:0; z-index:80; display:none; align-items:center; justify-content:center; padding:18px; background:rgba(248,250,252,.42); backdrop-filter:blur(28px) saturate(115%); }
+.image-edit-modal { position:absolute; inset:0; z-index:80; display:none; align-items:center; justify-content:center; padding:18px; background:rgba(248,250,252,.42); backdrop-filter: none; }
 .image-edit-modal.open { display:flex; z-index:150; }
 .shell:has(.image-edit-modal.open) .composer,
 .shell:has(.image-edit-modal.open) .image-quick-toolbar,
@@ -2905,8 +2959,8 @@ blue primary canvas actions. */.shell .create-card:hover,
 
 /* Canvas composer: gray panel + white input; node text areas keep gray inset */
 .shell .composer {
-    --composer-prompt-h:108px;
-    --composer-sheet-min-h:252px;
+    --composer-prompt-h:71px;
+    --composer-sheet-min-h:0px;
     background:transparent !important;
     border:0 !important;
     box-shadow:none !important;
@@ -3025,7 +3079,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card > :not(.comp
     z-index:4;
     left:18px;
     right:18px;
-    top:0;
+    top:var(--ui-composer-topbar-offset, 0);
     height:40px;
     display:flex;
     align-items:center;
@@ -3081,8 +3135,12 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card > :not(.comp
 }.shell .composer-card .composer-asset-shortcut:hover,
 .shell .composer-card .composer-asset-shortcut:focus-visible{
     border-color:transparent;
-    background:rgba(var(--ui-accent-rgb),.06);
+    background:#ffffff;
     outline:none;
+}
+html:is(.theme-dark, .studio-theme-dark) .shell .composer-card .composer-asset-shortcut:hover,
+html:is(.theme-dark, .studio-theme-dark) .shell .composer-card .composer-asset-shortcut:focus-visible{
+    background:transparent;
 }
 .shell .composer-card .composer-asset-shortcut :is(i,svg) {
     width:11px !important;
@@ -3110,7 +3168,7 @@ html body .shell #composer .composer-card-topbar .composer-asset-shortcuts:not(:
     justify-content:flex-end;
 }
 .shell .composer-card #composerKindWrap {
-    display:none !important;
+    display:inline-flex !important;
 }
 .shell .composer-card-topbar .composer-kind-toggle {
     position:relative;
@@ -3179,57 +3237,70 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-to
     opacity:1 !important;
 }
 .shell .composer-card-topbar .composer-kind-toggle button.is-mode-hover,
+.shell .composer-card-topbar #apiKindToggle button.is-mode-hover {
+    color:#747b85;
+    background:#ffffff;
+    border-color:transparent;
+    box-shadow:none;
+    outline:none;
+}
+.shell .composer-card-topbar .composer-kind-toggle button.is-mode-hover :is(i,svg,span),
+.shell .composer-card-topbar #apiKindToggle button.is-mode-hover :is(i,svg,span) {
+    color:#747b85 !important;
+    stroke:#747b85 !important;
+}
 .shell .composer-card-topbar .composer-kind-toggle:not(:has(.is-mode-hover)) button.active,
-.shell .composer-card-topbar #apiKindToggle button.is-mode-hover,
-.shell .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active {
+.shell .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active,
+.shell .composer-card-topbar .composer-kind-toggle:has(.is-mode-hover) button.active,
+.shell .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active {
     color:#fff;
     background:transparent;
     border-color:transparent;
     box-shadow:none;
     outline:none;
 }
-.shell .composer-card-topbar .composer-kind-toggle button.is-mode-hover :is(i,svg,span),
-.shell .composer-card-topbar .composer-kind-toggle:not(:has(.is-mode-hover)) button.active :is(i,svg,span),
-.shell .composer-card-topbar #apiKindToggle button.is-mode-hover :is(i,svg,span),
-.shell .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active :is(i,svg,span) {
+.shell .composer-card-topbar .composer-kind-toggle button.active :is(i,svg,span),
+.shell .composer-card-topbar #apiKindToggle button.active :is(i,svg,span) {
     color:#fff !important;
     stroke:#fff !important;
 }
-.shell .composer-card-topbar .composer-kind-toggle button:not(.is-mode-hover),
-.shell .composer-card-topbar .composer-kind-toggle:has(.is-mode-hover) button.active,
-.shell .composer-card-topbar #apiKindToggle button:not(.is-mode-hover),
-.shell .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active {
+.shell .composer-card-topbar .composer-kind-toggle button:not(.is-mode-hover):not(.active),
+.shell .composer-card-topbar #apiKindToggle button:not(.is-mode-hover):not(.active) {
     color:#747b85;
     background:transparent;
     border-color:transparent;
     box-shadow:none;
 }
-.shell .composer-card-topbar .composer-kind-toggle button:not(.is-mode-hover) :is(i,svg,span),
-.shell .composer-card-topbar .composer-kind-toggle:has(.is-mode-hover) button.active :is(i,svg,span),
-.shell .composer-card-topbar #apiKindToggle button:not(.is-mode-hover) :is(i,svg,span),
-.shell .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active :is(i,svg,span) {
+.shell .composer-card-topbar .composer-kind-toggle button:not(.is-mode-hover):not(.active) :is(i,svg,span),
+.shell .composer-card-topbar #apiKindToggle button:not(.is-mode-hover):not(.active) :is(i,svg,span) {
     color:#747b85 !important;
     stroke:#747b85 !important;
 }
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover,
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active {
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover {
+    color:#747b85 !important;
+    background:#ffffff !important;
+    border-color:transparent !important;
+    box-shadow:none !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover :is(i,svg,span) {
+    color:#747b85 !important;
+    stroke:#747b85 !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.active {
     color:#fff !important;
     background:transparent !important;
     border-color:transparent !important;
     box-shadow:none !important;
 }
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover :is(i,svg,span),
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active :is(i,svg,span) {
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.active :is(i,svg,span) {
     color:#fff !important;
     stroke:#fff !important;
 }
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover),
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active {
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover):not(.active) {
     color:#747b85 !important;
     background:transparent !important;
 }
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover) :is(i,svg,span),
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active :is(i,svg,span) {
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover):not(.active) :is(i,svg,span) {
     color:#747b85 !important;
     stroke:#747b85 !important;
 }
@@ -3241,13 +3312,16 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-to
 .shell #composer .composer-card-topbar .co-create-switch:hover,
 .shell #composer .composer-card-topbar .co-create-switch:focus,
 .shell #composer .composer-card-topbar .co-create-switch:focus-visible,
-.shell #composer .composer-card-topbar .co-create-switch:active {
+.shell #composer .composer-card-topbar .co-create-switch:active,
+.shell #composer .composer-card-topbar .co-create-switch.is-on,
+.shell #composer .composer-card-topbar .co-create-switch[aria-pressed="true"] {
     border:0 !important;
     outline:none !important;
     background:transparent !important;
     box-shadow:none !important;
     transform:none !important;
     animation:none !important;
+    color:inherit !important;
 }
 .shell #composer .composer-card-topbar .co-create-switch::before,
 .shell #composer .composer-card-topbar .co-create-switch::after {
@@ -3257,35 +3331,27 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-to
 .shell #composer .composer-card-topbar .co-create-switch {
     width:auto !important;
     min-width:0 !important;
-    height:22px !important;
+    height:auto !important;
     margin:0 !important;
-    padding:0 8px !important;
-    border:0 !important;
-    border-radius:999px !important;
+    padding:0 !important;
+    border-radius:0 !important;
+    white-space:nowrap !important;
+}
+.shell #composer .composer-card-topbar .co-create-switch-label {
     color:#747b85 !important;
-    font-size:11px !important;
+    font-size:var(--ui-type-control, 13px) !important;
     font-weight:445 !important;
     line-height:1 !important;
-    white-space:nowrap !important;
-}.shell #composer .composer-card-topbar .co-create-switch:hover,
-.shell #composer .composer-card-topbar .co-create-switch:focus-visible{
-    border-color:transparent !important;
-    background:rgba(var(--ui-accent-rgb),.06) !important;
-    outline:none !important;
 }
-.shell #composer .composer-card-topbar .co-create-switch.is-on,
-.shell #composer .composer-card-topbar .co-create-switch[aria-pressed="true"] {
-    color:#fff !important;
-    border-color:transparent !important;
-    background:var(--ui-accent) !important;
-}
-:is(html.theme-dark,html.studio-theme-dark) .shell #composer .composer-card-topbar .co-create-switch:not(.is-on):not([aria-pressed="true"]) {
-    color:#9aa0a8 !important;
+:is(html.theme-dark,html.studio-theme-dark) .shell #composer .composer-card-topbar .co-create-switch-label {
+    color:rgba(241, 241, 241, 0.78) !important;
 }
 .shell .composer-card-topbar .co-create-bar {
-    height:22px;
+    height:28px;
     margin:0;
     justify-content:flex-start;
+    align-items:center;
+    gap:8px;
 }
 .theme-dark .shell .composer-card-topbar .composer-kind-toggle button {
     color:#9aa0a8;
@@ -3337,10 +3403,10 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card::before {
 .shell .composer-card .prompt-row {
     box-sizing:border-box;
     min-width:0;
-    min-height:var(--composer-prompt-h);
-    height:var(--composer-prompt-h);
-    max-height:var(--composer-prompt-h);
-    padding-top:36px;
+    min-height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px));
+    height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px));
+    max-height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px));
+    padding-top:var(--ui-composer-prompt-padding-top, 40px);
     display:flex;
     flex-direction:column;
     overflow:visible;
@@ -3357,10 +3423,10 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card::before {
     border:0 !important;
     box-shadow:none !important;
     color:#17181b !important;
-    padding:calc(var(--ui-space-5) + var(--ui-space-1)) 46px 4px 14px !important;
+    padding:6px 46px 4px 14px !important;
 }
 html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-input {
-    padding:calc(var(--ui-space-5) + var(--ui-space-1)) 46px 4px 14px !important;
+    padding:6px 46px 4px 14px !important;
 }
 .shell .composer-card .prompt-input:focus {
     background:transparent !important;
@@ -3371,14 +3437,14 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-inpu
 .composer-height-toggle {
     position:absolute;
     right:12px;
-    top:43px;
+    top:42px;
     z-index:6;
     width:26px;
     height:26px;
     padding:0;
-    border:1px solid #dfe3e8 !important;
-    border-radius:8px;
-    background:rgba(255,255,255,.9) !important;
+    border:0 !important;
+    border-radius:0;
+    background:transparent !important;
     color:#747b85 !important;
     box-shadow:none !important;
     display:grid;
@@ -3386,11 +3452,13 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-inpu
     cursor:pointer;
     pointer-events:auto !important;
     outline:none;
-    transition:background-color .16s ease, border-color .16s ease;
+    transition:color .16s ease, opacity .16s ease;
 }.composer-height-toggle:hover,
 .composer-height-toggle:focus-visible{
-    border-color:#cbd1d9 !important;
-    background:#f2f3f5 !important;
+    border:0 !important;
+    background:transparent !important;
+    color:#5c636b !important;
+    opacity:.92;
 }
 .composer-height-toggle :is(i,svg) {
     grid-area:1 / 1;
@@ -3436,7 +3504,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-inpu
 .theme-dark .composer-api-settings-btn:hover,
 .theme-dark .composer-api-settings-btn:focus-visible,
 .theme-dark .composer-api-settings-wrap.open .composer-api-settings-btn{
-    background:#383838 !important;
+    background:transparent !important;
     border-color:transparent !important;
     box-shadow:none !important;
 }
@@ -3464,13 +3532,14 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-inpu
 }
 .theme-dark .shell .composer-card .prompt-input{color:var(--ui-text) !important;}
 .theme-dark .composer-height-toggle {
-    border-color:#3a3b40 !important;
-    background:#2e2f33 !important;
+    border:0 !important;
+    background:transparent !important;
     color:#9aa0a9 !important;
 }.theme-dark .composer-height-toggle:hover,
 .theme-dark .composer-height-toggle:focus-visible{
-    border-color:#4a4b50 !important;
-    background:#38393d !important;
+    border:0 !important;
+    background:transparent !important;
+    color:#c4c8ce !important;
 }
 .theme-dark .shell .prompt-node-text,
 .theme-dark .shell .loop-smart-text {
@@ -3630,7 +3699,11 @@ html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover .has-strong-s
 .shell .composer .composer-footer .composer-footer-bar {
     position:relative;
     isolation:isolate;
-    transform:translateY(-6px);
+    transform:translateY(-10px);
+}
+.shell .composer .composer-footer .composer-footer-tools {
+    position:relative;
+    top:0;
 }
 .shell .composer .composer-footer .composer-footer-glider {
     display:block;
@@ -3773,7 +3846,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-footer 
     margin-right:8px;
 }
 .shell .composer .composer-card {
-    padding-bottom:16px !important;
+    padding-bottom:8px !important;
 }
 .shell .composer .input-thumbs-row {
     padding:2px 12px 4px 16px;
@@ -3880,8 +3953,9 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-footer 
 }
 html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card .prompt-input:empty::before {
     color:rgba(86,91,99,.48);
-    font-size:11px;
+    font-size:14px;
     font-weight:400;
+    line-height:1.65;
 }
 
 /* Composer prompt must never inherit the native/global focus frame. Keep this
@@ -4853,29 +4927,56 @@ html body #shell.shell .image-node:is(:hover,.selected) .node-resize-handle {
     text-shadow:none !important;
 }
 
-/* Dense canvases trade GPU-heavy glass for immediate interaction. The class is
-   applied automatically by the renderer and removed again below 80 nodes. */
+/* Dense canvases trade GPU-heavy glass on nodes/panels for interaction.
+   Float chrome (toolbars/menus/popovers) keeps blur(60px) — see minimax float frost. */
 html.canvas-performance-mode :is(
     .image-node,
     .image-resolution-badge,
     .smart-minimap,
-    .create-menu,
     .canvas-history-panel,
     .asset-panel,
     .prompt-template-panel,
     .prompt-preset-panel,
     .composer-card,
-    .composer-tool-popover,
-    .composer-api-settings-popover,
+    .composer-card-material,
     .smart-popover,
     .loop-number-popover,
     .asset-dialog-backdrop,
     .log-modal,
     .shortcut-modal,
-    .image-edit-modal
+    .image-edit-modal,
+    .smart-group-frame-hit,
+    .canvas-bottom-capsule,
+    .dock-open-btn
 ) {
     backdrop-filter:none !important;
     -webkit-backdrop-filter:none !important;
+}
+
+/* Pan/zoom: kill node paint transitions so the whole world can transform cheaply. */
+html.canvas-performance-mode .image-node,
+.world.viewport-transform-active .image-node {
+    transition: none !important;
+    animation: none !important;
+    contain: layout style;
+}
+
+/* Float chrome keeps translucent frost while panning — no solid fill override. */
+
+/* Add-preview button: solid fill only — blur(60px) thrash in WebView2. */
+html.canvas-performance-mode #composer .input-thumb-upload,
+html.canvas-performance-mode .shell #composer .input-thumb-upload {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(31, 31, 31, .92) !important;
+}
+
+/* Pending-node wave blocks: kill infinite per-block animations under perf mode. */
+html.canvas-performance-mode .generation-wave-block {
+    animation: none !important;
+    will-change: auto !important;
+    opacity: .55 !important;
+    transform: none !important;
 }
 
 html.canvas-performance-mode :is(
@@ -5141,19 +5242,38 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     display:flex !important;
     align-items:center !important;
     gap:10px !important;
-    min-height:44px !important;
+    min-height:46px !important;
+    height:46px !important;
     padding:6px 12px !important;
-    font-size:13px !important;
+    font-size:14px !important;
     font-weight:445 !important;
     border:0 !important;
     background:transparent !important;
     background-image:none !important;
     box-shadow:none !important;
     border-radius:10px !important;
+    overflow:hidden !important;
+    white-space:normal !important;
 }
 
-/* 名字 + 一句话说明：复刻引用面板的悬停动效 ——
-   名字行上移 8px，小字从下方 4px 处淡入上滑。 */
+/* Hover/focus: fixed row height; name rises, desc fades in. */
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    min-height:46px !important;
+    height:46px !important;
+    padding:6px 12px !important;
+    align-items:center !important;
+}
+
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):has(.mode-model-desc):is(:hover, :focus-visible) {
+    min-height:46px !important;
+    height:46px !important;
+    align-items:center !important;
+    padding:6px 12px !important;
+}
+
+/* 名字常驻居中；说明小字绝对定位，悬停时淡入，名字上移。 */
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-copy {
     position:relative;
     flex:1 1 auto;
@@ -5163,50 +5283,88 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     justify-content:center;
     gap:0;
     align-self:stretch;
+    min-height:0;
 }
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-title-row {
     min-width:0;
     display:flex;
     align-items:center;
+    transition:transform .18s cubic-bezier(.22, .8, .28, 1);
     transform:translateY(0);
-    transition:transform .16s ease;
+    will-change:transform;
 }
 
-#composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
-    position:absolute;
-    top:50%;
-    right:0;
-    left:0;
-    margin-top:2px;
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-name {
+    flex:1 1 auto;
+    min-width:0;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
-    font-size:11px;
-    font-weight:400;
-    line-height:1.35;
-    color:#9aa0a9;
+    text-align:left;
+    font-size:var(--ui-type-section) !important;
+    font-weight:var(--ui-weight-menu-strong) !important;
+    font-variation-settings:"wght" var(--ui-weight-menu-strong) !important;
+    line-height:var(--ui-leading-tight) !important;
+    color:inherit !important;
+}
+
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
+    position:absolute;
+    left:0;
+    right:0;
+    top:calc(50% + 2px);
+    display:block;
+    margin:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:9.5px !important;
+    font-weight:300 !important;
+    font-variation-settings:"wght" 300 !important;
+    line-height:1.25 !important;
+    color:var(--ui-text-muted) !important;
     opacity:0;
     transform:translateY(4px);
     pointer-events:none;
-    transition:opacity .14s ease, transform .16s ease;
+    transition:opacity .18s ease, transform .18s cubic-bezier(.22, .8, .28, 1);
 }
 
-#composerApiSettingsPopover .composer-mode-model-list
-    .mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible)
-    .mode-model-title-row {
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:is(:hover, :focus-visible) .mode-model-title-row {
     transform:translateY(-8px);
 }
 
-#composerApiSettingsPopover .composer-mode-model-list
-    .mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible)
-    .mode-model-desc {
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:is(:hover, :focus-visible) .mode-model-desc {
+    display:block;
     opacity:1;
     transform:translateY(0);
 }
 
-:is(html.theme-dark, html.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
-    color:rgba(241,241,241,.46);
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:has(.mode-model-desc) {
+    min-height:46px !important;
+    height:46px !important;
+    padding:6px 12px !important;
+    align-items:center !important;
+}
+
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:has(.mode-model-desc):is(:hover, :focus-visible) {
+    min-height:46px !important;
+    height:46px !important;
+    padding:6px 12px !important;
+    align-items:center !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc,
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice .mode-model-desc {
+    color:var(--ui-text-muted) !important;
+    font-size:9.5px !important;
+    font-weight:300 !important;
+    font-variation-settings:"wght" 300 !important;
 }
 
 /* 行内结构：公司图标 + 名字 + 选中对号 */
@@ -5218,21 +5376,13 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     align-items:center;
     justify-content:center;
     opacity:.85;
+    align-self:center;
 }
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-ico svg {
     width:16px;
     height:16px;
     display:block;
-}
-
-#composerApiSettingsPopover .composer-mode-model-list .mode-model-name {
-    flex:1 1 auto;
-    min-width:0;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    text-align:left;
 }
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-check {
@@ -5243,6 +5393,7 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     display:none;
     align-items:center;
     justify-content:center;
+    align-self:center;
 }
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-check svg {
@@ -5253,8 +5404,9 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.active .mode-model-check {
     display:inline-flex;
-}html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible){
+}html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible){
     background:#f1f3f6 !important;
+    background-color:#f1f3f6 !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice.active {
@@ -5262,13 +5414,11 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     background:rgba(var(--ui-accent-rgb),.08) !important;
 }
 
-:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
-    background:rgba(255,255,255,.08) !important;
-}
-
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice.active {
     color:var(--ui-accent) !important;
-    background:rgba(var(--ui-accent-rgb),.16) !important;
+    background:transparent !important;
+    background-color:transparent !important;
+    border-color:transparent !important;
 }
 
 @media (prefers-reduced-motion:reduce) {
