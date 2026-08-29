@@ -3287,13 +3287,16 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-to
 .shell #composer .composer-card-topbar .co-create-switch:hover,
 .shell #composer .composer-card-topbar .co-create-switch:focus,
 .shell #composer .composer-card-topbar .co-create-switch:focus-visible,
-.shell #composer .composer-card-topbar .co-create-switch:active {
+.shell #composer .composer-card-topbar .co-create-switch:active,
+.shell #composer .composer-card-topbar .co-create-switch.is-on,
+.shell #composer .composer-card-topbar .co-create-switch[aria-pressed="true"] {
     border:0 !important;
     outline:none !important;
     background:transparent !important;
     box-shadow:none !important;
     transform:none !important;
     animation:none !important;
+    color:inherit !important;
 }
 .shell #composer .composer-card-topbar .co-create-switch::before,
 .shell #composer .composer-card-topbar .co-create-switch::after {
@@ -3303,39 +3306,27 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-to
 .shell #composer .composer-card-topbar .co-create-switch {
     width:auto !important;
     min-width:0 !important;
-    height:22px !important;
+    height:auto !important;
     margin:0 !important;
-    padding:0 8px !important;
-    border:0 !important;
-    border-radius:999px !important;
+    padding:0 !important;
+    border-radius:0 !important;
+    white-space:nowrap !important;
+}
+.shell #composer .composer-card-topbar .co-create-switch-label {
     color:#747b85 !important;
-    font-size:11px !important;
+    font-size:var(--ui-type-control, 13px) !important;
     font-weight:445 !important;
     line-height:1 !important;
-    white-space:nowrap !important;
-}.shell #composer .composer-card-topbar .co-create-switch:hover,
-.shell #composer .composer-card-topbar .co-create-switch:focus-visible{
-    border-color:transparent !important;
-    background:#ffffff !important;
-    outline:none !important;
 }
-html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar .co-create-switch:hover,
-html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar .co-create-switch:focus-visible{
-    background:transparent !important;
-}
-.shell #composer .composer-card-topbar .co-create-switch.is-on,
-.shell #composer .composer-card-topbar .co-create-switch[aria-pressed="true"] {
-    color:#fff !important;
-    border-color:transparent !important;
-    background:var(--ui-accent) !important;
-}
-:is(html.theme-dark,html.studio-theme-dark) .shell #composer .composer-card-topbar .co-create-switch:not(.is-on):not([aria-pressed="true"]) {
-    color:#9aa0a8 !important;
+:is(html.theme-dark,html.studio-theme-dark) .shell #composer .composer-card-topbar .co-create-switch-label {
+    color:rgba(241, 241, 241, 0.78) !important;
 }
 .shell .composer-card-topbar .co-create-bar {
-    height:22px;
+    height:28px;
     margin:0;
     justify-content:flex-start;
+    align-items:center;
+    gap:8px;
 }
 .theme-dark .shell .composer-card-topbar .composer-kind-toggle button {
     color:#9aa0a8;

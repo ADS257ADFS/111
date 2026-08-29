@@ -78,7 +78,6 @@
 }
 
 .shell #composer .composer-card-topbar .composer-asset-shortcut,
-.shell #composer .composer-card-topbar .co-create-switch,
 .shell #composer .composer-card-topbar .composer-kind-toggle button,
 .shell #composer .composer-card-topbar #apiKindToggle button {
     height: 28px !important;
@@ -87,6 +86,31 @@
     gap: 6px !important;
     font-size: var(--ui-type-control, 13px) !important;
     line-height: 1 !important;
+}
+
+.shell #composer .composer-card-topbar .co-create-switch {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+.shell #composer .composer-card-topbar .co-create-switch-label {
+    font-size: var(--ui-type-control, 13px) !important;
+    font-weight: var(--ui-weight-medium, 445) !important;
+    line-height: 1 !important;
+    color: var(--ui-text-secondary) !important;
+}
+
+.shell #composer .composer-card-topbar .co-create-switch.is-on,
+.shell #composer .composer-card-topbar .co-create-switch[aria-pressed="true"],
+.shell #composer .composer-card-topbar .co-create-switch:hover,
+.shell #composer .composer-card-topbar .co-create-switch:focus-visible {
+    background: transparent !important;
+    color: inherit !important;
 }
 
 /* 顶部窄条不再展示四模式切换 */
