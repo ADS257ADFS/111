@@ -14,10 +14,35 @@
     const COLLAPSE_KEY = 'mm_sidebar_collapsed';
     const ASSET_TREE_STATE_KEY = 'mm_sidebar_asset_tree';
     const ASSET_FOLDER_KEY = 'mm_sidebar_asset_folders';
+    const ASSET_KIND_VIEW_KEY = 'mm_sidebar_asset_kind_view';
     const THUMB_CACHE_KEY = 'mm_sidebar_thumbs';
+    const ASSET_KIND_TITLES = {
+        image: '图片资产',
+        prompt: '提示词',
+        video: '视频资产',
+        audio: '音频资产',
+    };
+    const ASSET_KIND_EMPTY = {
+        image: '暂无图片资产\n点击右上角上传图标，或从画布拖入',
+        prompt: '暂无提示词\n点击右上角新建图标添加；可复制、编辑并引用到输入栏',
+        video: '暂无视频资产\n点击右上角上传图标，或从画布拖入',
+        audio: '暂无音频资产\n点击右上角上传图标，或从画布拖入',
+    };
+    const ASSET_KIND_ACCEPT = {
+        image: 'image/*,.png,.jpg,.jpeg,.gif,.webp,.bmp,.svg',
+        video: 'video/*,.mp4,.webm,.mov,.m4v,.avi,.mkv',
+        audio: 'audio/*,.mp3,.wav,.flac,.aac,.m4a,.ogg',
+    };
+    const IMAGE_EXT_RE = /\.(png|jpe?g|gif|webp|bmp|svg|psd)([?#]|$)/i;
+    const AUDIO_EXT_RE = /\.(mp3|wav|flac|aac|m4a|ogg)([?#]|$)/i;
     let assetFolderMenu = null;
     let assetFolderMenuTarget = null;
-    const VIDEO_URL_RE = /\.(mp4|webm|mov|m4v|avi)([?#]|$)/i;
+    let activeAssetKind = '';
+    let kindViewMode = 'grid';
+    let kindAssetsLoading = false;
+    let kindAssetsSaving = false;
+    let kindDropDepth = 0;
+    const VIDEO_URL_RE = /\.(mp4|webm|mov|m4v|avi|mkv)([?#]|$)/i;
     let records = [];
     let loading = false;
     let reloadTimer = 0;
@@ -105,6 +130,13 @@
         menu.innerHTML = `
             <button class="mm-recent-rename" type="button" role="menuitem"><i data-lucide="pencil"></i><span>重命名</span></button>
             <button class="mm-recent-delete" type="button" role="menuitem"><i data-lucide="trash-2"></i><span>删除</span></button>`;
+        menu.addEventListener('mousedown', event => {
+            event.stopPropagation();
+        });
+        menu.addEventListener('pointerdown', event => {
+            event.stopPropagation();
+        });
+        menu.addEventListener('click', event => event.stopPropagation());
         menu.querySelector('.mm-recent-rename')?.addEventListener('click', event => {
             event.preventDefault();
             event.stopPropagation();
@@ -129,12 +161,17 @@
         const menu = ensureRecentMenu();
         const wasOpen = recentMenuRow === row && !menu.hidden;
         closeRecentMenus();
-        if(wasOpen) return;
+        if(wasOpen || !trigger || !row || !item) return;
         recentMenuItem = item;
         recentMenuRow = row;
         row.classList.add('menu-open');
         trigger.setAttribute('aria-expanded', 'true');
         menu.hidden = false;
+        // Measure after paint so fixed menu is not positioned with a zero box.
+        requestAnimationFrame(() => {
+            if(recentMenuRow !== row || menu.hidden) return;
+            positionRecentMenu(trigger, menu);
+        });
         positionRecentMenu(trigger, menu);
     }
 
@@ -319,14 +356,23 @@
             const item = records.find(record => String(record.id) === row.dataset.canvasId);
             if(!item) return;
             row.querySelector('.mm-recent-open')?.addEventListener('click', event => {
+                // Ignore clicks that actually landed on the ellipsis (or its children).
+                if(event.target?.closest?.('.mm-recent-actions, .mm-recent-menu-trigger')) return;
                 event.preventDefault();
                 void global.SmartCanvasShellHistory?.openCanvasRecord?.({ id: String(item.id) });
                 global.setTimeout(render, 600);
             });
-            row.querySelector('.mm-recent-menu-trigger')?.addEventListener('click', event => {
+            const trigger = row.querySelector('.mm-recent-menu-trigger');
+            if(!trigger) return;
+            trigger.addEventListener('pointerdown', event => {
+                // Keep the document outside-click closer from seeing this press.
+                event.stopPropagation();
+            });
+            trigger.addEventListener('click', event => {
                 event.preventDefault();
                 event.stopPropagation();
-                toggleRecentMenu(event.currentTarget, row, item);
+                event.stopImmediatePropagation?.();
+                toggleRecentMenu(trigger, row, item);
             });
         });
     }
@@ -425,6 +471,540 @@
         tree.classList.toggle('is-collapsed', !open);
         trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
         if(persist) writeAssetTreeState();
+    }
+
+    function readKindViewMode(){
+        try {
+            const saved = localStorage.getItem(ASSET_KIND_VIEW_KEY);
+            return saved === 'list' ? 'list' : 'grid';
+        } catch(_e) {
+            return 'grid';
+        }
+    }
+
+    function writeKindViewMode(mode){
+        kindViewMode = mode === 'list' ? 'list' : 'grid';
+        try { localStorage.setItem(ASSET_KIND_VIEW_KEY, kindViewMode); } catch(_e) {}
+    }
+
+    function setKindViewMode(mode){
+        writeKindViewMode(mode);
+        const body = byId('mmKindPanelBody');
+        const gridBtn = byId('mmKindViewGrid');
+        const listBtn = byId('mmKindViewList');
+        if(body) body.dataset.kindView = kindViewMode;
+        gridBtn?.classList.toggle('is-active', kindViewMode === 'grid');
+        listBtn?.classList.toggle('is-active', kindViewMode === 'list');
+        gridBtn?.setAttribute('aria-pressed', kindViewMode === 'grid' ? 'true' : 'false');
+        listBtn?.setAttribute('aria-pressed', kindViewMode === 'list' ? 'true' : 'false');
+    }
+
+    function mediaKindOfAsset(item){
+        const kind = String(item?.kind || item?.type || item?.media_kind || '').toLowerCase();
+        if(['image', 'prompt', 'video', 'audio'].includes(kind)) return kind;
+        const mime = String(item?.mime_type || item?.mime || '').toLowerCase();
+        if(mime.startsWith('video/')) return 'video';
+        if(mime.startsWith('audio/')) return 'audio';
+        if(mime.startsWith('image/')) return 'image';
+        const url = String(item?.url || item?.thumbnail || item?.thumb_url || item?.preview_url || item?.file || item?.name || '');
+        if(VIDEO_URL_RE.test(url)) return 'video';
+        if(AUDIO_EXT_RE.test(url)) return 'audio';
+        if(IMAGE_EXT_RE.test(url)) return 'image';
+        if(item?.prompt || item?.text || item?.positive) return 'prompt';
+        return 'image';
+    }
+
+    function mediaKindOfFile(file){
+        const mime = String(file?.type || '').toLowerCase();
+        const name = String(file?.name || '');
+        if(mime.startsWith('video/') || VIDEO_URL_RE.test(name)) return 'video';
+        if(mime.startsWith('audio/') || AUDIO_EXT_RE.test(name)) return 'audio';
+        if(mime.startsWith('image/') || IMAGE_EXT_RE.test(name)) return 'image';
+        return '';
+    }
+
+    function assetDisplayName(item){
+        return String(item?.name || item?.title || item?.filename || '未命名素材').trim() || '未命名素材';
+    }
+
+    function assetThumbUrl(item){
+        return String(item?.thumbnail || item?.thumb_url || item?.preview_url || item?.url || '').trim();
+    }
+
+    function syncKindPanelAddButton(){
+        const addBtn = byId('mmKindPanelAdd');
+        const label = byId('mmKindPanelAddLabel');
+        const fileInput = byId('mmKindPanelFile');
+        if(!addBtn) return;
+        const isPrompt = activeAssetKind === 'prompt';
+        const iconName = isPrompt ? 'plus' : 'upload';
+        const title = isPrompt ? '新建提示词' : '上传资产';
+        if(label) label.textContent = isPrompt ? '新建' : '上传';
+        addBtn.title = title;
+        addBtn.setAttribute('aria-label', title);
+        addBtn.disabled = kindAssetsSaving;
+        addBtn.querySelectorAll(':scope > i, :scope > svg').forEach(node => node.remove());
+        const icon = document.createElement('i');
+        icon.setAttribute('data-lucide', iconName);
+        addBtn.insertBefore(icon, addBtn.firstChild);
+        if(fileInput){
+            fileInput.accept = ASSET_KIND_ACCEPT[activeAssetKind] || '';
+            fileInput.value = '';
+        }
+        try { global.lucide?.createIcons?.(); } catch(_e) {}
+    }
+
+    async function copyTextToClipboard(text){
+        const value = String(text || '');
+        if(!value) return false;
+        try {
+            if(navigator.clipboard?.writeText){
+                await navigator.clipboard.writeText(value);
+                return true;
+            }
+        } catch(_e) {}
+        try {
+            const area = document.createElement('textarea');
+            area.value = value;
+            area.setAttribute('readonly', '');
+            area.style.position = 'fixed';
+            area.style.left = '-9999px';
+            document.body.appendChild(area);
+            area.select();
+            const ok = document.execCommand('copy');
+            area.remove();
+            return ok;
+        } catch(_e) {
+            return false;
+        }
+    }
+
+    function postToCanvas(message){
+        const frame = document.getElementById('frame-canvas');
+        try { frame?.contentWindow?.postMessage(message, '*'); } catch(_e) {}
+    }
+
+    function absoluteAssetUrl(url){
+        const raw = String(url || '').trim();
+        if(!raw) return '';
+        if(/^(https?:|data:|blob:)/i.test(raw)) return raw;
+        try { return new URL(raw, global.location.origin).href; } catch(_e) { return raw; }
+    }
+
+    async function importCanvasUrlsToKindPanel(items){
+        if(!activeAssetKind || activeAssetKind === 'prompt'){
+            toastKindMessage('请先打开图片/视频/音频资产面板');
+            return;
+        }
+        const list = (items || [])
+            .map(item => ({
+                url: absoluteAssetUrl(item?.url),
+                name: String(item?.name || 'media').trim() || 'media',
+                kind: String(item?.kind || '').toLowerCase(),
+            }))
+            .filter(item => item.url && (!item.kind || item.kind === activeAssetKind || (
+                activeAssetKind === 'image' && !item.kind
+            )));
+        if(!list.length){
+            toastKindMessage(`请拖入${ASSET_KIND_TITLES[activeAssetKind] || '对应'}素材`);
+            return;
+        }
+        kindAssetsSaving = true;
+        syncKindPanelAddButton();
+        try {
+            const data = await fetch('/api/local-assets/import-urls', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    folder: activeAssetKind,
+                    items: list.map(item => ({ url: item.url, name: item.name })),
+                }),
+            }).then(async r => {
+                if(!r.ok){
+                    const detail = await r.json().catch(() => ({}));
+                    throw new Error(detail?.detail || await r.text() || '导入失败');
+                }
+                return r.json();
+            });
+            toastKindMessage(`已保存 ${data?.count || list.length} 个资产`);
+            await loadKindPanelAssets(activeAssetKind);
+        } catch(error) {
+            toastKindMessage(error?.message || '从画布导入失败');
+        } finally {
+            kindAssetsSaving = false;
+            syncKindPanelAddButton();
+        }
+    }
+
+    function tryImportCanvasDropAtPoint(clientX, clientY, items){
+        const panel = byId('mmSidebarKindPanel');
+        const body = byId('mmKindPanelBody');
+        if(!panel || panel.hidden || !body || !activeAssetKind || activeAssetKind === 'prompt') return false;
+        const rect = body.getBoundingClientRect();
+        if(clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) return false;
+        void importCanvasUrlsToKindPanel(items);
+        return true;
+    }
+
+    function setKindPanelDropActive(active){
+        const body = byId('mmKindPanelBody');
+        const drop = byId('mmKindPanelDrop');
+        body?.classList.toggle('is-drop-active', Boolean(active));
+        if(drop){
+            drop.hidden = !active;
+            drop.setAttribute('aria-hidden', active ? 'false' : 'true');
+        }
+    }
+
+    function toastKindMessage(message){
+        if(global.toast){
+            try { global.toast(message); return; } catch(_e) {}
+        }
+        if(global.SmartCanvasShellToast?.show){
+            try { global.SmartCanvasShellToast.show(message); return; } catch(_e) {}
+        }
+        try { console.info(message); } catch(_e) {}
+    }
+
+    function renderKindPanelItems(items){
+        const empty = byId('mmKindPanelEmpty');
+        const grid = byId('mmKindPanelGrid');
+        if(!empty || !grid) return;
+        const list = Array.isArray(items) ? items : [];
+        if(!list.length){
+            empty.hidden = false;
+            empty.textContent = ASSET_KIND_EMPTY[activeAssetKind] || '暂无内容';
+            grid.hidden = true;
+            grid.innerHTML = '';
+            return;
+        }
+        empty.hidden = true;
+        grid.hidden = false;
+        const icon = {
+            image: 'image',
+            prompt: 'text',
+            video: 'film',
+            audio: 'music-2',
+        }[activeAssetKind] || 'file';
+        grid.innerHTML = list.map(item => {
+            const name = esc(assetDisplayName(item));
+            const thumb = assetThumbUrl(item);
+            const bodyText = String(item?.positive || item?.text || item?.prompt || '').trim();
+            const preview = esc(bodyText);
+            if(activeAssetKind === 'prompt'){
+                const id = esc(String(item?.id || ''));
+                const libraryId = esc(String(item?.library_id || ''));
+                return `<div class="mm-kind-item mm-kind-item-prompt" data-prompt-id="${id}" data-library-id="${libraryId}" data-prompt-name="${name}">
+                    <div class="mm-kind-item-prompt-body">
+                        <span class="mm-kind-item-name">${name}</span>
+                        <span class="mm-kind-item-preview">${preview || '（空提示词）'}</span>
+                        <textarea class="mm-kind-item-editor" hidden rows="4">${preview}</textarea>
+                    </div>
+                    <div class="mm-kind-item-actions">
+                        <button type="button" class="mm-kind-item-action" data-prompt-action="copy" title="复制提示词" aria-label="复制提示词"><i data-lucide="copy"></i><span>复制</span></button>
+                        <button type="button" class="mm-kind-item-action" data-prompt-action="edit" title="编辑提示词" aria-label="编辑提示词"><i data-lucide="pencil"></i><span>编辑</span></button>
+                        <button type="button" class="mm-kind-item-action" data-prompt-action="apply" title="引用到画布输入栏" aria-label="引用到画布输入栏"><i data-lucide="corner-down-left"></i><span>引用</span></button>
+                        <button type="button" class="mm-kind-item-action" data-prompt-action="save" hidden title="保存修改" aria-label="保存修改"><i data-lucide="save"></i><span>保存</span></button>
+                        <button type="button" class="mm-kind-item-action" data-prompt-action="cancel" hidden title="取消" aria-label="取消"><span>取消</span></button>
+                    </div>
+                </div>`;
+            }
+            const thumbHtml = thumb
+                ? `<img src="${esc(thumb)}" alt="">`
+                : `<i data-lucide="${icon}"></i>`;
+            return `<button type="button" class="mm-kind-item" title="${name}">
+                <span class="mm-kind-item-thumb">${thumbHtml}</span>
+                <span class="mm-kind-item-name">${name}</span>
+            </button>`;
+        }).join('');
+        try { global.lucide?.createIcons?.(); } catch(_e) {}
+    }
+
+    function setPromptItemEditing(card, editing){
+        if(!card) return;
+        card.classList.toggle('is-editing', Boolean(editing));
+        const preview = card.querySelector('.mm-kind-item-preview');
+        const editor = card.querySelector('.mm-kind-item-editor');
+        const editBtn = card.querySelector('[data-prompt-action="edit"]');
+        const saveBtn = card.querySelector('[data-prompt-action="save"]');
+        const cancelBtn = card.querySelector('[data-prompt-action="cancel"]');
+        const copyBtn = card.querySelector('[data-prompt-action="copy"]');
+        const applyBtn = card.querySelector('[data-prompt-action="apply"]');
+        if(preview) preview.hidden = Boolean(editing);
+        if(editor){
+            editor.hidden = !editing;
+            if(editing){
+                editor.focus();
+                editor.setSelectionRange(editor.value.length, editor.value.length);
+            }
+        }
+        if(editBtn) editBtn.hidden = Boolean(editing);
+        if(copyBtn) copyBtn.hidden = Boolean(editing);
+        if(applyBtn) applyBtn.hidden = Boolean(editing);
+        if(saveBtn) saveBtn.hidden = !editing;
+        if(cancelBtn) cancelBtn.hidden = !editing;
+    }
+
+    async function handlePromptItemAction(action, card){
+        if(!card || !action) return;
+        const id = card.dataset.promptId || '';
+        const editor = card.querySelector('.mm-kind-item-editor');
+        const preview = card.querySelector('.mm-kind-item-preview');
+        const currentText = String(editor?.value || preview?.textContent || '').trim();
+        if(action === 'copy'){
+            const ok = await copyTextToClipboard(currentText);
+            toastKindMessage(ok ? '已复制提示词' : '复制失败');
+            return;
+        }
+        if(action === 'apply'){
+            if(!currentText){
+                toastKindMessage('提示词为空');
+                return;
+            }
+            postToCanvas({ type: 'shell-apply-prompt', text: currentText });
+            toastKindMessage('已引用到画布输入栏');
+            return;
+        }
+        if(action === 'edit'){
+            setPromptItemEditing(card, true);
+            return;
+        }
+        if(action === 'cancel'){
+            if(editor && preview) editor.value = preview.textContent || '';
+            setPromptItemEditing(card, false);
+            return;
+        }
+        if(action === 'save'){
+            if(!id){
+                toastKindMessage('无法保存：缺少提示词 ID');
+                return;
+            }
+            const nextText = String(editor?.value || '').trim();
+            if(!nextText){
+                toastKindMessage('提示词不能为空');
+                return;
+            }
+            try {
+                const data = await fetch(`/api/prompt-libraries/items/${encodeURIComponent(id)}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        positive: nextText,
+                        name: card.dataset.promptName || undefined,
+                    }),
+                }).then(async r => {
+                    if(!r.ok){
+                        const detail = await r.json().catch(() => ({}));
+                        throw new Error(detail?.detail || await r.text() || '保存失败');
+                    }
+                    return r.json();
+                });
+                void data;
+                if(preview) preview.textContent = nextText;
+                setPromptItemEditing(card, false);
+                toastKindMessage('提示词已更新');
+            } catch(error) {
+                toastKindMessage(error?.message || '保存失败');
+            }
+        }
+    }
+
+    async function loadLocalKindAssets(kind){
+        const response = await fetch('/api/local-assets', { cache: 'no-store' });
+        if(!response.ok) throw new Error(await response.text());
+        const data = await response.json();
+        const raw = Array.isArray(data) ? data
+            : Array.isArray(data?.items) ? data.items
+            : Array.isArray(data?.assets) ? data.assets
+            : [];
+        return raw.filter(item => mediaKindOfAsset(item) === kind);
+    }
+
+    async function loadPromptKindAssets(){
+        const response = await fetch('/api/prompt-libraries', { cache: 'no-store' });
+        if(!response.ok) throw new Error(await response.text());
+        const data = await response.json();
+        const libraries = Array.isArray(data?.library?.libraries)
+            ? data.library.libraries
+            : Array.isArray(data?.libraries) ? data.libraries : [];
+        return libraries
+            .filter(lib => lib && lib.id !== 'system' && !lib.readonly)
+            .flatMap(lib => (Array.isArray(lib.items) ? lib.items : []).map(item => ({
+                ...item,
+                kind: 'prompt',
+                name: item?.name || '未命名提示词',
+                text: item?.positive || item?.text || '',
+                library_id: lib.id,
+            })))
+            .filter(item => item.id);
+    }
+
+    async function loadKindPanelAssets(kind){
+        if(kindAssetsLoading) return;
+        kindAssetsLoading = true;
+        const empty = byId('mmKindPanelEmpty');
+        if(empty){
+            empty.hidden = false;
+            empty.textContent = '加载中…';
+        }
+        byId('mmKindPanelGrid')?.setAttribute('hidden', '');
+        try {
+            const filtered = kind === 'prompt'
+                ? await loadPromptKindAssets()
+                : await loadLocalKindAssets(kind);
+            if(activeAssetKind === kind) renderKindPanelItems(filtered);
+        } catch(_e) {
+            if(activeAssetKind === kind) renderKindPanelItems([]);
+        } finally {
+            kindAssetsLoading = false;
+        }
+    }
+
+    async function ensurePromptLibrary(){
+        const response = await fetch('/api/prompt-libraries', { cache: 'no-store' });
+        if(!response.ok) throw new Error(await response.text());
+        const data = await response.json();
+        const libraries = Array.isArray(data?.library?.libraries)
+            ? data.library.libraries
+            : Array.isArray(data?.libraries) ? data.libraries : [];
+        const existing = libraries.find(lib => lib && lib.id !== 'system' && !lib.readonly);
+        if(existing) return existing;
+        const created = await fetch('/api/prompt-libraries', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: '我的提示词' }),
+        }).then(async r => {
+            if(!r.ok) throw new Error(await r.text());
+            return r.json();
+        });
+        const next = Array.isArray(created?.library?.libraries)
+            ? created.library.libraries.find(lib => lib && lib.id !== 'system' && !lib.readonly)
+            : null;
+        if(!next) throw new Error('无法创建提示词库');
+        return next;
+    }
+
+    async function addPromptAsset(){
+        const positive = String(global.prompt?.('输入提示词内容', '') || '').trim();
+        if(!positive) return;
+        const defaultName = positive.slice(0, 24) || '未命名提示词';
+        const name = String(global.prompt?.('提示词名称', defaultName) || '').trim() || defaultName;
+        kindAssetsSaving = true;
+        syncKindPanelAddButton();
+        try {
+            const lib = await ensurePromptLibrary();
+            const data = await fetch('/api/prompt-libraries/items', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    library_id: lib.id,
+                    name,
+                    category: 'mine',
+                    positive,
+                    scene: '侧栏资产',
+                }),
+            }).then(async r => {
+                if(!r.ok) throw new Error(await r.text());
+                return r.json();
+            });
+            void data;
+            toastKindMessage('提示词已保存');
+            await loadKindPanelAssets('prompt');
+        } catch(error) {
+            toastKindMessage(error?.message || '保存提示词失败');
+            global.alert?.(error?.message || '保存提示词失败');
+        } finally {
+            kindAssetsSaving = false;
+            syncKindPanelAddButton();
+        }
+    }
+
+    async function uploadKindFiles(fileList){
+        if(activeAssetKind === 'prompt'){
+            toastKindMessage('提示词请使用「新建」添加');
+            return;
+        }
+        const files = [...(fileList || [])].filter(file => mediaKindOfFile(file) === activeAssetKind);
+        if(!files.length){
+            toastKindMessage(`请选择${ASSET_KIND_TITLES[activeAssetKind] || '对应'}文件`);
+            return;
+        }
+        kindAssetsSaving = true;
+        syncKindPanelAddButton();
+        const empty = byId('mmKindPanelEmpty');
+        if(empty && !byId('mmKindPanelGrid')?.childElementCount){
+            empty.hidden = false;
+            empty.textContent = '上传中…';
+        }
+        try {
+            const form = new FormData();
+            form.append('folder', activeAssetKind || '');
+            files.forEach(file => form.append('files', file, file.name || 'media'));
+            const data = await fetch('/api/local-assets/upload', {
+                method: 'POST',
+                body: form,
+            }).then(async r => {
+                if(!r.ok){
+                    const detail = await r.json().catch(() => ({}));
+                    throw new Error(detail?.detail || await r.text() || '上传失败');
+                }
+                return r.json();
+            });
+            toastKindMessage(`已保存 ${data?.count || data?.files?.length || files.length} 个资产`);
+            await loadKindPanelAssets(activeAssetKind);
+        } catch(error) {
+            toastKindMessage(error?.message || '上传失败');
+            global.alert?.(error?.message || '上传失败');
+            if(activeAssetKind) await loadKindPanelAssets(activeAssetKind);
+        } finally {
+            kindAssetsSaving = false;
+            syncKindPanelAddButton();
+        }
+    }
+
+    function handleKindPanelAdd(){
+        if(!activeAssetKind || kindAssetsSaving) return;
+        if(activeAssetKind === 'prompt'){
+            void addPromptAsset();
+            return;
+        }
+        byId('mmKindPanelFile')?.click();
+    }
+
+    function openAssetKindPanel(kind){
+        const next = String(kind || '').toLowerCase();
+        if(!ASSET_KIND_TITLES[next]) return;
+        activeAssetKind = next;
+        kindDropDepth = 0;
+        setKindPanelDropActive(false);
+        const sidebar = byId('mmSidebar');
+        const panel = byId('mmSidebarKindPanel');
+        const title = byId('mmKindPanelTitle');
+        if(!sidebar || !panel) return;
+        if(title) title.textContent = ASSET_KIND_TITLES[next];
+        // 提示词默认列表视图，方便阅读全文
+        setKindViewMode(next === 'prompt' ? 'list' : kindViewMode);
+        syncKindPanelAddButton();
+        sidebar.classList.add('is-kind-panel-open');
+        panel.hidden = false;
+        panel.setAttribute('aria-hidden', 'false');
+        void loadKindPanelAssets(next);
+        try { global.lucide?.createIcons?.(); } catch(_e) {}
+    }
+
+    function closeAssetKindPanel(){
+        activeAssetKind = '';
+        kindDropDepth = 0;
+        setKindPanelDropActive(false);
+        const sidebar = byId('mmSidebar');
+        const panel = byId('mmSidebarKindPanel');
+        sidebar?.classList.remove('is-kind-panel-open');
+        if(panel){
+            panel.hidden = true;
+            panel.setAttribute('aria-hidden', 'true');
+        }
+        const fileInput = byId('mmKindPanelFile');
+        if(fileInput) fileInput.value = '';
     }
 
     function setAssetFolderOpen(folder, open, persist = true){
@@ -536,6 +1116,71 @@
             const tree = byId('mmAssetTree');
             setAssetTreeOpen(Boolean(tree?.classList.contains('is-collapsed')));
         });
+        byId('mmAssetTreeFolders')?.addEventListener('click', event => {
+            const button = event.target.closest('.mm-asset-tree-folder-btn[data-asset-kind]');
+            if(!button) return;
+            event.preventDefault();
+            event.stopPropagation();
+            openAssetKindPanel(button.dataset.assetKind);
+        });
+        byId('mmKindPanelBack')?.addEventListener('click', event => {
+            event.preventDefault();
+            closeAssetKindPanel();
+        });
+        byId('mmKindPanelAdd')?.addEventListener('click', event => {
+            event.preventDefault();
+            handleKindPanelAdd();
+        });
+        byId('mmKindPanelFile')?.addEventListener('change', event => {
+            const input = event.target;
+            const files = input?.files;
+            void uploadKindFiles(files);
+            if(input) input.value = '';
+        });
+        byId('mmKindPanelGrid')?.addEventListener('click', event => {
+            const actionBtn = event.target.closest('[data-prompt-action]');
+            const card = event.target.closest('.mm-kind-item-prompt');
+            if(!actionBtn || !card) return;
+            event.preventDefault();
+            event.stopPropagation();
+            void handlePromptItemAction(actionBtn.dataset.promptAction, card);
+        });
+        const kindBody = byId('mmKindPanelBody');
+        kindBody?.addEventListener('dragenter', event => {
+            if(!activeAssetKind || activeAssetKind === 'prompt') return;
+            if(![...(event.dataTransfer?.types || [])].includes('Files')) return;
+            event.preventDefault();
+            kindDropDepth += 1;
+            setKindPanelDropActive(true);
+        });
+        kindBody?.addEventListener('dragover', event => {
+            if(!activeAssetKind || activeAssetKind === 'prompt') return;
+            if(![...(event.dataTransfer?.types || [])].includes('Files')) return;
+            event.preventDefault();
+            if(event.dataTransfer) event.dataTransfer.dropEffect = 'copy';
+            setKindPanelDropActive(true);
+        });
+        kindBody?.addEventListener('dragleave', event => {
+            if(!activeAssetKind || activeAssetKind === 'prompt') return;
+            event.preventDefault();
+            kindDropDepth = Math.max(0, kindDropDepth - 1);
+            if(kindDropDepth === 0) setKindPanelDropActive(false);
+        });
+        kindBody?.addEventListener('drop', event => {
+            if(!activeAssetKind || activeAssetKind === 'prompt') return;
+            event.preventDefault();
+            kindDropDepth = 0;
+            setKindPanelDropActive(false);
+            void uploadKindFiles(event.dataTransfer?.files);
+        });
+        byId('mmKindViewGrid')?.addEventListener('click', event => {
+            event.preventDefault();
+            setKindViewMode('grid');
+        });
+        byId('mmKindViewList')?.addEventListener('click', event => {
+            event.preventDefault();
+            setKindViewMode('list');
+        });
         byId('mmSideSkill')?.addEventListener('click', event => {
             event.preventDefault();
             // Skill 能力位于对话栏 composer：打开对话栏即到达
@@ -564,7 +1209,16 @@
         });
         // 画布状态变化（新建 / 改名 / 打开）时刷新最近创作
         global.addEventListener('message', event => {
-            if(event?.data?.type === 'canvas-project-state') scheduleReload(500);
+            const data = event?.data;
+            if(data?.type === 'canvas-project-state') scheduleReload(500);
+            if(data?.type === 'shell-try-import-canvas-assets'){
+                const frame = document.getElementById('frame-canvas');
+                const rect = frame?.getBoundingClientRect?.();
+                if(!rect) return;
+                const clientX = Number(data.clientX) + rect.left;
+                const clientY = Number(data.clientY) + rect.top;
+                tryImportCanvasDropAtPoint(clientX, clientY, data.items || []);
+            }
         });
         // 用户菜单里改名时实时同步侧栏
         document.addEventListener('input', event => {
@@ -573,12 +1227,24 @@
                 if(nameEl) nameEl.textContent = event.target.value || '用户';
             }
         });
+        document.addEventListener('pointerdown', event => {
+            const target = event.target;
+            if(!(target instanceof Element)) return;
+            if(!target.closest('.mm-recent-actions, .mm-recent-menu-trigger, .mm-recent-menu')) closeRecentMenus();
+            if(!target.closest('.mm-asset-folder-menu-trigger, .mm-asset-folder-menu')) closeAssetFolderMenu();
+        });
         document.addEventListener('click', event => {
-            if(!event.target?.closest?.('.mm-recent-actions, .mm-recent-menu')) closeRecentMenus();
-            if(!event.target?.closest?.('.mm-asset-folder-menu-trigger, .mm-asset-folder-menu')) closeAssetFolderMenu();
+            const target = event.target;
+            if(!(target instanceof Element)) return;
+            if(!target.closest('.mm-recent-actions, .mm-recent-menu-trigger, .mm-recent-menu')) closeRecentMenus();
+            if(!target.closest('.mm-asset-folder-menu-trigger, .mm-asset-folder-menu')) closeAssetFolderMenu();
         });
         document.addEventListener('keydown', event => {
             if(event.key === 'Escape'){
+                if(activeAssetKind){
+                    closeAssetKindPanel();
+                    return;
+                }
                 closeRecentMenus();
                 closeAssetFolderMenu();
             }
@@ -595,9 +1261,11 @@
 
     function init(){
         if(!byId('mmSidebar')) return;
+        kindViewMode = readKindViewMode();
         bind();
         syncUser();
         restoreAssetTreeState();
+        setKindViewMode(kindViewMode);
         try { setSidebarCollapsed(localStorage.getItem(COLLAPSE_KEY) === '1'); } catch(_e) {}
         void load();
     }
@@ -605,5 +1273,12 @@
     if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
     else init();
 
-    global.MMSidebar = Object.freeze({ refresh: () => void load(), syncUser });
+    global.MMSidebar = Object.freeze({
+        refresh: () => void load(),
+        syncUser,
+        openAssetKindPanel,
+        closeAssetKindPanel,
+        tryImportCanvasDropAtPoint,
+        importCanvasUrlsToKindPanel,
+    });
 })(window);
