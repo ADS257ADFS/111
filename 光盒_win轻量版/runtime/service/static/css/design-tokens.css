@@ -17,6 +17,26 @@
     --ui-surface-chrome: #f7f7f8;   /* 窗口栏 / 侧栏 / 面板壳 */
     --ui-surface-shell: #fafafb;      /* 顶栏 / 主导航壳 */
     --ui-surface-input: #ffffff;      /* 输入框内部 */
+    --ui-surface-card: #ffffff;
+    --ui-surface-elevated: #ffffff;
+
+    --ui-border: rgba(0, 0, 0, .10);
+    --ui-glass-border: rgba(0, 0, 0, .12);
+    --ui-shell-divider: rgba(0, 0, 0, .07);
+    --ui-shell-divider-size: 1px;
+    --ui-text: #41444a;
+    --ui-text-secondary: #697077;
+    --ui-active: rgba(0, 0, 0, .08);
+
+    --ui-icon-sm: 14px;
+    --ui-canvas-nav-icon-size: 12px;
+
+    --mm-titlebar-h: var(--ui-titlebar-h);
+    --mm-sidebar-w: 250px;
+
+    --ui-motion-panel: 340ms;
+    --ui-motion-surface: 240ms;
+    --ui-ease-panel: cubic-bezier(.3, 0, 0, 1);
 
     --ui-accent: #0a84ff;
     --ui-accent-rgb: 10, 132, 255;
@@ -40,8 +60,17 @@ body.studio-theme-dark {
     --ui-surface-chrome: #1f1f1f;
     --ui-surface-shell: #1f1f1f;
     --ui-surface-input: #1f1f1f;
+    --ui-surface-card: #1f1f1f;
+    --ui-surface-elevated: #1f1f1f;
 
-    --ui-canvas-grid-dot: rgba(255, 255, 255, .055);
+    --ui-border: rgba(255, 255, 255, .08);
+    --ui-glass-border: rgba(255, 255, 255, .16);
+    --ui-shell-divider: rgba(255, 255, 255, .08);
+    --ui-text: #d1d3d6;
+    --ui-text-secondary: #9c9c9c;
+    --ui-active: rgba(255, 255, 255, .11);
+
+    --ui-accent: #0a84ff;
     --ui-canvas-connection: rgba(255, 255, 255, .24);
 }
 

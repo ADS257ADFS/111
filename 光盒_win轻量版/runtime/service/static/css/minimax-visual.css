@@ -1,6 +1,7 @@
 /*
  * minimax-visual.css —— 清零重建版（逐项追加）
- * 当前：画布底色、桌面直角、字体、窗口栏底色、输入框底色、参考线、连线
+ * 当前：画布底色、桌面直角、字体、窗口栏底色、输入框底色、参考线、连线、
+ *       右上导航长条、对话按钮、窗口控制、全屏三栏布局
  */
 
 /* 全站字体 */
@@ -160,4 +161,176 @@ html.lightbox-desktop-native .stage.stage > iframe,
 html.lightbox-desktop-native #canvas.stage > iframe {
     border-radius: 0;
     overflow: hidden;
+}
+
+/* ================================================================
+ * 壳层布局：顶栏 / 左栏 250px / 中画布 / 右对话栏
+ * ================================================================ */
+:root {
+    --mm-titlebar-h: var(--ui-titlebar-h, 28px);
+    --mm-sidebar-w: 250px;
+}
+
+html.lightbox-desktop-native .lightbox-native-titlebar {
+    height: var(--mm-titlebar-h, 28px);
+}
+
+html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark):not(.lightbox-compact-mode) {
+    --lightbox-chrome-bg: var(--ui-surface-shell);
+}
+
+html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark):not(.lightbox-compact-mode) .lightbox-native-titlebar {
+    background-color: var(--ui-surface-shell);
+}
+
+html.lightbox-desktop-native .lightbox-native-topbar-cluster {
+    height: 28px;
+    margin-right: 8px;
+}
+
+html.lightbox-desktop-native .lightbox-native-search,
+html.lightbox-desktop-native .titlebar-theme-toggle,
+html.lightbox-desktop-native #toolbarAssetBtn,
+html.lightbox-desktop-native #shellCanvasProjectMenuBtn,
+html.lightbox-desktop-native #lightboxNativeUserToolBtn,
+html.lightbox-desktop-native .lightbox-native-icon-capsule {
+    display: none;
+}
+
+html.lightbox-desktop-native .lightbox-native-window-controls {
+    width: auto;
+    min-width: 0;
+    flex-basis: auto;
+    height: 30px;
+    gap: 8px;
+    padding: 0 4px;
+}
+
+html.lightbox-desktop-native .lightbox-native-window-controls button {
+    width: 30px;
+    height: 30px;
+    border-radius: 0;
+    background: transparent;
+}
+
+html.lightbox-desktop-native .lightbox-native-window-controls button::before {
+    width: 30px;
+    height: 30px;
+    border-radius: 0;
+}
+
+html.lightbox-desktop-native .lightbox-native-window-controls button:is([data-native-window-action="minimize"], [data-native-window-action="maximize"]) span {
+    width: 8px;
+    left: 11px;
+}
+
+html.lightbox-desktop-native .lightbox-native-window-controls button[data-native-window-action="maximize"] span {
+    width: 7px;
+    height: 7px;
+    left: 11.5px;
+}
+
+html.lightbox-desktop-native .lightbox-native-window-controls button[data-native-window-action="close"] span {
+    width: 10px;
+    height: 10px;
+    left: 10px;
+}
+
+html.lightbox-desktop-native:not(.lightbox-compact-mode) body::after {
+    display: none;
+}
+
+html.lightbox-desktop-native.mm-sidebar-collapsed {
+    --mm-sidebar-w: 0px;
+}
+
+html.lightbox-desktop-native:not(.canvas-image-lightbox-active):not(.lightbox-compact-mode) .stage {
+    top: var(--mm-titlebar-h, 28px);
+    left: var(--mm-sidebar-w, 250px);
+    right: 0;
+    bottom: 0;
+    border: 0;
+    border-radius: 0;
+    transition:
+        left var(--ui-motion-panel) var(--ui-ease-panel),
+        right var(--ui-motion-panel) var(--ui-ease-panel);
+}
+
+html.lightbox-desktop-native:not(.gpt-dock-collapsed):not(.studio-hide-gpt-dock):not(.canvas-image-lightbox-active):not(.lightbox-compact-mode) .stage {
+    right: var(--chat-dock-width, 488px);
+}
+
+html.lightbox-desktop-native {
+    --chat-dock-edge: 0px;
+}
+
+html.lightbox-desktop-native:not(.lightbox-compact-mode) .gpt-dock {
+    top: var(--mm-titlebar-h, 28px);
+    bottom: 0;
+    padding: 0;
+    overflow: hidden;
+    border-left: 1px solid var(--ui-shell-divider);
+}
+
+html.lightbox-desktop-native:not(.lightbox-compact-mode) .gpt-dock::before {
+    inset: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: var(--ui-surface-elevated);
+}
+
+html.lightbox-desktop-native:not(.lightbox-compact-mode) .gpt-dock iframe {
+    margin: 0;
+    width: 100%;
+    border-radius: 0;
+}
+
+html.lightbox-desktop-native:not(.lightbox-compact-mode) .gpt-dock .dock-chrome {
+    border-radius: 0;
+}
+
+/* 右上角对话展开按钮 */
+html.lightbox-desktop-native .dock-open-btn {
+    top: calc(var(--mm-titlebar-h, 28px) + 14px);
+    right: 16px;
+    left: auto;
+    border: 1px solid var(--ui-border);
+    background: var(--ui-surface-elevated);
+    color: var(--ui-text-secondary);
+    box-shadow: none;
+}
+
+html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .dock-open-btn {
+    border-color: #2b2c30;
+    background: #232327;
+    color: #9aa0a9;
+}
+
+html.lightbox-desktop-native .dock-open-btn:not(:disabled):hover {
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+    color: #fff;
+}
+
+/* 画布右上导航长条（缩放胶囊） */
+#shell.shell .canvas-bottom-capsule {
+    border-radius: var(--ui-shell-top-control-radius);
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell .canvas-bottom-capsule {
+    background: var(--ui-surface-card);
+    border: 1px solid var(--ui-glass-border);
+    box-shadow: none;
+}
+
+html:is(.theme-dark, .studio-theme-dark) body #shell.shell .canvas-bottom-capsule {
+    background: var(--ui-active);
+    border: 1px solid var(--ui-glass-border);
+    box-shadow: none;
+}
+
+#shell.shell .canvas-bottom-capsule-btn :is(svg, i) {
+    width: var(--ui-canvas-nav-icon-size);
+    height: var(--ui-canvas-nav-icon-size);
 }
