@@ -294,7 +294,7 @@ html.studio-theme-dark .co-create-switch-label {
     box-shadow: inset 0 1px 3px rgba(15, 23, 42, 0.14);
     transition: border-color 0.14s ease, background-color 0.14s ease;
     overflow: hidden;
-    --co-switch-travel: 18px;
+    --co-switch-travel: 20px;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) .co-create-switch-track {
