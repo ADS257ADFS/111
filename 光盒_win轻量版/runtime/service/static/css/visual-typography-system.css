@@ -1464,7 +1464,8 @@ html body #shellUserMenu.shell-user-menu .shell-user-points {
     margin: 0 0 var(--ui-space-2) !important;
     padding: var(--ui-space-3) var(--ui-space-4) !important;
     border: 0 !important;
-    background: var(--ui-hover) !important;
+    color: #ffffff !important;
+    background: var(--ui-accent, #0a84ff) !important;
 }
 
 html body #shellUserMenu.shell-user-menu .shell-user-menu-list {
@@ -1790,7 +1791,7 @@ html body #shell.shell #composer .composer-footer :is(
     letter-spacing: 0 !important;
     font-synthesis: none !important;
     font-variant-numeric: tabular-nums !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
 html body #shell.shell #composer .composer-footer :is(
@@ -1836,7 +1837,7 @@ html body #shell.shell #composer .composer-footer :is(
 ){
     background: #f9fafb !important;
     border: 1px solid rgba(148, 163, 184, .44) !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
     box-shadow: none !important;
     transform: none !important;
 }
@@ -2051,9 +2052,9 @@ html body #shellUserMenu.shell-user-menu {
 }
 
 html body #shellUserMenu.shell-user-menu .shell-user-points {
-    color: var(--ui-text) !important;
+    color: #ffffff !important;
     border-color: transparent !important;
-    background: var(--ui-hover) !important;
+    background: var(--ui-accent, #0a84ff) !important;
     background-image: none !important;
     box-shadow: none !important;
     transition:
@@ -2075,7 +2076,7 @@ html body #shellUserMenu.shell-user-menu .shell-user-points:disabled {
 
 html body #shellUserMenu.shell-user-menu
     .shell-user-points :is(.shell-user-points-head, .shell-user-points-meta, strong, span) {
-    color: var(--ui-text) !important;
+    color: #ffffff !important;
     transition: none !important;
 }
 
@@ -2199,19 +2200,17 @@ html:not(.theme-dark):not(.studio-theme-dark) body
 }
 
 /*
- * C08/C09 — composer primary popovers
- * Keep menu geometry and interaction intact; make every popover opened from
- * the bottom composer's first-level controls a fully opaque white surface.
+ * C08/C09 — composer popovers：磨砂浮层（不再用纯白实底）
  */
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer .composer-tool-wrap > .composer-tool-popover,
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer .composer-api-settings-wrap > .composer-api-settings-popover {
-    background: #fff !important;
-    background-color: #fff !important;
+    background-color: var(--ui-glass-popover) !important;
     background-image: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    box-shadow: var(--ui-shadow-float) !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
@@ -2221,8 +2220,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
         #composerKindPopover,
         #composerSizePopover
     ) {
-    background: #fff !important;
-    background-color: #fff !important;
+    background-color: var(--ui-glass-popover) !important;
     background-image: none !important;
 }
 
@@ -2234,9 +2232,7 @@ html body #shell.shell #composer.composer .composer-footer
 }
 
 /*
- * C08/C09 — opaque composer submenu surfaces.
- * The popover is the only base surface. Idle rows remain visually white;
- * hover/selected rows keep a restrained neutral cue.
+ * C08/C09 — composer 子菜单容器：透明，由外层 popover 提供磨砂底
  */
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer :is(
@@ -2248,8 +2244,8 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
         #composerSizePopover .size-picker-list,
         #composerSizePopover #composerCountPanel
     ) {
-    background: #fff !important;
-    background-color: #fff !important;
+    background: transparent !important;
+    background-color: transparent !important;
     background-image: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
@@ -2270,11 +2266,11 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
         #composerVideoSizeMenu .count-cell,
         .video-flat-segments button
     ) {
-    background: #fff !important;
+    background: transparent !important;
     background-image: none !important;
-    border: 1px solid rgba(137, 145, 156, .22) !important;
+    border: 1px solid var(--ui-border) !important;
     box-shadow: none !important;
-    border-radius: 8px !important;
+    border-radius: var(--ui-radius-control) !important;
     box-sizing: border-box !important;
 }html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover .composer-api-branch summary:is(:hover, :focus-visible),
@@ -2297,8 +2293,8 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
         #composerVideoSizeMenu .count-cell,
         .video-flat-segments button
     ):is(:hover, :focus-visible){
-    background: #fafbfc !important;
-    border-color: rgba(137, 145, 156, .34) !important;
+    background: var(--ui-hover) !important;
+    border-color: transparent !important;
     box-shadow: none !important;
 }
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
@@ -2406,26 +2402,23 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer .composer-footer-glider {
-    background: rgba(148, 163, 184, .14) !important;
-    border: 1px solid rgba(148, 163, 184, .44) !important;
+    background: var(--ui-hover) !important;
+    border: 0 !important;
     box-shadow: none !important;
 }
 
 /*
- * C09: the size submenu is one opaque white sheet.
- * Remove every legacy glass/shadow layer from the popover itself without
- * changing the option grid, selection gliders, dimensions or interaction.
+ * C09: size submenu — 磨砂浮层（与 M-v10 一致）
  */
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     #composerSizePopover.composer-tool-popover {
-    background: #fff !important;
-    background-color: #fff !important;
+    background-color: var(--ui-glass-popover) !important;
     background-image: none !important;
-    border-color: transparent !important;
-    box-shadow: 0 18px 46px rgba(55, 65, 81, .14) !important;
+    border-color: var(--ui-border) !important;
+    box-shadow: var(--ui-shadow-float) !important;
     filter: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
     overflow: hidden !important;
     isolation: isolate;
 }
@@ -2676,7 +2669,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body
         .shell-project-history-view-toggle
     ) {
     border-color: var(--gh-library-line) !important;
-    background: #fff !important;
+    background-color: #fff !important;
     color: var(--gh-library-primary) !important;
 }
 
@@ -2910,7 +2903,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     mix-blend-mode: normal !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
 /* Composer size menu: ratio frame + ratio only; no descriptive/pixel subtitles. */
@@ -2974,7 +2967,7 @@ html body #shell.shell #composer.composer
     font-synthesis: none !important;
     font-variant-numeric: tabular-nums !important;
     color: #50565e !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
 html body #shell.shell #composer.composer
@@ -2993,12 +2986,11 @@ html body #shell.shell #composer.composer
 
 html body #shell.shell #composer.composer
     .composer-footer .composer-footer-glider {
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
-/* Composer size submenu: quality + count options share one typographic scale. */
-html body #shell.shell #composer.composer #composerApiSettingsPopover
-    .composer-mode-model-list .mode-model-choice,
+/* Composer size submenu: quality + count options share one typographic scale.
+   Model rows keep their own name/desc typography — do not flatten menu items. */
 html body #shell.shell #composer.composer #composerSizePopover
     .size-picker-resolution-list .size-picker-option,
 html body #shell.shell #composer.composer #composerSizePopover
@@ -3026,23 +3018,32 @@ html body #shell.shell #composer.composer
     display: none !important;
 }
 
-/* Footer popovers must paint above the card-topbar kind toggle. */
+/* Footer + open popover stack above topbar so model/size menus are not
+   covered by 参考 / 批量 / 模式. Topbar stays above the white input surface. */
 html body #shell.shell #composer.composer.open
     .composer-card:has(.composer-tool-wrap.open)
+    .composer-footer,
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-api-settings-wrap.open)
     .composer-footer {
     position: relative;
-    z-index: 8 !important;
+    z-index: 40 !important;
 }
 
 html body #shell.shell #composer.composer.open
     .composer-card:has(.composer-tool-wrap.open)
+    .composer-card-topbar,
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-api-settings-wrap.open)
     .composer-card-topbar {
-    z-index: 2 !important;
+    z-index: 30 !important;
 }
 
 html body #shell.shell #composer.composer
-    .composer-tool-wrap.open > .composer-tool-popover {
-    z-index: 20 !important;
+    .composer-tool-wrap.open > .composer-tool-popover,
+html body #shell.shell #composer.composer
+    .composer-api-settings-wrap.open > .composer-api-settings-popover {
+    z-index: 50 !important;
 }
 
 /* Video size submenu: match image submenu spacing and remove legacy lift motion. */
@@ -3077,16 +3078,10 @@ html.studio-theme-dark {
     --canvas-glass-glider-ease: cubic-bezier(0.37, 1.95, 0.66, 0.56);
 }
 
-html.theme-dark body #shell.shell :is(.composer-card, .create-menu, .image-quick-toolbar, .selection-capsule-bar, .image-node.empty-node, .image-node.loop-smart-node, .image-node.group-node, .composer-tool-popover, #composerSizePopover),
-html.studio-theme-dark body #shell.shell :is(.composer-card, .create-menu, .image-quick-toolbar, .selection-capsule-bar, .image-node.empty-node, .image-node.loop-smart-node, .image-node.group-node, .composer-tool-popover, #composerSizePopover) {
+/* composer-card 外层不在此上色：深色只保留顶栏磨砂 + 圆角输入面。浮层底色见 M-v10。 */
+html.theme-dark body #shell.shell :is(.image-quick-toolbar, .selection-capsule-bar, .image-node.empty-node, .image-node.loop-smart-node, .image-node.group-node),
+html.studio-theme-dark body #shell.shell :is(.image-quick-toolbar, .selection-capsule-bar, .image-node.empty-node, .image-node.loop-smart-node, .image-node.group-node) {
     color: var(--canvas-glass-text) !important;
-    background: var(--canvas-glass-bg) !important;
-    background-image: none !important;
-    border: 1px solid var(--ui-border) !important;
-    border-radius: 16px !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
-    box-shadow: var(--canvas-glass-shadow) !important;
 }html.theme-dark body #shell.shell #composer.composer .composer-card .prompt-input,
 html.studio-theme-dark body #shell.shell #composer.composer .composer-card .prompt-input,
 html.theme-dark body #shell.shell #composer.composer .composer-card .prompt-input:focus,
@@ -3101,11 +3096,11 @@ html.studio-theme-dark body #shell.shell #composer.composer .composer-card .prom
 html.theme-dark body #shell.shell #composer.composer .composer-footer .composer-footer-bar,
 html.studio-theme-dark body #shell.shell #composer.composer .composer-footer .composer-footer-bar {
     overflow: hidden;
-    background: var(--canvas-glass-bg) !important;
+    background: transparent !important;
     border-radius: 16px !important;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
-    box-shadow: var(--canvas-glass-shadow) !important;
+    box-shadow: none !important;
 }
 
 html.theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn),
@@ -3142,7 +3137,7 @@ html.studio-theme-dark body #shell.shell #composer.composer .composer-footer .co
     visibility: visible !important;
     opacity: 0 !important;
     border: 0 !important;
-    border-radius: 16px !important;
+    border-radius: 12px !important;
     background: var(--canvas-glass-glider-bg) !important;
     background-image: var(--canvas-glass-glider-bg) !important;
     box-shadow: var(--canvas-glass-glider-shadow) !important;

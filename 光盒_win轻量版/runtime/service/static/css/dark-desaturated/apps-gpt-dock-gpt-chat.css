@@ -494,7 +494,7 @@ html.studio-theme-dark.gpt-dock-canvas-mode body,html.studio-theme-dark .gpt-doc
 html.studio-theme-dark.gpt-dock-canvas-mode .chat-shell,html.studio-theme-dark .gpt-dock-canvas-mode .chat-shell,body.studio-theme-dark.gpt-dock-canvas-mode .chat-shell{background:#121212}
 html.studio-theme-dark.gpt-dock-canvas-mode .messages,html.studio-theme-dark .gpt-dock-canvas-mode .messages,body.studio-theme-dark.gpt-dock-canvas-mode .messages{background:rgba(255, 255, 255, 0.08) !important;box-shadow:0 -14px 32px rgba(0, 0, 0, 0.30)}
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode,html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode,html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell{background:#1c1c1c !important}
-html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .composer{color:rgba(242, 242, 242, .96) !important;background:#0e0e0e !important;border:1px solid #2b2b2b !important}
+html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .composer{color:rgba(242, 242, 242, .96) !important;background:var(--ui-surface-dock-composer, #242424) !important;border:1px solid #2b2b2b !important}
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell .composer-body{color:rgba(242, 242, 242, .96) !important}
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell #messageInput{color:rgba(242, 242, 242, .96) !important}
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode body.gpt-dock-canvas-mode .chat-shell #messageInput::placeholder{color:rgba(176, 176, 176, .68) !important}

@@ -90,15 +90,16 @@
     opacity: 0 !important;
 }
 
-/* M5 材质定案:port-link 液态玻璃壳(::before 流光层/::after conic 描边)拆除,改扁平实色 */
+/* v10：port-link 磨砂浮层（与 create-menu / composer popover 一致） */
 .port-link-pick-shell {
     padding: calc(var(--ui-space-4) + 2px) var(--ui-space-4) var(--ui-space-4);
-    border-radius: 16px;
-    background: var(--ui-surface-elevated);
+    border-radius: var(--ui-radius-float, 16px);
+    background-color: var(--ui-glass-popover);
+    background-image: none;
     border: 1px solid var(--ui-border);
-    box-shadow: var(--ui-shadow-pop);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    box-shadow: var(--ui-shadow-float);
+    -webkit-backdrop-filter: var(--ui-glass-filter);
+    backdrop-filter: var(--ui-glass-filter);
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-shell {
@@ -124,10 +125,10 @@ html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-shell > * {
 .port-link-pick-head,
 .port-link-pick-section-label {
     padding: 0 2px var(--ui-space-2) 3px;
-    font-size: 10px;
-    font-weight: 600;
+    font-size: var(--ui-type-meta);
+    font-weight: var(--ui-weight-medium);
     line-height: var(--ui-leading-tight);
-    color: #747b85;
+    color: var(--ui-text-muted);
     letter-spacing: 0.01em;
 }
 
@@ -249,10 +250,10 @@ html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-shell > * {
 }
 
 .port-link-pick-title {
-    font-size:12px;
-    font-weight: 600;
+    font-size: var(--ui-type-control);
+    font-weight: var(--ui-weight-medium);
     line-height: var(--ui-leading-tight);
-    color: var(--text);
+    color: var(--ui-text);
 }
 
 .port-link-pick-alert {
@@ -274,14 +275,14 @@ html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-shell > * {
 }
 
 .port-link-pick-desc {
-    font-size:10px;
-    font-weight: 445;
+    font-size: var(--ui-type-meta);
+    font-weight: var(--ui-weight-regular);
     line-height: 1.35;
-    color: #9aa0a9;
+    color: var(--ui-text-muted);
 }.port-link-pick-item.is-hover,
 .port-link-pick-item:hover{
-    background: var(--gh-quiet-hover-surface);
-    border-color: var(--gh-quiet-hover-border);
+    background: var(--ui-hover);
+    border-color: transparent;
     transform: none;
     box-shadow: none;
     animation: none;
@@ -382,11 +383,12 @@ html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-shell > * {
 }
 
 .theme-dark .port-link-pick-shell {
-    background: #232327;
-    border: 1px solid #2b2c30;
-    box-shadow: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    background-color: var(--ui-glass-popover);
+    background-image: none;
+    border: 1px solid var(--ui-border);
+    box-shadow: var(--ui-shadow-float);
+    -webkit-backdrop-filter: var(--ui-glass-filter);
+    backdrop-filter: var(--ui-glass-filter);
 }
 
 .theme-dark .port-link-pick-head,
