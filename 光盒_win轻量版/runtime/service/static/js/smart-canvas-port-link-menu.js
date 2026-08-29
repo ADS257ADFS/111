@@ -13,15 +13,14 @@
     ]);
 
     const BOTTOM_OPTIONS = Object.freeze([
-        {id:'director', label:'导演台', desc:'3D场景搭建与时间线编排', icon:'clapperboard'},
-        {id:'world3d', label:'世界生成', desc:'世界全景模型空间编排', icon:'box'}
+        {id:'director', label:'导演台', desc:'3D场景搭建与时间线编排', icon:'clapperboard'}
     ]);
 
     const ASSET_OPTIONS = Object.freeze([
         {id:'upload-assets', label:'上传', desc:'上传图片、视频或音频素材', icon:'upload-cloud'}
     ]);
 
-    const DISABLED_OPTION_IDS = new Set(['director', 'world3d']);
+    const DISABLED_OPTION_IDS = new Set(['director']);
 
     const ALL_OPTION_IDS = Object.freeze([
         ...MAIN_OPTIONS.map(opt => opt.id),
