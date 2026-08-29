@@ -5823,3 +5823,79 @@ body.studio-theme-dark .custom-model-row input.custom-model-input {
     background:var(--panel);
     border-color:var(--line-strong);
 }
+
+/* ================================================================
+ * Category-first API settings IA (图片/视频/文本/音频 → 显示名 → 绑定)
+ * ================================================================ */
+.api-category-tabs { margin-right: 6px; }
+.api-stations-tab { margin-left: 4px; }
+.api-stations-tab.is-active {
+    color: var(--text);
+    background: var(--panel);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+.api-side-note {
+    margin: 4px 2px 0;
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--faint);
+}
+.display-name-list { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+.display-name-card .provider-meta { font-size: 11px; }
+.binding-panel { display: flex; flex-direction: column; gap: 16px; }
+.binding-body { display: flex; flex-direction: column; gap: 14px; }
+.binding-empty {
+    padding: 28px 16px;
+    text-align: center;
+    color: var(--faint);
+    font-size: 13px;
+    border: 1px dashed var(--line);
+    border-radius: 14px;
+}
+.binding-status-pill {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: var(--soft);
+    color: var(--muted);
+}
+.binding-status-pill.is-bound {
+    color: #0a84ff;
+    border-color: rgba(10, 132, 255, .28);
+    background: rgba(10, 132, 255, .10);
+}
+.binding-status-pill.is-unbound {
+    color: var(--faint);
+}
+.binding-block .models-toolbar-actions { display: inline-flex; gap: 8px; }
+.binding-dock-hint {
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: var(--soft);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+body.api-view-category .layout { grid-template-columns: 260px minmax(0, 1fr); }
+body.api-view-stations .layout { grid-template-columns: 260px minmax(0, 1fr); }
+body.api-view-category #stationEditor,
+body.api-view-category #customModelsView { display: none !important; }
+body.api-view-stations #bindingPanel { display: none !important; }
+html.settings-embedded body.api-view-category .layout,
+html.settings-embedded body.api-view-stations .layout {
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 16px;
+}
+html.theme-dark .binding-status-pill.is-bound,
+html.studio-theme-dark .binding-status-pill.is-bound {
+    color: #6bb4ff;
+    border-color: rgba(78, 162, 255, .34);
+    background: rgba(78, 162, 255, .14);
+}

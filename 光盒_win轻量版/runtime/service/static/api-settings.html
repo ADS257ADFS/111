@@ -26,50 +26,83 @@
     <link rel="stylesheet" href="/static/css/theme.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/visual-system-preview.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/visual-typography-system.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/api-settings.css?v=2026.08.11.82">
+    <link rel="stylesheet" href="/static/css/api-settings.css?v=2026.08.29.apicats1">
 <link rel="stylesheet" href="/static/css/dark-desaturated/api-settings.css?v=2026.08.11.82">
 <link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.11.82">
 <link rel="stylesheet" href="/static/css/ui-primitives.css?v=2026.08.11.82">
 <link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.11.82">
 </head>
-<body>
+<body class="api-view-category">
     <div class="page">
         <div class="wrap">
             <header class="page-head">
                 <div>
                     <div class="title" data-i18n="api.title">API 设置</div>
-                    <div class="sub">三步完成：添加中转站 → 拉取并选用模型 → 把画布显示名绑到真实模型</div>
+                    <div class="sub" id="apiPageSub">先选用途分类 → 点画布显示名 → 绑中转站里的真实模型</div>
                 </div>
                 <div class="page-head-actions">
-                    <div class="api-mode-tabs" role="tablist" aria-label="API 设置模式">
-                        <button id="apiModePlatformsBtn" class="api-mode-tab is-active" type="button" role="tab" aria-selected="true" onclick="selectPlatformsMode()">
-                            <i data-lucide="server" class="w-3.5 h-3.5"></i>
-                            <span>平台与模型</span>
+                    <div class="api-mode-tabs api-category-tabs" role="tablist" aria-label="用途分类">
+                        <button class="api-mode-tab is-active" type="button" role="tab" data-api-category="image" aria-selected="true" onclick="selectApiCategory('image')">
+                            <i data-lucide="image" class="w-3.5 h-3.5"></i>
+                            <span>图片</span>
                         </button>
-                        <button id="apiModeBindingsBtn" class="api-mode-tab" type="button" role="tab" aria-selected="false" onclick="selectCustomModels()">
-                            <i data-lucide="link-2" class="w-3.5 h-3.5"></i>
-                            <span>画布显示名</span>
+                        <button class="api-mode-tab" type="button" role="tab" data-api-category="video" aria-selected="false" onclick="selectApiCategory('video')">
+                            <i data-lucide="film" class="w-3.5 h-3.5"></i>
+                            <span>视频</span>
+                        </button>
+                        <button class="api-mode-tab" type="button" role="tab" data-api-category="text" aria-selected="false" onclick="selectApiCategory('text')">
+                            <i data-lucide="message-square-text" class="w-3.5 h-3.5"></i>
+                            <span>文本</span>
+                        </button>
+                        <button class="api-mode-tab" type="button" role="tab" data-api-category="audio" aria-selected="false" onclick="selectApiCategory('audio')">
+                            <i data-lucide="music-2" class="w-3.5 h-3.5"></i>
+                            <span>音频</span>
                         </button>
                     </div>
+                    <button id="apiStationsBtn" class="api-mode-tab api-stations-tab" type="button" onclick="selectStationsView()" title="管理中转站连接与 Key">
+                        <i data-lucide="server" class="w-3.5 h-3.5"></i>
+                        <span>中转站</span>
+                    </button>
                     <div id="status" class="status"></div>
                 </div>
             </header>
 
             <div class="layout">
                 <aside class="sidebar" id="apiPlatformSidebar">
-                    <div class="side-section-title">① 选择平台</div>
-                    <div id="providerList" class="provider-list"></div>
-                    <button class="add-btn" type="button" onclick="addProvider()">
+                    <div class="side-section-title" id="apiSideTitle">① 画布显示名</div>
+                    <div id="displayNameList" class="provider-list display-name-list"></div>
+                    <div id="providerList" class="provider-list station-provider-list" hidden></div>
+                    <button id="addProviderBtn" class="add-btn" type="button" onclick="addProvider()" hidden>
                         <i data-lucide="plus" class="w-4 h-4"></i>
-                        <span data-i18n="api.addProvider">新增平台</span>
+                        <span data-i18n="api.addProvider">新增中转站</span>
                     </button>
+                    <p class="api-side-note" id="apiSideNote">画布底部模型菜单显示这些名字；未绑定的会置灰。</p>
                 </aside>
 
                 <main id="settingsContent" class="content">
+                    <!-- 分类绑定面板（主路径） -->
+                    <section id="bindingPanel" class="binding-panel">
+                        <div class="content-head">
+                            <div>
+                                <div id="bindingTitle" class="editor-title">选择左侧显示名</div>
+                                <div id="bindingSub" class="editor-sub">绑定后，画布该分类下点这个名字就会走对应中转站模型</div>
+                            </div>
+                            <div class="content-actions binding-head-actions">
+                                <span id="bindingStatusPill" class="binding-status-pill is-unbound">未绑定</span>
+                            </div>
+                        </div>
+                        <div id="bindingBody" class="binding-body">
+                            <div class="binding-empty">请从左侧选择一个画布显示名</div>
+                        </div>
+                        <p class="binding-dock-hint">右侧对话栏的模型在对话窗口里单独选，用的是「中转站」里已选用的真实模型；画布显示名只服务画布底部菜单。</p>
+                    </section>
+
+                    <!-- 中转站编辑（次要路径，默认隐藏） -->
+                    <div id="stationEditor" class="station-editor" hidden>
                     <div class="content-head">
                         <div>
-                            <div id="editorTitle" class="editor-title" data-i18n="api.provider">平台</div>
-                            <div id="editorSub" class="editor-sub">先连上中转站，再拉取模型并按用途勾选</div>
+                            <div id="editorTitle" class="editor-title" data-i18n="api.provider">中转站</div>
+                            <div id="editorSub" class="editor-sub">只负责连上中转站、填 Key、按用途拉取可用模型</div>
                         </div>
                         <div class="content-actions">
                             <button id="deleteBtn" class="action-btn danger-btn api-page-delete-btn" type="button" onclick="deleteProvider()">
@@ -88,7 +121,7 @@
                     <section id="providerBasicBlock" class="block">
                         <div class="block-head">
                             <div>
-                                <div class="block-title">② 连接信息</div>
+                                <div class="block-title">连接信息</div>
                                 <div class="block-desc">名称、地址、Key、协议；验证通过后再拉模型</div>
                             </div>
                         </div>
@@ -143,8 +176,8 @@
 
                     <div id="modelsHead" class="block models-toolbar">
                         <div>
-                            <div id="modelsHeadTitle" class="block-title">③ 选用模型</div>
-                            <div id="modelsHeadDesc" class="block-desc">拉取上游清单后，点「选择模型」勾选要用的项；按生图 / 聊天 / 视频 / 音频分类保存</div>
+                            <div id="modelsHeadTitle" class="block-title">选用模型库存</div>
+                            <div id="modelsHeadDesc" class="block-desc">拉取后按用途勾选；分类页绑定时只会看到对应用途的模型</div>
                         </div>
                         <div class="models-toolbar-actions">
                             <button id="fetchModelsBtn" class="action-btn primary-btn" type="button" onclick="fetchModels()">
@@ -203,8 +236,9 @@
                             <div id="audioModelList" class="model-list"></div>
                         </section>
                     </div>
+                    </div>
 
-                    <div id="customModelsView" class="model-grid custom-models-view"></div>
+                    <div id="customModelsView" class="model-grid custom-models-view" hidden></div>
                 </main>
 
             </div>
@@ -215,7 +249,7 @@
         <div class="picker-modal">
                 <div class="picker-head">
                     <div>
-                        <div class="picker-title">从上游拉取的模型清单</div>
+                        <div class="picker-title" id="pickerTitle">从上游拉取的模型清单</div>
                         <div id="pickerCount" class="picker-count">-</div>
                         <div id="pickerDiscoveryStatus" class="picker-discovery-status" aria-live="polite"></div>
                         <details id="pickerDiscoveryDiagnostics" class="picker-discovery-diagnostics">
@@ -246,23 +280,17 @@
             </div>
             <div class="picker-foot">
                 <button class="action-btn" type="button" onclick="closeModelPicker()">取消</button>
-                <button class="action-btn save-btn" type="button" onclick="applyModelPicker()">应用到模型列表</button>
+                <button id="pickerApplyBtn" class="action-btn save-btn" type="button" onclick="applyModelPicker()">应用到模型列表</button>
             </div>
         </div>
     </div>
     <script>
         (function(){
             if(!document.documentElement.classList.contains('settings-embedded')) return;
-            var content = document.querySelector('.content');
-            var contentHead = content && content.querySelector('.content-head');
-            var providerRail = document.querySelector('.sidebar');
-            if(content && contentHead && providerRail) {
-                contentHead.insertAdjacentElement('afterend', providerRail);
-                providerRail.classList.add('embedded-provider-strip');
-            }
+            /* Embedded: keep sidebar in place for category-first layout. */
         })();
     </script>
     <script src="/static/js/model-discovery-status.js?v=2026.08.11.82"></script>
-    <script src="/static/js/api-settings.js?v=2026.08.11.82"></script>
+    <script src="/static/js/api-settings.js?v=2026.08.29.apicats1"></script>
 </body>
 </html>
