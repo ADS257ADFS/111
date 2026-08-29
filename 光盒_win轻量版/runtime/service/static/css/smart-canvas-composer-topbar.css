@@ -284,15 +284,16 @@ html.canvas-performance-mode .shell #composer .composer-card-topbar .input-thumb
     translate: none !important;
 }
 
-/* 默认叠放：奇位左旋 10°、偶位右旋 10°（含加号按位置）；悬停回正并横向展开 */
+/* 默认叠放：第一张最上面、越后越下；奇位左旋/偶位右旋；悬停回正并横向展开。
+ * 负 margin 不宜过大，下层要多露出一点。 */
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within) .input-thumb-list {
     gap: 0;
 }
 
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within)
     .input-thumb:not(.input-thumb-upload) {
-    margin-right: -34px;
-    z-index: calc(2 + var(--thumb-i, 0));
+    margin-right: -26px;
+    z-index: calc(40 - var(--thumb-i, 0));
     transform: translateY(8px) rotate(var(--thumb-rot, -10deg));
     transition-delay: 0s, 0s, 0s, 0s, 0s;
 }
@@ -300,19 +301,19 @@ html.canvas-performance-mode .shell #composer .composer-card-topbar .input-thumb
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within)
     .input-thumb-upload {
     margin-right: 0;
-    z-index: 20;
+    z-index: calc(40 - var(--thumb-i, 0));
     transform: translateY(8px) rotate(var(--thumb-rot, -10deg));
     transition-delay: 0s, 0s, 0s, 0s, 0s;
 }
 
-/* 悬停横向展开：margin/gap/rotate 同一条曲线，避免间距瞬跳 */
+/* 悬停横向展开：margin/gap/rotate 同一条曲线，避免间距瞬跳；层级仍保持首张在上 */
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:is(:hover, :focus-within) .input-thumb-list {
     gap: 8px;
 }
 
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:is(:hover, :focus-within) .input-thumb {
     margin-right: 0;
-    z-index: calc(12 + var(--thumb-i, 0));
+    z-index: calc(40 - var(--thumb-i, 0));
     transform: translateY(8px) rotate(0deg);
     transition-delay: 0s, 0s, 0s, 0s, .28s;
 }
