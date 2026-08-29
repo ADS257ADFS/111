@@ -146,53 +146,31 @@ html.studio-theme-dark .shell-project-history-dialog {
 }
 
 .shell-project-history-filters {
-    width: 100%;
-    min-width: 0;
-    overflow: visible;
+    display: none !important;
 }
 
 .shell-project-history-controls {
     width: 100%;
     min-width: 0;
-}
-
-.shell-project-history-filters button {
-    flex: 0 0 auto;
-    min-height: 34px;
-    padding: 0 10px;
-    border: 1px solid transparent;
-    border-radius: 999px;
-    background: transparent;
-    color: var(--ui-text-secondary);
-    font-size:12px;
-    font-weight: 445;
-    line-height: 1;
-    white-space: nowrap;
-    word-break: keep-all;
-    cursor: pointer;
-}.shell-project-history-filters button:hover{
-    background: var(--nav-hover-bg);
-}
-
-.shell-project-history-filters button.active {
-    border-color: var(--ui-accent);
-    background: var(--ui-accent);
-    color: var(--ui-text-on-accent);
+    justify-content: flex-start;
 }
 
 .shell-project-history-search {
-    width: auto;
+    width: 200px;
+    max-width: 200px;
     min-width: 0;
-    flex: 1 1 auto;
-    min-height: 38px;
+    flex: 0 1 200px;
+    height: 36px;
+    min-height: 36px;
     padding: 0 12px;
     display: flex;
     align-items: center;
     gap: 8px;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 10px;
     background: var(--sidebar-bg);
     color: var(--ui-text-secondary);
+    box-sizing: border-box;
 }
 
 .shell-project-history-search:focus-within {
@@ -225,33 +203,48 @@ html.studio-theme-dark .shell-project-history-dialog {
 }
 
 .shell-project-history-sort {
-    width: 118px;
-    flex: 0 0 118px;
-    min-height: 38px;
+    width: auto;
+    min-width: 132px;
+    flex: 0 0 auto;
+    height: 36px;
+    min-height: 36px;
     padding: 0 34px 0 12px;
     border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--sidebar-bg);
+    border-radius: 10px;
+    background-color: var(--sidebar-bg);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23747b85' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px 12px;
     color: var(--ui-text);
     font-size:12px;
     font-weight: 445;
+    line-height: 1;
     cursor: pointer;
+    box-sizing: border-box;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: nowrap;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .shell-project-history-view-toggle {
     flex: 0 0 auto;
-    height: 38px;
+    height: 36px;
+    min-height: 36px;
     padding: 3px;
     display: inline-flex;
     align-items: center;
     gap: 2px;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 10px;
     background: #f7f9fa;
+    box-sizing: border-box;
 }
 
 .shell-project-history-view-toggle button {
-    width: 31px;
+    width: 30px;
     height: 30px;
     padding: 0;
     display: inline-flex;
@@ -660,9 +653,13 @@ html.studio-theme-dark .shell-project-card-rename-form {
     .shell-project-history-tools {
         padding: 12px 16px;
     }
-    .shell-project-history-filters { overflow-x: auto; }
+    .shell-project-history-filters { display: none !important; }
     .shell-project-history-controls { width: 100%; }
-    .shell-project-history-search { width: auto; flex: 1 1 auto; }
+    .shell-project-history-search {
+        width: 200px !important;
+        max-width: 200px !important;
+        flex: 0 1 200px !important;
+    }
     .shell-project-history-list {
         grid-template-columns: repeat(3, minmax(0, 1fr));
         padding: 4px 16px 16px;
@@ -726,8 +723,10 @@ html:is(.theme-dark, .studio-theme-dark) .shell-project-history-dialog {
     gap: 7px;
 }
 .shell-project-history-sort {
-    width: 104px;
-    flex-basis: 104px;
+    width: auto;
+    min-width: 132px;
+    flex: 0 0 auto;
+    flex-basis: auto;
 }
 .shell-project-history-list,
 .shell-project-history-list[data-view="grid"] {
@@ -954,7 +953,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body
         .shell-project-history-view-toggle
     ) {
     border-color: #e4e8ee !important;
-    background: #f7f8fa !important;
+    background-color: #f7f8fa !important;
 }
 html:not(.theme-dark):not(.studio-theme-dark) body
     #shellProjectHistoryModal .shell-project-history-search:focus-within {
@@ -1095,4 +1094,52 @@ html body #shellProjectHistoryModal:not(.shell-project-history-embedded).open
         transition: none;
         transform: none;
     }
+}
+
+/* All-canvases / history toolbar: one control height + radius; short search; full sort label. */
+html body #shellProjectHistoryModal .shell-project-history-filters {
+    display: none !important;
+}
+html body #shellProjectHistoryModal .shell-project-history-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+html body #shellProjectHistoryModal .shell-project-history-search {
+    width: 200px !important;
+    max-width: 200px !important;
+    min-width: 0 !important;
+    flex: 0 1 200px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    border-radius: 10px !important;
+    box-sizing: border-box !important;
+}
+html body #shellProjectHistoryModal .shell-project-history-sort {
+    width: auto !important;
+    min-width: 132px !important;
+    max-width: none !important;
+    flex: 0 0 auto !important;
+    flex-basis: auto !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 34px 0 12px !important;
+    border-radius: 10px !important;
+    box-sizing: border-box !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23747b85' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 12px 12px !important;
+}
+html body #shellProjectHistoryModal .shell-project-history-view-toggle {
+    flex: 0 0 auto !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    border-radius: 10px !important;
+    box-sizing: border-box !important;
 }
