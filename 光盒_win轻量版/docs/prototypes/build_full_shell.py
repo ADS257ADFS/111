@@ -39,10 +39,10 @@ body {
   --lb-conn: rgba(135, 145, 158, 0.62);
   --lb-conn-pending: rgba(10, 132, 255, 0.68);
   /* 磨砂浮层（菜单/弹层用；壳层区域用实色底） */
-  --lb-glass-bg: rgba(255, 255, 255, 0.78);
-  --lb-glass-popover: rgba(255, 255, 255, 0.92);
-  --lb-glass-topbar: rgba(243, 245, 247, 0.62);
-  --lb-glass-filter: blur(36px) saturate(160%);
+  --lb-glass-bg: rgba(255, 255, 255, 0.60);
+  --lb-glass-popover: rgba(255, 255, 255, 0.60);
+  --lb-glass-topbar: rgba(243, 245, 247, 0.60);
+  --lb-glass-filter: blur(50px) saturate(160%);
   --lb-shadow-float: 0 4px 20px rgba(0,0,0,.10);
   /* 正文字号统一：工具栏 = 菜单 = 右侧对话 = 16px */
   --lb-font: "Segoe UI", "Microsoft YaHei UI", "MiSans Variable", sans-serif;
@@ -83,11 +83,18 @@ html.theme-dark {
   --lb-divider: rgba(255, 255, 255, 0.08);
   --lb-hover: rgba(255, 255, 255, 0.07);
   --lb-selected: rgba(10, 132, 255, 0.16);
-  --lb-glass-bg: rgba(35, 35, 35, 0.80);
-  --lb-glass-popover: rgba(35, 35, 35, 0.94);
+  --lb-glass-bg: rgba(35, 35, 35, 0.60);
+  --lb-glass-popover: rgba(35, 35, 35, 0.60);
   --lb-glass-topbar: rgba(255, 255, 255, 0.04);
   --lb-conn: rgba(255, 255, 255, 0.24);
   --lb-shadow-float: 0 4px 14px rgba(0, 0, 0, 0.26);
+  /* 画布浮层深色玻璃（与软件 canvas-glass 一致） */
+  --lb-canvas-glass-bg: rgba(255, 255, 255, 0.06);
+  --lb-canvas-glass-text: #e5e5e5;
+  --lb-canvas-glass-shadow:
+    inset 1px 1px 4px rgba(255, 255, 255, 0.2),
+    inset -1px -1px 6px rgba(0, 0, 0, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .proto-badge {
@@ -190,9 +197,9 @@ html.theme-dark {
 .user-menu {
   position: absolute; left: 8px; bottom: 52px; width: 224px; z-index: 300;
   padding: 12px; border: var(--lb-divider-size) solid var(--lb-border);
-  border-radius: var(--lb-r-float); background: var(--lb-glass-bg);
+  border-radius: var(--lb-r-float); background: var(--lb-glass-popover);
   backdrop-filter: var(--lb-glass-filter); -webkit-backdrop-filter: var(--lb-glass-filter);
-  box-shadow: var(--lb-shadow-float);
+  box-shadow: var(--lb-shadow-float); color: var(--lb-text);
 }
 .user-menu-item {
   display: flex; align-items: center; gap: 8px; width: 100%; height: 34px; padding: 0 8px;
@@ -290,6 +297,52 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 }
 .node-port.out { right: -5px; top: 50%; transform: translateY(-50%); }
 .node-port.in { left: -5px; top: 50%; transform: translateY(-50%); }
+.node.is-selected {
+  outline: 1.5px solid var(--lb-accent);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--lb-accent-subtle);
+}
+
+/* 框选区域 + 打组胶囊工具栏（画布上） */
+.selection-box {
+  position: absolute; z-index: 82; box-sizing: border-box; pointer-events: none;
+  border: 1.5px dashed rgba(10, 132, 255, 0.55);
+  background: rgba(10, 132, 255, 0.08); border-radius: 14px;
+}
+html.theme-dark .selection-box {
+  border-color: rgba(10, 132, 255, 0.65);
+  background: rgba(10, 132, 255, 0.12);
+}
+.selection-box-capsule {
+  position: absolute; left: 50%; top: 0;
+  transform: translate(-50%, calc(-100% - 8px));
+  pointer-events: auto; z-index: 86;
+}
+.selection-capsule-bar {
+  min-height: 46px; padding: 6px 8px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  background: var(--lb-glass-popover);
+  border: var(--lb-divider-size) solid var(--lb-border);
+  backdrop-filter: var(--lb-glass-filter); -webkit-backdrop-filter: var(--lb-glass-filter);
+  box-shadow: var(--lb-shadow-float); color: var(--lb-text);
+}
+html.theme-dark .selection-capsule-bar {
+  background: var(--lb-canvas-glass-bg);
+  color: var(--lb-canvas-glass-text);
+  box-shadow: var(--lb-canvas-glass-shadow);
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+.selection-capsule-btn {
+  height: 34px; padding: 0 11px; border: none; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: transparent; font-size: var(--lb-type-body); color: inherit; cursor: pointer;
+}
+.selection-capsule-btn:hover { background: var(--lb-hover); }
+.selection-capsule-btn.is-danger { color: var(--lb-danger); }
+.selection-capsule-divider {
+  width: var(--lb-divider-size); height: 18px; margin: 0 1px;
+  background: var(--lb-divider); flex-shrink: 0;
+}
 
 /* connections — 固定粗细，不随缩放变 */
 .conn-layer { position: absolute; inset: 0; pointer-events: none; z-index: 5; overflow: visible; }
@@ -406,11 +459,23 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
   position: relative; z-index: 3; margin-top: -1px;
   border: var(--lb-divider-size) solid var(--lb-border); border-radius: var(--lb-r-composer);
   background: var(--lb-bg-composer);
-  box-shadow: var(--lb-shadow-float); padding: 8px;
+  box-shadow: var(--lb-shadow-float); padding: 8px; overflow: visible;
+}
+html.theme-dark .composer-main-card {
+  background: var(--lb-canvas-glass-bg);
+  color: var(--lb-canvas-glass-text);
+  border-radius: 16px;
+  box-shadow: var(--lb-canvas-glass-shadow);
 }
 .composer-prompt {
   min-height: 56px; padding: 8px 14px 4px; margin-top: 28px;
   font-size: var(--lb-type-body); line-height: 1.65; color: var(--lb-text);
+}
+html.theme-dark .composer-prompt {
+  color: var(--lb-canvas-glass-text);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.22), inset -1px -1px 4px rgba(255, 255, 255, 0.04);
 }
 .composer-thumbs { display: flex; gap: 8px; padding: 8px 10px; }
 .thumb {
@@ -428,19 +493,32 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 .tool-btn {
   display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px;
   border: none; border-radius: var(--lb-r-pill); background: var(--lb-hover);
-  font-size: var(--lb-type-body); font-weight: 500; color: var(--lb-text); cursor: pointer;
+  font-size: var(--lb-type-body); font-weight: 600; color: var(--lb-text); cursor: pointer;
 }
 .tool-btn:hover { background: var(--lb-selected); }
+html.theme-dark .tool-btn {
+  background: transparent; color: var(--lb-canvas-glass-text);
+}
+html.theme-dark .tool-btn:hover { background: transparent; color: #fff; }
 .tool-popover {
-  position: absolute; bottom: 44px; left: 0; min-width: 220px; z-index: 200;
+  position: absolute; bottom: 44px; left: 0; min-width: 220px; z-index: 220;
   padding: 12px; border: var(--lb-divider-size) solid var(--lb-border);
   border-radius: var(--lb-r-float); background: var(--lb-glass-popover);
   backdrop-filter: var(--lb-glass-filter); -webkit-backdrop-filter: var(--lb-glass-filter);
   box-shadow: var(--lb-shadow-float); color: var(--lb-text);
-  pointer-events: none;
+  pointer-events: none; opacity: 0; visibility: hidden;
 }
-.tool-popover.is-open { pointer-events: auto; }
+.tool-popover.is-open {
+  pointer-events: auto; opacity: 1; visibility: visible;
+}
+html.theme-dark .tool-popover.is-open {
+  background: var(--lb-canvas-glass-bg);
+  color: var(--lb-canvas-glass-text);
+  box-shadow: var(--lb-canvas-glass-shadow);
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+}
 .tool-popover h5 { font-size: var(--lb-type-compact); color: var(--lb-text-secondary); margin-bottom: 8px; }
+html.theme-dark .tool-popover h5 { color: var(--lb-text-muted); }
 .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip {
   height: 30px; padding: 0 10px; border: var(--lb-divider-size) solid var(--lb-border);
@@ -448,31 +526,6 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
   background: transparent;
 }
 .chip.is-active { border-color: transparent; background: var(--lb-selected); color: var(--lb-accent); }
-
-/* 批量模式面板（点击「批量」后展开） */
-.co-create-panel {
-  margin-top: 30px; padding: 8px 6px 4px;
-  display: flex; flex-direction: column; gap: 8px;
-}
-.co-create-line {
-  display: flex; align-items: stretch; gap: 8px;
-}
-.co-create-line-input {
-  flex: 1; min-height: 40px; padding: 8px 12px;
-  border: var(--lb-divider-size) solid var(--lb-border); border-radius: 10px;
-  background: var(--lb-bg-elevated); color: var(--lb-text);
-  font-family: inherit; font-size: var(--lb-type-body); resize: none;
-}
-.co-create-add {
-  align-self: flex-start; height: 32px; padding: 0 12px;
-  border: var(--lb-divider-size) dashed var(--lb-border-strong); border-radius: var(--lb-r-control);
-  background: transparent; color: var(--lb-text); font-size: var(--lb-type-body); cursor: pointer;
-}
-.co-create-add:hover { background: var(--lb-hover); }
-.composer-mode-normal { display: none; }
-.composer.is-batch .composer-mode-normal { display: none; }
-.composer.is-batch .composer-mode-batch { display: flex; }
-.composer-mode-batch { display: none; flex-direction: column; }
 
 .run-capsule {
   display: flex; align-items: center; height: 34px; border-radius: var(--lb-r-pill);
@@ -557,7 +610,7 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 """
 
 HTML_BODY = r"""
-<div class="proto-badge">完整壳层样板 v4</div>
+<div class="proto-badge">完整壳层样板 v5</div>
 <div class="proto-toolbar">
   <button class="lb-btn" onclick="document.documentElement.classList.toggle('theme-dark')">切换亮/暗</button>
   <a class="lb-btn" href="字体说明.html">字体说明</a>
@@ -570,11 +623,11 @@ HTML_BODY = r"""
   顶/左栏 <code>#181818</code><br>
   右栏 <code>#1b1b1b</code><br>
   画布 <code>#101010</code><br>
-  输入栏 <code>#181818</code><br>
+  输入栏玻璃 <code>rgba(255,255,255,.06)</code><br>
   <br>
   <h4>磨砂菜单</h4>
-  背景 <code>rgba(35,35,35,.94)</code><br>
-  模糊 <code>blur(36px)</code><br>
+  透明度 <code>60%</code><br>
+  模糊 <code>blur(50px)</code><br>
   <br>
   <h4>正文字号统一</h4>
   全部 <code>16px</code>
@@ -653,15 +706,31 @@ HTML_BODY = r"""
             <path class="conn-line is-cascade" d="M 550 280 C 620 280, 660 300, 720 280" style="opacity:.5" />
           </svg>
 
-          <div class="node" style="left:170px;top:110px;width:200px;height:165px">
+          <div class="node is-selected" style="left:170px;top:110px;width:200px;height:165px">
             <div class="node-port out"></div>
             <div class="node-media"></div>
             <div class="node-title">参考图片</div>
           </div>
-          <div class="node" style="left:510px;top:200px;width:220px;height:185px">
+          <div class="node is-selected" style="left:510px;top:200px;width:220px;height:185px">
             <div class="node-port in"></div><div class="node-port out"></div>
             <div class="node-media"></div>
             <div class="node-title">生成结果</div>
+          </div>
+
+          <!-- 框选打组胶囊工具栏（画布上，非底部批量） -->
+          <div class="selection-box" style="left:158px;top:98px;width:580px;height:300px">
+            <div class="selection-box-capsule">
+              <span class="proto-label" style="top:-18px;left:0">打组面板（框选多节点）</span>
+              <div class="selection-capsule-bar" role="toolbar" aria-label="选区操作">
+                <button type="button" class="selection-capsule-btn">⊞ 打组</button>
+                <button type="button" class="selection-capsule-btn">⛓ 消除连线</button>
+                <button type="button" class="selection-capsule-btn">⇄ 整理</button>
+                <span class="selection-capsule-divider"></span>
+                <button type="button" class="selection-capsule-btn">📁 资产库</button>
+                <button type="button" class="selection-capsule-btn">↓ 下载</button>
+                <button type="button" class="selection-capsule-btn is-danger">🗑 删除</button>
+              </div>
+            </div>
           </div>
           <div class="iqt" style="left:620px;top:178px">
             <span class="proto-label" style="top:-18px;left:0">媒体工具栏</span>
@@ -702,14 +771,14 @@ HTML_BODY = r"""
           </div>
           <div class="minimap"><div class="minimap-viewport"></div></div>
 
-          <!-- 底部生成栏：批量模式已展开示意 -->
-          <div class="composer is-batch">
+          <!-- 底部生成栏：普通模式 + 上拉菜单展开示意 -->
+          <div class="composer">
             <div class="composer-topbar-rail">
               <span class="proto-label" style="top:-18px;left:0">上方窄工具栏</span>
               <div class="composer-topbar-left">
                 <button>⊕ 参考</button>
                 <span class="vdiv"></span>
-                <button class="is-on">👤 批量</button>
+                <button>👤 批量</button>
               </div>
               <div class="composer-topbar-right">
                 <button>♪ Audio</button>
@@ -719,28 +788,32 @@ HTML_BODY = r"""
               </div>
             </div>
             <div class="composer-main-card">
-              <span class="proto-label" style="top:-18px;left:0">批量打组面板（多点「批量」展开）</span>
-              <div class="composer-mode-batch co-create-panel">
-                <div class="co-create-line">
-                  <textarea class="co-create-line-input" rows="1" readonly>低多边形 3D 场景，民间自制建模风格</textarea>
-                </div>
-                <div class="co-create-line">
-                  <textarea class="co-create-line-input" rows="1" readonly>同一角色侧面视角，暖色调灯光</textarea>
-                </div>
-                <button class="co-create-add" type="button">＋ 添加</button>
-              </div>
-              <div class="composer-mode-normal">
-                <button class="expand-btn">⤢</button>
-                <div class="composer-prompt">改成低多边形简易 3D 动画本体画面，民间自制建模风格。</div>
-                <div class="composer-thumbs">
-                  <div class="thumb">图 1</div>
-                  <div class="thumb-add">＋</div>
-                </div>
+              <button class="expand-btn">⤢</button>
+              <div class="composer-prompt">改成低多边形简易 3D 动画本体画面，民间自制建模风格。</div>
+              <div class="composer-thumbs">
+                <div class="thumb">图 1</div>
+                <div class="thumb-add">＋</div>
               </div>
               <div class="composer-footer">
                 <div style="display:flex;gap:6px">
-                  <button class="tool-btn" type="button">⚙ GPT Image 2 ▾</button>
-                  <button class="tool-btn" type="button">▣ Auto · 1K | 1张 ▾</button>
+                  <div class="tool-wrap">
+                    <button class="tool-btn" type="button">⚙ GPT Image 2 ▾</button>
+                    <div class="tool-popover is-open">
+                      <span class="proto-label" style="top:-18px;left:0">API 上拉菜单</span>
+                      <h5>模型</h5>
+                      <div class="chip-row"><span class="chip is-active">GPT Image 2</span><span class="chip">Seedream</span></div>
+                    </div>
+                  </div>
+                  <div class="tool-wrap">
+                    <button class="tool-btn" type="button">▣ Auto · 1K | 1张 ▾</button>
+                    <div class="tool-popover is-open" style="width:240px">
+                      <span class="proto-label" style="top:-18px;left:0">尺寸上拉菜单</span>
+                      <h5>尺寸</h5>
+                      <div class="chip-row" style="margin-bottom:6px"><span class="chip is-active">Auto</span><span class="chip">1:1</span><span class="chip">16:9</span></div>
+                      <h5>质量</h5>
+                      <div class="chip-row"><span class="chip is-active">1K</span><span class="chip">2K</span></div>
+                    </div>
+                  </div>
                 </div>
                 <div class="run-capsule">
                   <div class="run-cost">⚡ 5</div>
@@ -795,7 +868,7 @@ TEMPLATE = f"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>光盒 · 完整壳层视觉样板 v4</title>
+  <title>光盒 · 完整壳层视觉样板 v5</title>
   <style>{CSS}</style>
 </head>
 <body>
