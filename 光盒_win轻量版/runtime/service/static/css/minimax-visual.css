@@ -5853,3 +5853,24 @@ html:not(.theme-dark):not(.studio-theme-dark) body
     }
 }
 
+/* Settings modal scrim: dim + blur only while open (not canvas float chrome). */
+html body #shellSettingsModal.shell-settings-modal .shell-settings-backdrop {
+    background: rgba(0, 0, 0, .52) !important;
+    background-color: rgba(0, 0, 0, .52) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(112%) !important;
+    backdrop-filter: blur(14px) saturate(112%) !important;
+    pointer-events: auto !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body
+    #shellSettingsModal.shell-settings-modal .shell-settings-backdrop {
+    background: rgba(0, 0, 0, .58) !important;
+    background-color: rgba(0, 0, 0, .58) !important;
+}
+@media (prefers-reduced-motion: reduce) {
+    html body #shellSettingsModal.shell-settings-modal .shell-settings-backdrop {
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+        background: rgba(0, 0, 0, .68) !important;
+    }
+}
+
