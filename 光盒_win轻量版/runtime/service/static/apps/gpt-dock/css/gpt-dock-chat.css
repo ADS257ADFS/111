@@ -721,7 +721,6 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
     .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble)
 ),
 html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
-    .bubble.user,
     .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
     .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble)
 ) .bubble-text {
@@ -729,9 +728,22 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
     font-size:var(--ui-type-compact-label);
     font-weight:var(--ui-weight-latin) !important;
     font-variation-settings:"wght" var(--ui-weight-latin);
-    color:var(--ui-text);
     letter-spacing:0;
     line-height:1.38;
+}
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
+    .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
+    .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble)
+),
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
+    .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
+    .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble)
+) .bubble-text {
+    color:var(--ui-text);
+}
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user,
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user .bubble-text {
+    color:var(--ui-text-on-accent);
 }
 
 html body.gpt-dock-canvas-mode .chat-shell .composer-body textarea,

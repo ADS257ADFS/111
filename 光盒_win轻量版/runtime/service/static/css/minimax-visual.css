@@ -3915,7 +3915,7 @@ html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not
     stroke: currentColor !important;
 }
 
-/* 右侧对话栏：用户输入与助手正文复用“未命名项目”字号/颜色/字重，行距略收。 */
+/* 右侧对话栏：字号/行高与项目标题一致；颜色由文末 MessageContent 底色锁接管（勿在此压 user 为 --ui-text）。 */
 html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
     .bubble.user,
     .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
@@ -3929,9 +3929,17 @@ html body.gpt-dock-canvas-mode .chat-shell .composer textarea {
     font-size: var(--ui-type-compact-label) !important;
     font-weight: var(--ui-weight-latin) !important;
     font-variation-settings: "wght" var(--ui-weight-latin) !important;
-    color: var(--ui-text) !important;
     line-height: 1.38 !important;
     letter-spacing: 0 !important;
+}
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
+    .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
+    .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble),
+    .bubble.assistant .bubble-text
+),
+html body.gpt-dock-canvas-mode .chat-shell .composer-body textarea,
+html body.gpt-dock-canvas-mode .chat-shell .composer textarea {
+    color: var(--ui-text) !important;
 }
 
 /* M44：深色模式下发送区只保留积分内容和发送按钮，移除两者外层底框。 */
@@ -6189,15 +6197,71 @@ body #shell.shell #composer.composer
     height: 16px !important;
 }
 
-/* MessageContent 底色锁定：用户主色气泡 / 助手次级底（压过后续 color:!important） */
-html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user:not(.dock-thinking):not(.dock-image-only),
-html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user:not(.dock-thinking):not(.dock-image-only) :is(.bubble-text, p, span) {
+/* MessageContent 底色锁定（shadcn port）：
+ * user = bg-primary / text-primary-foreground → --ui-accent / --ui-text-on-accent
+ * assistant = bg-secondary / text-foreground → #2a2a2a（深色）/ --ui-surface-elevated（浅色）
+ * 压过 gpt-dock-chat / dark-desaturated 的 #232327、#212121 等旧底。 */
+html:not(#ui-msg-fill-1):not(#ui-msg-fill-2):not(#ui-msg-fill-3):not(#ui-msg-fill-4)
+body.gpt-dock-canvas-mode .chat-shell #messages.messages
+    .bubble.user:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
+html:not(#ui-msg-fill-1):not(#ui-msg-fill-2):not(#ui-msg-fill-3):not(#ui-msg-fill-4)
+body.gpt-dock-canvas-mode .chat-shell #messages.messages
+    .bubble-row.user > .bubble.user:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble) {
+    background: var(--ui-accent) !important;
+    background-color: var(--ui-accent) !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
     color: var(--ui-text-on-accent) !important;
 }
-html body.gpt-dock-canvas-mode .chat-shell #messages.messages
+html:not(#ui-msg-fill-1):not(#ui-msg-fill-2):not(#ui-msg-fill-3):not(#ui-msg-fill-4)
+body.gpt-dock-canvas-mode .chat-shell #messages.messages
+    .bubble.user:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble)
+    :is(.bubble-text, p, span, a, strong, em, code) {
+    color: var(--ui-text-on-accent) !important;
+}
+html:not(#ui-msg-fill-1):not(#ui-msg-fill-2):not(#ui-msg-fill-3):not(#ui-msg-fill-4)
+body.gpt-dock-canvas-mode .chat-shell #messages.messages
     .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
-html body.gpt-dock-canvas-mode .chat-shell #messages.messages
-    .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble) :is(.bubble-text, p, span) {
+html:not(#ui-msg-fill-1):not(#ui-msg-fill-2):not(#ui-msg-fill-3):not(#ui-msg-fill-4)
+body.gpt-dock-canvas-mode .chat-shell #messages.messages
+    .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble),
+html:not(#ui-msg-fill-1):not(#ui-msg-fill-2):not(#ui-msg-fill-3):not(#ui-msg-fill-4)
+body.gpt-dock-canvas-mode .chat-shell #messages.messages
+    .bubble-row.assistant > .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble) {
+    background: var(--ui-surface-elevated) !important;
+    background-color: var(--ui-surface-elevated) !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: inset 0 0 0 1px var(--ui-border) !important;
+    color: var(--ui-text) !important;
+}
+html:not(#ui-msg-fill-1):not(#ui-msg-fill-2):not(#ui-msg-fill-3):not(#ui-msg-fill-4):is(.theme-dark, .studio-theme-dark)
+body.gpt-dock-canvas-mode .chat-shell #messages.messages
+    .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
+html:not(#ui-msg-fill-1):not(#ui-msg-fill-2):not(#ui-msg-fill-3):not(#ui-msg-fill-4):is(.theme-dark, .studio-theme-dark)
+body.gpt-dock-canvas-mode .chat-shell #messages.messages
+    .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble),
+html:not(#ui-msg-fill-1):not(#ui-msg-fill-2):not(#ui-msg-fill-3):not(#ui-msg-fill-4):is(.theme-dark, .studio-theme-dark)
+body.gpt-dock-canvas-mode .chat-shell #messages.messages
+    .bubble-row.assistant > .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
+:is(html.theme-dark, html.studio-theme-dark)
+body.gpt-dock-canvas-mode .chat-shell #messages.messages
+    .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
+:is(html.theme-dark, html.studio-theme-dark)
+body.gpt-dock-canvas-mode .chat-shell #messages.messages
+    .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble) {
+    background: #2a2a2a !important;
+    background-color: #2a2a2a !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08) !important;
+    color: var(--ui-text) !important;
+}
+html:not(#ui-msg-fill-1):not(#ui-msg-fill-2):not(#ui-msg-fill-3):not(#ui-msg-fill-4)
+body.gpt-dock-canvas-mode .chat-shell #messages.messages
+    .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble)
+    :is(.bubble-text, p, span, a, strong, em, code) {
     color: var(--ui-text) !important;
 }
 
