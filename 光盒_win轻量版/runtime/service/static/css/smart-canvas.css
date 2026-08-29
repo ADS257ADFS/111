@@ -1163,7 +1163,7 @@ body.input-thumb-pointer-dragging, body.input-thumb-pointer-dragging * { cursor:
     backdrop-filter:none;
     -webkit-backdrop-filter:none;
 }
-.input-thumb-upload svg { width:16px; height:16px; stroke-width:1.35; pointer-events:none; transform:translateY(5px); }
+.input-thumb-upload svg { width:16px; height:16px; stroke-width:1.35; pointer-events:none; transform:none; }
 .input-thumb-upload:hover,
 .input-thumb-upload:focus-visible{
     border-color:rgba(255,255,255,.88);

@@ -5547,8 +5547,8 @@ html.theme-dark #shell.shell #composer.composer .input-thumb-upload,
 html.theme-dark #shell.shell #composer.composer .input-thumb-upload:is(:hover, :focus-visible, :active),
 html.studio-theme-dark #shell.shell #composer.composer .input-thumb-upload,
 html.studio-theme-dark #shell.shell #composer.composer .input-thumb-upload:is(:hover, :focus-visible, :active) {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
+    background: rgba(255, 255, 255, .42) !important;
+    background-color: rgba(255, 255, 255, .42) !important;
     background-image: none !important;
-    color: #1a1a1a !important;
+    color: rgba(255, 255, 255, .92) !important;
 }

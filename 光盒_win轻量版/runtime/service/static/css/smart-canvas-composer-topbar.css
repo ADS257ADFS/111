@@ -145,28 +145,30 @@
     align-items: flex-end;
     gap: 0;
     min-width: 0;
-    height: 36px;
+    height: 48px;
     padding: 0;
     overflow: visible;
 }
 
 .shell #composer .composer-card-topbar .input-thumb {
-    width: 36px;
-    height: 36px;
-    flex: 0 0 36px;
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
     margin: 0;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, .88);
     background: #ffffff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, .18);
-    transform: translateY(-10px);
-    transition: transform .16s ease;
+    transform: translateY(-12px);
+    transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
     will-change: transform;
 }
 
-.shell #composer .composer-card-topbar .input-thumb:hover {
+.shell #composer .composer-card-topbar .input-thumb:hover,
+.shell #composer .composer-card-topbar .input-thumb:focus-visible,
+.shell #composer .composer-card-topbar .input-thumb:active {
     border-color: rgba(255, 255, 255, .95);
-    transform: translateY(-10px);
+    transform: translateY(-12px) !important;
     box-shadow: 0 6px 14px rgba(0, 0, 0, .22);
 }
 
@@ -176,21 +178,35 @@
 }
 
 .shell #composer .composer-card-topbar .input-thumb-upload {
-    border: 1px solid rgba(255, 255, 255, .88) !important;
-    background: #ffffff !important;
-    color: #1a1a1a !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, .18) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    border: 1px solid rgba(255, 255, 255, .55) !important;
+    background: rgba(255, 255, 255, .42) !important;
+    background-color: rgba(255, 255, 255, .42) !important;
+    color: rgba(255, 255, 255, .92) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .14) !important;
 }
 
 .shell #composer .composer-card-topbar .input-thumb-upload:is(:hover, :focus-visible, :active) {
-    border-color: rgba(255, 255, 255, .95) !important;
-    background: #ffffff !important;
+    border-color: rgba(255, 255, 255, .72) !important;
+    background: rgba(255, 255, 255, .52) !important;
+    background-color: rgba(255, 255, 255, .52) !important;
     background-image: none !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, .18) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .16) !important;
+    transform: translateY(-12px) !important;
 }
 
-.shell #composer .composer-card-topbar .input-thumb-upload svg {
-    transform: translateY(5px);
+.shell #composer .composer-card-topbar .input-thumb-upload :is(i, svg) {
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    display: block !important;
+    flex: 0 0 auto !important;
+    pointer-events: none !important;
+    transform: none !important;
+    translate: none !important;
 }
 
 /* 多图默认叠放：只用 transform，避免 absolute↔relative 触发布局抖动 */
@@ -200,18 +216,18 @@
 
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within)
     .input-thumb:not(.input-thumb-upload) {
-    margin-right: -26px;
+    margin-right: -34px;
     z-index: calc(2 + var(--thumb-i, 0));
-    transform: translateY(-10px) rotate(calc((var(--thumb-i, 0) - 1) * 4deg));
+    transform: translateY(-12px) rotate(calc((var(--thumb-i, 0) - 1) * 4deg));
 }
 
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within)
     .input-thumb-upload {
     z-index: 20;
-    transform: translateY(-10px) rotate(6deg);
+    transform: translateY(-12px);
 }
 
-/* 悬停横向展开 */
+/* 悬停横向展开（保持垂直位置，避免图标下沉躲避） */
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:is(:hover, :focus-within) .input-thumb-list {
     gap: 8px;
 }
@@ -219,17 +235,24 @@
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:is(:hover, :focus-within) .input-thumb {
     margin-right: 0;
     z-index: 2;
-    transform: translateY(-10px) rotate(0deg);
+    transform: translateY(-12px) rotate(0deg);
 }
 
 html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar
     .input-thumb-upload,
 html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar
     .input-thumb-upload:is(:hover, :focus-visible, :active) {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
+    background: rgba(255, 255, 255, .42) !important;
+    background-color: rgba(255, 255, 255, .42) !important;
     background-image: none !important;
-    border-color: rgba(255, 255, 255, .92) !important;
-    color: #1a1a1a !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, .22) !important;
+    border-color: rgba(255, 255, 255, .55) !important;
+    color: rgba(255, 255, 255, .92) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .16) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar
+    .input-thumb-upload:is(:hover, :focus-visible, :active) {
+    background: rgba(255, 255, 255, .52) !important;
+    background-color: rgba(255, 255, 255, .52) !important;
+    border-color: rgba(255, 255, 255, .72) !important;
 }
