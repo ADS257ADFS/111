@@ -5275,7 +5275,6 @@ html body #shell.shell #composer.composer .composer-footer :is(
     #composerKindPopover,
     #composerVideoReferencePopover
 ).composer-tool-popover :is(
-    .mode-model-choice,
     .composer-mode-option,
     .composer-api-models button,
     .composer-api-branch summary,
@@ -5299,7 +5298,6 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     #composerKindPopover,
     #composerVideoReferencePopover
 ).composer-tool-popover :is(
-    .mode-model-choice,
     .composer-mode-option,
     .composer-api-models button,
     .composer-api-branch summary,
@@ -5316,19 +5314,18 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     background-color: #f1f3f6 !important;
 }
 
-/* Model row hover bg needs 4× class weight to beat the idle transparent rule. */
+/* 模型名行：悬停无方块底色（仅保留名字上移 / 说明淡入） */
 html body #shell.shell #composer.composer #composerApiSettingsPopover
     .composer-mode-model-list
-    .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
-    background: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
-    background-color: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
-}
-
+    .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible),
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover
     .composer-mode-model-list
     .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
-    background: #f1f3f6 !important;
-    background-color: #f1f3f6 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
 }
 
 /* 上拉菜单内部按钮（含 has-size-choice-glider / 尺寸·质量·张数格子）：
@@ -5351,7 +5348,6 @@ html body #shell.shell #composer.composer .composer-footer :is(
     .composer-kind-toggle > button,
     .composer-api-models > button,
     .composer-api-branch > summary,
-    .mode-model-choice,
     .direct-option
 ):not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
     background: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
@@ -5377,7 +5373,6 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     .composer-kind-toggle > button,
     .composer-api-models > button,
     .composer-api-branch > summary,
-    .mode-model-choice,
     .direct-option
 ):not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
     background: #f1f3f6 !important;
@@ -5471,7 +5466,7 @@ html:not(#ui-side-hov-1):not(#ui-side-hov-2):not(#ui-side-hov-3):not(#ui-side-ho
     box-shadow: none !important;
 }
 
-/* 模型选择上拉：默认无边框无底色（含已选）；悬停对齐一级按钮黑底+微内发光 */
+/* 模型选择上拉：默认与悬停均无边框无底色（含已选）；悬停仅做字移动效 */
 html:not(#ui-model-hov-1):not(#ui-model-hov-2):not(#ui-model-hov-3):not(#ui-model-hov-4):is(.theme-dark, .studio-theme-dark)
 body #shell.shell #composer.composer #composerApiSettingsPopover
 .composer-mode-model-list
@@ -5483,26 +5478,17 @@ body #shell.shell #composer.composer #composerApiSettingsPopover
 html:not(#ui-model-hov-1):not(#ui-model-hov-2):not(#ui-model-hov-3):not(#ui-model-hov-4):is(.theme-dark, .studio-theme-dark)
 body #shell.shell #composer.composer #composerApiSettingsPopover
 .composer-mode-model-list
-.mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:is(.selected, [aria-selected="true"], [aria-checked="true"]) {
+.mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:is(.selected, [aria-selected="true"], [aria-checked="true"]),
+html:not(#ui-model-hov-1):not(#ui-model-hov-2):not(#ui-model-hov-3):not(#ui-model-hov-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer #composerApiSettingsPopover
+.composer-mode-model-list
+.mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible, :active) {
     border: 0 !important;
     border-color: transparent !important;
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
     box-shadow: none !important;
-}
-
-html:not(#ui-model-hov-1):not(#ui-model-hov-2):not(#ui-model-hov-3):not(#ui-model-hov-4):is(.theme-dark, .studio-theme-dark)
-body #shell.shell #composer.composer #composerApiSettingsPopover
-.composer-mode-model-list
-.mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
-    border: 1px solid rgba(255, 255, 255, .08) !important;
-    border-radius: 10px !important;
-    background: transparent !important;
-    background-color: transparent !important;
-    background-image: none !important;
-    box-shadow:
-        none !important;
 }
 
 /* 深色磨砂顶排（参考/批量/Audio/Text/Image/Video）：
