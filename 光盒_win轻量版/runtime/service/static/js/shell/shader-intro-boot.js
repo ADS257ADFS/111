@@ -65,7 +65,7 @@
       });
     }
     if (typeof api.maximize_to_work_area === "function") {
-      return Promise.resolve(api.maximize_to_work_area()).then(function () {
+      return Promise.resolve(api.maximize_to_work_area(false)).then(function () {
         document.documentElement.classList.add("lightbox-window-maximized");
       });
     }

@@ -3414,9 +3414,8 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     content: none;
 }
 
-/* 顶排磨砂材质：高度只跟顶排 token，不跟 --composer-prompt-h；
-   输入栏加高时半透明条保持原高，仍贴在输入面板上方。 */
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+/* 深色顶窄条：纯黑 + 细描边（预览图抬高，不压描边） */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-material {
     display: block !important;
     position: absolute !important;
@@ -3427,10 +3426,11 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     height: calc(var(--ui-composer-topbar-h) + var(--ui-space-5)) !important;
     max-height: calc(var(--ui-composer-topbar-h) + var(--ui-space-5)) !important;
     min-height: calc(var(--ui-composer-topbar-h) + var(--ui-space-5)) !important;
-    border: 0 !important;
-    border-color: transparent !important;
+    border: 1px solid rgba(255, 255, 255, .16) !important;
+    border-color: rgba(255, 255, 255, .16) !important;
     border-radius: var(--ui-composer-topbar-radius) var(--ui-composer-topbar-radius) 0 0 !important;
-    background: var(--ui-surface-composer-topbar) !important;
+    background: #000000 !important;
+    background-color: #000000 !important;
     box-shadow: none !important;
     pointer-events: none !important;
     -webkit-backdrop-filter: none!important;
@@ -3458,17 +3458,21 @@ html body #shell.shell #composer.composer:not([data-height-state="expanded"])
     min-height: 71px !important;
 }
 
-/* 预览已在顶栏浮层：不再把旧 thumbs 行高度还给输入区，避免底框被撑高/压低 */
+/* 预览在顶栏浮层：把 thumbs 行高度还给输入区，恢复底框总高 */
 html body #shell.shell #composer.composer:not([data-height-state="expanded"])
-    .composer-card.has-input-thumbs > .prompt-row {
-    min-height: calc(71px + var(--ui-composer-prompt-padding-top)) !important;
-    height: calc(71px + var(--ui-composer-prompt-padding-top)) !important;
-    max-height: calc(71px + var(--ui-composer-prompt-padding-top)) !important;
+    .composer-card.has-input-thumbs > .prompt-row,
+html body #shell.shell #composer.composer:not([data-height-state="expanded"])
+    .composer-card:has(#inputThumbsRow.has-items) > .prompt-row {
+    min-height: calc(119px + var(--ui-composer-prompt-padding-top)) !important;
+    height: calc(119px + var(--ui-composer-prompt-padding-top)) !important;
+    max-height: calc(119px + var(--ui-composer-prompt-padding-top)) !important;
 }
 
 html body #shell.shell #composer.composer:not([data-height-state="expanded"])
-    .composer-card.has-input-thumbs > .prompt-row > #promptInput.prompt-input {
-    min-height: 71px !important;
+    .composer-card.has-input-thumbs > .prompt-row > #promptInput.prompt-input,
+html body #shell.shell #composer.composer:not([data-height-state="expanded"])
+    .composer-card:has(#inputThumbsRow.has-items) > .prompt-row > #promptInput.prompt-input {
+    min-height: 119px !important;
 }
 
 /* M66：顶排控件只保留一层总背景；参考、共创和模式切换不再绘制独立底框。 */
@@ -5426,17 +5430,6 @@ html:not(#ui-group-fg-1):not(#ui-group-fg-2):not(#ui-group-fg-3):not(#ui-group-f
     background-color: #1f1f1f !important;
     background-image: none !important;
     border: 1px solid rgba(255, 255, 255, .16) !important;
-    -webkit-backdrop-filter: none!important;
-    backdrop-filter: none!important;
-}
-
-:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card > .composer-card-material {
-    background: rgba(31, 31, 31, .80) !important;
-    border: 0 !important;
-    border-color: transparent !important;
-    box-shadow: none !important;
-    outline: 0 !important;
     -webkit-backdrop-filter: none!important;
     backdrop-filter: none!important;
 }

@@ -625,17 +625,18 @@ class DesktopBridge:
         self._move_thread = None
         self._intro_dom_ready = threading.Event()
         self._window_shown = False
+        self._app_entered = False
 
     def notify_intro_dom_ready(self) -> None:
         """JS intro shell is in the DOM and WebGL is prepared."""
         self._intro_dom_ready.set()
 
     def _kick_intro_playback(self) -> None:
-        if self._window is None:
+        if self._window is None or self._app_entered:
             return
 
         def attempt(remaining: int = 80) -> None:
-            if remaining <= 0:
+            if remaining <= 0 or self._app_entered:
                 return
             try:
                 self._window.evaluate_js(
@@ -647,7 +648,7 @@ class DesktopBridge:
         threading.Timer(0.02, lambda: attempt()).start()
 
     def _show_centered_intro_window(self) -> None:
-        if self._window is None:
+        if self._window is None or self._app_entered:
             return
         self.show_intro_window()
         if not self._window_shown:
@@ -768,6 +769,8 @@ class DesktopBridge:
 
     def show_intro_window(self) -> None:
         """Small rounded startup panel — not the full software window."""
+        if self._app_entered:
+            return
         self._set_form_min_size(INTRO_WINDOW_MIN_WIDTH, INTRO_WINDOW_MIN_HEIGHT)
         # Keep a normal restore target for later maximize-from-intro.
         self._restore_bounds = self._default_window_bounds()
@@ -784,6 +787,7 @@ class DesktopBridge:
 
     def enter_app_from_intro(self) -> str:
         """After welcome animation: restore min size and open fullscreen software."""
+        self._app_entered = True
         self._set_form_min_size(WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT)
         # Never remember the intro panel size as the restore target — that made
         # the first windowed toggle shrink to the tiny startup panel.
@@ -899,7 +903,7 @@ class DesktopBridge:
             self.maximize_to_work_area(remember=False)
             return "normal"
         if bounds:
-            self._restore_bounds = bounds
+            self._restore_bounds = self._normalize_restore_bounds(bounds)
         self.restore_window()
         return "normal"
 
@@ -950,7 +954,7 @@ class DesktopBridge:
             user32 = ctypes.windll.user32
             user32.ReleaseCapture()
             user32.SendMessageW(hwnd, message, wparam, 0)
-            self._restore_bounds = self._window_rect()
+            self._restore_bounds = self._normalize_restore_bounds(self._window_rect())
             if not self._is_work_area_maximized():
                 if self._window is not None:
                     configure_opaque_form(self._window)
@@ -987,7 +991,7 @@ class DesktopBridge:
             # 拖动结束时若窗口已被切到最大化（如双击标题栏），一律不覆盖
             # 拖动结束时仅记录窗口化尺寸，避免“还原”回到最大化矩形。
             if not self._is_work_area_maximized():
-                self._restore_bounds = self._window_rect()
+                self._restore_bounds = self._normalize_restore_bounds(self._window_rect())
                 if self._window is not None:
                     configure_opaque_form(self._window)
                 apply_solid_window_frame(hwnd, show_shadow=True)
@@ -2031,6 +2035,8 @@ def main() -> None:
 
         def force_show_window() -> None:
             try:
+                if bridge._app_entered:
+                    return
                 configure_opaque_form(window)
                 bridge.set_window_backdrop(initial_theme)
                 bridge._show_centered_intro_window()
@@ -2048,13 +2054,27 @@ def main() -> None:
             startup_finished.wait(timeout=2.0)
             bridge._intro_dom_ready.wait(timeout=12.0)
             try:
+                if bridge._app_entered:
+                    return
                 configure_opaque_form(window)
                 bridge.set_window_backdrop(initial_theme)
                 bridge._show_centered_intro_window()
                 time.sleep(0.06)
+                if bridge._app_entered:
+                    return
                 bridge.show_intro_window()
                 bridge._kick_intro_playback()
                 main_window_ready.wait(timeout=10.0)
+                if bridge._app_entered:
+                    # App already fullscreen — never SW_RESTORE back to intro size.
+                    bridge.enable_standard_taskbar_behavior()
+                    configure_opaque_form(window)
+                    install_window_frame_refresh(window, bridge)
+                    hwnd = bridge._hwnd()
+                    if hwnd:
+                        apply_solid_window_frame(hwnd, show_shadow=False)
+                        window_shadow.attach(window)
+                    return
                 bridge.enable_standard_taskbar_behavior()
                 configure_opaque_form(window)
                 install_window_frame_refresh(window, bridge)
@@ -2065,23 +2085,29 @@ def main() -> None:
                 if hwnd:
                     rect = bridge._window_rect()
                     if (
-                        not rect
-                        or rect[0] < -10000
-                        or rect[1] < -10000
-                        or rect[2] < 320
-                        or rect[3] < 240
+                        not bridge._app_entered
+                        and (
+                            not rect
+                            or rect[0] < -10000
+                            or rect[1] < -10000
+                            or rect[2] < 320
+                            or rect[3] < 240
+                        )
                     ):
                         bridge.show_intro_window()
-                    ctypes.windll.user32.ShowWindow(hwnd, 9)  # SW_RESTORE
-                    ctypes.windll.user32.SetForegroundWindow(hwnd)
-                    configure_opaque_form(window)
-                    apply_solid_window_frame(hwnd, show_shadow=True)
-                    window_shadow.attach(window)
-                    apply_solid_window_frame(hwnd, show_shadow=True)
-                    # pywebview may re-apply Padding after Navigating — punch again.
-                    time.sleep(0.08)
-                    configure_opaque_form(window)
-                    apply_solid_window_frame(hwnd, show_shadow=True)
+                    if bridge._app_entered:
+                        apply_solid_window_frame(hwnd, show_shadow=False)
+                    else:
+                        ctypes.windll.user32.ShowWindow(hwnd, 9)  # SW_RESTORE
+                        ctypes.windll.user32.SetForegroundWindow(hwnd)
+                        configure_opaque_form(window)
+                        apply_solid_window_frame(hwnd, show_shadow=True)
+                        window_shadow.attach(window)
+                        apply_solid_window_frame(hwnd, show_shadow=True)
+                        # pywebview may re-apply Padding after Navigating — punch again.
+                        time.sleep(0.08)
+                        configure_opaque_form(window)
+                        apply_solid_window_frame(hwnd, show_shadow=True)
             finally:
                 stop_startup.set()
 

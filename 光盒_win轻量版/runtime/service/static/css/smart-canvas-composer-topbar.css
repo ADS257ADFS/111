@@ -26,9 +26,10 @@
 }
 
 :is(html.theme-dark, html.studio-theme-dark) .shell #composer .composer-card-topbar {
-    border: 0;
-    border-color: transparent;
-    background: var(--ui-surface-composer-topbar);
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-bottom: 1px solid rgba(255, 255, 255, .16);
+    background: #000000;
+    background-color: #000000;
 }
 
 /* Unified, slightly larger controls across both sides of the composer top bar. */
@@ -167,11 +168,11 @@
     grid-area: auto;
     position: absolute;
     left: 0;
-    bottom: 100%;
+    bottom: calc(100% + 8px);
     align-items: flex-end;
     justify-content: flex-start;
     gap: 0;
-    padding: 0 0 2px;
+    padding: 0 0 0;
     margin: 0;
     min-width: 0;
     overflow: visible;

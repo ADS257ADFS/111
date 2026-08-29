@@ -381,30 +381,34 @@ html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    height: 0.05em;
-    width: calc(var(--main-size) / 2);
-    margin-top: 0.9em;
-    border-radius: 0.05em;
+    height: 3px;
+    width: 7.3em;
+    margin-top: 0.55em;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .22);
 }
 
 .lightbox-shader-intro-loader .loader .line::before {
-    content: "";
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-color: var(--text-color);
-    opacity: 0.3;
+    content: none;
+    display: none;
 }
 
 .lightbox-shader-intro-loader .loader .line::after {
     content: "";
     position: absolute;
+    left: 0;
+    top: 0;
     height: 100%;
-    width: 100%;
-    background-color: var(--text-color);
-    border-radius: 0.05em;
-    transform: translateX(-90%);
-    animation: lightbox-intro-loader-wobble 2s cubic-bezier(0.5, 0.8, 0.5, 0.2) infinite;
+    width: 38%;
+    background: linear-gradient(90deg, rgba(255,255,255,.35), #fff 55%, rgba(255,255,255,.35));
+    border-radius: 999px;
+    transform: translateX(-120%);
+    animation: lightbox-intro-progress-slide 1.35s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes lightbox-intro-progress-slide {
+    0% { transform: translateX(-120%); }
+    100% { transform: translateX(320%); }
 }
 
 @keyframes lightbox-intro-loader-wobble {
@@ -427,5 +431,10 @@ html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro
     .lightbox-shader-intro-loader .loader .text span,
     .lightbox-shader-intro-loader .loader .line::after {
         animation: none !important;
+    }
+    .lightbox-shader-intro-loader .loader .line::after {
+        transform: none;
+        width: 55%;
+        left: 22.5%;
     }
 }
