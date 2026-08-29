@@ -64,15 +64,26 @@
         if (newBtn && newBtn.parentElement !== document.body) {
             document.body.appendChild(newBtn);
         }
-        // 原窗口栏中的精简模式入口移到对话栏标题区，位于“新建对话”左边。
+        // 对话栏右侧操作顺序固定：＋新建 → 精简模式 → 收起。
         const compactBtn = document.querySelector('.lightbox-compact-btn');
-        const dockActionAnchor = document.getElementById('dockShellNewBtn') || document.getElementById('gptDockCloseBtn');
-        if (compactBtn && dockActionAnchor && compactBtn.parentElement !== dockActionAnchor.parentElement) {
+        const newChatBtn = document.getElementById('dockShellNewBtn');
+        const closeBtn = document.getElementById('gptDockCloseBtn');
+        const dockActions = closeBtn?.parentElement || document.querySelector('.dock-chrome-actions');
+        if (compactBtn && dockActions) {
             compactBtn.classList.add('dock-chrome-btn');
             compactBtn.removeAttribute('tabindex');
-            dockActionAnchor.parentElement.insertBefore(compactBtn, dockActionAnchor);
+            if (closeBtn) dockActions.insertBefore(compactBtn, closeBtn);
+            else if (compactBtn.parentElement !== dockActions) dockActions.appendChild(compactBtn);
         }
+        if (newChatBtn && dockActions && compactBtn && newChatBtn.nextElementSibling !== compactBtn) {
+            dockActions.insertBefore(newChatBtn, compactBtn);
+        }
+        // 下拉里不应再出现「新建对话」。
+        document.querySelectorAll('.dock-chrome-menu-new, #dockShellMenuNewBtn').forEach(node => node.remove());
     };
+
+    let compactDockWasCollapsed = false;
+    let compactDockWasHidden = false;
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', relocateTitlebarButtons);
     } else {
@@ -84,8 +95,6 @@
         try { window.toggleTheme?.(); } catch (_e) {}
     });
 
-    let compactDockWasCollapsed = false;
-    let compactDockWasHidden = false;
     const notifyDockCompact = compact => {
         // iframe 可能尚未加载完成，多发几次（处理是幂等的）
         const frame = document.getElementById('frame-gpt-dock');
@@ -114,7 +123,6 @@
         if(!compact){
             if(compactDockWasCollapsed) window.closeGptDock?.();
             if(compactDockWasHidden) root.classList.add('studio-hide-gpt-dock');
-            document.querySelector('[data-compact-pin]')?.classList.remove('active');
             syncWindowState(await api()?.get_window_state());
         }
     };
@@ -127,17 +135,6 @@
             if(action === 'compact') syncCompactState(await api()?.toggle_compact_window());
             if(action === 'close') api()?.close_window();
         });
-    });
-
-    document.querySelector('[data-compact-pin]')?.addEventListener('click', event => {
-        const button = event.currentTarget;
-        const next = !button.classList.contains('active');
-        api()?.set_window_topmost(next);
-        button.classList.toggle('active', next);
-    });
-
-    document.querySelector('[data-compact-restore]')?.addEventListener('click', async () => {
-        syncCompactState(await api()?.toggle_compact_window());
     });
 
     document.querySelectorAll('[data-native-window-resize]').forEach(handle => {
