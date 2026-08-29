@@ -43,8 +43,7 @@ body {
   --lb-glass-popover: rgba(255, 255, 255, 0.60);
   --lb-glass-topbar: rgba(243, 245, 247, 0.60);
   --lb-glass-filter: blur(50px) saturate(160%);
-  --lb-shadow-float: none;
-  /* 画布悬浮层圆角（深色统一 16px；胶囊工具栏另设 pill） */
+  --lb-shadow-float: 0 4px 18px rgba(0, 0, 0, 0.12);
   --lb-float-r: 16px;
   /* 正文字号统一：工具栏 = 菜单 = 右侧对话 = 16px */
   --lb-font: "Segoe UI", "Microsoft YaHei UI", "MiSans Variable", sans-serif;
@@ -88,47 +87,28 @@ html.theme-dark {
   --lb-selected: rgba(10, 132, 255, 0.16);
   --lb-glass-bg: rgba(35, 35, 35, 0.60);
   --lb-glass-popover: rgba(35, 35, 35, 0.60);
-  --lb-glass-topbar: rgba(255, 255, 255, 0.04);
+  --lb-glass-topbar: rgba(35, 35, 35, 0.60);
   --lb-conn: rgba(255, 255, 255, 0.24);
-  /* 画布浮层深色玻璃（扁平，无厚度阴影） */
-  --lb-canvas-glass-bg: rgba(255, 255, 255, 0.06);
-  --lb-canvas-glass-text: #e5e5e5;
-  /* 画布网格点（与 design-tokens --ui-canvas-grid-dot 一致） */
+  --lb-shadow-float: 0 4px 16px rgba(0, 0, 0, 0.30);
   --lb-canvas-grid-dot: rgba(255, 255, 255, 0.055);
 }
 
-/* —— 悬浮层统一视觉体系 —— */
-/* 亮色：磨砂 60% + blur(50)；深色画布：扁平玻璃底，无投影厚度 */
-.lb-shell-float {
-  border: var(--lb-divider-size) solid var(--lb-border);
-  border-radius: var(--lb-r-float);
-  background: var(--lb-glass-popover);
-  backdrop-filter: var(--lb-glass-filter);
-  -webkit-backdrop-filter: var(--lb-glass-filter);
-  box-shadow: none;
-  color: var(--lb-text);
-}
-.lb-canvas-float {
+/* —— 全部悬浮层统一：60% 透明 + blur(50px) + 轻外投影 —— */
+.lb-float {
   border: var(--lb-divider-size) solid var(--lb-border);
   border-radius: var(--lb-float-r);
-  background: var(--lb-glass-popover);
+  background-color: var(--lb-glass-popover);
   backdrop-filter: var(--lb-glass-filter);
   -webkit-backdrop-filter: var(--lb-glass-filter);
-  box-shadow: none;
+  box-shadow: var(--lb-shadow-float);
   color: var(--lb-text);
 }
-html.theme-dark .lb-canvas-float {
-  background: var(--lb-canvas-glass-bg);
-  color: var(--lb-canvas-glass-text);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-/* 画布控件字重统一：不加粗英文/数字 */
-.lb-canvas-float :is(button, .chip, h5, .zoom-val) {
+.lb-float.is-pill { border-radius: var(--lb-r-pill); }
+.lb-float :is(button, .chip, h5, .zoom-val, .menu-item, .create-item) {
   font-weight: var(--lb-weight-body);
   font-variant-numeric: tabular-nums;
 }
-.lb-canvas-float .chip.is-active { font-weight: var(--lb-weight-body); }
+.lb-float .chip.is-active { font-weight: var(--lb-weight-body); }
 
 .proto-badge {
   position: fixed; top: 4px; left: 50%; transform: translateX(-50%); z-index: 99999;
@@ -270,7 +250,8 @@ html.theme-dark .lb-canvas-float {
 }
 .canvas {
   position: absolute; inset: 0; z-index: 1;
-  background-color: var(--lb-bg-stage);
+  /* 透明底才能让底层彩色图案穿透磨砂层 */
+  background-color: transparent;
   background-image: radial-gradient(var(--lb-canvas-grid-dot) 0.6px, transparent 1.1px);
   background-size: var(--lb-grid-size) var(--lb-grid-size);
 }
@@ -432,24 +413,19 @@ html.theme-dark .selection-box {
   width: min(var(--lb-composer-w), calc(100% - 40px));
   transform: translateX(-50%);
 }
-.composer-topbar-rail.lb-canvas-float {
+.composer-topbar-rail.lb-float {
+  margin: 0 22px;
   border-radius: var(--lb-r-composer-top) var(--lb-r-composer-top) 0 0;
   border-bottom: none;
 }
-.composer-main-card.lb-canvas-float {
-  border-radius: 0 0 var(--lb-r-composer) var(--lb-r-composer);
+.composer-main-card.lb-float {
+  border-radius: var(--lb-r-composer);
   margin-top: -1px;
-}
-html.theme-dark .composer-main-card.lb-canvas-float {
-  border-radius: 0 0 var(--lb-float-r) var(--lb-float-r);
 }
 .composer-topbar-rail {
   position: relative; z-index: 1;
   margin: 0 22px; height: 42px; padding: 3px 8px;
   display: flex; align-items: center; justify-content: space-between;
-}
-html.theme-dark .composer-topbar-rail.lb-canvas-float {
-  background: rgba(255, 255, 255, 0.04);
 }
 .composer-topbar-left, .composer-topbar-right { display: flex; align-items: center; gap: 4px; }
 .composer-topbar-rail button {
@@ -470,19 +446,13 @@ html.theme-dark .composer-topbar-rail.lb-canvas-float {
   width: var(--lb-divider-size); height: 14px; background: var(--lb-divider); margin: 0 4px;
 }
 .composer-main-card {
-  position: relative; z-index: 3; margin-top: -1px;
-  border-radius: var(--lb-r-composer);
+  position: relative; z-index: 3;
   padding: 8px; overflow: visible;
 }
-html.theme-dark .composer-main-card { border-radius: var(--lb-float-r); }
 .composer-prompt {
   min-height: 56px; padding: 8px 14px 4px; margin-top: 28px;
   font-size: var(--lb-type-body); line-height: 1.65;
   font-weight: var(--lb-weight-body);
-}
-html.theme-dark .composer-prompt {
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: var(--lb-float-r);
 }
 .composer-thumbs { display: flex; gap: 8px; padding: 8px 10px; }
 .thumb {
@@ -506,7 +476,7 @@ html.theme-dark .composer-prompt {
 html.theme-dark .tool-btn:hover { background: rgba(255, 255, 255, 0.06); color: inherit; }
 .tool-popover {
   position: absolute; bottom: 44px; left: 0; min-width: 220px; z-index: 220;
-  padding: 12px;
+  padding: 12px; border-radius: var(--lb-float-r);
   pointer-events: none; opacity: 0; visibility: hidden;
 }
 .tool-popover.is-open {
@@ -576,9 +546,7 @@ html.theme-dark .tool-popover h5 { color: var(--lb-text-muted); }
 }
 .dock-msg.is-user { align-self: flex-end; background: var(--lb-accent-subtle); border-color: transparent; }
 .dock-composer {
-  margin-top: auto; border: var(--lb-divider-size) solid var(--lb-border);
-  border-radius: var(--lb-r-dialog); background: var(--lb-bg-elevated);
-  padding: 10px;
+  margin-top: auto; padding: 10px;
 }
 .dock-input {
   width: 100%; min-height: 56px; border: none; resize: none; outline: none;
@@ -607,7 +575,7 @@ html.theme-dark .tool-popover h5 { color: var(--lb-text-muted); }
 """
 
 HTML_BODY = r"""
-<div class="proto-badge">完整壳层样板 v6</div>
+<div class="proto-badge">完整壳层样板 v7</div>
 <div class="proto-toolbar">
   <button class="lb-btn" onclick="document.documentElement.classList.toggle('theme-dark')">切换亮/暗</button>
   <a class="lb-btn" href="字体说明.html">字体说明</a>
@@ -615,19 +583,15 @@ HTML_BODY = r"""
   <a class="lb-btn" href="index.html">← 入口</a>
 </div>
 
-<div class="spec-panel lb-shell-float">
-  <h4>深色底（软件实色）</h4>
-  顶/左栏 <code>#181818</code><br>
-  右栏 <code>#1b1b1b</code><br>
-  画布 <code>#101010</code><br>
-  网格点 <code>rgba(255,255,255,.055)</code><br>
-  画布浮层 <code>rgba(255,255,255,.06)</code> 扁平无投影<br>
+<div class="spec-panel lb-float">
+  <h4>悬浮层统一规则</h4>
+  全部 <code>60%</code> 透明<br>
+  模糊 <code>blur(50px)</code><br>
+  轻外投影 <code>0 4px 16~18px</code><br>
   <br>
-  <h4>壳层菜单磨砂</h4>
-  透明度 <code>60%</code> · 模糊 <code>blur(50px)</code><br>
-  <br>
-  <h4>字重</h4>
-  画布控件统一 <code>380</code>，不加粗英文/数字
+  <h4>画布底</h4>
+  实色 <code>#101010</code> + 网格点<br>
+  透明画布层让磨砂可透视
 </div>
 
 <div class="app">
@@ -671,7 +635,7 @@ HTML_BODY = r"""
         <button class="user-btn"><span class="user-avatar">👤</span><span class="user-name">用户</span></button>
         <button class="titlebar-btn">?</button>
       </div>
-      <div class="user-menu lb-shell-float">
+      <div class="user-menu lb-float">
         <span class="proto-label" style="top:-18px;left:0">用户菜单</span>
         <button class="user-menu-item"><span class="ico">🏠</span><a href="个人主页-样板.html" style="color:inherit;text-decoration:none">个人主页</a></button>
         <button class="user-menu-item"><span class="ico">🌓</span>主题<small>浅色</small></button>
@@ -691,7 +655,7 @@ HTML_BODY = r"""
           <div class="glass-demo">
             <span class="proto-label" style="top:-18px;left:0">磨砂透视示意</span>
             <div class="glass-demo-pattern"></div>
-            <div class="glass-demo-card lb-canvas-float">
+            <div class="glass-demo-card lb-float">
               <strong>磨砂浮层</strong>
               <small>后方条纹图案被模糊透视</small>
             </div>
@@ -703,12 +667,12 @@ HTML_BODY = r"""
             <path class="conn-line is-cascade" d="M 550 280 C 620 280, 660 300, 720 280" style="opacity:.5" />
           </svg>
 
-          <div class="node lb-canvas-float is-selected" style="left:170px;top:110px;width:200px;height:165px">
+          <div class="node lb-float is-selected" style="left:170px;top:110px;width:200px;height:165px">
             <div class="node-port out"></div>
             <div class="node-media"></div>
             <div class="node-title">参考图片</div>
           </div>
-          <div class="node lb-canvas-float is-selected" style="left:510px;top:200px;width:220px;height:185px">
+          <div class="node lb-float is-selected" style="left:510px;top:200px;width:220px;height:185px">
             <div class="node-port in"></div><div class="node-port out"></div>
             <div class="node-media"></div>
             <div class="node-title">生成结果</div>
@@ -718,7 +682,7 @@ HTML_BODY = r"""
           <div class="selection-box" style="left:158px;top:98px;width:580px;height:300px">
             <div class="selection-box-capsule">
               <span class="proto-label" style="top:-18px;left:0">打组面板（框选多节点）</span>
-              <div class="selection-capsule-bar lb-canvas-float" role="toolbar" aria-label="选区操作">
+              <div class="selection-capsule-bar lb-float is-pill" role="toolbar" aria-label="选区操作">
                 <button type="button" class="selection-capsule-btn">⊞ 打组</button>
                 <button type="button" class="selection-capsule-btn">⛓ 消除连线</button>
                 <button type="button" class="selection-capsule-btn">⇄ 整理</button>
@@ -729,18 +693,18 @@ HTML_BODY = r"""
               </div>
             </div>
           </div>
-          <div class="iqt lb-canvas-float" style="left:620px;top:178px">
+          <div class="iqt lb-float is-pill" style="left:620px;top:178px">
             <span class="proto-label" style="top:-18px;left:0">媒体工具栏</span>
             <button>✂ 裁切</button><button>↻ 多角度</button><button>▢ 框选</button>
             <span class="divider"></span><button>HD</button><button>PSD</button><button>↓</button>
           </div>
-          <div class="node lb-canvas-float" style="left:870px;top:290px;width:180px;height:150px">
+          <div class="node lb-float" style="left:870px;top:290px;width:180px;height:150px">
             <div class="node-port in"></div>
             <div class="node-media"></div>
             <div class="node-title">视频帧</div>
           </div>
 
-          <div class="create-menu lb-canvas-float">
+          <div class="create-menu lb-float">
             <span class="proto-label" style="top:-18px;left:0">双击画布菜单</span>
             <h4 style="margin-top:0">创建节点</h4>
             <button class="create-item"><span class="ico">T</span>文本</button>
@@ -748,7 +712,7 @@ HTML_BODY = r"""
             <button class="create-item"><span class="ico">🎬</span>视频</button>
             <button class="create-item"><span class="ico">🎵</span>音频</button>
           </div>
-          <div class="ctx-menu float-menu lb-canvas-float">
+          <div class="ctx-menu float-menu lb-float">
             <span class="proto-label" style="top:-18px;left:0">右键菜单</span>
             <button class="menu-item"><span>新建画布</span></button>
             <button class="menu-item"><span>整理全局</span></button>
@@ -756,21 +720,21 @@ HTML_BODY = r"""
             <button class="menu-item is-danger"><span>删除</span><kbd>Del</kbd></button>
           </div>
 
-          <div class="canvas-chrome lb-canvas-float">
+          <div class="canvas-chrome lb-float is-pill">
             <button>▦</button><button>−</button><span class="zoom-val">100%</span><button>＋</button>
             <button>↓</button><button>🗺</button>
           </div>
-          <div class="zoom-menu float-menu lb-canvas-float">
+          <div class="zoom-menu float-menu lb-float">
             <button class="menu-item"><span>缩小</span><kbd>Ctrl -</kbd></button>
             <button class="menu-item"><span>放大</span><kbd>Ctrl +</kbd></button>
             <div class="menu-divider"></div>
             <button class="menu-item"><span>100%</span></button>
           </div>
-          <div class="minimap lb-canvas-float"><div class="minimap-viewport"></div></div>
+          <div class="minimap lb-float"><div class="minimap-viewport"></div></div>
 
           <!-- 底部生成栏：普通模式 + 上拉菜单展开示意 -->
           <div class="composer">
-            <div class="composer-topbar-rail lb-canvas-float">
+            <div class="composer-topbar-rail lb-float">
               <span class="proto-label" style="top:-18px;left:0">上方窄工具栏</span>
               <div class="composer-topbar-left">
                 <button>⊕ 参考</button>
@@ -784,7 +748,7 @@ HTML_BODY = r"""
                 <button>🎬 Video</button>
               </div>
             </div>
-            <div class="composer-main-card lb-canvas-float">
+            <div class="composer-main-card lb-float">
               <button class="expand-btn">⤢</button>
               <div class="composer-prompt">改成低多边形简易 3D 动画本体画面，民间自制建模风格。</div>
               <div class="composer-thumbs">
@@ -795,7 +759,7 @@ HTML_BODY = r"""
                 <div style="display:flex;gap:6px">
                   <div class="tool-wrap">
                     <button class="tool-btn" type="button">⚙ GPT Image 2 ▾</button>
-                    <div class="tool-popover lb-canvas-float is-open">
+                    <div class="tool-popover lb-float is-open">
                       <span class="proto-label" style="top:-18px;left:0">API 上拉菜单</span>
                       <h5>模型</h5>
                       <div class="chip-row"><span class="chip is-active">GPT Image 2</span><span class="chip">Seedream</span></div>
@@ -803,7 +767,7 @@ HTML_BODY = r"""
                   </div>
                   <div class="tool-wrap">
                     <button class="tool-btn" type="button">▣ Auto · 1K | 1张 ▾</button>
-                    <div class="tool-popover lb-canvas-float is-open" style="width:240px">
+                    <div class="tool-popover lb-float is-open" style="width:240px">
                       <span class="proto-label" style="top:-18px;left:0">尺寸上拉菜单</span>
                       <h5>尺寸</h5>
                       <div class="chip-row" style="margin-bottom:6px"><span class="chip is-active">Auto</span><span class="chip">1:1</span><span class="chip">16:9</span></div>
@@ -827,7 +791,7 @@ HTML_BODY = r"""
       <div class="dock-chrome">
         <button class="dock-title-btn">未命名对话 ▾</button>
         <button class="dock-close">⊟</button>
-        <div class="dock-title-menu float-menu lb-shell-float">
+        <div class="dock-title-menu float-menu lb-float">
           <span class="proto-label" style="top:-18px;left:0">对话下拉</span>
           <button class="menu-item" style="background:var(--lb-hover)">＋ 新建对话</button>
           <button class="menu-item">未命名对话</button>
@@ -837,14 +801,14 @@ HTML_BODY = r"""
       <div class="dock-body">
         <div class="dock-msg">你好，我可以帮你整理创意、写提示词。</div>
         <div class="dock-msg is-user">帮我把色调调暖一点</div>
-        <div class="dock-composer">
+        <div class="dock-composer lb-float">
           <textarea class="dock-input" placeholder="描述创意或需求，/使用技能，@引用参考" readonly></textarea>
           <div class="dock-foot">
             <div class="dock-foot-left">
               <button class="attach-btn">📎</button>
               <div class="skill-wrap">
                 <button class="attach-btn">✦</button>
-                <div class="skill-menu float-menu lb-shell-float">
+                <div class="skill-menu float-menu lb-float">
                   <span class="proto-label" style="top:-18px;left:0">技能包</span>
                   <button class="menu-item">图片风格分析</button>
                   <button class="menu-item">提示词优化</button>
@@ -865,7 +829,7 @@ TEMPLATE = f"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>光盒 · 完整壳层视觉样板 v6</title>
+  <title>光盒 · 完整壳层视觉样板 v7</title>
   <style>{CSS}</style>
 </head>
 <body>
