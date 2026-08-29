@@ -240,15 +240,60 @@ textarea.ui-input { height: auto; min-height: 64px; padding: var(--ui-space-4); 
 .ui-tab:disabled { color: var(--ui-text-disabled); opacity: 1; cursor: default; }
 
 /* ================================================================
+ * Float —— 磨砂浮层（菜单 / 工具条 / 生成栏 / 框选胶囊）
+ * 详见 docs/UI_VISUAL_STANDARD.md 第八章
+ * ================================================================ */
+.ui-float {
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-float);
+    background-color: var(--ui-glass-popover);
+    backdrop-filter: var(--ui-glass-filter);
+    -webkit-backdrop-filter: var(--ui-glass-filter);
+    box-shadow: var(--ui-shadow-float);
+    color: var(--ui-text);
+}
+.ui-float.is-menu { padding: var(--ui-space-3); }
+.ui-float.is-pill { border-radius: var(--ui-radius-capsule); }
+.ui-float.is-flat { box-shadow: none; }
+.ui-float :is(button, .ui-chip, h5, .ui-menu-item) {
+    font-weight: var(--ui-weight-regular);
+    font-variant-numeric: tabular-nums;
+}
+
+.ui-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    padding: 0 var(--ui-space-4);
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-capsule);
+    background: transparent;
+    color: var(--ui-text);
+    font-family: var(--ui-font);
+    font-size: var(--ui-type-control);
+    font-weight: var(--ui-weight-regular);
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color var(--ui-motion-fast) var(--ui-ease), border-color var(--ui-motion-fast) var(--ui-ease);
+}
+.ui-chip:hover:not(.is-active) { background: var(--ui-hover); border-color: var(--ui-border-strong); }
+.ui-chip.is-active { border-color: transparent; background: var(--ui-selected); color: var(--ui-accent); }
+.ui-chip:focus-visible { outline: 0; box-shadow: 0 0 0 2px var(--ui-focus-ring); }
+.ui-chip:disabled { color: var(--ui-text-disabled); opacity: 1; cursor: default; pointer-events: none; }
+
+/* ================================================================
  * Menu —— DropdownMenu / ContextMenu / Popover 共用容器
  * ================================================================ */
 .ui-menu {
     min-width: 160px;
-    padding: var(--ui-space-2);
+    padding: var(--ui-space-3);
     border: 1px solid var(--ui-border);
-    border-radius: var(--ui-radius-card);
-    background: var(--ui-surface-elevated);
-    box-shadow: var(--ui-shadow-pop);
+    border-radius: var(--ui-radius-float);
+    background-color: var(--ui-glass-popover);
+    backdrop-filter: var(--ui-glass-filter);
+    -webkit-backdrop-filter: var(--ui-glass-filter);
+    box-shadow: var(--ui-shadow-float);
     z-index: var(--ui-z-menu);
 }
 .ui-menu-item {
@@ -269,14 +314,14 @@ textarea.ui-input { height: auto; min-height: 64px; padding: var(--ui-space-4); 
     cursor: pointer;
     transition: background-color var(--ui-motion-fast) var(--ui-ease);
 }
-.ui-menu-item:hover { background: var(--gh-quiet-hover-surface); border-color: var(--gh-quiet-hover-border); }
+.ui-menu-item:hover { background: var(--ui-hover); border-color: transparent; }
 .ui-menu-item:active { background: var(--ui-pressed); }
 .ui-menu-item:is(.is-active, .selected, [aria-selected="true"], [aria-checked="true"]) { background: var(--ui-selected); color: var(--ui-accent); }
 .ui-menu-item:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px var(--ui-focus-ring); }
 .ui-menu-item:disabled { color: var(--ui-text-disabled); opacity: 1; cursor: default; pointer-events: none; }
 .ui-menu-item.is-danger { color: var(--ui-danger); }
-.ui-menu-item.is-danger:hover { background: var(--gh-quiet-hover-surface); border-color: var(--gh-quiet-hover-border); }
-.ui-menu-item :is(i, svg) { width: var(--ui-icon-sm); height: var(--ui-icon-sm); stroke-width: var(--ui-icon-stroke); flex: 0 0 auto; }
+.ui-menu-item.is-danger:hover { background: var(--ui-danger-hover); border-color: transparent; }
+.ui-menu-item :is(i, svg) { width: var(--ui-icon); height: var(--ui-icon); stroke-width: var(--ui-icon-stroke); flex: 0 0 auto; }
 .ui-menu-divider { height: 1px; margin: var(--ui-space-2) var(--ui-space-4); background: var(--ui-border); }
 
 /* ================================================================

@@ -111,7 +111,7 @@ html.lightbox-desktop-native:not(.canvas-image-lightbox-active) .stage > iframe 
 .shell-user-menu,
 .dock-chrome-title-menu,
 .emoji-picker {
-    border-radius: var(--ui-radius-card);
+    border-radius: var(--ui-radius-float);
 }
 
 .node-context-menu button,
@@ -646,14 +646,14 @@ body.studio-theme-dark .shell,
 html.studio-theme-dark body .shell .board,
 body.studio-theme-dark .shell .board {
     background-color: var(--mm-canvas, #101010) !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .055)) .6px, transparent 1.1px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .055)) var(--ui-canvas-grid-dot-size, .6px), transparent var(--ui-canvas-grid-dot-fade, 1.1px)) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
 html.studio-theme-dark body .canvas-gate,
 body.studio-theme-dark .canvas-gate {
     background-color: var(--mm-canvas, #101010) !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .055)) .6px, transparent 1.1px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .055)) var(--ui-canvas-grid-dot-size, .6px), transparent var(--ui-canvas-grid-dot-fade, 1.1px)) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
@@ -975,13 +975,13 @@ html.is-shell-embedded .shell .canvas-history-panel.open.open {
 html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .shell:not(.theme-dark),
 html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .shell:not(.theme-dark) .board {
     background-color: #fcfcfc !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(0, 0, 0, .11)) .6px, transparent 1.1px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(0, 0, 0, .11)) var(--ui-canvas-grid-dot-size, .6px), transparent var(--ui-canvas-grid-dot-fade, 1.1px)) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canvas-gate {
     background-color: #fcfcfc !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(0, 0, 0, .11)) .6px, transparent 1.1px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(0, 0, 0, .11)) var(--ui-canvas-grid-dot-size, .6px), transparent var(--ui-canvas-grid-dot-fade, 1.1px)) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
@@ -4291,4 +4291,59 @@ body #shell.shell #composer.composer .composer-footer
     min-height: calc(var(--ui-menu-item-h) + var(--ui-space-4)) !important;
     padding: var(--ui-space-2) var(--ui-space-3) !important;
     gap: var(--ui-space-3) !important;
+}
+
+/* ================================================================
+ * M-v10：磨砂浮层统一（80% + blur(80px)）
+ * 覆盖 M4 深色实色菜单、canvas-dark-glass 等遗留实底。
+ * 详见 docs/UI_VISUAL_STANDARD.md 第八章
+ * ================================================================ */
+html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body :is(
+    .node-context-menu,
+    .canvas-context-menu,
+    .create-menu,
+    .port-link-pick-menu,
+    .iqt-dropdown-menu,
+    .history-popover,
+    .skill-menu,
+    .shell-user-menu,
+    .dock-chrome-title-menu,
+    .emoji-picker,
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover,
+    #imageQuickToolbar.image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar
+) {
+    background-color: var(--ui-glass-popover) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
+    border-radius: var(--ui-radius-float) !important;
+    box-shadow: var(--ui-shadow-float) !important;
+}
+
+html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body #selectionBoxCapsule .selection-capsule-bar {
+    border-radius: var(--ui-radius-capsule) !important;
+}
+
+html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body #shell.shell #composer.composer
+    .composer-card > .composer-card-surface {
+    background-color: var(--ui-glass-popover) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
+    border-radius: var(--ui-radius-composer) !important;
+    box-shadow: var(--ui-shadow-float) !important;
+}
+
+html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body #shell.shell #composer.composer
+    .composer-card > .composer-card-material {
+    background: var(--ui-glass-bg) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
+    border-radius: var(--ui-radius-composer-top) var(--ui-radius-composer-top) 0 0 !important;
+    box-shadow: none !important;
 }
