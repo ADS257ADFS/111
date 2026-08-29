@@ -19,9 +19,11 @@ body {
   --lb-accent: #0a84ff;
   --lb-accent-subtle: rgba(10, 132, 255, 0.12);
   --lb-bg-canvas: #ececee;
-  --lb-bg-shell: #fafafa;
+  --lb-bg-shell: #fafafb;
+  --lb-bg-chrome: #f7f7f8;
+  --lb-bg-stage: #fcfcfc;
   --lb-bg-elevated: #ffffff;
-  --lb-bg-stage: #f1f2f4;
+  --lb-bg-composer: #ffffff;
   --lb-text: #292929;
   --lb-text-secondary: #505050;
   --lb-text-muted: #717171;
@@ -36,12 +38,13 @@ body {
   --lb-danger: #e34850;
   --lb-conn: rgba(135, 145, 158, 0.62);
   --lb-conn-pending: rgba(10, 132, 255, 0.68);
-  /* 磨砂浮层（更透明、模糊更强，便于看出效果） */
-  --lb-glass-bg: rgba(255, 255, 255, 0.50);
-  --lb-glass-topbar: rgba(243, 245, 247, 0.45);
-  --lb-glass-filter: blur(22px) saturate(150%);
+  /* 磨砂浮层（菜单/弹层用；壳层区域用实色底） */
+  --lb-glass-bg: rgba(255, 255, 255, 0.78);
+  --lb-glass-popover: rgba(255, 255, 255, 0.92);
+  --lb-glass-topbar: rgba(243, 245, 247, 0.62);
+  --lb-glass-filter: blur(36px) saturate(160%);
   --lb-shadow-float: 0 4px 20px rgba(0,0,0,.10);
-  /* 字号（再加大一档） */
+  /* 正文字号统一：工具栏 = 菜单 = 右侧对话 = 16px */
   --lb-font: "Segoe UI", "Microsoft YaHei UI", "MiSans Variable", sans-serif;
   --lb-type-display: 18px;
   --lb-type-body: 16px;
@@ -65,20 +68,26 @@ body {
   --lb-grid-size: 22px;
 }
 html.theme-dark {
-  --lb-bg-canvas: #0e0e0e;
+  /* 与 design-tokens.css 深色完全一致 */
+  --lb-bg-canvas: #101010;
   --lb-bg-shell: #181818;
-  --lb-bg-elevated: #262626;
-  --lb-bg-stage: #131416;
-  --lb-text: #dbdbdb;
-  --lb-text-secondary: #b3b3b3;
-  --lb-text-muted: #8f8f8f;
+  --lb-bg-chrome: #1b1b1b;
+  --lb-bg-stage: #101010;
+  --lb-bg-elevated: #232323;
+  --lb-bg-composer: #181818;
+  --lb-text: #d1d3d6;
+  --lb-text-secondary: #9c9c9c;
+  --lb-text-muted: #6e6e6e;
   --lb-border: rgba(255, 255, 255, 0.08);
   --lb-border-strong: rgba(255, 255, 255, 0.14);
   --lb-divider: rgba(255, 255, 255, 0.08);
-  --lb-hover: rgba(255,255,255,.07);
-  --lb-glass-bg: rgba(30, 30, 32, 0.52);
-  --lb-glass-topbar: rgba(255, 255, 255, 0.06);
+  --lb-hover: rgba(255, 255, 255, 0.07);
+  --lb-selected: rgba(10, 132, 255, 0.16);
+  --lb-glass-bg: rgba(35, 35, 35, 0.80);
+  --lb-glass-popover: rgba(35, 35, 35, 0.94);
+  --lb-glass-topbar: rgba(255, 255, 255, 0.04);
   --lb-conn: rgba(255, 255, 255, 0.24);
+  --lb-shadow-float: 0 4px 14px rgba(0, 0, 0, 0.26);
 }
 
 .proto-badge {
@@ -188,9 +197,9 @@ html.theme-dark {
 .user-menu-item {
   display: flex; align-items: center; gap: 8px; width: 100%; height: 34px; padding: 0 8px;
   border: none; border-radius: var(--lb-r-chrome); background: transparent;
-  font-size: var(--lb-type-body); text-align: left; cursor: pointer;
+  font-size: var(--lb-type-body); color: var(--lb-text); text-align: left; cursor: pointer;
 }
-.user-menu-item:hover { background: var(--lb-hover); }
+.user-menu-item:hover { background: var(--lb-hover); color: var(--lb-text); }
 .user-menu-item small { margin-left: auto; color: var(--lb-text-muted); font-size: var(--lb-type-meta); }
 .user-menu-divider { height: var(--lb-divider-size); background: var(--lb-divider); margin: 6px 0; }
 .user-menu-points {
@@ -301,13 +310,14 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 .iqt {
   position: absolute; z-index: 86; display: flex; align-items: center; gap: 4px;
   min-height: 46px; padding: 6px 8px; border-radius: 18px;
-  background: var(--lb-glass-bg); backdrop-filter: var(--lb-glass-filter);
+  background: var(--lb-glass-popover); backdrop-filter: var(--lb-glass-filter);
+  -webkit-backdrop-filter: var(--lb-glass-filter);
   border: var(--lb-divider-size) solid var(--lb-border); box-shadow: var(--lb-shadow-float);
-  transform: translateX(-50%);
+  transform: translateX(-50%); color: var(--lb-text);
 }
 .iqt button {
   height: 34px; padding: 0 10px; border: none; border-radius: 14px;
-  background: transparent; font-size: var(--lb-type-compact); color: var(--lb-text-secondary); cursor: pointer;
+  background: transparent; font-size: var(--lb-type-body); color: var(--lb-text); cursor: pointer;
 }
 .iqt button:hover { background: var(--lb-hover); }
 .iqt .divider { width: var(--lb-divider-size); height: 18px; background: var(--lb-divider); }
@@ -329,15 +339,17 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 /* menus — 磨砂 */
 .float-menu {
   padding: 4px; border: var(--lb-divider-size) solid var(--lb-border);
-  border-radius: var(--lb-r-float); background: var(--lb-glass-bg);
-  backdrop-filter: var(--lb-glass-filter); box-shadow: var(--lb-shadow-float);
+  border-radius: var(--lb-r-float); background: var(--lb-glass-popover);
+  backdrop-filter: var(--lb-glass-filter); -webkit-backdrop-filter: var(--lb-glass-filter);
+  box-shadow: var(--lb-shadow-float); color: var(--lb-text);
 }
 .menu-item {
   display: flex; align-items: center; justify-content: space-between; width: 100%;
-  height: 32px; padding: 0 10px; border: none; border-radius: var(--lb-r-chrome);
-  background: transparent; font-size: var(--lb-type-body); text-align: left; cursor: pointer;
+  height: 34px; padding: 0 10px; border: none; border-radius: var(--lb-r-chrome);
+  background: transparent; font-size: var(--lb-type-body); color: var(--lb-text);
+  text-align: left; cursor: pointer;
 }
-.menu-item:hover { background: var(--lb-hover); }
+.menu-item:hover { background: var(--lb-hover); color: var(--lb-text); }
 .menu-item kbd { color: var(--lb-text-muted); font-size: var(--lb-type-meta); font-weight: var(--lb-weight-latin); }
 .menu-divider { height: var(--lb-divider-size); background: var(--lb-divider); margin: 4px 6px; }
 .menu-item.is-danger { color: var(--lb-danger); }
@@ -345,16 +357,17 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 .create-menu {
   position: absolute; left: 36%; top: 38%; z-index: 85; width: 244px;
   padding: 14px 12px; border: var(--lb-divider-size) solid var(--lb-border);
-  border-radius: 16px; background: var(--lb-glass-bg);
-  backdrop-filter: var(--lb-glass-filter); box-shadow: var(--lb-shadow-float);
+  border-radius: 16px; background: var(--lb-glass-popover);
+  backdrop-filter: var(--lb-glass-filter); -webkit-backdrop-filter: var(--lb-glass-filter);
+  box-shadow: var(--lb-shadow-float); color: var(--lb-text);
 }
-.create-menu h4 { font-size: var(--lb-type-compact); color: var(--lb-text-muted); margin: 8px 0 4px; }
+.create-menu h4 { font-size: var(--lb-type-compact); color: var(--lb-text-secondary); margin: 8px 0 4px; }
 .create-item {
-  display: flex; align-items: center; gap: 10px; width: 100%; height: 36px; padding: 0 10px;
+  display: flex; align-items: center; gap: 10px; width: 100%; height: 38px; padding: 0 10px;
   border: none; border-radius: var(--lb-r-control); background: transparent;
-  font-size: var(--lb-type-body); text-align: left; cursor: pointer;
+  font-size: var(--lb-type-body); color: var(--lb-text); text-align: left; cursor: pointer;
 }
-.create-item:hover { background: var(--lb-hover); }
+.create-item:hover { background: var(--lb-hover); color: var(--lb-text); }
 .ctx-menu { position: absolute; left: 54%; top: 52%; z-index: 87; width: 190px; }
 .zoom-menu { position: absolute; top: 50px; right: 48px; width: 168px; z-index: 90; }
 
@@ -375,17 +388,24 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 .composer-topbar-left, .composer-topbar-right { display: flex; align-items: center; gap: 4px; }
 .composer-topbar-rail button {
   height: 30px; padding: 0 12px; border: none; border-radius: var(--lb-r-pill);
-  background: transparent; font-size: var(--lb-type-compact); color: var(--lb-text-secondary); cursor: pointer;
+  background: transparent; font-size: var(--lb-type-body); color: var(--lb-text); cursor: pointer;
   display: inline-flex; align-items: center; gap: 5px;
+  transition: background 120ms ease;
 }
-.composer-topbar-rail button.is-active { background: rgba(0,0,0,.06); color: var(--lb-text); }
+.composer-topbar-rail button:hover { background: var(--lb-hover); color: var(--lb-text); }
+.composer-topbar-rail button.is-active {
+  background: var(--lb-accent); color: #fff;
+}
+.composer-topbar-rail button.is-on {
+  background: var(--lb-accent); color: #fff;
+}
 .composer-topbar-rail .vdiv {
   width: var(--lb-divider-size); height: 14px; background: var(--lb-divider); margin: 0 4px;
 }
 .composer-main-card {
   position: relative; z-index: 3; margin-top: -1px;
   border: var(--lb-divider-size) solid var(--lb-border); border-radius: var(--lb-r-composer);
-  background: var(--lb-glass-bg); backdrop-filter: var(--lb-glass-filter);
+  background: var(--lb-bg-composer);
   box-shadow: var(--lb-shadow-float); padding: 8px;
 }
 .composer-prompt {
@@ -407,22 +427,53 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 .tool-wrap { position: relative; }
 .tool-btn {
   display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px;
-  border: none; border-radius: var(--lb-r-pill); background: rgba(0,0,0,.04);
-  font-size: var(--lb-type-compact); font-weight: 600; color: var(--lb-text-secondary); cursor: pointer;
+  border: none; border-radius: var(--lb-r-pill); background: var(--lb-hover);
+  font-size: var(--lb-type-body); font-weight: 500; color: var(--lb-text); cursor: pointer;
 }
+.tool-btn:hover { background: var(--lb-selected); }
 .tool-popover {
-  position: absolute; bottom: 40px; left: 0; min-width: 200px; z-index: 90;
-  padding: 10px; border: var(--lb-divider-size) solid var(--lb-border);
-  border-radius: var(--lb-r-float); background: var(--lb-glass-bg);
-  backdrop-filter: var(--lb-glass-filter); box-shadow: var(--lb-shadow-float);
+  position: absolute; bottom: 44px; left: 0; min-width: 220px; z-index: 200;
+  padding: 12px; border: var(--lb-divider-size) solid var(--lb-border);
+  border-radius: var(--lb-r-float); background: var(--lb-glass-popover);
+  backdrop-filter: var(--lb-glass-filter); -webkit-backdrop-filter: var(--lb-glass-filter);
+  box-shadow: var(--lb-shadow-float); color: var(--lb-text);
+  pointer-events: none;
 }
-.tool-popover h5 { font-size: var(--lb-type-meta); color: var(--lb-text-muted); margin-bottom: 6px; }
+.tool-popover.is-open { pointer-events: auto; }
+.tool-popover h5 { font-size: var(--lb-type-compact); color: var(--lb-text-secondary); margin-bottom: 8px; }
 .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip {
-  height: 28px; padding: 0 10px; border: var(--lb-divider-size) solid var(--lb-border);
-  border-radius: var(--lb-r-pill); font-size: var(--lb-type-compact); cursor: pointer;
+  height: 30px; padding: 0 10px; border: var(--lb-divider-size) solid var(--lb-border);
+  border-radius: var(--lb-r-pill); font-size: var(--lb-type-body); color: var(--lb-text); cursor: pointer;
+  background: transparent;
 }
 .chip.is-active { border-color: transparent; background: var(--lb-selected); color: var(--lb-accent); }
+
+/* 批量模式面板（点击「批量」后展开） */
+.co-create-panel {
+  margin-top: 30px; padding: 8px 6px 4px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.co-create-line {
+  display: flex; align-items: stretch; gap: 8px;
+}
+.co-create-line-input {
+  flex: 1; min-height: 40px; padding: 8px 12px;
+  border: var(--lb-divider-size) solid var(--lb-border); border-radius: 10px;
+  background: var(--lb-bg-elevated); color: var(--lb-text);
+  font-family: inherit; font-size: var(--lb-type-body); resize: none;
+}
+.co-create-add {
+  align-self: flex-start; height: 32px; padding: 0 12px;
+  border: var(--lb-divider-size) dashed var(--lb-border-strong); border-radius: var(--lb-r-control);
+  background: transparent; color: var(--lb-text); font-size: var(--lb-type-body); cursor: pointer;
+}
+.co-create-add:hover { background: var(--lb-hover); }
+.composer-mode-normal { display: none; }
+.composer.is-batch .composer-mode-normal { display: none; }
+.composer.is-batch .composer-mode-batch { display: flex; }
+.composer-mode-batch { display: none; flex-direction: column; }
+
 .run-capsule {
   display: flex; align-items: center; height: 34px; border-radius: var(--lb-r-pill);
   background: var(--lb-accent); overflow: hidden;
@@ -449,7 +500,7 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 
 /* dock — 无交界处投影 */
 .dock {
-  display: flex; flex-direction: column; background: var(--lb-bg-stage);
+  display: flex; flex-direction: column; background: var(--lb-bg-chrome);
   border-left: var(--lb-divider-size) solid var(--lb-divider); min-height: 0; box-shadow: none;
 }
 .dock-chrome {
@@ -460,28 +511,29 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 .dock-title-btn {
   display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 8px;
   border: none; border-radius: var(--lb-r-control); background: transparent;
-  font-size: var(--lb-type-compact); cursor: pointer;
+  font-size: var(--lb-type-body); color: var(--lb-text); cursor: pointer;
 }
 .dock-title-menu {
   position: absolute; top: 34px; left: 8px; width: 220px; z-index: 100;
 }
 .dock-close { margin-left: auto; width: 28px; height: 28px; border: none; border-radius: var(--lb-r-chrome); background: transparent; cursor: pointer; }
-.dock-body { flex: 1; display: flex; flex-direction: column; min-height: 0; padding: 12px; }
+.dock-body { flex: 1; display: flex; flex-direction: column; min-height: 0; padding: 12px; background: var(--lb-bg-chrome); }
 .dock-msg {
   align-self: flex-start; max-width: 88%; padding: 10px 12px; margin-bottom: 10px;
-  border-radius: var(--lb-r-float); background: var(--lb-glass-bg);
-  backdrop-filter: var(--lb-glass-filter);
-  border: var(--lb-divider-size) solid var(--lb-border); font-size: var(--lb-type-body); line-height: 1.5;
+  border-radius: var(--lb-r-float); background: var(--lb-bg-elevated);
+  border: var(--lb-divider-size) solid var(--lb-border);
+  font-size: var(--lb-type-body); line-height: 1.5; color: var(--lb-text);
 }
 .dock-msg.is-user { align-self: flex-end; background: var(--lb-accent-subtle); border-color: transparent; }
 .dock-composer {
   margin-top: auto; border: var(--lb-divider-size) solid var(--lb-border);
-  border-radius: var(--lb-r-dialog); background: var(--lb-glass-bg);
-  backdrop-filter: var(--lb-glass-filter); padding: 10px;
+  border-radius: var(--lb-r-dialog); background: var(--lb-bg-elevated);
+  padding: 10px;
 }
 .dock-input {
   width: 100%; min-height: 56px; border: none; resize: none; outline: none;
-  background: transparent; font-family: inherit; font-size: var(--lb-type-body); margin-bottom: 8px;
+  background: transparent; font-family: inherit; font-size: var(--lb-type-body);
+  color: var(--lb-text); margin-bottom: 8px;
 }
 .dock-foot { display: flex; align-items: center; justify-content: space-between; }
 .dock-foot-left, .dock-foot-right { display: flex; align-items: center; gap: 6px; }
@@ -505,7 +557,7 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 """
 
 HTML_BODY = r"""
-<div class="proto-badge">完整壳层样板 v3</div>
+<div class="proto-badge">完整壳层样板 v4</div>
 <div class="proto-toolbar">
   <button class="lb-btn" onclick="document.documentElement.classList.toggle('theme-dark')">切换亮/暗</button>
   <a class="lb-btn" href="字体说明.html">字体说明</a>
@@ -514,14 +566,18 @@ HTML_BODY = r"""
 </div>
 
 <div class="spec-panel">
-  <h4>磨砂浮层参数</h4>
-  背景 <code>rgba(255,255,255,.50)</code><br>
-  模糊 <code>blur(22px)</code><br>
-  饱和度 <code>150%</code><br>
+  <h4>深色底（软件实色）</h4>
+  顶/左栏 <code>#181818</code><br>
+  右栏 <code>#1b1b1b</code><br>
+  画布 <code>#101010</code><br>
+  输入栏 <code>#181818</code><br>
   <br>
-  <h4>描边 & 分割线</h4>
-  描边 <code>.10</code> · 分割线 <code>.07</code><br>
-  网格 <code>22px</code> · 连线 <code>1.05px</code>
+  <h4>磨砂菜单</h4>
+  背景 <code>rgba(35,35,35,.94)</code><br>
+  模糊 <code>blur(36px)</code><br>
+  <br>
+  <h4>正文字号统一</h4>
+  全部 <code>16px</code>
 </div>
 
 <div class="app">
@@ -646,14 +702,14 @@ HTML_BODY = r"""
           </div>
           <div class="minimap"><div class="minimap-viewport"></div></div>
 
-          <!-- 底部生成栏：上窄下宽，下压上 -->
-          <div class="composer">
+          <!-- 底部生成栏：批量模式已展开示意 -->
+          <div class="composer is-batch">
             <div class="composer-topbar-rail">
-              <span class="proto-label" style="top:-18px;left:0">上方窄工具栏（被下方压住）</span>
+              <span class="proto-label" style="top:-18px;left:0">上方窄工具栏</span>
               <div class="composer-topbar-left">
                 <button>⊕ 参考</button>
                 <span class="vdiv"></span>
-                <button>👤 批量</button>
+                <button class="is-on">👤 批量</button>
               </div>
               <div class="composer-topbar-right">
                 <button>♪ Audio</button>
@@ -663,31 +719,28 @@ HTML_BODY = r"""
               </div>
             </div>
             <div class="composer-main-card">
-              <span class="proto-label" style="top:-18px;left:0">下方宽面板（压住上方）</span>
-              <button class="expand-btn">⤢</button>
-              <div class="composer-prompt">改成低多边形简易 3D 动画本体画面，民间自制建模风格。</div>
-              <div class="composer-thumbs">
-                <div class="thumb">图 1</div>
-                <div class="thumb-add">＋</div>
+              <span class="proto-label" style="top:-18px;left:0">批量打组面板（多点「批量」展开）</span>
+              <div class="composer-mode-batch co-create-panel">
+                <div class="co-create-line">
+                  <textarea class="co-create-line-input" rows="1" readonly>低多边形 3D 场景，民间自制建模风格</textarea>
+                </div>
+                <div class="co-create-line">
+                  <textarea class="co-create-line-input" rows="1" readonly>同一角色侧面视角，暖色调灯光</textarea>
+                </div>
+                <button class="co-create-add" type="button">＋ 添加</button>
+              </div>
+              <div class="composer-mode-normal">
+                <button class="expand-btn">⤢</button>
+                <div class="composer-prompt">改成低多边形简易 3D 动画本体画面，民间自制建模风格。</div>
+                <div class="composer-thumbs">
+                  <div class="thumb">图 1</div>
+                  <div class="thumb-add">＋</div>
+                </div>
               </div>
               <div class="composer-footer">
                 <div style="display:flex;gap:6px">
-                  <div class="tool-wrap">
-                    <button class="tool-btn">⚙ GPT Image 2 ▾</button>
-                    <div class="tool-popover">
-                      <h5>模型</h5>
-                      <div class="chip-row"><span class="chip is-active">GPT Image 2</span><span class="chip">Seedream</span></div>
-                    </div>
-                  </div>
-                  <div class="tool-wrap">
-                    <button class="tool-btn">▣ Auto · 1K | 1张 ▾</button>
-                    <div class="tool-popover" style="width:220px">
-                      <h5>尺寸</h5>
-                      <div class="chip-row" style="margin-bottom:6px"><span class="chip is-active">Auto</span><span class="chip">1:1</span><span class="chip">16:9</span></div>
-                      <h5>质量</h5>
-                      <div class="chip-row"><span class="chip is-active">1K</span><span class="chip">2K</span></div>
-                    </div>
-                  </div>
+                  <button class="tool-btn" type="button">⚙ GPT Image 2 ▾</button>
+                  <button class="tool-btn" type="button">▣ Auto · 1K | 1张 ▾</button>
                 </div>
                 <div class="run-capsule">
                   <div class="run-cost">⚡ 5</div>
@@ -738,11 +791,11 @@ HTML_BODY = r"""
 """
 
 TEMPLATE = f"""<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="theme-dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>光盒 · 完整壳层视觉样板 v3</title>
+  <title>光盒 · 完整壳层视觉样板 v4</title>
   <style>{CSS}</style>
 </head>
 <body>
