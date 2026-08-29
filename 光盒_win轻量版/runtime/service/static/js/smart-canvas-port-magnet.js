@@ -13,6 +13,8 @@
     const states = new WeakMap();
     let mouseX = -9999;
     let mouseY = -9999;
+    let lastMouseX = -9999;
+    let lastMouseY = -9999;
     let rafId = 0;
     let dragSourcePort = null;
 
@@ -35,7 +37,8 @@
         if(nodeEl.classList.contains('selected')) return true;
         if(nodeEl.classList.contains('port-hover')) return true;
         if(nodeEl.classList.contains('port-magnet-out-zone')) return true;
-        return nodeEl.matches(':hover');
+        // Avoid CSS :hover matching every mousemove — class flags only.
+        return false;
     }
 
     function portBaseCenter(port){
@@ -160,8 +163,13 @@
     }
 
     function onPointerMove(e){
+        const dx = e.clientX - lastMouseX;
+        const dy = e.clientY - lastMouseY;
         mouseX = e.clientX;
         mouseY = e.clientY;
+        if(Math.hypot(dx, dy) < 1.5 && rafId) return;
+        lastMouseX = mouseX;
+        lastMouseY = mouseY;
         scheduleFrame();
     }
 
