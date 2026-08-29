@@ -92,14 +92,15 @@ html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome {
     backdrop-filter: none !important;
 }
 
+/* Dock chrome title/actions mirror left-rail「新建画布」tokens; do not force gray/600. */
 html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-title {
-    color: #50565e !important;
-    font-weight: 600 !important;
+    color: var(--ui-text);
+    font-weight: var(--ui-weight-menu-strong);
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-btn {
-    color: #747b85 !important;
-    font-weight: 600 !important;
+    color: var(--ui-text);
+    font-weight: var(--ui-weight-menu-strong);
     background: transparent !important;
     border-color: transparent !important;
     box-shadow: none !important;
@@ -133,8 +134,12 @@ html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-item-time {
     font-weight: 400 !important;
 }
 
-html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-item-time {
-    color: #9aa0a9 !important;
+html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-item-time,
+html:not(.theme-dark):not(.studio-theme-dark) .mm-recent-meta {
+    color: var(--ui-text-muted) !important;
+    font-size: 10px !important;
+    font-weight: var(--ui-weight-latin, 350) !important;
+    font-variation-settings: "wght" var(--ui-weight-latin, 350) !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) .dock-chrome-menu-new:hover,
@@ -672,8 +677,8 @@ html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-ap
     background: var(--vs-glass-bg) !important;
     border-color: var(--vs-glass-border) !important;
     box-shadow: var(--vs-glass-shadow), var(--vs-glass-inset) !important;
-    -webkit-backdrop-filter: var(--vs-glass-blur) !important;
-    backdrop-filter: var(--vs-glass-blur) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .thread-row {
@@ -865,8 +870,8 @@ html:not(.theme-dark):not(.studio-theme-dark) .canvas-nav {
     background: var(--vs-glass-bg) !important;
     border-color: var(--vs-glass-border) !important;
     box-shadow: var(--vs-glass-shadow) !important;
-    -webkit-backdrop-filter: var(--vs-glass-blur) !important;
-    backdrop-filter: var(--vs-glass-blur) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 html.theme-dark .smart-back,
@@ -884,8 +889,8 @@ html.studio-theme-dark .canvas-nav {
     background: var(--vs-glass-bg) !important;
     border-color: var(--vs-glass-border) !important;
     box-shadow: var(--vs-glass-shadow) !important;
-    -webkit-backdrop-filter: var(--vs-glass-blur) !important;
-    backdrop-filter: var(--vs-glass-blur) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 /* Inset top highlight shared by glass surfaces. */
