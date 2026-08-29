@@ -336,6 +336,15 @@ html body #shell.shell #composer.composer .composer-card .prompt-row {
     border-radius: var(--ui-radius-control) !important;
 }
 
+/* 共创开关凹槽必须是胶囊，覆盖上面的 control 圆角。 */
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #composer.composer .co-create-switch-track,
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #composer.composer .co-create-switch-thumb {
+    border-radius: 999px !important;
+    -webkit-border-radius: 999px !important;
+}
+
 html.lightbox-desktop-native body #shell.shell #gptDockOpenBtn.dock-open-btn {
     border-radius: var(--ui-radius-control) !important;
 }
@@ -344,7 +353,8 @@ html.lightbox-desktop-native body #shell.shell #gptDockOpenBtn.dock-open-btn {
    窗口控制按钮悬停改为方框，故不在此列。 */
 body :is(
     .tt-knob, .tt-face, .ios-slider::before,
-    [class*="spinner"], [class*="avatar"], [class*="-dot"], .gate-trash-badge
+    [class*="spinner"], [class*="avatar"], [class*="-dot"], .gate-trash-badge,
+    .co-create-switch-track, .co-create-switch-thumb
 ) {
     border-radius: 999px !important;
 }
@@ -1215,6 +1225,8 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
     .composer-card-topbar .composer-asset-shortcut span,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card-topbar .co-create-switch-label,
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .co-create-switch-label span,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card-topbar .composer-kind-toggle button,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
@@ -3549,17 +3561,41 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar .co-create-switch-label {
+    .composer-card-topbar .co-create-switch-label,
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .co-create-switch-label span {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
     font-family: var(--ui-font) !important;
-    font-size: var(--ui-type-control, 13px) !important;
+    font-size: 11.5px !important;
     font-weight: var(--ui-weight-medium, 445) !important;
     line-height: 1 !important;
     color: var(--ui-text-secondary) !important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar .co-create-switch-label {
+    .composer-card-topbar .co-create-switch-label,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .co-create-switch-label span {
     color: rgba(241, 241, 241, .78) !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .co-create-switch-label :is(i, svg) {
+    width: 12px !important;
+    height: 12px !important;
+    flex: 0 0 12px !important;
+    color: currentColor !important;
+    stroke: currentColor !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .co-create-switch-track {
+    width: 34px !important;
+    height: 16px !important;
+    border-radius: 999px !important;
+    -webkit-border-radius: 999px !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
@@ -5633,7 +5669,9 @@ body #shell.shell #composer.composer .composer-card-topbar
 ):not(.is-on):not([aria-pressed="true"]):not(.active)
 :is(i, svg, span),
 html:not(#ui-topbar-fg-1):not(#ui-topbar-fg-2):not(#ui-topbar-fg-3):not(#ui-topbar-fg-4):is(.theme-dark, .studio-theme-dark)
-body #shell.shell #composer.composer .composer-card-topbar .co-create-switch-label {
+body #shell.shell #composer.composer .composer-card-topbar .co-create-switch-label,
+html:not(#ui-topbar-fg-1):not(#ui-topbar-fg-2):not(#ui-topbar-fg-3):not(#ui-topbar-fg-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer .composer-card-topbar .co-create-switch-label :is(i, svg, span) {
     color: rgba(241, 241, 241, .78) !important;
     stroke: currentColor !important;
 }

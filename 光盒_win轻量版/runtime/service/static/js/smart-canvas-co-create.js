@@ -73,9 +73,12 @@
     }
     function mountCoCreateSwitchMarkup(host){
         if(!host) return null;
-        host.innerHTML = '<span class="co-create-switch-label">共创</span><button type="button" class="co-create-switch" aria-pressed="false" aria-label="共创" data-co-create-switch><span class="co-create-switch-track" aria-hidden="true"><span class="co-create-switch-thumb"></span></span></button>';
+        host.innerHTML = '<span class="co-create-switch-label"><i data-lucide="users"></i><span>共创</span></span><button type="button" class="co-create-switch" aria-pressed="false" aria-label="共创" data-co-create-switch><span class="co-create-switch-track" aria-hidden="true"><span class="co-create-switch-thumb"></span></span></button>';
         switchBtn = host.querySelector('[data-co-create-switch]');
         bindSwitchClick(switchBtn);
+        try { global.lucide?.createIcons?.({ root: host }); }
+        catch(_e) { try { global.lucide?.createIcons?.(); } catch(__e) {} }
+        d()?.refreshIcons?.(host);
         return switchBtn;
     }
     function ensureToggleBar(actions){
