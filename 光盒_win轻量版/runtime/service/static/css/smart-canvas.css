@@ -641,18 +641,22 @@ html.studio-theme-dark .pending-mixed-loading .pending-slot-inner { border-color
     height:100%;
     border-radius:inherit;
     background:#fafafa;
+    /* Hairline on the generating surface itself: inset ring instead of border so
+       the inset:0 + 100% sizing never overflows the node body. */
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
 }
 .theme-dark .image-node:is(.node-pending,.node-running,.node-visual-loading) .node-body > .generation-wave-loader,
 html.studio-theme-dark .image-node:is(.node-pending,.node-running,.node-visual-loading) .node-body > .generation-wave-loader {
     background:#1f1f1f;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);
 }
 .generation-ig-dots {
     position:absolute;
     inset:0;
-    background-image:radial-gradient(circle, #a1a1a1 0.7px, transparent 1.3px);
+    background-image:radial-gradient(circle, #8a8a8a 0.7px, transparent 1.3px);
     background-size:11px 11px;
-    background-repeat:space;
-    opacity:0.22;
+    background-repeat:repeat;
+    opacity:0.5;
     pointer-events:none;
 }
 .generation-ig-glow {
@@ -660,7 +664,7 @@ html.studio-theme-dark .image-node:is(.node-pending,.node-running,.node-visual-l
     inset:0;
     background-image:radial-gradient(circle, #0b0d12 1.1px, transparent 1.6px);
     background-size:11px 11px;
-    background-repeat:space;
+    background-repeat:repeat;
     -webkit-mask-image:radial-gradient(ellipse at center, #000 0%, transparent 60%), radial-gradient(ellipse at center, #000 0%, transparent 62%);
     mask-image:radial-gradient(ellipse at center, #000 0%, transparent 60%), radial-gradient(ellipse at center, #000 0%, transparent 62%);
     -webkit-mask-repeat:no-repeat, no-repeat;
@@ -674,8 +678,8 @@ html.studio-theme-dark .image-node:is(.node-pending,.node-running,.node-visual-l
     will-change:mask-size, mask-position, -webkit-mask-size, -webkit-mask-position, opacity;
 }
 html:is(.theme-dark,.studio-theme-dark) .generation-ig-dots {
-    background-image:radial-gradient(circle, #737373 0.7px, transparent 1.3px);
-    opacity:0.28;
+    background-image:radial-gradient(circle, #9c9c9c 0.7px, transparent 1.3px);
+    opacity:0.55;
 }
 html:is(.theme-dark,.studio-theme-dark) .generation-ig-glow {
     background-image:radial-gradient(circle, #f5f5f5 1.1px, transparent 1.6px);
@@ -724,12 +728,14 @@ html:is(.theme-dark,.studio-theme-dark) .generation-ig-glow {
 .loading-cell:has(> .generation-ig-loader) {
     background:#fafafa;
     animation:none;
+    border:1px solid rgba(0,0,0,.08);
 }
 .loading-cell:has(> .generation-ig-loader)::after {
     display:none;
 }
 html:is(.theme-dark,.studio-theme-dark) .loading-cell:has(> .generation-ig-loader) {
     background:#1f1f1f;
+    border-color:rgba(255,255,255,.16);
 }
 /* Legacy wave-block selectors kept inert (markup no longer emits blocks). */
 .generation-wave-block { display:none !important; }
