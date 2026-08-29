@@ -148,9 +148,12 @@ function syncDynamicLineOverlay(ctx){
 }
 
 function scheduleDynamicLineSync(ctx){
+    // Drag/pan already rebuilds enough — MutationObserver → clone overlay is a hitch tax.
+    if(ctx?.dragState || ctx?.panState || ctx?.resizeState) return;
     if(dynamicLineSyncFrame) return;
     dynamicLineSyncFrame = requestAnimationFrame(() => {
         dynamicLineSyncFrame = 0;
+        if(ctx?.dragState || ctx?.panState || ctx?.resizeState) return;
         syncDynamicLineOverlay(ctx);
     });
 }
@@ -160,10 +163,12 @@ function scheduleViewportApply(ctx){
     viewportApplyFrame = requestAnimationFrame(() => {
         viewportApplyFrame = 0;
         ctx.applyViewport({transformOnly:true});
-        // 平移/缩放过程中让选中图片上方的快捷工具栏实时跟随，
-        // 不然要等松手后的完整 applyViewport 才会归位
-        ctx.positionImageQuickToolbar?.();
-        syncDynamicLineOverlay(ctx);
+        // Skip toolbar getBoundingClientRect + dynamic-line clone during pan;
+        // flushViewportApply restores them once on settle.
+        if(!ctx.panState){
+            ctx.positionImageQuickToolbar?.();
+            syncDynamicLineOverlay(ctx);
+        }
     });
 }
 
@@ -356,6 +361,7 @@ ctx.shell.onmousedown = e => {
         ctx.panState = {button:e.button, startX:e.clientX, startY:e.clientY, ox:ctx.viewport.x, oy:ctx.viewport.y};
         ctx.cancelViewportAnimation();
         ctx.shell.classList.add('panning');
+        document.documentElement.classList.add('shell-panning');
         return;
     }
     if(e.button !== 0 || e.target.closest('.image-node,.selection-box,.selection-box-capsule,.selection-capsule-bar')) return;
@@ -660,6 +666,7 @@ window.onmouseup = e => {
     if(ctx.panState) {
         ctx.panState = null;
         ctx.shell.classList.remove('panning');
+        document.documentElement.classList.remove('shell-panning');
         flushViewportApply(ctx);
         ctx.scheduleSave();
         setTimeout(() => { ctx.didPan = false; }, 0);
@@ -900,6 +907,7 @@ const middlePanStart = e => {
     ctx.panState = {button:1, startX:e.clientX, startY:e.clientY, ox:ctx.viewport.x, oy:ctx.viewport.y};
     ctx.cancelViewportAnimation();
     ctx.shell.classList.add('panning');
+    document.documentElement.classList.add('shell-panning');
 };
 ctx.shell.addEventListener('mousedown', middlePanStart, true);
 window.addEventListener('auxclick', e => {

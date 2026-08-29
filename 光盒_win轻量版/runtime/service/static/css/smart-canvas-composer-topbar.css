@@ -216,6 +216,14 @@
     will-change: transform, margin-right;
 }
 
+html.canvas-performance-mode .shell #composer .composer-card-topbar .input-thumbs-row {
+    transition: none !important;
+}
+html.canvas-performance-mode .shell #composer .composer-card-topbar .input-thumb {
+    transition: none !important;
+    will-change: auto !important;
+}
+
 .shell #composer .composer-card-topbar .input-thumbs-row:not(.is-stacked) .input-thumb:hover,
 .shell #composer .composer-card-topbar .input-thumbs-row:not(.is-stacked) .input-thumb:focus-visible,
 .shell #composer .composer-card-topbar .input-thumbs-row:not(.is-stacked) .input-thumb:active {

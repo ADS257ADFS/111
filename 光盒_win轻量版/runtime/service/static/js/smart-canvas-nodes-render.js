@@ -86,7 +86,10 @@ function moveNodeElementsDuringDrag(){
     if(d().selectionMarqueeActive){
         d().positionSelectionGroupBox();
     }
-    d().scheduleInteractionLayerRefresh?.();
+    // Full connection SVG rebuild + hit rebind every drag frame thrash WebView2.
+    // Hide lines while dragging; refresh once when drag settles.
+    const layer = d().world.querySelector('svg.connection-layer');
+    if(layer) layer.style.visibility = 'hidden';
 }
 function updateNodeElementDuringResize(node, options={}){
     if(!node) return;

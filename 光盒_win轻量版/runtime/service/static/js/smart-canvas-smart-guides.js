@@ -167,13 +167,15 @@
         if(!moving.width || !moving.height || !candidates.length || !threshold){
             return {dx:0, dy:0, guides:[]};
         }
+        // Spacing is O(n²) and a primary drag hitch in WebView2 — align-only under perf mode.
+        const perf = global.document?.documentElement?.classList?.contains('canvas-performance-mode');
         const xChoice = bestAxisCandidate([
             ...alignCandidates(moving, candidates, 'x', threshold),
-            ...spacingCandidates(moving, candidates, 'x', threshold),
+            ...(perf ? [] : spacingCandidates(moving, candidates, 'x', threshold)),
         ]);
         const yChoice = bestAxisCandidate([
             ...alignCandidates(moving, candidates, 'y', threshold),
-            ...spacingCandidates(moving, candidates, 'y', threshold),
+            ...(perf ? [] : spacingCandidates(moving, candidates, 'y', threshold)),
         ]);
         const guides = [];
         [xChoice, yChoice].forEach(choice => {

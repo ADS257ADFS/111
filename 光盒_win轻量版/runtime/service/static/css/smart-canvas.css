@@ -43,7 +43,10 @@ button { border:0; cursor:pointer; }
 .smart-log-toggle i,.smart-log-toggle svg,.smart-shortcut-toggle i,.smart-shortcut-toggle svg { width:16px; height:16px; }
 .image-node { position:absolute; width:260px; min-height:178px; border-radius:18px; background:transparent; border:0; box-shadow:none; overflow:visible; user-select:none; cursor:move; }
 .image-node.node-resize-preview { transition:none !important; will-change:transform; }
-body.smart-node-drag * { user-select:none !important; }
+/* Never use body.smart-node-drag * — universal selector thrash on every drag frame. */
+body.smart-node-drag #shell,
+body.smart-node-drag .world,
+body.smart-node-drag .image-node { user-select:none !important; }
 body.smart-node-drag .image-node textarea,
 body.smart-node-drag .image-node input,
 body.smart-node-drag .image-node select,
@@ -176,7 +179,10 @@ body.smart-node-drag .image-wrap:hover .image-resolution-badge { opacity:0 !impo
 .prompt-node-split-resize { flex:none; width:100%; height:10px; margin:0; cursor:ns-resize; display:flex; align-items:center; justify-content:center; opacity:.55; transition:opacity .15s ease; touch-action:none; user-select:none; }
 .prompt-node-card-llm:hover .prompt-node-split-resize, .prompt-node-split-resize:hover { opacity:1; }
 .prompt-node-split-resize::after { content:""; width:32px; height:3px; border-radius:999px; background:var(--muted); }
-body.prompt-split-resize, body.prompt-split-resize * { cursor:ns-resize !important; user-select:none !important; }
+body.prompt-split-resize,
+body.prompt-split-resize #shell,
+body.prompt-split-resize .world,
+body.prompt-split-resize .image-node { cursor:ns-resize !important; user-select:none !important; }
 body.prompt-split-resize .prompt-node-text,
 body.prompt-split-resize .prompt-llm-instruction,
 body.prompt-split-resize .image-node.prompt-smart-node { transition:none !important; }
@@ -4990,6 +4996,10 @@ html.canvas-performance-mode .image-node,
 html.canvas-performance-mode.shell-panning :is(
     #imageQuickToolbar,
     .selection-capsule-bar
+),
+html.canvas-performance-mode .shell.panning :is(
+    #imageQuickToolbar,
+    .selection-capsule-bar
 ) {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
@@ -5011,6 +5021,36 @@ html.canvas-performance-mode .generation-wave-block {
     transform: none !important;
 }
 
+/* Kill remaining infinite GPU animations that perf-mode previously left live. */
+html.canvas-performance-mode :is(
+    .loading-cell,
+    .loading-cell.pending-slot .pending-slot-inner,
+    .pending-mixed-loading .pending-slot-inner,
+    .pending-mixed-media,
+    .pending-mixed-loading .pending-mixed-media,
+    .loading-cell::after,
+    .loading-cell.pending-slot .pending-slot-inner::after,
+    .pending-mixed-loading .pending-slot-inner::after,
+    .connection-layer .conn-pending,
+    .connection-layer .conn-cascade-active,
+    .composer.generating .composer-card::after,
+    .loading-cell.pending-slot .co-create-pending-inner .generation-wave-loader,
+    .pending-mixed-loading .co-create-pending-inner .generation-wave-loader,
+    .prompt-node-generating-spinner
+) {
+    animation: none !important;
+    will-change: auto !important;
+}
+html.canvas-performance-mode .loading-cell::after,
+html.canvas-performance-mode .loading-cell.pending-slot .pending-slot-inner::after,
+html.canvas-performance-mode .pending-mixed-loading .pending-slot-inner::after,
+html.canvas-performance-mode .composer.generating .composer-card::after {
+    display: none !important;
+}
+html.canvas-performance-mode .image-node:is(.node-pending,.node-visual-loading) .node-body {
+    container-type: normal;
+}
+
 html.canvas-performance-mode :is(
     .composer,
     .canvas-history-panel,
@@ -5023,6 +5063,13 @@ html.canvas-performance-mode :is(
     .toast
 ) {
     transition-duration:.08s !important;
+}
+
+/* Thumb stack hover: no will-change / long transform transitions under perf mode. */
+html.canvas-performance-mode .shell #composer .composer-card-topbar .input-thumbs-row,
+html.canvas-performance-mode .shell #composer .composer-card-topbar .input-thumb {
+    transition: none !important;
+    will-change: auto !important;
 }
 
 /* Dark generation feedback stays neutral and translucent. Keep the existing
