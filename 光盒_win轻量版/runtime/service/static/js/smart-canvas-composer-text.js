@@ -170,7 +170,7 @@
             if(activeIdx < 0) activeIdx = customs.findIndex(entry => bound(entry) && entry.model === node.llmModel);
             listHtml = customs.map((entry, idx) => bound(entry)
                 ? `<button type="button" class="mode-model-choice ${idx === activeIdx ? 'active' : ''}" data-mode-model-select="text" data-mode-model-value="${esc(entry.name)}">${modelChoiceInner(entry.name, esc)}</button>`
-                : `<button type="button" class="mode-model-choice is-unbound" disabled title="未绑定，请在 API 设置 · 我的模型中绑定中转站">${modelChoiceInner(entry.name, esc)}</button>`).join('');
+                : `<button type="button" class="mode-model-choice is-unbound" disabled title="未绑定，请在 API 设置 · 画布显示名中绑定平台">${modelChoiceInner(entry.name, esc)}</button>`).join('');
         } else {
             const models = MB?.enabledModels('text') || [];
             listHtml = models.map(model => `<button type="button" class="mode-model-choice ${model === node.llmModel ? 'active' : ''}" data-mode-model-select="text" data-mode-model-value="${esc(model)}">${modelChoiceInner(model, esc)}</button>`).join('');
@@ -222,7 +222,9 @@
             };
         });
         syncApiButtonLabel(node);
-        global.lucide?.createIcons?.();
+        const composerRoot = document.getElementById('composer');
+        try { global.lucide?.createIcons?.(composerRoot ? { root: composerRoot } : undefined); }
+        catch(_e) { try { global.lucide?.createIcons?.(); } catch(__e) {} }
         return true;
     }
 
@@ -261,7 +263,7 @@
         const activeMode = modeFor(node);
         toggle?.querySelectorAll('[data-kind]').forEach(button => button.classList.toggle('active', button.dataset.kind === activeMode));
         const kindLabel = document.getElementById('composerKindBtnLabel');
-        if(kindLabel) kindLabel.textContent = ({audio:'音频', text:'文本', image:'图片', video:'视频'})[activeMode] || '图片';
+        if(kindLabel) kindLabel.textContent = ({audio:'音频生成', text:'文本生成', image:'图片生成', video:'视频生成'})[activeMode] || '图片生成';
         // audio / video 模式:主动触发一次 dynamic params 渲染,否则切到 audio 后底部 params 不会刷新
         if(!textMode && (activeMode === 'audio' || activeMode === 'video')){
             try { global.SmartCanvasComposerParams?.renderDynamicParams?.(); } catch(_e) {}
