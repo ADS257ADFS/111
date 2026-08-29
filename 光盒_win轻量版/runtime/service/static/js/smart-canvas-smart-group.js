@@ -58,6 +58,7 @@ function groupSelectedNodes(){
     };
     nodes().push(group);
     selected.forEach(node => addNodeToSmartGroup(group, node));
+    fitSmartGroupFrameToMembers(group);
     S().selectedIds = [];
     S().selectedId = group.id;
     S().selectedImage = {nodeId:'', index:-1};
