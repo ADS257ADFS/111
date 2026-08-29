@@ -335,11 +335,21 @@ html.lightbox-desktop-native body #shell.shell #gptDockOpenBtn.dock-open-btn {
     border-radius: var(--ui-radius-control) !important;
 }
 
+/* 用户菜单主题/对齐开关凹槽必须是胶囊，覆盖全局 control 圆角。 */
+:is(html, html.theme-dark, html.studio-theme-dark) body
+    #shellUserMenu.shell-user-menu .shell-user-theme-switch,
+:is(html, html.theme-dark, html.studio-theme-dark) body
+    #shellUserMenu.shell-user-menu .shell-user-theme-switch span {
+    border-radius: 999px !important;
+    -webkit-border-radius: 999px !important;
+}
+
 /* 例外：确需保持圆形的元素（开关滑钮、主题切换钮、加载圈、头像、状态点） */
 body :is(
     .tt-knob, .tt-face, .ios-slider::before,
     .lightbox-native-window-controls button,
-    [class*="spinner"], [class*="avatar"], [class*="-dot"], .gate-trash-badge
+    [class*="spinner"], [class*="avatar"], [class*="-dot"], .gate-trash-badge,
+    .shell-user-theme-switch, .shell-user-theme-switch span
 ) {
     border-radius: 999px !important;
 }
