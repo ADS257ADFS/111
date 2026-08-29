@@ -5869,3 +5869,19 @@ html body #shellSettingsModal.shell-settings-modal .shell-settings-backdrop {
     }
 }
 
+/* Settings center: right content column is always pure black (all panes). */
+html body #shellSettingsModal.shell-settings-modal :is(
+    .shell-settings-panes,
+    .shell-settings-pane,
+    .shell-settings-embed-frame
+),
+:is(html.theme-dark, html.studio-theme-dark) body #shellSettingsModal.shell-settings-modal :is(
+    .shell-settings-panes,
+    .shell-settings-pane,
+    .shell-settings-embed-frame
+) {
+    background: #000 !important;
+    background-color: #000 !important;
+    background-image: none !important;
+}
+
