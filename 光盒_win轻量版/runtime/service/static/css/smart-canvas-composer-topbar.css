@@ -188,11 +188,18 @@
     will-change: transform;
 }
 
-.shell #composer .composer-card-topbar .input-thumb:hover,
-.shell #composer .composer-card-topbar .input-thumb:focus-visible,
-.shell #composer .composer-card-topbar .input-thumb:active {
+.shell #composer .composer-card-topbar .input-thumbs-row:not(.is-stacked) .input-thumb:hover,
+.shell #composer .composer-card-topbar .input-thumbs-row:not(.is-stacked) .input-thumb:focus-visible,
+.shell #composer .composer-card-topbar .input-thumbs-row:not(.is-stacked) .input-thumb:active {
     border-color: rgba(255, 255, 255, .95);
-    transform: translateY(-12px) !important;
+    transform: translateY(-12px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .22);
+}
+
+.shell #composer .composer-card-topbar .input-thumbs-row.is-stacked .input-thumb:hover,
+.shell #composer .composer-card-topbar .input-thumbs-row.is-stacked .input-thumb:focus-visible,
+.shell #composer .composer-card-topbar .input-thumbs-row.is-stacked .input-thumb:active {
+    border-color: rgba(255, 255, 255, .95);
     box-shadow: 0 6px 14px rgba(0, 0, 0, .22);
 }
 
@@ -221,9 +228,13 @@
     background-color: rgba(255, 255, 255, .88) !important;
     background-image: none !important;
     box-shadow: none !important;
-    transform: translateY(-12px) !important;
     -webkit-backdrop-filter: blur(60px) !important;
     backdrop-filter: blur(60px) !important;
+}
+
+.shell #composer .composer-card-topbar .input-thumbs-row:not(.is-stacked)
+    .input-thumb-upload:is(:hover, :focus-visible, :active) {
+    transform: translateY(-12px);
 }
 
 .shell #composer .composer-card-topbar .input-thumb-upload :is(i, svg) {
@@ -237,7 +248,7 @@
     translate: none !important;
 }
 
-/* 多图默认叠放：只用 transform，避免 absolute↔relative 触发布局抖动 */
+/* 默认叠放：奇位左旋 10°、偶位右旋 10°（含加号按位置）；悬停回正并横向展开 */
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within) .input-thumb-list {
     gap: 0;
 }
@@ -246,13 +257,14 @@
     .input-thumb:not(.input-thumb-upload) {
     margin-right: -34px;
     z-index: calc(2 + var(--thumb-i, 0));
-    transform: translateY(-12px) rotate(calc((var(--thumb-i, 0) - 1) * 4deg));
+    transform: translateY(-12px) rotate(var(--thumb-rot, -10deg)) !important;
 }
 
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within)
     .input-thumb-upload {
+    margin-right: 0;
     z-index: 20;
-    transform: translateY(-12px);
+    transform: translateY(-12px) rotate(var(--thumb-rot, -10deg)) !important;
 }
 
 /* 悬停横向展开（保持垂直位置，避免图标下沉躲避） */
@@ -263,7 +275,7 @@
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:is(:hover, :focus-within) .input-thumb {
     margin-right: 0;
     z-index: 2;
-    transform: translateY(-12px) rotate(0deg);
+    transform: translateY(-12px) rotate(0deg) !important;
 }
 
 html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar
