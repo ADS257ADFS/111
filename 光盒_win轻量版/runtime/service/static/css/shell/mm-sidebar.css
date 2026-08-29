@@ -69,7 +69,8 @@ html:is(.theme-dark, .studio-theme-dark) .mm-sidebar-logo { filter: brightness(0
 .mm-sidebar-reopen { display: none; position: fixed; top: calc(var(--mm-titlebar-h, 28px) + 14px); left: 12px; z-index: var(--ui-z-sidebar); }
 html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .mm-sidebar-reopen { display: inline-flex; }
 
-.mm-sidebar-nav { display: flex; flex-direction: column; gap: var(--ui-space-4); }
+/* 悬停底板 36px；行与行之间不再额外加 gap，避免只加高悬停却拉开行距 */
+.mm-sidebar-nav { display: flex; flex-direction: column; gap: 0; }
 .mm-sidebar-nav > button,
 .mm-sidebar-nav .mm-asset-tree-root {
     appearance: none;
