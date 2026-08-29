@@ -128,20 +128,22 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
     .co-create-popover
 ) {
     color: var(--sc-text) !important;
-    border: 1px solid var(--sc-border-panel) !important;
-    background: var(--sc-glass) !important;
-    box-shadow: var(--sc-shadow-raised) !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    border: 1px solid var(--ui-border) !important;
+    background-color: var(--ui-glass-popover) !important;
+    background-image: none !important;
+    box-shadow: var(--ui-shadow-float) !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) body .floating-toolbar::before {
     color: var(--sc-text) !important;
-    border: 1px solid var(--sc-border-panel) !important;
-    background: var(--sc-glass) !important;
-    box-shadow: 0 18px 46px rgba(var(--sc-shadow-rgb), .13), inset 0 1px 0 rgba(255, 255, 255, .10) !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    border: 1px solid var(--ui-border) !important;
+    background-color: var(--ui-glass-popover) !important;
+    background-image: none !important;
+    box-shadow: var(--ui-shadow-float) !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) :is(

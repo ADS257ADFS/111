@@ -280,8 +280,8 @@ html:not(.theme-dark):not(.studio-theme-dark) .port-link-pick-shell > * {
     color: #9aa0a9;
 }.port-link-pick-item.is-hover,
 .port-link-pick-item:hover{
-    background: var(--gh-quiet-hover-surface);
-    border-color: var(--gh-quiet-hover-border);
+    background: var(--ui-hover);
+    border-color: transparent;
     transform: none;
     box-shadow: none;
     animation: none;

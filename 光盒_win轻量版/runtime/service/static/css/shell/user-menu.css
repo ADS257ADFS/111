@@ -259,8 +259,8 @@
 }.shell-user-menu-item:hover,
 .shell-user-menu-item:focus-visible,
 .shell-user-menu-item.is-current{
-    background: var(--gh-quiet-hover-surface);
-    border-color: var(--gh-quiet-hover-border);
+    background: var(--ui-hover);
+    border-color: transparent;
     outline: 0;
 }
 .shell-user-menu-item.is-current{color: #17181b;}

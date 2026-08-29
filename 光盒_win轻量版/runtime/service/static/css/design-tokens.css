@@ -9,9 +9,7 @@
  *   4. 深浅主题切换只靠本文件的两个作用域，feature 不得自己写
  *      theme-dark 分支来改颜色（几何值深浅共用）。
  *
- * 视觉基准：MiniMax Design 风格（2026-08 定稿）
- *   深色 = 近黑画布 #101010 + 中性深灰面板 #1b1b1b + 扁平（无玻璃拟态）
- *   浅色 = 近白画布 #fcfcfc + 浅灰窗框 #f7f7f8 + 历史 iOS 蓝强调色
+ * 视觉基准：v10 磨砂浮层（80% 深色 / 62% 浅色 + blur(80px)）
  */
 
 /* ================================================================
@@ -26,12 +24,16 @@
     --ui-surface-elevated: #ffffff;      /* 菜单 / 弹层 */
     --ui-surface-input: #ffffff;         /* 输入框 */
     --ui-surface-composer: #ffffff;      /* 画布底部输入卡片 */
-    --ui-surface-composer-topbar: rgba(255, 255, 255, .80);
+    --ui-surface-composer-topbar: rgba(255, 255, 255, .62);
 
-    /* 磨砂浮层（v10：80% 透明 + blur(80px)） */
-    --ui-glass-bg: rgba(255, 255, 255, .80);
-    --ui-glass-popover: rgba(255, 255, 255, .80);
+    /* 磨砂浮层（v10：浅色更透 62%，深色 80%） */
+    --ui-glass-bg: rgba(255, 255, 255, .62);
+    --ui-glass-popover: rgba(255, 255, 255, .62);
     --ui-glass-filter: blur(80px) saturate(160%);
+
+    /* 悬停（全站统一；遗留 gh-quiet-hover 别名） */
+    --gh-quiet-hover-surface: var(--ui-hover);
+    --gh-quiet-hover-border: transparent;
 
     /* 交互态叠层 */
     --ui-hover: #f3f3f4;
@@ -72,8 +74,8 @@
     /* 软件内容区保持纯平面；整窗投影由桌面宿主单独绘制。 */
     --ui-shadow-pop: none;
     --ui-shadow-dialog: none;
-    /* M76 / v10：磨砂浮层轻外投影 */
-    --ui-shadow-float: 0 4px 18px rgba(0, 0, 0, .12);
+    /* 磨砂浮层轻外投影 */
+    --ui-shadow-float: 0 2px 10px rgba(0, 0, 0, .05);
 }
 
 /* ================================================================
@@ -92,12 +94,14 @@ body.studio-theme-dark {
     --ui-surface-composer: #1f1f1f;      /* 底部输入栏：实色，无磨砂 */
     --ui-surface-dock-composer: #242424;
     --ui-surface-composer-topbar: rgba(35, 35, 35, .80);
-    --ui-panel-frost: rgba(35, 35, 35, .80);
-    --ui-panel-frost-blur: blur(80px) saturate(160%);
-    --ui-panel-frost-border: rgba(255, 255, 255, .08);
-
     --ui-glass-bg: rgba(35, 35, 35, .80);
     --ui-glass-popover: rgba(35, 35, 35, .80);
+    --ui-panel-frost: var(--ui-glass-popover);
+    --ui-panel-frost-blur: var(--ui-glass-filter);
+    --ui-panel-frost-border: var(--ui-border);
+
+    --gh-quiet-hover-surface: var(--ui-hover);
+    --gh-quiet-hover-border: transparent;
 
     --ui-hover: rgba(255, 255, 255, .07);
     --ui-active: rgba(255, 255, 255, .11);
@@ -126,7 +130,7 @@ body.studio-theme-dark {
 
     --ui-shadow-pop: none;
     --ui-shadow-dialog: none;
-    --ui-shadow-float: 0 4px 16px rgba(0, 0, 0, .30);
+    --ui-shadow-float: 0 2px 12px rgba(0, 0, 0, .22);
 }
 
 /* ================================================================

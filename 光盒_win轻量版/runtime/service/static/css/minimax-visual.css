@@ -611,36 +611,17 @@ html:is(.theme-dark, .studio-theme-dark) body :is(input, select, textarea, [cont
     background: #232323 !important;
 }
 
-/* 菜单 / 右键菜单 / 弹层（照 MiniMax「添加节点」菜单） */
-html:is(.theme-dark, .studio-theme-dark) :is(
-    .node-context-menu, .canvas-context-menu, .create-menu, .port-link-pick-menu,
-    .iqt-dropdown-menu, .history-popover, .skill-menu, .shell-user-menu,
-    .dock-chrome-title-menu, .emoji-picker
-),
-body.studio-theme-dark :is(
-    .node-context-menu, .canvas-context-menu, .create-menu, .port-link-pick-menu,
-    .iqt-dropdown-menu, .history-popover, .skill-menu, .shell-user-menu,
-    .dock-chrome-title-menu, .emoji-picker
-),
-.theme-dark :is(
-    .node-context-menu, .canvas-context-menu, .create-menu, .port-link-pick-menu,
-    .iqt-dropdown-menu, .history-popover, .skill-menu, .shell-user-menu,
-    .dock-chrome-title-menu, .emoji-picker
-) {
-    background: var(--mm-elevated, #232323) !important;
-    border: 1px solid rgba(255, 255, 255, .10) !important;
-    color: var(--mm-text, #ededed) !important;
-    box-shadow: var(--mm-shadow-pop, 0 12px 32px rgba(0, 0, 0, .5)) !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
-}html:is(.theme-dark, .studio-theme-dark) .node-context-menu button:hover,
+/* M4 菜单实色底已废弃 → 见文件末尾 M-v10 磨砂浮层统一 */
+
+html:is(.theme-dark, .studio-theme-dark) .node-context-menu button:hover,
 html:is(.theme-dark, .studio-theme-dark) .node-context-menu button:focus-visible,
 html:is(.theme-dark, .studio-theme-dark) .create-menu button:hover,
 html:is(.theme-dark, .studio-theme-dark) .port-link-pick-menu button:hover,
 .theme-dark .node-context-menu button:hover,
 .theme-dark .create-menu button:hover,
 .theme-dark .port-link-pick-menu button:hover{
-    background: var(--mm-hover, rgba(255, 255, 255, .07)) !important;
+    background: var(--ui-hover) !important;
+    border-color: transparent !important;
 }
 
 /* ================================================================
@@ -3167,55 +3148,7 @@ html body #shell.shell .connection-layer .conn-end {
     stroke-width: calc(0.5px / var(--world-scale, 1)) !important;
 }
 
-/* 全局统一：浅色主题所有普通按钮、菜单项和工具栏项的悬停底色与
-   右侧用户消息气泡共用 --ui-hover，悬停边框透明。已选中(active/selected)、
-   主色(primary)、危险(danger)按钮保留各自语义色不变。 */
-html:not(.theme-dark):not(.studio-theme-dark) body
-    :is(
-        button:not(:disabled):not([disabled]),
-        [role="button"]:not([aria-disabled="true"]),
-        [role="menuitem"]:not([aria-disabled="true"]),
-        [role="option"]:not([aria-disabled="true"]),
-        .iqt-menu-action,
-        .iqt-menu-item,
-        .selection-capsule-folder,
-        .size-picker-option,
-        .direct-option,
-        .skill-menu-item,
-        .shell-user-menu-item
-    ):hover:not(:active):not(
-        .active, .selected, .is-active, .is-current, .checked, .is-on,
-        [aria-pressed="true"], [aria-selected="true"], [aria-checked="true"],
-        .primary, .primary-btn, .is-primary, .btn-primary,
-        .danger, .danger-btn, .is-danger, .btn-danger,
-        .composer-run-capsule, .run-btn, #runBtn, .send-btn, .titlebar-theme-toggle,
-        .dock-chrome-title-trigger
-    ) {
-    background-color: var(--gh-quiet-hover-surface) !important;
-    border-color: var(--gh-quiet-hover-border);
-}
-
-/* M56/M73：浅色画布内的工具栏、底部一级/二级菜单、右键菜单和双击引用面板
-   统一使用 --ui-hover 静态悬停面，不显示悬停描边。 */
-html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    button:not(:disabled):hover:not(
-        .active, .selected, .is-active, .is-current, .checked, .is-on,
-        [aria-pressed="true"], [aria-selected="true"], [aria-checked="true"],
-        .primary, .primary-btn, .is-primary, .btn-primary,
-        .danger, .danger-btn, .is-danger, .btn-danger,
-        .composer-run-capsule, .run-btn, #runBtn, .send-btn
-    ),
-html:not(.theme-dark):not(.studio-theme-dark) body
-    .create-menu
-    :is(button, [role="button"], [role="menuitem"]):not(:disabled):hover,
-html:not(.theme-dark):not(.studio-theme-dark) body
-    :is(.iqt-dropdown-menu, .selection-capsule-menu, .selection-capsule-popover, .selection-capsule-dropdown)
-    :is(button, [role="button"], [role="menuitem"], .iqt-menu-action, .iqt-menu-item, .selection-capsule-folder)
-    :not(:disabled):hover {
-    background: var(--gh-quiet-hover-surface) !important;
-    background-image: none;
-    border: 1px solid var(--gh-quiet-hover-border) !important;
-}
+/* 全局 Hover 统一 → 见 minimax-visual.css 末尾 M-v10-hover */
 
 /* Toolbar containers own the single visible border. Their direct action
    buttons never add a transient outline while the pointer crosses items. */
@@ -4166,7 +4099,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell .canvas-bottom-c
 
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule {
     background: var(--ui-active) !important;
-    border: 1px solid var(--gh-quiet-hover-border) !important;
+    border: 1px solid var(--ui-border) !important;
     box-shadow: none !important;
 }
 
@@ -4998,55 +4931,7 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
     border-radius: 12px !important;
 }
 
-/* ================================================================
- * Dark chrome unify: #1F1F1F @ 70% + blur(18px) + 1px fine border
- * :not(#ui-shadow-reset-*) matches M76 weight so float shadow cannot
- * erase toolbar / capsule / menu edges.
- * ================================================================ */
-:is(html.theme-dark, html.studio-theme-dark) {
-    --mm-chrome: #1f1f1f;
-    --mm-elevated: #1f1f1f;
-    --mm-card: #1f1f1f;
-    --panel: rgba(31, 31, 31, .70) !important;
-    --sc-glass: rgba(31, 31, 31, .70);
-    --sc-blur: 18px;
-    --sc-border: rgba(255, 255, 255, .16);
-    --lightbox-chrome-bg: #1f1f1f;
-    --ui-panel-frost: rgba(31, 31, 31, .70);
-    --ui-panel-frost-blur: blur(18px) saturate(140%);
-    --ui-panel-frost-border: rgba(255, 255, 255, .16);
-}
-
-html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body :is(
-    #imageQuickToolbar.image-quick-toolbar,
-    .image-quick-toolbar,
-    #selectionBoxCapsule .selection-capsule-bar,
-    .selection-capsule-bar,
-    .node-context-menu,
-    .canvas-context-menu,
-    .ui-menu.node-context-menu,
-    .create-menu
-),
-:is(html.theme-dark, html.studio-theme-dark) body :is(
-    #imageQuickToolbar.image-quick-toolbar,
-    .image-quick-toolbar,
-    #selectionBoxCapsule .selection-capsule-bar,
-    .selection-capsule-bar,
-    .node-context-menu,
-    .canvas-context-menu,
-    .ui-menu.node-context-menu,
-    .create-menu
-) {
-    background: rgba(31, 31, 31, .70) !important;
-    background-color: rgba(31, 31, 31, .70) !important;
-    background-image: none !important;
-    border: 1px solid rgba(255, 255, 255, .16) !important;
-    border-color: rgba(255, 255, 255, .16) !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
-    backdrop-filter: blur(18px) saturate(140%) !important;
-}
+/* M-dark-chrome-frost 已废弃 → 见 M-v10 */
 
 /* 顶栏 / 左栏 / 右栏：深色统一单条 1px hairline（与右侧栏一致，禁止 inset 叠粗） */
 html:not(#ui-chrome-div-1):not(#ui-chrome-div-2):not(#ui-chrome-div-3):not(#ui-chrome-div-4).lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
@@ -5485,20 +5370,25 @@ body #shell.shell #composer.composer .composer-card-topbar
 }
 
 /* ================================================================
- * M-v10：磨砂浮层统一（80% + blur(80px)）
- * 压过 M4 深色实色菜单、canvas-dark-glass 等遗留实底。
+ * M-v10：磨砂浮层统一（唯一规则源）
+ * 浅色 62% / 深色 80% + blur(80px) + 轻投影
  * ================================================================ */
 html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body :is(
     .node-context-menu,
     .canvas-context-menu,
     .create-menu,
     .port-link-pick-menu,
+    .port-link-pick-shell,
     .iqt-dropdown-menu,
     .history-popover,
     .skill-menu,
     .shell-user-menu,
     .dock-chrome-title-menu,
     .emoji-picker,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .composer-hd-popover,
+    .smart-popover,
     #composerApiSettingsPopover,
     #composerSizePopover,
     #composerKindPopover,
@@ -5510,11 +5400,15 @@ html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body :is(
     background-image: none !important;
     -webkit-backdrop-filter: var(--ui-glass-filter) !important;
     backdrop-filter: var(--ui-glass-filter) !important;
+    border: 1px solid var(--ui-border) !important;
     border-radius: var(--ui-radius-float) !important;
     box-shadow: var(--ui-shadow-float) !important;
 }
 
-html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body #selectionBoxCapsule .selection-capsule-bar {
+html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body :is(
+    #selectionBoxCapsule .selection-capsule-bar,
+    .selection-capsule-bar
+) {
     border-radius: var(--ui-radius-capsule) !important;
 }
 
@@ -5535,6 +5429,40 @@ html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body #shell.shell #composer.compo
     -webkit-backdrop-filter: var(--ui-glass-filter) !important;
     backdrop-filter: var(--ui-glass-filter) !important;
     border-radius: var(--ui-radius-composer-top) var(--ui-radius-composer-top) 0 0 !important;
+    box-shadow: none !important;
+}
+
+/* M-v10-hover：深浅主题次级控件 Hover 统一底色，无描边 */
+html:not(#ui-hover-v10-1):not(#ui-hover-v10-2) body
+    :is(
+        button:not(:disabled):not([disabled]),
+        [role="button"]:not([aria-disabled="true"]),
+        [role="menuitem"]:not([aria-disabled="true"]),
+        [role="option"]:not([aria-disabled="true"]),
+        .iqt-menu-action,
+        .iqt-menu-item,
+        .selection-capsule-btn,
+        .selection-capsule-folder,
+        .size-picker-option,
+        .mode-model-choice,
+        .direct-option,
+        .skill-menu-item,
+        .shell-user-menu-item,
+        .port-link-pick-item,
+        .create-menu button,
+        .node-context-menu button,
+        .canvas-context-menu button
+    ):is(:hover, :focus-visible):not(:active):not(
+        .active, .selected, .is-active, .is-current, .checked, .is-on,
+        [aria-pressed="true"], [aria-selected="true"], [aria-checked="true"],
+        .primary, .primary-btn, .is-primary, .btn-primary,
+        .danger, .danger-btn, .is-danger, .btn-danger,
+        .composer-run-capsule, .run-btn, #runBtn, .send-btn,
+        .titlebar-theme-toggle, .dock-chrome-title-trigger
+    ) {
+    background-color: var(--ui-hover) !important;
+    background-image: none !important;
+    border-color: transparent !important;
     box-shadow: none !important;
 }
 
