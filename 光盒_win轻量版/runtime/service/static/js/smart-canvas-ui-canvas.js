@@ -665,14 +665,18 @@ window.onmouseup = e => {
         let stateChanged = false;
         const hit = document.elementFromPoint(e.clientX, e.clientY);
         const droppedOnAssetPanel = ctx.assetLibraryOpen && hit && ctx.assetPanel?.contains(hit);
-        if(droppedOnAssetPanel && draggedNode){
+        const collectDragImages = () => {
             const imagesToSave = [];
             const seen = new Set();
-            const pushImage = (img, nameHint) => {
+            const pushImage = (img, nameHint, kindHint='') => {
                 const url = img?.url;
                 if(!url || seen.has(url)) return;
                 seen.add(url);
-                imagesToSave.push({url, name: img.name || nameHint || 'image'});
+                const kind = String(kindHint || img?.kind || '').toLowerCase()
+                    || (/\.(mp4|webm|mov|m4v|avi|mkv)([?#]|$)/i.test(url) ? 'video'
+                        : /\.(mp3|wav|flac|aac|m4a|ogg)([?#]|$)/i.test(url) ? 'audio'
+                        : 'image');
+                imagesToSave.push({url, name: img.name || nameHint || 'image', kind});
             };
             (ctx.dragState.group || [{id: ctx.dragState.id}]).forEach(item => {
                 const node = ctx.nodes.find(n => n.id === item.id);
@@ -684,8 +688,39 @@ window.onmouseup = e => {
                         return;
                     }
                 }
-                (node.images || []).forEach(img => pushImage(img, node.title));
+                (node.images || []).forEach(img => pushImage(img, node.title, node.type === 'video' ? 'video' : ''));
             });
+            return imagesToSave;
+        };
+        // Drop onto left-rail asset kind panel (parent shell).
+        if(draggedNode && global.parent && global.parent !== global){
+            const shellItems = collectDragImages();
+            const overShellChrome = e.clientX < 0 || e.clientY < 0
+                || e.clientX > global.innerWidth || e.clientY > global.innerHeight;
+            if(shellItems.length && overShellChrome){
+                try {
+                    global.parent.postMessage({
+                        type: 'shell-try-import-canvas-assets',
+                        clientX: e.clientX,
+                        clientY: e.clientY,
+                        items: shellItems,
+                    }, '*');
+                } catch(_e) {}
+                (ctx.dragState.group || [{id: ctx.dragState.id, ox: ctx.dragState.ox, oy: ctx.dragState.oy}]).forEach(item => {
+                    const n = ctx.nodes.find(x => x.id === item.id);
+                    if(n){ n.x = item.ox; n.y = item.oy; }
+                });
+                ctx.discardPendingUndo();
+                ctx.clearDropHighlight();
+                ctx.dragState = null;
+                document.body.classList.remove('smart-node-drag');
+                ctx.render();
+                ctx.scheduleSave();
+                return;
+            }
+        }
+        if(droppedOnAssetPanel && draggedNode){
+            const imagesToSave = collectDragImages();
             if(imagesToSave.length){
                 const categoryId = ctx.activeAssetCategoryId || global.SmartCanvasAssetLibraryUi?.getOpenGalleryCategoryId?.() || '';
                 (async () => {
