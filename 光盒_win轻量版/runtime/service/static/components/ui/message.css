@@ -1,0 +1,20 @@
+/* Port of shadcn MessageContent fills for 光盒 gpt-dock (vanilla CSS).
+ * React/Tailwind Message.tsx is not wired — this WebView2 shell is HTML/CSS/JS.
+ * Applied via minimax-visual.css on .bubble.user / .bubble.assistant.
+ */
+.chat-shell #messages.messages .bubble.user:not(.dock-thinking):not(.dock-image-only) {
+  background: var(--ui-accent);
+  color: var(--ui-text-on-accent);
+  border-radius: var(--ui-radius-card);
+  padding: 12px 16px;
+}
+.chat-shell #messages.messages .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble) {
+  background: var(--ui-surface-elevated);
+  color: var(--ui-text);
+  border-radius: var(--ui-radius-card);
+  padding: 12px 16px;
+}
+:is(html.theme-dark, html.studio-theme-dark) .chat-shell #messages.messages
+  .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble) {
+  background: #2a2a2a;
+}

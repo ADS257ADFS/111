@@ -11,7 +11,7 @@
 :is(html.theme-dark, html.studio-theme-dark) :is(.prompt-card, .output-card, .ref-card, .drop, .right-empty, .gate-card){box-shadow:inset 0 1px 0 rgba(255, 255, 255, .04)}
 :is(html.theme-dark, html.studio-theme-dark) :is(.prompt-card, .output-card, .ref-card, .gate-card):hover{box-shadow:inset 0 1px 0 rgba(255, 255, 255, .07)}
 :is(html.theme-dark, html.studio-theme-dark) :is(.image-node.group-node, .promptGroup-node){background:rgba(20, 20, 20, .55)}
-:is(html.theme-dark, html.studio-theme-dark) .smart-group-frame-hit{background:linear-gradient(160deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .012));border:.5px solid rgba(255, 255, 255, .32);box-shadow:inset 0 1px 0 rgba(255, 255, 255, .05)}
+:is(html.theme-dark, html.studio-theme-dark) .smart-group-frame-hit{background:rgba(31, 31, 31, .70);border:1px solid #ffffff;box-shadow:none}
 :is(html.theme-dark, html.studio-theme-dark) *{scrollbar-color:rgba(255, 255, 255, .22) transparent}
 :is(html.theme-dark, html.studio-theme-dark) *::-webkit-scrollbar-thumb{background:rgba(255, 255, 255, .22)}
 :is(html.theme-dark, html.studio-theme-dark) *::-webkit-scrollbar-thumb:hover{background:rgba(255, 255, 255, .32)}
@@ -521,12 +521,7 @@ html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode .chat-shell .composer-foot-left .attach-btn:active,
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
-    body.gpt-dock-canvas-mode .chat-shell #skillBtn[aria-expanded="true"]{border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    body.gpt-dock-canvas-mode .chat-shell #skillBtn[aria-expanded="true"]{border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode .chat-shell .composer-foot-left .attach-btn:active,
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
@@ -548,12 +543,7 @@ html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode #skillMenu.skill-menu :is(
         .skill-menu-head button,
         .skill-menu-item
-    ):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+    ):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-item:is(:hover, :focus-visible) .skill-menu-icon{border-color:rgba(255, 255, 255, .10) !important;background:rgba(255, 255, 255, .10) !important}
 html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode #skillMenu.skill-menu .skill-menu-item.selected{color:rgba(241, 241, 241, .74) !important;border-color:rgba(255, 255, 255, .08) !important;background:rgba(255, 255, 255, .025) !important}
@@ -630,8 +620,7 @@ html.theme-dark,html.studio-theme-dark{--canvas-glass-glider-shadow:inset 0 1px 
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
     #imageQuickToolbar.image-quick-toolbar .iqt-glass-glider,
     #selectionBoxCapsule .selection-capsule-glider
-){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
+){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
     #imageQuickToolbar.image-quick-toolbar button:not(.active):not(.open):not([aria-pressed="true"]),
     #selectionBoxCapsule .selection-capsule-btn:not(.active):not(.open):not([aria-pressed="true"])
 ),
@@ -655,12 +644,9 @@ html.theme-dark,html.studio-theme-dark{--canvas-glass-glider-shadow:inset 0 1px 
 ){color:rgba(241, 241, 241, .74) !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
     .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]),
     .canvas-bottom-help-btn
-):is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
-:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]){color:rgba(241, 241, 241, .74) !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]):is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
-:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #canvasSmartGuidesToggle[aria-pressed="true"]{color:rgba(241, 241, 241, .74) !important;border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+):is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]){color:rgba(241, 241, 241, .74) !important}:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule-btn:not(.active):not([aria-pressed="true"]):is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #canvasSmartGuidesToggle[aria-pressed="true"]{color:rgba(241, 241, 241, .74) !important;border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell .image-node.typed-placeholder-node{background:linear-gradient(155deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .014) 46%, rgba(255, 255, 255, .035)),
         rgba(var(--sc-base-rgb), .76) !important;box-shadow:inset 0 1px 0 rgba(255, 255, 255, .09) !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
@@ -741,16 +727,7 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
         #composerVideoReferencePopover,
         #composerKindPopover,
         #composerSizePopover
-    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;background-image:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;background-image:none !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer :is(
         #composerApiSettingsPopover,
@@ -778,27 +755,13 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
 :is(html.theme-dark, html.studio-theme-dark).studio-page-canvas body
     .app-shell.app-shell .floating-toolbar.floating-toolbar
     :is(#toolbarAssetBtn, #toolbarCanvasHistoryBtn, #toolbarSettingsBtn):is(:hover, :focus-visible),:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-footer .composer-tool-wrap > .composer-tool-btn:is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;background-image:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    .composer-footer .composer-tool-wrap > .composer-tool-btn:is(:hover, :focus-visible){border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;background-image:none !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-desc{color:rgba(241, 241, 241, .46) !important}:is(html.theme-dark, html.studio-theme-dark) body
     .port-link-pick-item:not(:disabled):hover,
 :is(html.theme-dark, html.studio-theme-dark) body
     .port-link-pick-item:not(:disabled):focus-visible,
 :is(html.theme-dark, html.studio-theme-dark) body
-    .port-link-pick-item:not(:disabled).is-hover{border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    .port-link-pick-item:not(:disabled).is-hover{border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body
     .port-link-pick-item:not(:disabled).is-hover{color:rgba(241, 241, 241, .74) !important;}:is(html.theme-dark, html.studio-theme-dark) body
     .port-link-pick-item:not(:disabled):hover
@@ -826,17 +789,11 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer .composer-tool-wrap > .composer-tool-btn:is(:hover, :focus-visible, :active),:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer .composer-tool-wrap.open > .composer-tool-btn,:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-footer .composer-tool-wrap > .composer-tool-btn[aria-expanded="true"]{border-color:rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    .composer-footer .composer-tool-wrap > .composer-tool-btn[aria-expanded="true"]{border-color:rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover :is(
         .composer-api-branch summary,
-        .composer-api-models button,
-        .composer-mode-model-list .mode-model-choice
+        .composer-api-models button
     ),:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerSizePopover :is(
         .size-picker-option,
@@ -852,7 +809,7 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
         #composerVideoReferencePopover,
         #composerKindPopover,
         #composerSizePopover
-    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important}
+    ) :is(button, summary, [role="button"]):not(.mode-model-choice):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer :is(
         #composerApiSettingsBtn,
@@ -870,26 +827,20 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
         #composerSizeBtn,
         #composerVideoReferenceBtn,
         #composerKindBtn
-    ){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    ){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer :is(
         #composerApiSettingsPopover,
         #composerVideoReferencePopover,
         #composerKindPopover,
         #composerSizePopover
-    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(12, 12, 12, .94) 0 58%,
-        rgba(35, 35, 35, .82) 100%
-    ) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+    ) :is(button, summary, [role="button"]):not(.mode-model-choice):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-modal{color:#3a3a3a}
-:where(html.theme-dark,html.studio-theme-dark) .shell-settings-backdrop{background:rgba(39, 39, 39, .28)}
+:where(html.theme-dark,html.studio-theme-dark) .shell-settings-backdrop{
+    background:rgba(0, 0, 0, .58);
+    -webkit-backdrop-filter:blur(14px) saturate(112%);
+    backdrop-filter:blur(14px) saturate(112%);
+}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-dialog{border:1px solid rgba(255, 255, 255, .92);background:#fafafa;box-shadow:0 32px 100px rgba(43, 43, 43, .24)}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-close-btn{color:#707070}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-close-btn:hover{background:#fff;border-color:#eaeaea}
@@ -897,8 +848,9 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-nav-btn{color:#707070}:where(html.theme-dark,html.studio-theme-dark) .shell-settings-nav-btn:hover{background:rgba(255, 255, 255, .82);border-color:rgba(234, 234, 234, .92)}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-nav-btn.active{color:#0a84ff;background:#fff;border-color:rgba(10, 132, 255, .28)}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-logout-btn{color:#898989}:where(html.theme-dark,html.studio-theme-dark) .shell-settings-logout-btn:hover{background:rgba(255, 255, 255, .9)}
-:where(html.theme-dark,html.studio-theme-dark) .shell-settings-panes{background:#fff}
-:where(html.theme-dark,html.studio-theme-dark) .shell-settings-embed-frame{background:#fff}
+:where(html.theme-dark,html.studio-theme-dark) .shell-settings-panes{background:#000}
+:where(html.theme-dark,html.studio-theme-dark) .shell-settings-pane{background:#000}
+:where(html.theme-dark,html.studio-theme-dark) .shell-settings-embed-frame{background:#000}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-section-head h2{color:#2c2c2c}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-section-head p{color:#9a9a9a}
 :where(html.theme-dark,html.studio-theme-dark) .shell-account-avatar{background:#f9f9f9;border:1px solid #eaeaea;color:#707070}
@@ -942,7 +894,10 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-empty-state > svg{color:#707070}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-shortcut-item{border:1px solid #eaeaea;background:#f9f9f9;color:#707070}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-shortcut-item kbd{border:1px solid #e2e2e2;background:#fff;color:#575757}
-html.theme-dark .shell-settings-dialog,html.studio-theme-dark .shell-settings-dialog,html.theme-dark .shell-settings-panes,html.studio-theme-dark .shell-settings-panes,html.theme-dark .shell-settings-embed-frame,html.studio-theme-dark .shell-settings-embed-frame{background:#1a1a1a;color:#ececec}
+html.theme-dark .shell-settings-dialog,html.studio-theme-dark .shell-settings-dialog{background:#1a1a1a;color:#ececec}
+html.theme-dark .shell-settings-panes,html.studio-theme-dark .shell-settings-panes,
+html.theme-dark .shell-settings-pane,html.studio-theme-dark .shell-settings-pane,
+html.theme-dark .shell-settings-embed-frame,html.studio-theme-dark .shell-settings-embed-frame{background:#000;color:#ececec}
 html.theme-dark .shell-settings-nav,html.studio-theme-dark .shell-settings-nav{border-right:1px solid #2e2e2e;background:rgba(44, 44, 44, 0.72)}
 html.theme-dark .shell-settings-title,html.studio-theme-dark .shell-settings-title,html.theme-dark .shell-account-card-head h3,html.studio-theme-dark .shell-account-card-head h3,html.theme-dark .shell-recharge-step-label label,html.studio-theme-dark .shell-recharge-step-label label,html.theme-dark .shell-recharge-step-label h4,html.studio-theme-dark .shell-recharge-step-label h4,html.theme-dark .shell-recharge-summary-meta dd,html.studio-theme-dark .shell-recharge-summary-meta dd,html.theme-dark .shell-account-identity-meta strong,html.studio-theme-dark .shell-account-identity-meta strong,html.theme-dark .shell-account-balance-value strong,html.studio-theme-dark .shell-account-balance-value strong,html.theme-dark .shell-settings-section-head h2,html.studio-theme-dark .shell-settings-section-head h2{color:#f5f5f5}
 html.theme-dark .shell-account-card,html.studio-theme-dark .shell-account-card,html.theme-dark .shell-usage-grid article,html.studio-theme-dark .shell-usage-grid article,html.theme-dark .shell-settings-info-card,html.studio-theme-dark .shell-settings-info-card,html.theme-dark .shell-settings-empty-state,html.studio-theme-dark .shell-settings-empty-state,html.theme-dark .shell-settings-shortcut-item,html.studio-theme-dark .shell-settings-shortcut-item{background:#242424;border-color:rgba(255,255,255,.09)}
@@ -1025,8 +980,7 @@ html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-canvas-project-n
 ){color:rgba(241, 241, 241, .74) !important}:is(html.theme-dark, html.studio-theme-dark) :is(
     .shell-primary-rail-item:not(.active):not([data-shell-primary-active="true"]):not([aria-pressed="true"]):hover,
     .shell-primary-rail-item:not(.active):not([data-shell-primary-active="true"]):not([aria-pressed="true"]):focus-visible
-){background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;border-color:rgba(255, 255, 255, .08) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}
+){background:transparent !important;border-color:rgba(255, 255, 255, .08) !important;box-shadow:none !important}
 :where(html.theme-dark,html.studio-theme-dark) .shell-primary-rail-item[data-shell-primary-active="true"],:where(html.theme-dark,html.studio-theme-dark) .shell-primary-rail-item.active,:where(html.theme-dark,html.studio-theme-dark) .shell-primary-rail-item[aria-pressed="true"]{color:#fff !important;background:#0a84ff !important;border-color:#0a84ff !important}:where(html.theme-dark,html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-new,
 :where(html.theme-dark,html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-new:hover,
 :where(html.theme-dark,html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-new:focus-visible{background:#fff !important;box-shadow:0 2px 6px rgba(0, 0, 0, .04) !important}
@@ -1044,8 +998,7 @@ html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .sh
 :where(html.theme-dark,html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user,
 html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user{color:rgba(255, 255, 255, .82) !important;}
 :where(html.theme-dark,html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:hover,:where(html.theme-dark,html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:focus-visible{background:rgba(0, 0, 0, .46) !important}html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:hover,
-html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:focus-visible{background:radial-gradient(ellipse at 50% 42%, rgba(12, 12, 12, .94) 0 58%, rgba(35, 35, 35, .82) 100%) !important;border-color:rgba(255, 255, 255, .08) !important;box-shadow:inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important}html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item,
+html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-user:focus-visible{background:transparent !important;border-color:rgba(255, 255, 255, .08) !important;box-shadow:none !important}html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item,
 html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item:is(:hover, :focus-visible){}
 html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item{color:rgba(241, 241, 241, .74) !important;}
 :where(html.theme-dark,html.studio-theme-dark) body .app-shell .shell-primary-rail .shell-primary-rail-item:is(
@@ -1060,11 +1013,11 @@ html:is(.theme-dark, .studio-theme-dark) body .app-shell .shell-primary-rail .sh
 ) :is(svg, i, i > svg){color:#fff !important;stroke:#fff !important}
 :where(html.theme-dark,html.studio-theme-dark).lightbox-desktop-native body{background:#fff !important}
 :where(html.theme-dark,html.studio-theme-dark).lightbox-desktop-native .lightbox-native-titlebar{background:#fff;color:#252525}
-:where(html.theme-dark,html.studio-theme-dark).lightbox-desktop-native .lightbox-native-window-controls button:hover{background:rgba(0, 0, 0, .08)}:where(html.theme-dark,html.studio-theme-dark).lightbox-desktop-native .lightbox-native-window-controls button[data-native-window-action="close"]:hover{background:#707070;}
+:where(html.theme-dark,html.studio-theme-dark).lightbox-desktop-native .lightbox-native-window-controls button:hover{background:transparent}:where(html.theme-dark,html.studio-theme-dark).lightbox-desktop-native .lightbox-native-window-controls button[data-native-window-action="close"]:hover{background:transparent;}
 :where(html.theme-dark,html.studio-theme-dark).lightbox-desktop-native .app-shell{background:#f7f7f7 !important;box-shadow:0 10px 28px rgba(0, 0, 0, .10)}
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) body{background:#000 !important}
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-titlebar{background:#000;color:#d6d6d6}
-html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-window-controls button:hover{background:rgba(255, 255, 255, .10)}html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-window-controls button[data-native-window-action="close"]:hover{background:rgba(255, 255, 255, .14);}
+html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-window-controls button:hover{background:transparent}html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-native-window-controls button[data-native-window-action="close"]:hover{background:transparent;}
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .app-shell,html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .stage{background:#090909 !important}
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .app-shell{box-shadow:0 12px 30px rgba(0, 0, 0, .28)}
 html:is(.theme-dark,.studio-theme-dark) #studioGenerationCancel{border-color:rgba(151,151,151,.25)!important;color:#7c7c7c!important;box-shadow:0 10px 28px rgba(29,29,29,.14)!important}

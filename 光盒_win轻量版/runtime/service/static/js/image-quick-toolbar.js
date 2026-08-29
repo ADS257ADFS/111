@@ -12,7 +12,7 @@
         'video-trim':{key:'video-trim',label:'剪辑',icon:'scissors'},
         'video-frame':{key:'video-frame',label:'截取静帧',icon:'camera'},
         'video-separate':{key:'video-separate',label:'音视频分离',icon:'audio-lines'},
-        asset:{key:'asset',label:'纯资产',icon:'folder-open'},
+        asset:{key:'asset',label:'资产库',icon:'folder-open'},
         vector:{key:'vector',label:'矢量文件',icon:'pen-tool'},
         psd:{key:'psd',label:'PSD图层文件',icon:'layers'},
         download:{key:'download',label:'下载',icon:'download'}
