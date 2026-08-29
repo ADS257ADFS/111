@@ -1464,7 +1464,8 @@ html body #shellUserMenu.shell-user-menu .shell-user-points {
     margin: 0 0 var(--ui-space-2) !important;
     padding: var(--ui-space-3) var(--ui-space-4) !important;
     border: 0 !important;
-    background: var(--ui-hover) !important;
+    color: #ffffff !important;
+    background: var(--ui-accent, #0a84ff) !important;
 }
 
 html body #shellUserMenu.shell-user-menu .shell-user-menu-list {
@@ -1790,7 +1791,7 @@ html body #shell.shell #composer .composer-footer :is(
     letter-spacing: 0 !important;
     font-synthesis: none !important;
     font-variant-numeric: tabular-nums !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
 html body #shell.shell #composer .composer-footer :is(
@@ -1836,7 +1837,7 @@ html body #shell.shell #composer .composer-footer :is(
 ){
     background: #f9fafb !important;
     border: 1px solid rgba(148, 163, 184, .44) !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
     box-shadow: none !important;
     transform: none !important;
 }
@@ -2051,9 +2052,9 @@ html body #shellUserMenu.shell-user-menu {
 }
 
 html body #shellUserMenu.shell-user-menu .shell-user-points {
-    color: var(--ui-text) !important;
+    color: #ffffff !important;
     border-color: transparent !important;
-    background: var(--ui-hover) !important;
+    background: var(--ui-accent, #0a84ff) !important;
     background-image: none !important;
     box-shadow: none !important;
     transition:
@@ -2075,7 +2076,7 @@ html body #shellUserMenu.shell-user-menu .shell-user-points:disabled {
 
 html body #shellUserMenu.shell-user-menu
     .shell-user-points :is(.shell-user-points-head, .shell-user-points-meta, strong, span) {
-    color: var(--ui-text) !important;
+    color: #ffffff !important;
     transition: none !important;
 }
 
@@ -2676,7 +2677,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body
         .shell-project-history-view-toggle
     ) {
     border-color: var(--gh-library-line) !important;
-    background: #fff !important;
+    background-color: #fff !important;
     color: var(--gh-library-primary) !important;
 }
 
@@ -2910,7 +2911,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     mix-blend-mode: normal !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
 /* Composer size menu: ratio frame + ratio only; no descriptive/pixel subtitles. */
@@ -2974,7 +2975,7 @@ html body #shell.shell #composer.composer
     font-synthesis: none !important;
     font-variant-numeric: tabular-nums !important;
     color: #50565e !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
 html body #shell.shell #composer.composer
@@ -2993,12 +2994,11 @@ html body #shell.shell #composer.composer
 
 html body #shell.shell #composer.composer
     .composer-footer .composer-footer-glider {
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
-/* Composer size submenu: quality + count options share one typographic scale. */
-html body #shell.shell #composer.composer #composerApiSettingsPopover
-    .composer-mode-model-list .mode-model-choice,
+/* Composer size submenu: quality + count options share one typographic scale.
+   Model rows keep their own name/desc typography — do not flatten menu items. */
 html body #shell.shell #composer.composer #composerSizePopover
     .size-picker-resolution-list .size-picker-option,
 html body #shell.shell #composer.composer #composerSizePopover
@@ -3026,23 +3026,32 @@ html body #shell.shell #composer.composer
     display: none !important;
 }
 
-/* Footer popovers must paint above the card-topbar kind toggle. */
+/* Footer + open popover stack above topbar so model/size menus are not
+   covered by 参考 / 批量 / 模式. Topbar stays above the white input surface. */
 html body #shell.shell #composer.composer.open
     .composer-card:has(.composer-tool-wrap.open)
+    .composer-footer,
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-api-settings-wrap.open)
     .composer-footer {
     position: relative;
-    z-index: 8 !important;
+    z-index: 40 !important;
 }
 
 html body #shell.shell #composer.composer.open
     .composer-card:has(.composer-tool-wrap.open)
+    .composer-card-topbar,
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-api-settings-wrap.open)
     .composer-card-topbar {
-    z-index: 2 !important;
+    z-index: 30 !important;
 }
 
 html body #shell.shell #composer.composer
-    .composer-tool-wrap.open > .composer-tool-popover {
-    z-index: 20 !important;
+    .composer-tool-wrap.open > .composer-tool-popover,
+html body #shell.shell #composer.composer
+    .composer-api-settings-wrap.open > .composer-api-settings-popover {
+    z-index: 50 !important;
 }
 
 /* Video size submenu: match image submenu spacing and remove legacy lift motion. */
@@ -3077,8 +3086,9 @@ html.studio-theme-dark {
     --canvas-glass-glider-ease: cubic-bezier(0.37, 1.95, 0.66, 0.56);
 }
 
-html.theme-dark body #shell.shell :is(.composer-card, .create-menu, .image-quick-toolbar, .selection-capsule-bar, .image-node.empty-node, .image-node.loop-smart-node, .image-node.group-node, .composer-tool-popover, #composerSizePopover),
-html.studio-theme-dark body #shell.shell :is(.composer-card, .create-menu, .image-quick-toolbar, .selection-capsule-bar, .image-node.empty-node, .image-node.loop-smart-node, .image-node.group-node, .composer-tool-popover, #composerSizePopover) {
+/* composer-card 外层不在此上色：深色只保留顶栏磨砂 + 圆角输入面，避免整块底板。 */
+html.theme-dark body #shell.shell :is(.create-menu, .image-quick-toolbar, .selection-capsule-bar, .image-node.empty-node, .image-node.loop-smart-node, .image-node.group-node, .composer-tool-popover, #composerSizePopover),
+html.studio-theme-dark body #shell.shell :is(.create-menu, .image-quick-toolbar, .selection-capsule-bar, .image-node.empty-node, .image-node.loop-smart-node, .image-node.group-node, .composer-tool-popover, #composerSizePopover) {
     color: var(--canvas-glass-text) !important;
     background: var(--canvas-glass-bg) !important;
     background-image: none !important;
@@ -3101,11 +3111,11 @@ html.studio-theme-dark body #shell.shell #composer.composer .composer-card .prom
 html.theme-dark body #shell.shell #composer.composer .composer-footer .composer-footer-bar,
 html.studio-theme-dark body #shell.shell #composer.composer .composer-footer .composer-footer-bar {
     overflow: hidden;
-    background: var(--canvas-glass-bg) !important;
+    background: transparent !important;
     border-radius: 16px !important;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
-    box-shadow: var(--canvas-glass-shadow) !important;
+    box-shadow: none !important;
 }
 
 html.theme-dark body #shell.shell #composer.composer .composer-footer :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn),
@@ -3142,7 +3152,7 @@ html.studio-theme-dark body #shell.shell #composer.composer .composer-footer .co
     visibility: visible !important;
     opacity: 0 !important;
     border: 0 !important;
-    border-radius: 16px !important;
+    border-radius: 12px !important;
     background: var(--canvas-glass-glider-bg) !important;
     background-image: var(--canvas-glass-glider-bg) !important;
     box-shadow: var(--canvas-glass-glider-shadow) !important;
@@ -3593,14 +3603,9 @@ html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     body.gpt-dock-canvas-mode .chat-shell #skillBtn[aria-expanded="true"]{
     border:1px solid rgba(255, 255, 255, .08) !important;
     border-radius:13px !important;
-    background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(9, 11, 15, .94) 0 58%,
-        rgba(31, 34, 39, .82) 100%
-    ) !important;
+    background:transparent !important;
     box-shadow:
-        inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+        none !important;
     transform:none !important;
     animation:none !important;
 }
@@ -3680,14 +3685,9 @@ html:is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
     ):is(:hover, :focus-visible){
     border:1px solid rgba(255, 255, 255, .08) !important;
     border-radius:8px !important;
-    background:radial-gradient(
-        ellipse at 50% 42%,
-        rgba(9, 11, 15, .94) 0 58%,
-        rgba(31, 34, 39, .82) 100%
-    ) !important;
+    background:transparent !important;
     box-shadow:
-        inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+        none !important;
     outline:none !important;
     transform:none !important;
     animation:none !important;

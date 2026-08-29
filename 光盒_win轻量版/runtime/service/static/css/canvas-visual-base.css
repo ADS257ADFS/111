@@ -728,22 +728,23 @@ body.studio-theme-dark {
 }
 
 .gpt-dock .dock-chrome-title {
-    color: #50565e;
-    font-size:14px;
-    font-weight: 600;
+    color: var(--ui-text);
+    font-family: var(--ui-font);
+    font-size: var(--ui-type-section);
+    font-weight: var(--ui-weight-menu-strong);
 }
 
 .gpt-dock .dock-chrome-btn,
 .dock-open-btn {
     -webkit-appearance: none;
     appearance: none;
-    color: #747b85;
+    color: var(--ui-text);
     border: 1px solid transparent;
     border-radius: 8px;
     background: transparent;
     box-shadow: none;
     font-size: 13px;
-    font-weight: 400;
+    font-weight: var(--ui-weight-menu-strong);
     transition:
         background-color var(--gh-fast) ease, border-color var(--gh-fast) ease;
 }.gpt-dock .dock-chrome-btn:hover,
