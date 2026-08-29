@@ -243,17 +243,18 @@ textarea.ui-input { height: auto; min-height: 64px; padding: var(--ui-space-4); 
  * Float —— 磨砂浮层（菜单 / 工具条 / 生成栏 / 框选胶囊）
  * ================================================================ */
 .ui-float {
-    border: 1px solid var(--ui-border);
+    border: none;
     border-radius: var(--ui-radius-float);
     background-color: var(--ui-glass-popover);
+    background-clip: padding-box;
     backdrop-filter: var(--ui-glass-filter);
     -webkit-backdrop-filter: var(--ui-glass-filter);
-    box-shadow: var(--ui-shadow-float);
+    box-shadow: var(--ui-shadow-float-glass);
     color: var(--ui-text);
 }
 .ui-float.is-menu { padding: var(--ui-space-3); }
 .ui-float.is-pill { border-radius: var(--ui-radius-capsule); }
-.ui-float.is-flat { box-shadow: none; }
+.ui-float.is-flat { box-shadow: var(--ui-glass-stroke); }
 .ui-float :is(button, .ui-chip, h5, .ui-menu-item) {
     font-weight: var(--ui-weight-regular);
     font-variant-numeric: tabular-nums;
