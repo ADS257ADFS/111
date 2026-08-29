@@ -5746,9 +5746,84 @@ html body #shell.shell #composer.composer .composer-footer
     :is(.composer-tool-btn, .composer-api-settings-btn)[aria-expanded="true"] .composer-tool-caret {
     transform: rotate(180deg) !important;
 }
-@media (prefers-reduced-motion: reduce) {
-    html body #shell.shell #composer.composer .composer-footer
-        :is(.composer-tool-btn, .composer-api-settings-btn) .composer-tool-caret {
-        transition: none !important;
-    }
+/* ================================================================
+ * 浅色模式浮层工具栏：禁止黑底。选区胶囊 / 媒体工具栏 / 顶栏 /
+ * 右键与上拉菜单一律白 80% + 深字。
+ * ================================================================ */
+html:not(.theme-dark):not(.studio-theme-dark) body :is(
+    #imageQuickToolbar.image-quick-toolbar,
+    .image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar,
+    .selection-capsule-bar,
+    .floating-toolbar::before,
+    .node-context-menu,
+    .canvas-context-menu,
+    .ui-menu.node-context-menu,
+    .create-menu,
+    .port-link-pick-menu,
+    .shell-user-menu,
+    #shellUserMenu.shell-user-menu,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover,
+    .iqt-dropdown-menu,
+    .selection-capsule-menu,
+    .selection-capsule-popover,
+    .selection-capsule-dropdown
+),
+html:not(.theme-dark):not(.studio-theme-dark).canvas-performance-mode body :is(
+    #imageQuickToolbar.image-quick-toolbar,
+    .image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar,
+    .selection-capsule-bar,
+    .floating-toolbar::before,
+    .node-context-menu,
+    .canvas-context-menu,
+    .ui-menu.node-context-menu,
+    .create-menu,
+    .port-link-pick-menu,
+    .shell-user-menu,
+    #shellUserMenu.shell-user-menu,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover,
+    .iqt-dropdown-menu,
+    .selection-capsule-menu,
+    .selection-capsule-popover,
+    .selection-capsule-dropdown
+) {
+    background: rgba(255, 255, 255, .92) !important;
+    background-color: rgba(255, 255, 255, .92) !important;
+    background-image: none !important;
+    border: 1px solid rgba(0, 0, 0, .10) !important;
+    border-color: rgba(0, 0, 0, .10) !important;
+    color: #50565e !important;
+    box-shadow: var(--ui-shadow-float, 0 4px 14px rgba(0, 0, 0, .05)) !important;
+    -webkit-backdrop-filter: blur(60px) !important;
+    backdrop-filter: blur(60px) !important;
 }
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #selectionBoxCapsule .selection-capsule-bar :is(.selection-capsule-btn, .selection-capsule-folder, span, i, svg),
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #imageQuickToolbar.image-quick-toolbar :is(button, span, i, svg),
+html:not(.theme-dark):not(.studio-theme-dark) body
+    .floating-toolbar :is(.tool-button, .tool-main-button, span, i, svg):not(.active):not([aria-pressed="true"]) {
+    color: #50565e !important;
+    stroke: currentColor !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #selectionBoxCapsule .selection-capsule-bar :is(.is-danger, [data-action="delete"]),
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #selectionBoxCapsule .selection-capsule-bar :is(.is-danger, [data-action="delete"]) :is(span, i, svg) {
+    color: #50565e !important;
+    stroke: currentColor !important;
+}
+
