@@ -117,7 +117,7 @@ html.lightbox-shader-intro-active :is(
     height: 100% !important;
 }
 
-/* Logo: opacity 0→1 over 2s, synced with motion start. */
+/* Logo: opacity 0→1 over 2s once playback starts (ID selectors match critical CSS). */
 .lightbox-shader-intro-label {
     position: absolute;
     inset: 0;
@@ -131,12 +131,9 @@ html.lightbox-shader-intro-active :is(
     visibility: hidden;
 }
 
-.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label {
+.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label,
+#lightboxShaderIntro.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label {
     visibility: visible;
-    opacity: 1;
-}
-
-.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label img {
     opacity: 1;
 }
 
@@ -152,12 +149,33 @@ html.lightbox-shader-intro-active :is(
     transform: translateZ(0);
     user-select: none;
     -webkit-user-drag: none;
+    will-change: opacity;
 }
 
-.lightbox-shader-intro.is-exiting .lightbox-shader-intro-label {
+.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label img,
+#lightboxShaderIntro.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label img {
+    animation: lightbox-shader-intro-logo-fade 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes lightbox-shader-intro-logo-fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.lightbox-shader-intro.is-exiting .lightbox-shader-intro-label,
+#lightboxShaderIntro.lightbox-shader-intro.is-exiting .lightbox-shader-intro-label {
     opacity: 0;
     animation: none;
     transition: opacity 0.35s ease;
+}
+
+.lightbox-shader-intro.is-exiting .lightbox-shader-intro-label img,
+#lightboxShaderIntro.lightbox-shader-intro.is-exiting .lightbox-shader-intro-label img {
+    animation: none;
 }
 
 html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro {

@@ -6,7 +6,6 @@
 
   var PLAY_MS = 2600;
   var EXIT_MS = 480;
-  var LOGO_FADE_MS = 2000;
   var ROOT_ID = "lightboxShaderIntro";
   var STAGE_ID = "lightboxShaderIntroStage";
   var RENDER_SCALE = 0.7;
@@ -112,14 +111,13 @@
     var label = root.querySelector(".lightbox-shader-intro-label");
     var img = label && label.querySelector("img");
     if (!label || !img) return;
+
+    // Retrigger ID-level CSS keyframe fade (critical + shader-intro.css).
+    root.classList.remove("is-label-visible");
+    img.style.cssText = "";
+    label.style.cssText = "";
+    void root.offsetWidth;
     root.classList.add("is-label-visible");
-    label.style.visibility = "visible";
-    label.style.opacity = "1";
-    img.style.transition = "opacity " + LOGO_FADE_MS + "ms cubic-bezier(0.22, 1, 0.36, 1)";
-    img.style.opacity = "0";
-    global.requestAnimationFrame(function () {
-      img.style.opacity = "1";
-    });
   }
 
   function startPlayback() {
