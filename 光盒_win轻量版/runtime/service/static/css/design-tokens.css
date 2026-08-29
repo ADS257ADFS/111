@@ -136,6 +136,7 @@ body.studio-theme-dark {
     --ui-shadow-dialog: none;
     --ui-shadow-float: 0 4px 16px rgba(0, 0, 0, .30);
     --ui-glass-border: rgba(255, 255, 255, .16);
+}
 
 /* ================================================================
  * 3. 字体与字阶（深浅共用）
