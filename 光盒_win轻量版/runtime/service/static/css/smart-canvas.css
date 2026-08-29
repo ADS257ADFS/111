@@ -4939,6 +4939,25 @@ html.canvas-performance-mode :is(
     -webkit-backdrop-filter:none !important;
 }
 
+/* Pan/zoom: kill node paint transitions so the whole world can transform cheaply. */
+html.canvas-performance-mode .image-node,
+.world.viewport-transform-active .image-node {
+    transition: none !important;
+    animation: none !important;
+    contain: layout style;
+}
+
+/* Toolbars that follow the selection: solid fill beats 80% alpha while panning. */
+html.canvas-performance-mode :is(
+    #imageQuickToolbar.image-quick-toolbar,
+    .image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar,
+    .selection-capsule-bar
+) {
+    background: #1f1f1f !important;
+    background-color: #1f1f1f !important;
+}
+
 html.canvas-performance-mode :is(
     .composer,
     .canvas-history-panel,

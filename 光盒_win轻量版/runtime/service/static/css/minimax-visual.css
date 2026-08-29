@@ -5576,7 +5576,8 @@ html.studio-theme-dark #shell.shell #composer.composer .input-thumb-upload:is(:h
 }
 
 
-/* GLOBAL: cancel all backdrop frost */
+/* Frost tokens stay off; do NOT paint backdrop-filter on every node
+ * via `body *` — that universal rule thrashing style/layout is a major lag source. */
 html, html.theme-dark, html.studio-theme-dark,
 html body, html.theme-dark body, html.studio-theme-dark body {
     --ui-panel-frost-blur: none !important;
@@ -5584,10 +5585,4 @@ html body, html.theme-dark body, html.studio-theme-dark body {
     --sc-blur: 0px !important;
     --vs-glass-blur: none !important;
     --canvas-glass-blur: none !important;
-}
-html body *,
-html.theme-dark body *,
-html.studio-theme-dark body * {
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
 }

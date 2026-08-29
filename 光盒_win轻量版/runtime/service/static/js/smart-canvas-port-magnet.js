@@ -110,24 +110,35 @@
         if(!d?.world) return;
 
         const needFrame = {v: false};
-        d.world.querySelectorAll('.image-node.port-magnet-out-zone').forEach(el => el.classList.remove('port-magnet-out-zone'));
+        const staleZones = d.world.querySelectorAll('.image-node.port-magnet-out-zone');
+        for(let i = 0; i < staleZones.length; i++) staleZones[i].classList.remove('port-magnet-out-zone');
 
-        d.world.querySelectorAll('.node-port').forEach(port => {
+        // Out ports only — writing style on every in-port each frame was pure waste.
+        const outPorts = d.world.querySelectorAll('.node-port[data-port="out"]');
+        if(!outPorts.length) return;
+
+        for(let i = 0; i < outPorts.length; i++){
+            const port = outPorts[i];
             const nodeEl = port.closest('.image-node');
             const st = getState(port);
 
-            if(!isOutPort(port)){
-                st.x = 0;
-                st.y = 0;
-                applyPortOffset(port, 0, 0, false);
-                return;
+            if(port === dragSourcePort){
+                if(st.x || st.y){
+                    st.x = 0;
+                    st.y = 0;
+                    applyPortOffset(port, 0, 0, false);
+                }
+                continue;
             }
 
-            if(port === dragSourcePort){
-                st.x = 0;
-                st.y = 0;
-                applyPortOffset(port, 0, 0, false);
-                return;
+            // Skip layout reads when cursor is far from idle ports.
+            if(nodeEl && !portVisible(port, nodeEl) && !st.x && !st.y){
+                const nr = nodeEl.getBoundingClientRect();
+                const pad = OUT_RADIUS + 48;
+                if(
+                    mouseX < nr.left - pad || mouseX > nr.right + pad ||
+                    mouseY < nr.top - pad || mouseY > nr.bottom + pad
+                ) continue;
             }
 
             const base = portBaseCenter(port);
@@ -135,8 +146,8 @@
             if(inRange) nodeEl?.classList.add('port-magnet-out-zone');
 
             if(!outPortMagnetActive(port, nodeEl)){
-                resetPort(port, st, needFrame);
-                return;
+                if(st.x || st.y) resetPort(port, st, needFrame);
+                continue;
             }
 
             const target = magnetTarget(base.x, base.y);
@@ -152,7 +163,7 @@
 
             applyPortOffset(port, st.x, st.y, target.near || Math.hypot(st.x, st.y) > 1.2);
             if(target.inRange || st.x || st.y) needFrame.v = true;
-        });
+        }
 
         if(needFrame.v) scheduleFrame();
     }
@@ -167,9 +178,11 @@
         const dy = e.clientY - lastMouseY;
         mouseX = e.clientX;
         mouseY = e.clientY;
-        if(Math.hypot(dx, dy) < 1.5 && rafId) return;
+        if(Math.hypot(dx, dy) < 2 && rafId) return;
         lastMouseX = mouseX;
         lastMouseY = mouseY;
+        const d = deps();
+        if(!d?.world?.querySelector?.('.node-port[data-port="out"]')) return;
         scheduleFrame();
     }
 
