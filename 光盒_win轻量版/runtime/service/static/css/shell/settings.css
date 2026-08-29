@@ -183,13 +183,14 @@ html.shell-settings-open :is(
     min-width: 0;
     min-height: 0;
     overflow: hidden;
-    background: var(--ui-surface-card);
+    background: #000;
 }
 
 .shell-settings-pane {
     display: none;
     box-sizing: border-box;
     padding: 18px 36px 20px 20px;
+    background: #000;
 }
 
 .shell-settings-pane.active {
@@ -817,12 +818,17 @@ html:is(.theme-dark, .studio-theme-dark) .shell-recharge-select input[type="rang
 .shell-settings-shortcut-item span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 html.theme-dark .shell-settings-dialog,
-html.studio-theme-dark .shell-settings-dialog,
+html.studio-theme-dark .shell-settings-dialog {
+    background: #17191d;
+    color: var(--ui-text);
+}
 html.theme-dark .shell-settings-panes,
 html.studio-theme-dark .shell-settings-panes,
+html.theme-dark .shell-settings-pane,
+html.studio-theme-dark .shell-settings-pane,
 html.theme-dark .shell-settings-embed-frame,
 html.studio-theme-dark .shell-settings-embed-frame {
-    background: #17191d;
+    background: #000;
     color: var(--ui-text);
 }
 html.theme-dark .shell-settings-nav,

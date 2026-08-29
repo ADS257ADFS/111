@@ -849,8 +849,9 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-nav-btn{color:#707070}:where(html.theme-dark,html.studio-theme-dark) .shell-settings-nav-btn:hover{background:rgba(255, 255, 255, .82);border-color:rgba(234, 234, 234, .92)}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-nav-btn.active{color:#0a84ff;background:#fff;border-color:rgba(10, 132, 255, .28)}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-logout-btn{color:#898989}:where(html.theme-dark,html.studio-theme-dark) .shell-settings-logout-btn:hover{background:rgba(255, 255, 255, .9)}
-:where(html.theme-dark,html.studio-theme-dark) .shell-settings-panes{background:#fff}
-:where(html.theme-dark,html.studio-theme-dark) .shell-settings-embed-frame{background:#fff}
+:where(html.theme-dark,html.studio-theme-dark) .shell-settings-panes{background:#000}
+:where(html.theme-dark,html.studio-theme-dark) .shell-settings-pane{background:#000}
+:where(html.theme-dark,html.studio-theme-dark) .shell-settings-embed-frame{background:#000}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-section-head h2{color:#2c2c2c}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-section-head p{color:#9a9a9a}
 :where(html.theme-dark,html.studio-theme-dark) .shell-account-avatar{background:#f9f9f9;border:1px solid #eaeaea;color:#707070}
@@ -894,7 +895,10 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-empty-state > svg{color:#707070}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-shortcut-item{border:1px solid #eaeaea;background:#f9f9f9;color:#707070}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-shortcut-item kbd{border:1px solid #e2e2e2;background:#fff;color:#575757}
-html.theme-dark .shell-settings-dialog,html.studio-theme-dark .shell-settings-dialog,html.theme-dark .shell-settings-panes,html.studio-theme-dark .shell-settings-panes,html.theme-dark .shell-settings-embed-frame,html.studio-theme-dark .shell-settings-embed-frame{background:#1a1a1a;color:#ececec}
+html.theme-dark .shell-settings-dialog,html.studio-theme-dark .shell-settings-dialog{background:#1a1a1a;color:#ececec}
+html.theme-dark .shell-settings-panes,html.studio-theme-dark .shell-settings-panes,
+html.theme-dark .shell-settings-pane,html.studio-theme-dark .shell-settings-pane,
+html.theme-dark .shell-settings-embed-frame,html.studio-theme-dark .shell-settings-embed-frame{background:#000;color:#ececec}
 html.theme-dark .shell-settings-nav,html.studio-theme-dark .shell-settings-nav{border-right:1px solid #2e2e2e;background:rgba(44, 44, 44, 0.72)}
 html.theme-dark .shell-settings-title,html.studio-theme-dark .shell-settings-title,html.theme-dark .shell-account-card-head h3,html.studio-theme-dark .shell-account-card-head h3,html.theme-dark .shell-recharge-step-label label,html.studio-theme-dark .shell-recharge-step-label label,html.theme-dark .shell-recharge-step-label h4,html.studio-theme-dark .shell-recharge-step-label h4,html.theme-dark .shell-recharge-summary-meta dd,html.studio-theme-dark .shell-recharge-summary-meta dd,html.theme-dark .shell-account-identity-meta strong,html.studio-theme-dark .shell-account-identity-meta strong,html.theme-dark .shell-account-balance-value strong,html.studio-theme-dark .shell-account-balance-value strong,html.theme-dark .shell-settings-section-head h2,html.studio-theme-dark .shell-settings-section-head h2{color:#f5f5f5}
 html.theme-dark .shell-account-card,html.studio-theme-dark .shell-account-card,html.theme-dark .shell-usage-grid article,html.studio-theme-dark .shell-usage-grid article,html.theme-dark .shell-settings-info-card,html.studio-theme-dark .shell-settings-info-card,html.theme-dark .shell-settings-empty-state,html.studio-theme-dark .shell-settings-empty-state,html.theme-dark .shell-settings-shortcut-item,html.studio-theme-dark .shell-settings-shortcut-item{background:#242424;border-color:rgba(255,255,255,.09)}
