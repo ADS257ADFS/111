@@ -48,7 +48,7 @@
     <p class="sub">亮/暗主题只有颜色不同，字号、字重、描边、分割线完全相同。</p>
 
     <div class="note">
-      <strong>v3 更新：</strong>字号再加大（16/14/13 为主）；磨砂透明度约 50%，blur 22px；画布底层加彩色图案便于感受透视。
+      <strong>v5 更新：</strong>磨砂透明度 60%、模糊 blur(50px)；深色底部输入栏对齐软件玻璃底 <code>rgba(255,255,255,.06)</code>；画布打组面板为框选胶囊工具栏（非底部批量）。
     </div>
 
     <h2>一、字体家族</h2>
@@ -149,10 +149,11 @@
       <tr><td>颜色</td><td><code>rgba(135,145,158, .62)</code></td></tr>
     </table>
 
-    <h2>八、磨砂浮层（v3 加强）</h2>
+    <h2>八、磨砂浮层（v5）</h2>
     <ul style="padding-left:20px;font-size:14px;color:#505050">
-      <li>背景透明度约 <strong>50%</strong>（亮色 <code>rgba(255,255,255,.50)</code>）</li>
-      <li>模糊 <code>blur(22px) saturate(150%)</code></li>
+      <li>背景透明度 <strong>60%</strong>（亮色 <code>rgba(255,255,255,.60)</code>，暗色菜单 <code>rgba(35,35,35,.60)</code>）</li>
+      <li>模糊 <code>blur(50px) saturate(160%)</code></li>
+      <li>深色画布底部输入栏：玻璃底 <code>rgba(255,255,255,.06)</code> + 内阴影（与软件 canvas-glass 一致）</li>
       <li>画布底层有彩色图案 + 右上角「磨砂透视示意」条纹卡</li>
     </ul>
 
