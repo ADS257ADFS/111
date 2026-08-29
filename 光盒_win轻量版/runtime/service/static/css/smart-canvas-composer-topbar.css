@@ -26,10 +26,11 @@
 }
 
 :is(html.theme-dark, html.studio-theme-dark) .shell #composer .composer-card-topbar {
-    border: 1px solid rgba(255, 255, 255, .16);
-    border-bottom: 1px solid rgba(255, 255, 255, .16);
-    background: #000000;
-    background-color: #000000;
+    border: 1px solid rgba(255, 255, 255, .16) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, .16) !important;
+    background: #000000 !important;
+    background-color: #000000 !important;
+    background-image: none !important;
 }
 
 /* Unified, slightly larger controls across both sides of the composer top bar. */
@@ -168,7 +169,8 @@
     grid-area: auto;
     position: absolute;
     left: 0;
-    bottom: calc(100% + 8px);
+    /* 抬高预览：抵消 thumb 的 translateY(8px)，并离开窄条底描边 */
+    bottom: calc(100% + 22px);
     align-items: flex-end;
     justify-content: flex-start;
     gap: 0;
