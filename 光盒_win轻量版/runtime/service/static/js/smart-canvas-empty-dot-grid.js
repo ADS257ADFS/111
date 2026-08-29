@@ -48,7 +48,7 @@
         dotRadius = readNativeGridMetric('--lightbox-native-grid-dot', DOT_RADIUS);
         const width = Math.max(1, shell.clientWidth || global.innerWidth || 1);
         const height = Math.max(1, shell.clientHeight || global.innerHeight || 1);
-        const dpr = Math.min(1.25, Math.max(1, global.devicePixelRatio || 1));
+        const dpr = 1;
         canvas.width = Math.round(width * dpr);
         canvas.height = Math.round(height * dpr);
         canvas.style.width = `${width}px`;
@@ -75,14 +75,18 @@
     function draw(time){
         frame = 0;
         if(!active || !context || !canvas) return;
-        const dpr = Math.min(1.25, Math.max(1, global.devicePixelRatio || 1));
+        const dpr = 1;
         const width = canvas.width / dpr;
         const height = canvas.height / dpr;
         const dt = Math.min(.034, Math.max(.001, lastFrameTime ? (time - lastFrameTime) / 1000 : .016));
         lastFrameTime = time;
         context.clearRect(0, 0, width, height);
         let anyMotion = false;
-        const pointerLive = pointer.x > -5000 && (performance.now() - (pointer.lastTime || 0) < 420);
+        const pointerLive = pointer.x > -5000 && (performance.now() - (pointer.lastTime || 0) < 280);
+        const baseStyle = `rgb(${baseRgb.r},${baseRgb.g},${baseRgb.b})`;
+        context.fillStyle = baseStyle;
+        const r = Math.max(0.75, dotRadius);
+        const prox2 = PROXIMITY * PROXIMITY;
         for(const dot of dots){
             dot.vx += -dot.ox * SPRING_STRENGTH * dt;
             dot.vy += -dot.oy * SPRING_STRENGTH * dt;
@@ -100,19 +104,18 @@
 
             const dx = dot.x - pointer.x;
             const dy = dot.y - pointer.y;
-            const distance = Math.hypot(dx, dy);
-            const proximity = Math.max(0, 1 - distance / PROXIMITY);
-            if(proximity > 0){
-                const r = Math.round(baseRgb.r + (activeRgb.r - baseRgb.r) * proximity);
-                const g = Math.round(baseRgb.g + (activeRgb.g - baseRgb.g) * proximity);
-                const b = Math.round(baseRgb.b + (activeRgb.b - baseRgb.b) * proximity);
-                context.fillStyle = `rgb(${r},${g},${b})`;
+            const dist2 = dx * dx + dy * dy;
+            if(pointerLive && dist2 < prox2){
+                const proximity = Math.max(0, 1 - Math.sqrt(dist2) / PROXIMITY);
+                const rr = Math.round(baseRgb.r + (activeRgb.r - baseRgb.r) * proximity);
+                const gg = Math.round(baseRgb.g + (activeRgb.g - baseRgb.g) * proximity);
+                const bb = Math.round(baseRgb.b + (activeRgb.b - baseRgb.b) * proximity);
+                context.fillStyle = `rgb(${rr},${gg},${bb})`;
+                context.fillRect(dot.x + dot.ox - r, dot.y + dot.oy - r, r * 2, r * 2);
+                context.fillStyle = baseStyle;
             } else {
-                context.fillStyle = `rgb(${baseRgb.r},${baseRgb.g},${baseRgb.b})`;
+                context.fillRect(dot.x + dot.ox - r, dot.y + dot.oy - r, r * 2, r * 2);
             }
-            context.beginPath();
-            context.arc(dot.x + dot.ox, dot.y + dot.oy, dotRadius, 0, Math.PI * 2);
-            context.fill();
         }
         if(anyMotion || pointerLive) frame = global.requestAnimationFrame(draw);
     }

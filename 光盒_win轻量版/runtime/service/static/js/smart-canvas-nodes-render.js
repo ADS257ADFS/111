@@ -335,7 +335,7 @@ function render(){
     // Backdrop filters and long entrance animations are disproportionately
     // expensive once a canvas contains many independent layers. Keep the full
     // treatment for normal canvases and switch dense canvases automatically.
-    document.documentElement.classList.toggle('canvas-performance-mode', d().nodes.length >= 24);
+    document.documentElement.classList.add('canvas-performance-mode');
     const mediaStates = captureMediaPlaybackStates();
     const reusableNodes = new Map();
     d().world.querySelectorAll('.image-node').forEach(el => {

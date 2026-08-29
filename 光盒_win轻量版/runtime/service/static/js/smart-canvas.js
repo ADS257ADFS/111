@@ -3910,7 +3910,7 @@ async function bootstrapSmartCanvas(){
     void loadPromptTemplates().catch(err => console.warn('[loadPromptTemplates]', err));
     void loadAssetLibrary().catch(err => console.warn('[loadAssetLibrary]', err));
     if(window.StudioI18n) window.StudioI18n.apply();
-    if(window.lucide) lucide.createIcons();
+    // Icons already bootstrapped on #shell above; skip a second full-document scan.
 }
 function ensureSmartCanvasUiBindings(){
     try {
