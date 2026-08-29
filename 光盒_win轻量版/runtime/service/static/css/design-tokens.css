@@ -9,9 +9,7 @@
  *   4. 深浅主题切换只靠本文件的两个作用域，feature 不得自己写
  *      theme-dark 分支来改颜色（几何值深浅共用）。
  *
- * 视觉基准：MiniMax Design 风格（2026-08 定稿）
- *   深色 = 近黑画布 #101010 + 中性深灰面板 #1b1b1b + 扁平（无玻璃拟态）
- *   浅色 = 近白画布 #fcfcfc + 浅灰窗框 #f7f7f8 + 历史 iOS 蓝强调色
+ * 视觉基准：v10 磨砂浮层（80% 不透明 + blur(80px)）+ 字阶 18/16/14/13
  */
 
 /* ================================================================
@@ -21,12 +19,25 @@
     /* 表面 */
     --ui-surface-canvas: #fcfcfc;        /* 画布底 */
     --ui-surface-chrome: #f7f7f8;        /* 窗口栏 / 侧栏 / 全局面板 */
-    --ui-surface-shell: #fafafb;         /* 顶部窗口栏 / 左侧主导航 */
+    --ui-surface-shell: #fafafb;         /* 顶部窗口栏 / 左侧主导航（浅灰壳层，与画布 #fcfcfc 拉开层次） */
     --ui-surface-card: #ffffff;          /* 卡片 / 面板内容底 */
     --ui-surface-elevated: #ffffff;      /* 菜单 / 弹层 */
     --ui-surface-input: #ffffff;         /* 输入框 */
     --ui-surface-composer: #ffffff;      /* 画布底部输入卡片 */
-    --ui-surface-composer-topbar: rgba(243, 245, 247, .62);
+    --ui-surface-composer-topbar: rgba(255, 255, 255, .80);
+
+    /* 磨砂浮层细描边（比 --ui-border 略明显，深浅共用几何） */
+    --ui-glass-border: rgba(0, 0, 0, .12);
+    /* 磨砂层用 inset 描边，避免与 backdrop-filter 同元素时底图颜色渗入 border */
+    --ui-glass-stroke: inset 0 0 0 1px var(--ui-glass-border);
+    --ui-shadow-float-glass: var(--ui-glass-stroke), var(--ui-shadow-float);
+    --ui-glass-bg: rgba(255, 255, 255, .80);
+    --ui-glass-popover: rgba(255, 255, 255, .80);
+    --ui-glass-filter: blur(80px) saturate(160%);
+
+    /* 悬停（全站统一；遗留 gh-quiet-hover 别名） */
+    --gh-quiet-hover-surface: var(--ui-hover);
+    --gh-quiet-hover-border: transparent;
 
     /* 交互态叠层 */
     --ui-hover: #f3f3f4;
@@ -67,8 +78,8 @@
     /* 软件内容区保持纯平面；整窗投影由桌面宿主单独绘制。 */
     --ui-shadow-pop: none;
     --ui-shadow-dialog: none;
-    /* M76：指定浮层表面（底部输入白面/媒体与选区工具栏/引用与右键面板/用户面板）专用投影 */
-    --ui-shadow-float: 0 4px 14px rgba(0, 0, 0, .05), 0 1px 4px rgba(0, 0, 0, .03);
+    /* 磨砂浮层轻外投影（v10） */
+    --ui-shadow-float: 0 4px 18px rgba(0, 0, 0, .12);
 }
 
 /* ================================================================
@@ -79,13 +90,22 @@ html.studio-theme-dark,
 body.theme-dark,
 body.studio-theme-dark {
     --ui-surface-canvas: #101010;
-    --ui-surface-chrome: #1b1b1b;
-    --ui-surface-shell: #181818;
-    --ui-surface-card: #212121;
-    --ui-surface-elevated: #232323;
-    --ui-surface-input: #1e1e1e;
-    --ui-surface-composer: #181818;
-    --ui-surface-composer-topbar: rgba(255, 255, 255, .04);
+    --ui-surface-chrome: #1f1f1f;
+    --ui-surface-shell: #1f1f1f;
+    --ui-surface-card: #1f1f1f;
+    --ui-surface-elevated: #1f1f1f;
+    --ui-surface-input: #1f1f1f;
+    --ui-surface-composer: #1f1f1f;
+    --ui-surface-dock-composer: #242424;
+    --ui-surface-composer-topbar: rgba(35, 35, 35, .80);
+    --ui-glass-bg: rgba(35, 35, 35, .80);
+    --ui-glass-popover: rgba(35, 35, 35, .80);
+    --ui-panel-frost: var(--ui-glass-popover);
+    --ui-panel-frost-blur: var(--ui-glass-filter);
+    --ui-panel-frost-border: var(--ui-border);
+
+    --gh-quiet-hover-surface: var(--ui-hover);
+    --gh-quiet-hover-border: transparent;
 
     --ui-hover: rgba(255, 255, 255, .07);
     --ui-active: rgba(255, 255, 255, .11);
@@ -114,7 +134,8 @@ body.studio-theme-dark {
 
     --ui-shadow-pop: none;
     --ui-shadow-dialog: none;
-    --ui-shadow-float: 0 4px 14px rgba(0, 0, 0, .26), 0 1px 4px rgba(0, 0, 0, .16);
+    --ui-shadow-float: 0 4px 16px rgba(0, 0, 0, .30);
+    --ui-glass-border: rgba(255, 255, 255, .16);
 }
 
 /* ================================================================
@@ -170,26 +191,26 @@ body.studio-theme-dark {
     --ui-font-body-cjk: "MiSans CJK Body 330", var(--ui-font);
     --ui-font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
 
-    --ui-type-display: 16px;   /* 展示标题与页级标题统一 */
-    --ui-type-page: 16px;      /* 页级标题 */
-    --ui-type-panel: 14px;     /* 面板标题 */
-    --ui-type-section: 14px;   /* 分区标题 / 菜单项 */
-    --ui-type-body: 14px;      /* 正文 */
-    --ui-type-control: 14px;   /* 控件文字 */
-    --ui-type-compact-label: 12.5px; /* 项目名 / 画布底栏 / 对象工具栏 */
-    --ui-type-project-title: var(--ui-type-compact-label); /* 左侧最近创作项目名称 */
-    --ui-type-meta: 11px;      /* 次要信息 */
-    --ui-type-micro: 11px;     /* 徽标 / 角标 */
+    --ui-type-display: 18px;   /* 弹窗主标题、少数大标题 */
+    --ui-type-page: 18px;      /* 页级 / 展示标题 */
+    --ui-type-panel: 18px;     /* 面板标题 */
+    --ui-type-section: 16px;   /* 导航、菜单、工具栏、对话、生成栏 */
+    --ui-type-body: 16px;      /* 正文 */
+    --ui-type-control: 16px;   /* 控件、输入、chip */
+    --ui-type-compact-label: 14px; /* 项目名、资产夹、搜索框 */
+    --ui-type-project-title: var(--ui-type-compact-label);
+    --ui-type-meta: 11px;      /* 快捷键、积分、时间、次要信息 */
+    --ui-type-micro: 11px;     /* 徽标、角标 */
 
-    --ui-weight-regular: 380;
-    --ui-weight-medium: 380;
-    --ui-weight-menu-strong: 380;
-    --ui-weight-semibold: 380;
-    --ui-weight-latin: 350; /* computed 与实际拉丁字形均为 350；中文由固定实例保留原字重 */
+    --ui-weight-regular: 300;
+    --ui-weight-medium: 300;
+    --ui-weight-menu-strong: 300;
+    --ui-weight-semibold: 300;
+    --ui-weight-latin: 300;
     --ui-weight-dock-body: 300;
     --ui-weight-placeholder: 250; /* 底部输入栏与右侧对话栏占位说明；走可变轴，避开 350 固定实例 */
 
-    --ui-sidebar-nav-icon-size: 15px;
+    --ui-sidebar-nav-icon-size: 16px;
     --ui-sidebar-nav-icon-stroke: 1.8;
 
     --ui-leading-control: 1;     /* 单行控件 / 菜单项 */
@@ -229,11 +250,16 @@ body.studio-theme-dark {
  * 5. 圆角
  * ================================================================ */
 :root {
-    --ui-radius-control: 6px;  /* 按钮 / 输入框 / 菜单项 */
-    --ui-radius-card: 8px;     /* 卡片 / 菜单容器 */
-    --ui-radius-panel: 10px;   /* 面板 / 对话框 */
-    --ui-radius-pill: 6px;     /* 长条控件统一为小圆角矩形，不再使用胶囊轮廓 */
-    --ui-radius-round: 50%;    /* 圆点 / 头像 */
+    --ui-radius-control: 6px;       /* 按钮 / 输入框 / 菜单项 */
+    --ui-radius-card: 8px;          /* 卡片 / 菜单容器 */
+    --ui-radius-panel: 10px;        /* 面板 / 对话框 */
+    --ui-radius-float: 16px;        /* 磨砂浮层 */
+    --ui-radius-dialog: 14px;       /* 大弹窗 */
+    --ui-radius-composer-top: 18px; /* 生成栏上栏（仅上两角） */
+    --ui-radius-composer: 22px;       /* 生成栏主卡片 */
+    --ui-radius-pill: 6px;          /* 遗留小圆角矩形 */
+    --ui-radius-capsule: 999px;     /* chip / 框选工具栏 */
+    --ui-radius-round: 50%;           /* 圆点 / 头像 */
 }
 
 /* ================================================================
@@ -270,19 +296,22 @@ body.studio-theme-dark {
 :root {
     --ui-titlebar-h: 28px;
     --ui-sidebar-w: 208px;
-    --ui-sidebar-logo-h: 9.333px;
+    --ui-sidebar-logo-h: 14px; /* Welcome mark; +1/5 vs 11.7px */
     --ui-dock-w: 460px;
     --ui-composer-w: 760px;
     --ui-composer-surface-h: 174px;
     --ui-composer-surface-side-inset: 7px;
     --ui-composer-surface-bottom-gap: 15px;
-    --ui-composer-topbar-h: 30px;
-    --ui-composer-topbar-growth: -10px;
-    --ui-composer-topbar-content-inset: 1px;
-    --ui-composer-topbar-filter: blur(14px) saturate(120%);
-    --ui-composer-topbar-radius: calc(var(--ui-radius-panel) + var(--ui-space-2));
+    /* Tall enough for 30px 参考/批量/模式；白色输入面从其下缘开始。 */
+    --ui-composer-topbar-h: 42px;
+    --ui-composer-topbar-offset: 4px;
+    --ui-composer-topbar-growth: 0px;
+    --ui-composer-topbar-content-inset: 0px;
+    --ui-composer-topbar-filter: var(--ui-glass-filter);
+    --ui-composer-topbar-radius: var(--ui-radius-composer-top);
+    --ui-composer-surface-radius: var(--ui-radius-composer);
     --ui-composer-surface-top: var(--ui-composer-topbar-h);
-    --ui-composer-prompt-padding-top: var(--ui-space-7);
+    --ui-composer-prompt-padding-top: var(--ui-composer-topbar-h);
     --ui-control-h: 28px;      /* 常规控件高度 */
     --ui-control-h-sm: 24px;   /* 小号（标题栏 / 工具条内） */
     --ui-control-h-lg: 32px;   /* 菜单项 / 强操作行 */
@@ -293,9 +322,9 @@ body.studio-theme-dark {
     --ui-canvas-nav-radius: var(--ui-radius-panel);
     --ui-canvas-zoom-value-w: 32px;
     --ui-canvas-zoom-menu-w: 180px;
-    --ui-canvas-zoom-value-type: 11px;
-    --ui-canvas-zoom-menu-type: 11px;
-    --ui-canvas-zoom-shortcut-type: 11px;
+    --ui-canvas-zoom-value-type: 13px;
+    --ui-canvas-zoom-menu-type: 13px;
+    --ui-canvas-zoom-shortcut-type: 13px;
     --ui-shell-top-control-h: var(--ui-control-h);
     --ui-shell-top-control-radius: var(--ui-radius-panel);
     --ui-shell-agent-control-w: auto;
@@ -307,11 +336,13 @@ body.studio-theme-dark {
  * ================================================================ */
 :root {
     --ui-canvas-grid-dot: rgba(0, 0, 0, .11);
+    --ui-canvas-grid-dot-size: 0.6px;
+    --ui-canvas-grid-dot-fade: 1.1px;
     --ui-canvas-grid-size: 18px;
     --ui-canvas-selection: var(--ui-accent);
     --ui-canvas-selection-fill: rgba(var(--ui-accent-rgb), .08);
     --ui-canvas-node-border-size: 1px;
-    --ui-canvas-node-selected-border-size: 1.5px;
+    --ui-canvas-node-selected-border-size: 1.65px;
     --ui-canvas-guide: var(--ui-accent);
     --ui-canvas-port: var(--ui-text-secondary);
     --ui-canvas-port-active: var(--ui-accent);

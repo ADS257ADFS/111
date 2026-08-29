@@ -5,7 +5,7 @@
     --shadow:rgba(55,65,81,.12); --strong:var(--ui-accent); --strong-text:#ffffff; --accent:var(--ui-accent);
 }
 .theme-dark {
-    --page:var(--ui-surface-canvas); --grid:rgba(255,255,255,.08); --panel:var(--ui-surface-chrome); --card:var(--ui-surface-card);
+    --page:var(--ui-surface-canvas); --grid:rgba(255,255,255,.10); --panel:var(--ui-surface-chrome); --card:var(--ui-surface-card);
     --text:var(--ui-text); --muted:var(--ui-text-secondary); --faint:var(--ui-text-muted); --line:var(--ui-border); --soft:var(--ui-hover);
     --shadow:rgba(0,0,0,.38); --strong:var(--ui-accent); --strong-text:#ffffff; --accent:var(--ui-accent);
 }
@@ -14,7 +14,14 @@ body { margin:0; height:100vh; overflow:hidden; overscroll-behavior:none; color:
 button,input,select,textarea { font:inherit; }
 button { border:0; cursor:pointer; }
 .node-context-menu { position:fixed; width:160px; display:flex; flex-direction:column; gap:var(--ui-space-1); color:var(--ui-text); user-select:none; }
-.canvas-context-menu { width:168px; }
+.canvas-context-menu { width:168px; padding-block: calc(var(--ui-space-4) + 2px); }
+.canvas-context-menu .ui-menu-divider {
+    flex: 0 0 auto;
+    height: 1px;
+    margin: calc(var(--ui-space-2) + 1px) var(--ui-space-3);
+    background: var(--ui-border);
+    opacity: 0.9;
+}
 .node-context-menu[hidden] { display:none; }
 .shell { position:relative; width:100vw; height:100vh; overflow:hidden; overscroll-behavior:none; touch-action:none; background-color:var(--page); background-image:radial-gradient(var(--grid) 1px, transparent 1px); background-size:24px 24px; cursor:default; }
 .shell.panning { cursor:grabbing; }
@@ -111,10 +118,12 @@ body.smart-node-drag .image-wrap:hover .image-resolution-badge { opacity:0 !impo
     z-index:0;
     pointer-events:auto;
     cursor:default;
-    border:.5px solid rgba(255,255,255,.32);
+    border:.5px solid rgba(255,255,255,.42);
     border-radius:28px;
-    background:rgba(248,249,251,.5);
-    box-shadow:none;
+    background:rgba(255,255,255,.30);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.35);
+    -webkit-backdrop-filter:none;
+    backdrop-filter:none;
 }
 .image-node.smart-group-node .node-head,
 .image-node.smart-group-node .node-body,
@@ -292,7 +301,7 @@ body.prompt-split-resize .image-node.prompt-smart-node { transition:none !import
 .loop-number-input { appearance:textfield; -moz-appearance:textfield; }
 .loop-smart-run i,.loop-smart-run svg { width:15px !important; height:15px !important; }
 .loop-smart-run:disabled { opacity:.45; cursor:not-allowed; }
-.create-menu { position:fixed; z-index:75; display:none; width:420px; max-width:calc(100vw - 28px); padding:10px; border-radius:var(--ui-radius-panel); background:var(--panel); border:1px solid var(--line); box-shadow:var(--ui-shadow-pop); backdrop-filter:none; }
+.create-menu { position:fixed; z-index:75; display:none; width:420px; max-width:calc(100vw - 28px); padding:var(--ui-space-3); border-radius:var(--ui-radius-float); background-color:var(--ui-glass-popover); border:1px solid var(--ui-border); box-shadow:var(--ui-shadow-float); backdrop-filter:var(--ui-glass-filter); -webkit-backdrop-filter:var(--ui-glass-filter); }
 .create-menu.open { display:block; }
 .create-menu-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px; }
 .create-card { min-height:0; padding:12px 10px; border-radius:14px; border:1px solid var(--line); background:var(--card); color:var(--ui-text); display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start; gap:10px; text-align:left; transition:transform .14s ease, border-color .14s ease, box-shadow .14s ease; aspect-ratio:1 / 1; width:100%; box-sizing:border-box; }
@@ -721,10 +730,10 @@ video.node-img { object-fit:cover; background:transparent; }
 .compare-toggle:hover { border-color:var(--text); }
 .compare-toggle.active { background:var(--strong); color:var(--strong-text); border-color:var(--strong); }
 .compare-toggle i,.compare-toggle svg { width:14px !important; height:14px !important; stroke-width:2; }
-.composer { --composer-sheet-w:min(var(--ui-composer-w), calc(100vw - 48px)); --composer-sheet-min-h:240px; --composer-prompt-h:84px; --composer-footer-h:40px; --composer-bottom-gap:16px; --ctrl-font:var(--ui-type-control); --ctrl-icon:var(--ui-icon-sm); --ctrl-height:var(--ui-control-h); --ctrl-gap:var(--ui-space-2); --ctrl-xpad:var(--ui-space-4); --ctrl-pop-font:var(--ui-type-control); --ctrl-pop-icon:var(--ui-icon-sm); --ctrl-pop-height:var(--ui-control-h-sm); --ctrl-pop-radius:var(--ui-radius-control); position:absolute; left:50%; right:auto; top:auto; bottom:var(--composer-bottom-gap); z-index:85; width:var(--composer-sheet-w); height:auto; min-height:var(--composer-sheet-min-h); max-height:min(72vh, calc(100vh - 96px)); transform:translate(-50%, calc(100% + var(--composer-bottom-gap))); opacity:0; pointer-events:none; transition:opacity var(--ui-motion-surface) var(--ui-ease-emphasized), transform var(--ui-motion-surface) var(--ui-ease-emphasized); overflow:visible; }
-.composer.open { opacity:1; transform:translate(-50%, 0); pointer-events:auto; }
+.composer { --composer-sheet-w:min(var(--ui-composer-w), calc(100vw - 48px)); --composer-sheet-min-h:240px; --composer-prompt-h:84px; --composer-footer-h:40px; --composer-bottom-gap:16px; --ctrl-font:var(--ui-type-control); --ctrl-icon:var(--ui-icon-sm); --ctrl-height:var(--ui-control-h); --ctrl-gap:var(--ui-space-2); --ctrl-xpad:var(--ui-space-4); --ctrl-pop-font:var(--ui-type-control); --ctrl-pop-icon:var(--ui-icon-sm); --ctrl-pop-height:var(--ui-control-h-sm); --ctrl-pop-radius:var(--ui-radius-control); position:absolute; left:50%; right:auto; top:auto; bottom:var(--composer-bottom-gap); z-index:85; width:var(--composer-sheet-w); height:auto; min-height:var(--composer-sheet-min-h); max-height:min(72vh, calc(100vh - 96px)); transform:translateX(-50%) translateY(calc(100% + var(--composer-bottom-gap))); opacity:0; pointer-events:none; transition:opacity var(--ui-motion-surface) var(--ui-ease-emphasized), transform var(--ui-motion-surface) var(--ui-ease-emphasized); overflow:visible; }
+.composer.open { opacity:1; transform:translateX(-50%); pointer-events:auto; }
 .composer-card { position:relative; box-sizing:border-box; background:var(--ui-surface-elevated); border:1px solid var(--ui-border); border-radius:22px; box-shadow:var(--ui-shadow-pop); padding:8px; display:grid; grid-template-columns:minmax(0, 1fr); grid-template-areas:"prompt" "thumbs" "prompt-preview" "footer"; grid-template-rows:auto auto auto var(--composer-footer-h); gap:8px; align-items:stretch; overflow:visible; height:auto; min-height:var(--composer-sheet-min-h); max-height:inherit; }
-.composer-card .prompt-row { grid-area:prompt; box-sizing:border-box; min-width:0; min-height:var(--composer-prompt-h); height:var(--composer-prompt-h); max-height:var(--composer-prompt-h); padding-top:36px; display:flex; flex-direction:column; overflow:visible; }
+.composer-card .prompt-row { grid-area:prompt; box-sizing:border-box; min-width:0; min-height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px)); height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px)); max-height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px)); padding-top:var(--ui-composer-prompt-padding-top, 40px); display:flex; flex-direction:column; overflow:visible; }
 .composer-card .prompt-input { flex:1 1 auto; min-width:0; min-height:0; max-height:none; height:auto; overflow-x:hidden; overflow-y:auto; background:#fff; border:1px solid rgba(175,179,186,.16); border-radius:22px; box-shadow:none; padding:8px 14px 4px; font-size:14px; line-height:1.65; color:var(--ui-text); }
 .composer-card .prompt-input:focus { border-color:rgba(175,179,186,.16); background:#fff; box-shadow:none; outline:none; }
 .composer-card .prompt-input:empty::before { font-size:14px; }
@@ -1030,7 +1039,7 @@ video.node-img { object-fit:cover; background:transparent; }
 .composer-api-models button.active{ background:rgba(var(--ui-accent-rgb),.1); }
 .composer-api-models button.active{color:var(--ui-accent);}
 .composer-mode-model-list { display:flex; flex-direction:column; gap:4px; width:100%; min-width:0; box-sizing:border-box; }
-.composer-mode-model-list .mode-model-choice { display:block; width:100%; min-height:28px; padding:2px 10px; text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; box-sizing:border-box; }
+.composer-mode-model-list .mode-model-choice { display:block; width:100%; min-height:28px; padding:2px 10px; text-align:left; white-space:normal; overflow:visible; text-overflow:ellipsis; cursor:pointer; box-sizing:border-box; }
 /* 我的模型里未绑定中转站的固定名字：可见但不可选 */
 .composer-mode-model-list .mode-model-choice.is-unbound { opacity:.42; cursor:not-allowed; }
 #composerApiSettingsPopover:has(.composer-model-menu) { width:max-content; min-width:250px; max-width:min(350px, calc(100vw - 64px)); padding:11px; gap:0; overflow:visible; max-height:none; }
@@ -1059,12 +1068,16 @@ video.node-img { object-fit:cover; background:transparent; }
 #composerQualityPanel .quality-choice-grid button,#composerCountPanel .count-cell { min-height:30px; border:0; border-radius:9px; background:transparent; color:var(--ui-text-secondary); font-size:10px; line-height:1; font-weight:445; }#composerQualityPanel .quality-choice-grid button:hover,
 #composerQualityPanel .quality-choice-grid button.active,
 #composerCountPanel .count-cell:hover,
-#composerCountPanel .count-cell.active{ background:transparent; }
+#composerCountPanel .count-cell.active{ background:var(--ui-hover, rgba(255,255,255,.08)); }
 #composerQualityPanel .quality-choice-grid button.active,
 #composerCountPanel .count-cell.active{color:var(--ui-accent);}
 .has-size-choice-glider { position:relative; isolation:isolate; }
 .has-size-choice-glider > button { position:relative; z-index:1; }
-.has-size-choice-glider > button.active,.has-size-choice-glider > button:hover,.has-size-choice-glider > button:focus-visible { background:transparent !important; border-color:transparent !important; }.has-strong-size-glider > button:hover,
+.has-size-choice-glider > button.active { background:transparent !important; border-color:transparent !important; }
+/* Hover fill is owned by minimax-visual (match first-level menu). Do not force transparent. */
+.has-size-choice-glider > button:hover,
+.has-size-choice-glider > button:focus-visible { border-color:transparent !important; }
+.has-strong-size-glider > button:hover,
 .has-strong-size-glider > button:focus-visible{ }.has-soft-size-glider > button:hover,
 .has-soft-size-glider > button:focus-visible{ }
 .size-choice-glider { position:absolute; left:0; top:0; z-index:0; width:var(--size-glider-width, 0px); height:var(--size-glider-height, 0px); box-sizing:border-box; border-radius:9px; pointer-events:none; transform:translate3d(var(--size-glider-x, 0px), var(--size-glider-y, 0px), 0) scale(1); transition:transform .5s cubic-bezier(.37,1.55,.66,.96), width .38s cubic-bezier(.37,1.35,.66,.96), height .38s cubic-bezier(.37,1.35,.66,.96), background .28s ease, box-shadow .28s ease; will-change:transform,width,height; }
@@ -2409,7 +2422,7 @@ button svg,.lucide,[data-lucide] {
 }
 /* Stable frosted panels: composer, double-click create panel, and popovers. */
 
-/* Visible frosted glass panels and vertical hover motion. */.create-menu,
+/* Stable frosted panels: composer and asset panels (create-menu → v10 M-v10). */
 .image-node.empty-node,
 .image-node.prompt-smart-node,
 .image-node.loop-smart-node,
@@ -2458,7 +2471,6 @@ button svg,.lucide,[data-lucide] {
     animation:none;
     transform:translateY(1px);
 }
-.theme-dark .create-menu,
 .theme-dark .image-node.empty-node,
 .theme-dark .image-node.prompt-smart-node,
 .theme-dark .image-node.loop-smart-node,
@@ -2905,8 +2917,8 @@ blue primary canvas actions. */.shell .create-card:hover,
 
 /* Canvas composer: gray panel + white input; node text areas keep gray inset */
 .shell .composer {
-    --composer-prompt-h:108px;
-    --composer-sheet-min-h:252px;
+    --composer-prompt-h:71px;
+    --composer-sheet-min-h:0px;
     background:transparent !important;
     border:0 !important;
     box-shadow:none !important;
@@ -2968,7 +2980,7 @@ blue primary canvas actions. */.shell .create-card:hover,
     box-shadow:none;
 }
 .theme-dark .node-type-placeholder { color:#b8bec8; }
-.composer-card-material,.composer-card-surface { display:none; }
+/* composer 材质层由 M-v10 启用（窄底框 + 主卡片叠层） */
 /* Composer outer frame: match the light image quick-toolbar glass material. */
 @property --composer-outline-angle {
     syntax:"<angle>";
@@ -3025,7 +3037,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card > :not(.comp
     z-index:4;
     left:18px;
     right:18px;
-    top:0;
+    top:var(--ui-composer-topbar-offset, 0);
     height:40px;
     display:flex;
     align-items:center;
@@ -3081,8 +3093,12 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card > :not(.comp
 }.shell .composer-card .composer-asset-shortcut:hover,
 .shell .composer-card .composer-asset-shortcut:focus-visible{
     border-color:transparent;
-    background:rgba(var(--ui-accent-rgb),.06);
+    background:#ffffff;
     outline:none;
+}
+html:is(.theme-dark, .studio-theme-dark) .shell .composer-card .composer-asset-shortcut:hover,
+html:is(.theme-dark, .studio-theme-dark) .shell .composer-card .composer-asset-shortcut:focus-visible{
+    background:#000000;
 }
 .shell .composer-card .composer-asset-shortcut :is(i,svg) {
     width:11px !important;
@@ -3179,57 +3195,70 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-to
     opacity:1 !important;
 }
 .shell .composer-card-topbar .composer-kind-toggle button.is-mode-hover,
+.shell .composer-card-topbar #apiKindToggle button.is-mode-hover {
+    color:#747b85;
+    background:#ffffff;
+    border-color:transparent;
+    box-shadow:none;
+    outline:none;
+}
+.shell .composer-card-topbar .composer-kind-toggle button.is-mode-hover :is(i,svg,span),
+.shell .composer-card-topbar #apiKindToggle button.is-mode-hover :is(i,svg,span) {
+    color:#747b85 !important;
+    stroke:#747b85 !important;
+}
 .shell .composer-card-topbar .composer-kind-toggle:not(:has(.is-mode-hover)) button.active,
-.shell .composer-card-topbar #apiKindToggle button.is-mode-hover,
-.shell .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active {
+.shell .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active,
+.shell .composer-card-topbar .composer-kind-toggle:has(.is-mode-hover) button.active,
+.shell .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active {
     color:#fff;
     background:transparent;
     border-color:transparent;
     box-shadow:none;
     outline:none;
 }
-.shell .composer-card-topbar .composer-kind-toggle button.is-mode-hover :is(i,svg,span),
-.shell .composer-card-topbar .composer-kind-toggle:not(:has(.is-mode-hover)) button.active :is(i,svg,span),
-.shell .composer-card-topbar #apiKindToggle button.is-mode-hover :is(i,svg,span),
-.shell .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active :is(i,svg,span) {
+.shell .composer-card-topbar .composer-kind-toggle button.active :is(i,svg,span),
+.shell .composer-card-topbar #apiKindToggle button.active :is(i,svg,span) {
     color:#fff !important;
     stroke:#fff !important;
 }
-.shell .composer-card-topbar .composer-kind-toggle button:not(.is-mode-hover),
-.shell .composer-card-topbar .composer-kind-toggle:has(.is-mode-hover) button.active,
-.shell .composer-card-topbar #apiKindToggle button:not(.is-mode-hover),
-.shell .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active {
+.shell .composer-card-topbar .composer-kind-toggle button:not(.is-mode-hover):not(.active),
+.shell .composer-card-topbar #apiKindToggle button:not(.is-mode-hover):not(.active) {
     color:#747b85;
     background:transparent;
     border-color:transparent;
     box-shadow:none;
 }
-.shell .composer-card-topbar .composer-kind-toggle button:not(.is-mode-hover) :is(i,svg,span),
-.shell .composer-card-topbar .composer-kind-toggle:has(.is-mode-hover) button.active :is(i,svg,span),
-.shell .composer-card-topbar #apiKindToggle button:not(.is-mode-hover) :is(i,svg,span),
-.shell .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active :is(i,svg,span) {
+.shell .composer-card-topbar .composer-kind-toggle button:not(.is-mode-hover):not(.active) :is(i,svg,span),
+.shell .composer-card-topbar #apiKindToggle button:not(.is-mode-hover):not(.active) :is(i,svg,span) {
     color:#747b85 !important;
     stroke:#747b85 !important;
 }
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover,
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active {
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover {
+    color:#747b85 !important;
+    background:#ffffff !important;
+    border-color:transparent !important;
+    box-shadow:none !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover :is(i,svg,span) {
+    color:#747b85 !important;
+    stroke:#747b85 !important;
+}
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.active {
     color:#fff !important;
     background:transparent !important;
     border-color:transparent !important;
     box-shadow:none !important;
 }
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.is-mode-hover :is(i,svg,span),
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle:not(:has(.is-mode-hover)) button.active :is(i,svg,span) {
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button.active :is(i,svg,span) {
     color:#fff !important;
     stroke:#fff !important;
 }
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover),
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active {
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover):not(.active) {
     color:#747b85 !important;
     background:transparent !important;
 }
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover) :is(i,svg,span),
-html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle:has(.is-mode-hover) button.active :is(i,svg,span) {
+html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-topbar #apiKindToggle button:not(.is-mode-hover):not(.active) :is(i,svg,span) {
     color:#747b85 !important;
     stroke:#747b85 !important;
 }
@@ -3270,8 +3299,12 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-to
 }.shell #composer .composer-card-topbar .co-create-switch:hover,
 .shell #composer .composer-card-topbar .co-create-switch:focus-visible{
     border-color:transparent !important;
-    background:rgba(var(--ui-accent-rgb),.06) !important;
+    background:var(--ui-hover) !important;
     outline:none !important;
+}
+html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar .co-create-switch:hover,
+html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar .co-create-switch:focus-visible{
+    background:var(--ui-hover) !important;
 }
 .shell #composer .composer-card-topbar .co-create-switch.is-on,
 .shell #composer .composer-card-topbar .co-create-switch[aria-pressed="true"] {
@@ -3314,10 +3347,13 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .composer-ca
     z-index:1;
     inset:40px 10px 10px;
     display:block;
-    border-radius:18px;
-    background:var(--ui-surface-card);
+    border-radius:var(--ui-radius-composer, 22px);
+    background-color:var(--ui-glass-popover);
+    background-image:none;
     border:1px solid var(--ui-border);
-    box-shadow:none;
+    box-shadow:var(--ui-shadow-float);
+    -webkit-backdrop-filter:var(--ui-glass-filter);
+    backdrop-filter:var(--ui-glass-filter);
     pointer-events:none;
 }
 /* M5:composer-card-material 玻璃流光层与 ::before conic 描边已拆除(扁平定案) */
@@ -3337,10 +3373,10 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card::before {
 .shell .composer-card .prompt-row {
     box-sizing:border-box;
     min-width:0;
-    min-height:var(--composer-prompt-h);
-    height:var(--composer-prompt-h);
-    max-height:var(--composer-prompt-h);
-    padding-top:36px;
+    min-height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px));
+    height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px));
+    max-height:calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top, 40px));
+    padding-top:var(--ui-composer-prompt-padding-top, 40px);
     display:flex;
     flex-direction:column;
     overflow:visible;
@@ -3357,10 +3393,10 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card::before {
     border:0 !important;
     box-shadow:none !important;
     color:#17181b !important;
-    padding:calc(var(--ui-space-5) + var(--ui-space-1)) 46px 4px 14px !important;
+    padding:6px 46px 4px 14px !important;
 }
 html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-input {
-    padding:calc(var(--ui-space-5) + var(--ui-space-1)) 46px 4px 14px !important;
+    padding:6px 46px 4px 14px !important;
 }
 .shell .composer-card .prompt-input:focus {
     background:transparent !important;
@@ -3371,7 +3407,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-inpu
 .composer-height-toggle {
     position:absolute;
     right:12px;
-    top:43px;
+    top:37px;
     z-index:6;
     width:26px;
     height:26px;
@@ -3630,7 +3666,10 @@ html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover .has-strong-s
 .shell .composer .composer-footer .composer-footer-bar {
     position:relative;
     isolation:isolate;
-    transform:translateY(-6px);
+}
+.shell .composer .composer-footer .composer-footer-tools {
+    position:relative;
+    top:0;
 }
 .shell .composer .composer-footer .composer-footer-glider {
     display:block;
@@ -3773,7 +3812,7 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-footer 
     margin-right:8px;
 }
 .shell .composer .composer-card {
-    padding-bottom:16px !important;
+    padding-bottom:8px !important;
 }
 .shell .composer .input-thumbs-row {
     padding:2px 12px 4px 16px;
@@ -3880,8 +3919,9 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-footer 
 }
 html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card .prompt-input:empty::before {
     color:rgba(86,91,99,.48);
-    font-size:11px;
+    font-size:14px;
     font-weight:400;
+    line-height:1.65;
 }
 
 /* Composer prompt must never inherit the native/global focus frame. Keep this
@@ -4685,84 +4725,7 @@ html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover :is(.size-pic
     outline:none !important;
 }
 
-/* Approved history-project neutral palette for composer secondary menus and
-   the asset library. Scoped to light mode so dark mode and primary controls
-   keep their existing visual language. */
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover,
-html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover {
-    background:#fff;
-    border-color:rgba(255,255,255,1);
-    backdrop-filter:none;
-    -webkit-backdrop-filter:none;
-}
-html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover :is(.size-picker-list,.quality-choice-grid,.count-grid,.video-flat-grid) {
-    gap:4px;
-}
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-branch summary,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-models button,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice,
-html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover :is(
-    .size-picker-option,
-    .video-flat-choice,
-    #composerQualityPanel .quality-choice-grid button,
-    #composerCountPanel .count-cell,
-    #composerVideoSizeMenu .count-cell,
-    .video-flat-segments button
-) {
-    color:#7d848e;
-    background:#fff !important;
-    background-image:none !important;
-    border:1px solid rgba(137,145,156,.22) !important;
-    box-shadow:none !important;
-    box-sizing:border-box;
-    border-radius:8px;
-}
-html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover .size-picker-ratio-list .size-picker-option {
-    min-height:34px;
-}html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-branch summary:hover,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-branch summary:focus-visible,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-branch.active > summary,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-models button:hover,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-models button:focus-visible,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice:hover,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice:focus-visible,
-html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover :is(
-    .size-picker-option,
-    .video-flat-choice,
-    #composerQualityPanel .quality-choice-grid button,
-    #composerCountPanel .count-cell,
-    #composerVideoSizeMenu .count-cell,
-    .video-flat-segments button
-):hover,
-html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover :is(
-    .size-picker-option,
-    .video-flat-choice,
-    #composerQualityPanel .quality-choice-grid button,
-    #composerCountPanel .count-cell,
-    #composerVideoSizeMenu .count-cell,
-    .video-flat-segments button
-):focus-visible{
-    background:#fafbfc !important;
-    border-color:rgba(137,145,156,.34) !important;
-    box-shadow:none !important;
-}
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-branch.active > summary{color:#505761 !important;}
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-models button.active,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.active,
-html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover :is(
-    .size-picker-option,
-    .video-flat-choice,
-    #composerQualityPanel .quality-choice-grid button,
-    #composerCountPanel .count-cell,
-    #composerVideoSizeMenu .count-cell,
-    .video-flat-segments button
-).active {
-    color:var(--ui-accent) !important;
-    background:rgba(var(--ui-accent-rgb),.06) !important;
-    background-image:none !important;
-    border-color:rgba(var(--ui-accent-rgb),.42) !important;
-    box-shadow:none !important;
-}
+/* composer 二级菜单 → v10 磨砂浮层（见 minimax-visual M-v10 / visual-typography C08） */
 html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover :is(.size-choice-glider.is-soft,.size-choice-glider.is-strong) {
     display:none !important;
 }
@@ -5141,19 +5104,38 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     display:flex !important;
     align-items:center !important;
     gap:10px !important;
-    min-height:44px !important;
+    min-height:46px !important;
+    height:46px !important;
     padding:6px 12px !important;
-    font-size:13px !important;
+    font-size:14px !important;
     font-weight:445 !important;
     border:0 !important;
     background:transparent !important;
     background-image:none !important;
     box-shadow:none !important;
     border-radius:10px !important;
+    overflow:hidden !important;
+    white-space:normal !important;
 }
 
-/* 名字 + 一句话说明：复刻引用面板的悬停动效 ——
-   名字行上移 8px，小字从下方 4px 处淡入上滑。 */
+/* Hover/focus: fixed row height; name rises, desc fades in. */
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    min-height:46px !important;
+    height:46px !important;
+    padding:6px 12px !important;
+    align-items:center !important;
+}
+
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):has(.mode-model-desc):is(:hover, :focus-visible) {
+    min-height:46px !important;
+    height:46px !important;
+    align-items:center !important;
+    padding:6px 12px !important;
+}
+
+/* 名字常驻居中；说明小字绝对定位，悬停时淡入，名字上移。 */
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-copy {
     position:relative;
     flex:1 1 auto;
@@ -5163,50 +5145,88 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     justify-content:center;
     gap:0;
     align-self:stretch;
+    min-height:0;
 }
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-title-row {
     min-width:0;
     display:flex;
     align-items:center;
+    transition:transform .18s cubic-bezier(.22, .8, .28, 1);
     transform:translateY(0);
-    transition:transform .16s ease;
+    will-change:transform;
 }
 
-#composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
-    position:absolute;
-    top:50%;
-    right:0;
-    left:0;
-    margin-top:2px;
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-name {
+    flex:1 1 auto;
+    min-width:0;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
-    font-size:11px;
-    font-weight:400;
-    line-height:1.35;
-    color:#9aa0a9;
+    text-align:left;
+    font-size:14px !important;
+    font-weight:520 !important;
+    font-variation-settings:"wght" 520 !important;
+    line-height:1.25 !important;
+    color:inherit !important;
+}
+
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
+    position:absolute;
+    left:0;
+    right:0;
+    top:calc(50% + 2px);
+    display:block;
+    margin:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:9.5px !important;
+    font-weight:300 !important;
+    font-variation-settings:"wght" 300 !important;
+    line-height:1.25 !important;
+    color:var(--ui-text-muted) !important;
     opacity:0;
     transform:translateY(4px);
     pointer-events:none;
-    transition:opacity .14s ease, transform .16s ease;
+    transition:opacity .18s ease, transform .18s cubic-bezier(.22, .8, .28, 1);
 }
 
-#composerApiSettingsPopover .composer-mode-model-list
-    .mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible)
-    .mode-model-title-row {
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:is(:hover, :focus-visible) .mode-model-title-row {
     transform:translateY(-8px);
 }
 
-#composerApiSettingsPopover .composer-mode-model-list
-    .mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible)
-    .mode-model-desc {
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:is(:hover, :focus-visible) .mode-model-desc {
+    display:block;
     opacity:1;
     transform:translateY(0);
 }
 
-:is(html.theme-dark, html.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
-    color:rgba(241,241,241,.46);
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:has(.mode-model-desc) {
+    min-height:46px !important;
+    height:46px !important;
+    padding:6px 12px !important;
+    align-items:center !important;
+}
+
+html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:has(.mode-model-desc):is(:hover, :focus-visible) {
+    min-height:46px !important;
+    height:46px !important;
+    padding:6px 12px !important;
+    align-items:center !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc,
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice .mode-model-desc {
+    color:var(--ui-text-muted) !important;
+    font-size:9.5px !important;
+    font-weight:300 !important;
+    font-variation-settings:"wght" 300 !important;
 }
 
 /* 行内结构：公司图标 + 名字 + 选中对号 */
@@ -5218,21 +5238,13 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     align-items:center;
     justify-content:center;
     opacity:.85;
+    align-self:center;
 }
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-ico svg {
     width:16px;
     height:16px;
     display:block;
-}
-
-#composerApiSettingsPopover .composer-mode-model-list .mode-model-name {
-    flex:1 1 auto;
-    min-width:0;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    text-align:left;
 }
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-check {
@@ -5243,6 +5255,7 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     display:none;
     align-items:center;
     justify-content:center;
+    align-self:center;
 }
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-check svg {
@@ -5253,8 +5266,9 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
 
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.active .mode-model-check {
     display:inline-flex;
-}html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible){
+}html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible){
     background:#f1f3f6 !important;
+    background-color:#f1f3f6 !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice.active {
@@ -5262,13 +5276,11 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     background:rgba(var(--ui-accent-rgb),.08) !important;
 }
 
-:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
-    background:rgba(255,255,255,.08) !important;
-}
-
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice.active {
     color:var(--ui-accent) !important;
-    background:rgba(var(--ui-accent-rgb),.16) !important;
+    background:transparent !important;
+    background-color:transparent !important;
+    border-color:transparent !important;
 }
 
 @media (prefers-reduced-motion:reduce) {

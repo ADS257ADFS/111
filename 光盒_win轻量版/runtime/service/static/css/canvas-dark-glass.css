@@ -18,7 +18,8 @@ html.studio-theme-dark {
 
 :is(html.theme-dark, html.studio-theme-dark) :is(.stage, .board, #shell.shell, .shell) {
     background-color: #090909 !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12.5' cy='12.5' r='.35' fill='%238f8f8f'/%3E%3C/svg%3E") !important;
+    /* Very dim white dots (~0.6%). Hardcoded SVG #8f8f8f previously ignored tokens. */
+    background-image: radial-gradient(rgba(255, 255, 255, .10) .65px, transparent 1.2px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
     background-position: 0 0 !important;
 }
@@ -36,7 +37,7 @@ html.studio-theme-dark {
 
 :is(html.theme-dark, html.studio-theme-dark).canvas-empty-dot-grid-active #shell.shell {
     background-color: #090909 !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12.5' cy='12.5' r='.35' fill='%238f8f8f'/%3E%3C/svg%3E") !important;
+    background-image: radial-gradient(rgba(255, 255, 255, .10) .65px, transparent 1.2px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
     background-position: 0 0 !important;
 }
@@ -127,20 +128,22 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
     .co-create-popover
 ) {
     color: var(--sc-text) !important;
-    border: 1px solid var(--sc-border-panel) !important;
-    background: var(--sc-glass) !important;
-    box-shadow: var(--sc-shadow-raised) !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    border: 1px solid var(--ui-border) !important;
+    background-color: var(--ui-glass-popover) !important;
+    background-image: none !important;
+    box-shadow: var(--ui-shadow-float) !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) body .floating-toolbar::before {
     color: var(--sc-text) !important;
-    border: 1px solid var(--sc-border-panel) !important;
-    background: var(--sc-glass) !important;
-    box-shadow: 0 18px 46px rgba(var(--sc-shadow-rgb), .13), inset 0 1px 0 rgba(255, 255, 255, .10) !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    border: 1px solid var(--ui-border) !important;
+    background-color: var(--ui-glass-popover) !important;
+    background-image: none !important;
+    box-shadow: var(--ui-shadow-float) !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) :is(
@@ -286,18 +289,22 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card .composer-card-surface {
     position: absolute;
     z-index: 1;
-    inset: 40px 10px 10px;
+    inset: auto;
+    top: 40px;
+    right: 10px;
+    bottom: 8px;
+    left: 10px;
     display: block;
     border: 1px solid var(--sc-border);
-    border-radius: 18px;
+    border-radius: var(--ui-radius-composer, 22px);
     pointer-events: none;
-    background: #0e0e0e !important;
+    background-color: var(--ui-glass-popover) !important;
     background-image: none !important;
     opacity: 1 !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
     filter: none !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035);
+    box-shadow: var(--ui-shadow-float) !important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card > :not(.composer-card-material):not(.composer-card-surface):not(.composer-card-topbar) {
@@ -357,9 +364,9 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
     .composer-asset-shortcut
 ):hover,
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell .composer-tool-wrap.open > .composer-tool-btn{
-    border-color: var(--sc-border-panel) !important;
-    background: var(--sc-hover) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07) !important;
+    border-color: transparent !important;
+    background: var(--ui-hover) !important;
+    box-shadow: none !important;
     transform: translateY(-1px);
 }
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell .composer-tool-wrap.open > .composer-tool-btn{color: var(--sc-text) !important;}
@@ -458,7 +465,6 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
 
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
     .composer-kind-toggle button,
-    .has-size-choice-glider > button,
     .image-quick-toolbar button,
     .selection-capsule-bar button,
     .port-link-pick-shell button
@@ -469,7 +475,17 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
     border-color: transparent !important;
     background: transparent !important;
     box-shadow: none !important;
-}:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+}
+/* Size/quality/count cells: idle transparent; hover fill comes from minimax end layer */
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell .has-size-choice-glider > button:not(:hover):not(:focus-visible) {
+    position: relative;
+    z-index: 2;
+    color: var(--sc-text-secondary) !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
     .composer-kind-toggle button,
     .has-size-choice-glider > button,
     .image-quick-toolbar button,
@@ -1663,12 +1679,12 @@ and these rows must not depend on a travelling glider. */
     gap: 4px !important;
 }
 
+/* Model rows stay borderless/transparent idle; size/quality grids keep quiet chip chrome. */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover :is(
         .composer-api-branch summary,
-        .composer-api-models button,
-        .composer-mode-model-list .mode-model-choice
-    ),
+        .composer-api-models button
+    ):not(:hover):not(:focus-visible),
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerSizePopover :is(
         .size-picker-option,
@@ -1677,7 +1693,7 @@ and these rows must not depend on a travelling glider. */
         #composerCountPanel .count-cell,
         #composerVideoSizeMenu .count-cell,
         .video-flat-segments button
-    ) {
+    ):not(:hover):not(:focus-visible) {
     box-sizing: border-box !important;
     border: 1px solid rgba(255, 255, 255, .08) !important;
     border-radius: 8px !important;
@@ -1688,10 +1704,15 @@ and these rows must not depend on a travelling glider. */
 
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice {
-    min-height: 28px !important;
-    padding: 2px 10px !important;
+    min-height: 34px !important;
+    padding: 6px 12px !important;
     font-size: 10px !important;
     font-weight: 400 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice:has(.mode-model-desc) {
+    min-height: 34px !important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
@@ -1749,7 +1770,7 @@ and these rows must not depend on a travelling glider. */
     gap: 6px !important;
     color: var(--sc-text-secondary) !important;
     border: 1px solid transparent !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
     background: transparent !important;
     box-shadow: none !important;
     font-size: 13px !important;

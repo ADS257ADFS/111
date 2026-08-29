@@ -170,7 +170,7 @@
             if(activeIdx < 0) activeIdx = customs.findIndex(entry => bound(entry) && entry.model === node.llmModel);
             listHtml = customs.map((entry, idx) => bound(entry)
                 ? `<button type="button" class="mode-model-choice ${idx === activeIdx ? 'active' : ''}" data-mode-model-select="text" data-mode-model-value="${esc(entry.name)}">${modelChoiceInner(entry.name, esc)}</button>`
-                : `<button type="button" class="mode-model-choice is-unbound" disabled title="未绑定，请在 API 设置 · 我的模型中绑定中转站">${modelChoiceInner(entry.name, esc)}</button>`).join('');
+                : `<button type="button" class="mode-model-choice is-unbound" disabled title="未绑定，请在 API 设置 · 画布显示名中绑定平台">${modelChoiceInner(entry.name, esc)}</button>`).join('');
         } else {
             const models = MB?.enabledModels('text') || [];
             listHtml = models.map(model => `<button type="button" class="mode-model-choice ${model === node.llmModel ? 'active' : ''}" data-mode-model-select="text" data-mode-model-value="${esc(model)}">${modelChoiceInner(model, esc)}</button>`).join('');
