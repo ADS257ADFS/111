@@ -9,7 +9,7 @@ html.studio-theme-dark {
     --canvas-glass-text: var(--sc-text-secondary) !important;
     --canvas-glass-shadow: var(--sc-shadow-raised) !important;
     --canvas-glass-radius: var(--sc-radius) !important;
-    --canvas-glass-blur: var(--sc-blur) !important;
+    --canvas-glass-blur: none;
     --canvas-glass-glider-bg: var(--sc-selected) !important;
     --canvas-glass-glider-shadow: inset 0 1px 0 rgba(255, 255, 255, .10) !important;
 }

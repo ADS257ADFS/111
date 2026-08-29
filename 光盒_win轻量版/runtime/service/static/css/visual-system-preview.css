@@ -677,8 +677,8 @@ html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .dock-ap
     background: var(--vs-glass-bg) !important;
     border-color: var(--vs-glass-border) !important;
     box-shadow: var(--vs-glass-shadow), var(--vs-glass-inset) !important;
-    -webkit-backdrop-filter: var(--vs-glass-blur) !important;
-    backdrop-filter: var(--vs-glass-blur) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body.gpt-dock-canvas-mode .thread-row {
@@ -870,8 +870,8 @@ html:not(.theme-dark):not(.studio-theme-dark) .canvas-nav {
     background: var(--vs-glass-bg) !important;
     border-color: var(--vs-glass-border) !important;
     box-shadow: var(--vs-glass-shadow) !important;
-    -webkit-backdrop-filter: var(--vs-glass-blur) !important;
-    backdrop-filter: var(--vs-glass-blur) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 html.theme-dark .smart-back,
@@ -889,8 +889,8 @@ html.studio-theme-dark .canvas-nav {
     background: var(--vs-glass-bg) !important;
     border-color: var(--vs-glass-border) !important;
     box-shadow: var(--vs-glass-shadow) !important;
-    -webkit-backdrop-filter: var(--vs-glass-blur) !important;
-    backdrop-filter: var(--vs-glass-blur) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 /* Inset top highlight shared by glass surfaces. */

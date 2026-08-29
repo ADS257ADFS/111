@@ -350,7 +350,7 @@ video.node-img { object-fit:cover; background:transparent; }
 .media-video-card { position:relative; align-items:stretch; justify-content:stretch; overflow:hidden; border:0; border-radius:18px; background:transparent; box-sizing:border-box; }
 .theme-dark .media-video-card { border-color:rgba(148,163,184,.3); }
 .media-video-card video { width:100%; height:100%; object-fit:cover; background:transparent; display:block; border-radius:inherit; }
-.smart-video-play { position:absolute; z-index:3; left:calc(50% - 18px); top:calc(50% - 18px); width:36px; height:36px; padding:0; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.36); border-radius:999px; background:rgba(15,23,42,.72) !important; color:#fff !important; box-shadow:var(--ui-shadow-pop); backdrop-filter:blur(10px); transform:none !important; animation:none !important; }
+.smart-video-play { position:absolute; z-index:3; left:calc(50% - 18px); top:calc(50% - 18px); width:36px; height:36px; padding:0; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.36); border-radius:999px; background:rgba(15,23,42,.72) !important; color:#fff !important; box-shadow:var(--ui-shadow-pop); backdrop-filter: none; transform:none !important; animation:none !important; }
 .smart-video-play:is(:hover,:focus-visible,:active),
 .smart-video-play:is(:hover,:focus-visible,:active) :is(i,svg) { transform:none !important; animation:none !important; }
 .smart-video-play :is(i,svg) { width:16px; height:16px; margin-left:1px; pointer-events:none; transform:none !important; }
@@ -1707,13 +1707,13 @@ input[type=range].smart-range::-webkit-slider-thumb { -webkit-appearance:none; w
 .new-canvas-toggle,.organize-canvas-toggle { height:40px; padding:0 15px; border-radius:999px; background:var(--panel); color:var(--text); border:1px solid var(--line); box-shadow:var(--ui-shadow-pop); backdrop-filter:none; display:flex; align-items:center; gap:8px; font-size:12px; font-weight:445; }
 .new-canvas-toggle:hover,.organize-canvas-toggle:hover { border-color:var(--text); transform:translateY(-1px); }
 .new-canvas-toggle i,.new-canvas-toggle svg,.organize-canvas-toggle i,.organize-canvas-toggle svg { width:16px; height:16px; }
-.log-modal { position:absolute; inset:0; z-index:86; display:none; align-items:center; justify-content:center; padding:28px; background:rgba(248,250,252,.42); backdrop-filter:blur(28px) saturate(115%); cursor:default; }
+.log-modal { position:absolute; inset:0; z-index:86; display:none; align-items:center; justify-content:center; padding:28px; background:rgba(248,250,252,.42); backdrop-filter: none; cursor:default; }
 .theme-dark .log-modal { background:rgba(2,6,23,.54); }
 .log-modal.open { display:flex; }
 .log-panel { width:min(860px, 94vw); max-height:86vh; display:flex; flex-direction:column; border-radius:22px; background:var(--card); border:1px solid var(--line); box-shadow:var(--ui-shadow-dialog); overflow:hidden; }
 .log-head { height:58px; padding:0 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
 .log-title { font-size:14px; font-weight:600; color:var(--text); }
-.shortcut-modal { position:absolute; inset:0; z-index:86; display:none; align-items:flex-start; justify-content:flex-end; padding:76px 232px 28px 28px; background:rgba(248,250,252,.18); backdrop-filter:blur(8px); cursor:default; }
+.shortcut-modal { position:absolute; inset:0; z-index:86; display:none; align-items:flex-start; justify-content:flex-end; padding:76px 232px 28px 28px; background:rgba(248,250,252,.18); backdrop-filter: none; cursor:default; }
 .theme-dark .shortcut-modal { background:rgba(2,6,23,.32); }
 .shortcut-modal.open { display:flex; }
 .shortcut-panel { width:min(480px, calc(100vw - 44px)); max-height:calc(100vh - 104px); display:flex; flex-direction:column; border-radius:18px; background:var(--card); border:1px solid var(--line); box-shadow:var(--ui-shadow-dialog); overflow:hidden; }
@@ -1814,7 +1814,7 @@ input[type=range].smart-range::-webkit-slider-thumb { -webkit-appearance:none; w
 .asset-soft-btn.is-primary { background:var(--strong); color:var(--strong-text); border-color:var(--strong); }
 .asset-soft-btn svg { width:13px; height:13px; flex:0 0 auto; }
 .theme-dark .asset-item, .theme-dark .asset-category-select { background:var(--card); }
-.asset-dialog-backdrop { position:absolute; inset:0; z-index:90; display:none; align-items:center; justify-content:center; padding:24px; background:rgba(15,23,42,.22); backdrop-filter:blur(28px) saturate(115%); }
+.asset-dialog-backdrop { position:absolute; inset:0; z-index:90; display:none; align-items:center; justify-content:center; padding:24px; background:rgba(15,23,42,.22); backdrop-filter: none; }
 .asset-dialog-backdrop.open { display:flex; }
 .asset-dialog { width:min(360px, calc(100vw - 48px)); border-radius:18px; background:var(--panel); border:1px solid var(--line); box-shadow:var(--ui-shadow-dialog); padding:14px; }
 .asset-dialog-title { display:flex; align-items:center; gap:8px; color:var(--text); font-size:13px; font-weight:600; margin-bottom:10px; }
@@ -1911,7 +1911,7 @@ input[type=range].smart-range::-webkit-slider-thumb { -webkit-appearance:none; w
 .preview-nav-btn.next { right:18px; }
 .preview-nav-btn i,.preview-nav-btn svg { width:20px !important; height:20px !important; stroke-width:2.4; }
 .theme-dark .preview-nav-btn { background:rgba(15,23,42,.78); border-color:rgba(148,163,184,.28); }.theme-dark .preview-nav-btn:hover{ background:#e5e7eb; border-color:#e5e7eb; box-shadow:none; }
-.image-edit-modal { position:absolute; inset:0; z-index:80; display:none; align-items:center; justify-content:center; padding:18px; background:rgba(248,250,252,.42); backdrop-filter:blur(28px) saturate(115%); }
+.image-edit-modal { position:absolute; inset:0; z-index:80; display:none; align-items:center; justify-content:center; padding:18px; background:rgba(248,250,252,.42); backdrop-filter: none; }
 .image-edit-modal.open { display:flex; z-index:150; }
 .shell:has(.image-edit-modal.open) .composer,
 .shell:has(.image-edit-modal.open) .image-quick-toolbar,
