@@ -793,6 +793,19 @@ class DesktopBridge:
         # the first windowed toggle shrink to the tiny startup panel.
         self._restore_bounds = self._default_window_bounds()
         self.maximize_to_work_area(remember=False)
+        # Late startup threads (finish_startup / force_show) can SW_RESTORE to the
+        # original 880×520 create size a few seconds later — re-assert fullscreen.
+        def _reassert_fullscreen(remaining: int = 6) -> None:
+            if not self._app_entered or remaining <= 0:
+                return
+            try:
+                if not self._is_work_area_maximized():
+                    self.maximize_to_work_area(remember=False)
+            except Exception:
+                traceback.print_exc()
+            threading.Timer(0.35, lambda: _reassert_fullscreen(remaining - 1)).start()
+
+        threading.Timer(0.2, lambda: _reassert_fullscreen()).start()
         return "maximized"
 
     def show_default_window(self) -> None:
@@ -2055,12 +2068,21 @@ def main() -> None:
             bridge._intro_dom_ready.wait(timeout=12.0)
             try:
                 if bridge._app_entered:
+                    bridge.enable_standard_taskbar_behavior()
+                    configure_opaque_form(window)
+                    install_window_frame_refresh(window, bridge)
+                    hwnd = bridge._hwnd()
+                    if hwnd:
+                        apply_solid_window_frame(hwnd, show_shadow=False)
+                        window_shadow.attach(window)
+                    bridge.maximize_to_work_area(remember=False)
                     return
                 configure_opaque_form(window)
                 bridge.set_window_backdrop(initial_theme)
                 bridge._show_centered_intro_window()
                 time.sleep(0.06)
                 if bridge._app_entered:
+                    bridge.maximize_to_work_area(remember=False)
                     return
                 bridge.show_intro_window()
                 bridge._kick_intro_playback()
@@ -2074,6 +2096,7 @@ def main() -> None:
                     if hwnd:
                         apply_solid_window_frame(hwnd, show_shadow=False)
                         window_shadow.attach(window)
+                    bridge.maximize_to_work_area(remember=False)
                     return
                 bridge.enable_standard_taskbar_behavior()
                 configure_opaque_form(window)
@@ -2083,22 +2106,31 @@ def main() -> None:
                 # (-32000,-32000) after the library's hide/show hack — force it
                 # back onto a real windowed placement.
                 if hwnd:
-                    rect = bridge._window_rect()
-                    if (
-                        not bridge._app_entered
-                        and (
-                            not rect
-                            or rect[0] < -10000
-                            or rect[1] < -10000
-                            or rect[2] < 320
-                            or rect[3] < 240
-                        )
-                    ):
-                        bridge.show_intro_window()
+                    # Re-check after every wait — user may have entered mid-startup.
                     if bridge._app_entered:
                         apply_solid_window_frame(hwnd, show_shadow=False)
+                        bridge.maximize_to_work_area(remember=False)
+                        return
+                    rect = bridge._window_rect()
+                    if (
+                        not rect
+                        or rect[0] < -10000
+                        or rect[1] < -10000
+                        or rect[2] < 320
+                        or rect[3] < 240
+                    ):
+                        if not bridge._app_entered:
+                            bridge.show_intro_window()
+                    if bridge._app_entered:
+                        apply_solid_window_frame(hwnd, show_shadow=False)
+                        bridge.maximize_to_work_area(remember=False)
                     else:
                         ctypes.windll.user32.ShowWindow(hwnd, 9)  # SW_RESTORE
+                        # SW_RESTORE can revive the create-time 880×520 size if the
+                        # user entered during this window — bail out immediately.
+                        if bridge._app_entered:
+                            bridge.maximize_to_work_area(remember=False)
+                            return
                         ctypes.windll.user32.SetForegroundWindow(hwnd)
                         configure_opaque_form(window)
                         apply_solid_window_frame(hwnd, show_shadow=True)
@@ -2106,10 +2138,18 @@ def main() -> None:
                         apply_solid_window_frame(hwnd, show_shadow=True)
                         # pywebview may re-apply Padding after Navigating — punch again.
                         time.sleep(0.08)
+                        if bridge._app_entered:
+                            bridge.maximize_to_work_area(remember=False)
+                            return
                         configure_opaque_form(window)
                         apply_solid_window_frame(hwnd, show_shadow=True)
             finally:
                 stop_startup.set()
+                if bridge._app_entered:
+                    try:
+                        bridge.maximize_to_work_area(remember=False)
+                    except Exception:
+                        traceback.print_exc()
 
         window.events.loaded += mark_main_window_ready
         window.events.closing += request_shutdown

@@ -202,6 +202,8 @@ html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro
     transform: translateX(-50%);
     pointer-events: none;
     opacity: 0.92;
+    /* Allow the progress hairline to render under the clipped Loading strip. */
+    overflow: visible;
 }
 
 .lightbox-shader-intro.is-exiting .lightbox-shader-intro-loader,
@@ -375,17 +377,22 @@ html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro
     color: transparent;
 }
 
+/* Sit below the clipped 1em Loading strip — parent overflow:hidden was eating the bar. */
 .lightbox-shader-intro-loader .loader .line {
-    position: relative;
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 0.55em);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     height: 3px;
     width: 7.3em;
-    margin-top: 0.55em;
+    margin: 0;
     border-radius: 999px;
     background: rgba(255, 255, 255, .22);
+    transform: translateX(-50%);
+    pointer-events: none;
 }
 
 .lightbox-shader-intro-loader .loader .line::before {
