@@ -133,21 +133,33 @@
         }
 
         function formatDockRelativeTime(value) {
-            const timestamp = Number(value || 0);
-            if (!timestamp) return '';
-            const diff = Date.now() - timestamp;
-            const sec = Math.floor(diff / 1000);
-            if (sec < 60) return '刚刚';
-            const min = Math.floor(sec / 60);
-            if (min < 60) return `${min} 分钟前`;
-            const hour = Math.floor(min / 60);
-            if (hour < 24) return `${hour} 小时前`;
-            const day = Math.floor(hour / 24);
-            if (day < 30) return `${day} 天前`;
-            const month = Math.floor(day / 30);
-            if (month < 12) return `${month} 个月前`;
-            const year = Math.floor(day / 365);
-            return `${Math.max(year, 1)} 年前`;
+            let timestamp = Number(value || 0);
+            // Support second-based timestamps from older conversation files.
+            if (timestamp > 0 && timestamp < 1e12) timestamp *= 1000;
+            const elapsed = Math.max(0, Date.now() - timestamp);
+            const minute = 60 * 1000;
+            const hour = 60 * minute;
+            const day = 24 * hour;
+            if (!timestamp || elapsed < minute) return '刚刚';
+            if (elapsed < hour) return `${Math.floor(elapsed / minute)}分钟`;
+            if (elapsed < day) return `${Math.floor(elapsed / hour)}小时`;
+            return `${Math.floor(elapsed / day)}天`;
+        }
+
+        function formatDockConversationMeta(item) {
+            // Match left-sidebar project meta: "Np · 刚刚/N分钟/N小时/N天" (no 前).
+            const count = Number(
+                item?.message_count
+                ?? item?.messages_count
+                ?? item?.messageCount
+                ?? item?.count
+                ?? (Array.isArray(item?.messages)
+                    ? item.messages.filter(message => message?.role !== 'system').length
+                    : 0)
+                ?? 0
+            ) || 0;
+            const time = formatDockRelativeTime(item?.updated_at ?? item?.updatedAt);
+            return `${count}p · ${time}`;
         }
 
         function normalizeDockMenuTitle(title) {
@@ -176,7 +188,7 @@
                 const id = String(item.id || '');
                 const title = normalizeDockMenuTitle(item.title);
                 const rawTitle = String(item.title || '').trim() || '未命名对话';
-                const time = formatDockRelativeTime(item.updated_at);
+                const time = formatDockConversationMeta(item);
                 const active = id && id === dockShellCurrentConversationId ? ' is-active' : '';
                 return `<div class="dock-chrome-menu-item${active}" role="menuitem">
                     <button type="button" class="dock-chrome-menu-item-open" data-conversation-id="${escapeDockMenuText(id)}" data-conversation-title="${escapeDockMenuText(rawTitle)}">
@@ -243,7 +255,7 @@
             const rect = anchor.getBoundingClientRect();
             const gap = 2;
             const edge = 12;
-            const menuWidth = menu.offsetWidth || 280;
+            const menuWidth = menu.offsetWidth || 176;
             const menuHeight = menu.offsetHeight || 240;
             let left = rect.left;
             let top = rect.bottom + gap;
@@ -347,7 +359,6 @@
         function initDockTitleMenu() {
             const toggleBtn = document.getElementById('dockShellTitleMenuBtn');
             const menu = document.getElementById('dockShellTitleMenu');
-            const newBtn = document.getElementById('dockShellMenuNewBtn');
             const list = document.getElementById('dockShellMenuHistoryList');
             if (!toggleBtn || !menu || toggleBtn.dataset.bound) return;
             toggleBtn.dataset.bound = '1';
@@ -356,12 +367,6 @@
                 event.preventDefault();
                 event.stopPropagation();
                 toggleDockTitleMenu();
-            });
-
-            newBtn?.addEventListener('click', event => {
-                event.preventDefault();
-                postToGptDockFrame({ source: 'shell', type: 'dock-shell-new' });
-                toggleDockTitleMenu(false);
             });
 
             list?.addEventListener('click', event => {
@@ -1391,11 +1396,40 @@
             panel.querySelector('.dock-image-preview-image').src = src;
         }
 
+        function isShellEditableTarget(target) {
+            const el = target || document.activeElement;
+            return !!el?.closest?.('input, textarea, select, option, [contenteditable="true"]');
+        }
+
+        function shouldRelayCanvasClipboard(event) {
+            if(!isCanvasPageActive()) return false;
+            if(!(event.ctrlKey || event.metaKey) || event.altKey) return false;
+            const key = String(event.key || '').toLowerCase();
+            if(key !== 'c' && key !== 'v') return false;
+            if(isShellEditableTarget(event.target)) return false;
+            if(key === 'c') {
+                const selectionText = window.getSelection?.().toString() || '';
+                if(selectionText) return false;
+            }
+            return true;
+        }
+
         window.addEventListener('keydown', event => {
             if(event.key === 'Escape' && !document.getElementById('dockImagePreview')?.hidden){
                 closeDockImagePreview();
+                return;
             }
-        });
+            // Parent shell often holds focus (sidebar/titlebar/iframe element).
+            // Relay Ctrl/Cmd+C·V into the canvas frame so copy/paste still works.
+            if(shouldRelayCanvasClipboard(event)){
+                const key = String(event.key || '').toLowerCase();
+                event.preventDefault();
+                postToCanvasFrame({
+                    type: 'shell-canvas-clipboard',
+                    action: key === 'c' ? 'copy' : 'paste',
+                });
+            }
+        }, true);
 
         function shouldSwitchShellCanvas(canvasId) {
             const activeId = getActiveCanvasIdFromFrame();
@@ -1460,7 +1494,7 @@
         }
 
         function smartCanvasShellUrl(id) {
-            const base = '/static/smart-canvas.html?v=2026.08.13.13';
+            const base = '/static/smart-canvas.html?v=2026.08.27.footfix1';
             return id ? `${base}&id=${encodeURIComponent(id)}` : base;
         }
 
@@ -1641,7 +1675,13 @@
             restoreLocalNav(id);
             const trigger = document.querySelector(`.floating-toolbar [onclick*="'${id}'"],.floating-toolbar [onclick*='"${id}"']`) || document.querySelector(`[onclick*="'${id}'"],[onclick*='"${id}"']`);
             switchUI(trigger, id, { skipRemember:true, deferGptDock:true });
-            document.documentElement.classList.remove('studio-route-booting');
+            const clearBooting = () => document.documentElement.classList.remove('studio-route-booting');
+            if (document.documentElement.classList.contains('lightbox-shader-intro-active')) {
+                window.addEventListener('lightbox-shader-intro-done', clearBooting, { once: true });
+                window.setTimeout(clearBooting, 5000);
+            } else {
+                clearBooting();
+            }
         }
         document.addEventListener('DOMContentLoaded', restoreActivePage, { once:true });
 
