@@ -4,8 +4,8 @@
  * Logo: opacity 0→1 over 2s, synced with motion start.
  */
 const THREE_URL = "/static/vendor/js/three-0.160.0.module.js?v=2026.08.27.shader3";
-const PLAY_MS = 6200;
-const EXIT_MS = 620;
+const PLAY_MS = 2600;
+const EXIT_MS = 480;
 const ROOT_ID = "lightboxShaderIntro";
 const STAGE_ID = "lightboxShaderIntroStage";
 const RENDER_SCALE = 0.55;
@@ -71,11 +71,7 @@ function startExit(root, stopAndCleanup) {
   try {
     stopAndCleanup();
   } catch (_) {}
-  requestAnimationFrame(() => {
-    window.setTimeout(() => {
-      enterFullscreenSoftware();
-    }, 90);
-  });
+  enterFullscreenSoftware();
   window.setTimeout(() => {
     finishIntro(root);
   }, EXIT_MS);
@@ -201,5 +197,5 @@ export async function bootIntro(threePromise) {
 
   window.setTimeout(() => {
     if (!root.classList.contains("is-done")) startExit(root, cleanup);
-  }, PLAY_MS + EXIT_MS + 4000);
+  }, PLAY_MS + EXIT_MS + 800);
 }

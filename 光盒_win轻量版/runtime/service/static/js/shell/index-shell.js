@@ -1678,7 +1678,7 @@
             const clearBooting = () => document.documentElement.classList.remove('studio-route-booting');
             if (document.documentElement.classList.contains('lightbox-shader-intro-active')) {
                 window.addEventListener('lightbox-shader-intro-done', clearBooting, { once: true });
-                window.setTimeout(clearBooting, 12000);
+                window.setTimeout(clearBooting, 5000);
             } else {
                 clearBooting();
             }

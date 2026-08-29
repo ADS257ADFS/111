@@ -2065,10 +2065,8 @@ def main() -> None:
                     window_shadow.attach(window)
                     apply_solid_window_frame(hwnd, show_shadow=True)
                     # pywebview may re-apply Padding after Navigating — punch again.
-                    time.sleep(0.35)
+                    time.sleep(0.08)
                     configure_opaque_form(window)
-                    apply_solid_window_frame(hwnd, show_shadow=True)
-                    time.sleep(0.5)
                     apply_solid_window_frame(hwnd, show_shadow=True)
             finally:
                 stop_startup.set()

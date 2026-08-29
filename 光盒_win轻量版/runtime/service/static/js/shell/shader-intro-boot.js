@@ -4,8 +4,8 @@
 (function (global) {
   "use strict";
 
-  var PLAY_MS = 6200;
-  var EXIT_MS = 620;
+  var PLAY_MS = 2600;
+  var EXIT_MS = 480;
   var LOGO_FADE_MS = 2000;
   var ROOT_ID = "lightboxShaderIntro";
   var STAGE_ID = "lightboxShaderIntroStage";
@@ -86,11 +86,8 @@
     if (!root || root.classList.contains("is-exiting") || root.classList.contains("is-done")) return;
     root.classList.add("is-exiting");
     try { cleanup(); } catch (_) {}
-    requestAnimationFrame(function () {
-      global.setTimeout(function () {
-        enterFullscreenSoftware();
-      }, 90);
-    });
+    // Enter the app as soon as exit starts — don't wait for the fade to finish.
+    enterFullscreenSoftware();
     global.setTimeout(function () {
       finishIntro(root);
     }, EXIT_MS);
@@ -144,7 +141,7 @@
     frame();
     global.setTimeout(function () {
       if (!root.classList.contains("is-done")) startExit(root, cleanup);
-    }, PLAY_MS + EXIT_MS + 4000);
+    }, PLAY_MS + EXIT_MS + 800);
   }
 
   global.lightboxStartIntroPlayback = startPlayback;
