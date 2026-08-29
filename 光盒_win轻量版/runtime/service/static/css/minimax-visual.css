@@ -3408,17 +3408,17 @@ html body #shell.shell #composer.composer:not([data-height-state="expanded"])
     min-height: 71px !important;
 }
 
-/* 预览已挪到顶栏：把原先 thumbs 行高度还给输入区，底部栏总高不变 */
+/* 预览已在顶栏浮层：不再把旧 thumbs 行高度还给输入区，避免底框被撑高/压低 */
 html body #shell.shell #composer.composer:not([data-height-state="expanded"])
     .composer-card.has-input-thumbs > .prompt-row {
-    min-height: calc(119px + var(--ui-composer-prompt-padding-top)) !important;
-    height: calc(119px + var(--ui-composer-prompt-padding-top)) !important;
-    max-height: calc(119px + var(--ui-composer-prompt-padding-top)) !important;
+    min-height: calc(71px + var(--ui-composer-prompt-padding-top)) !important;
+    height: calc(71px + var(--ui-composer-prompt-padding-top)) !important;
+    max-height: calc(71px + var(--ui-composer-prompt-padding-top)) !important;
 }
 
 html body #shell.shell #composer.composer:not([data-height-state="expanded"])
     .composer-card.has-input-thumbs > .prompt-row > #promptInput.prompt-input {
-    min-height: 119px !important;
+    min-height: 71px !important;
 }
 
 /* M66：顶排控件只保留一层总背景；参考、共创和模式切换不再绘制独立底框。 */
