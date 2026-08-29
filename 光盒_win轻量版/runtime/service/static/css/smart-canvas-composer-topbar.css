@@ -73,7 +73,8 @@
 
 .shell #composer .composer-card-topbar .composer-card-topbar-right {
     gap: 4px;
-    margin-right: -2px;
+    margin-right: 8px;
+    padding-right: 2px;
     justify-content: flex-end;
 }
 
@@ -99,10 +100,25 @@
 }
 
 .shell #composer .composer-card-topbar .co-create-switch-label {
-    font-size: var(--ui-type-control, 13px) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-family: var(--ui-font) !important;
+    font-size: 11.5px !important;
     font-weight: var(--ui-weight-medium, 445) !important;
     line-height: 1 !important;
     color: var(--ui-text-secondary) !important;
+}
+
+.shell #composer .composer-card-topbar .co-create-switch-label :is(i, svg) {
+    width: 14px !important;
+    height: 14px !important;
+    flex: 0 0 14px;
+}
+
+.shell #composer .composer-card-topbar .co-create-switch-track {
+    border-radius: 999px !important;
+    -webkit-border-radius: 999px !important;
 }
 
 .shell #composer .composer-card-topbar .co-create-switch.is-on,
