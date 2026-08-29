@@ -234,7 +234,7 @@
 
 .shell-user-menu-list {
     display: grid;
-    gap: var(--ui-space-1);
+    gap: var(--ui-space-3);
     padding: var(--ui-space-2) 0;
     border-top: 1px solid var(--ui-border);
 }
@@ -242,7 +242,7 @@
 .shell-user-menu-item {
     width: 100%;
     min-height: var(--ui-control-h-lg);
-    padding: 0 var(--ui-space-2);
+    padding: 2px var(--ui-space-2);
     display: grid;
     grid-template-columns: var(--ui-control-h-sm) minmax(0, 1fr) auto auto;
     align-items: center;
