@@ -8,8 +8,8 @@
     margin-bottom: -1px;
     box-sizing: border-box;
     align-items: center;
-    border: 1px solid var(--ui-border);
-    border-bottom-color: transparent;
+    border: 0;
+    border-color: transparent;
     border-radius: var(--ui-composer-topbar-radius) var(--ui-composer-topbar-radius) 0 0;
     background: var(--ui-surface-composer-topbar);
     box-shadow: none;
@@ -26,8 +26,8 @@
 }
 
 :is(html.theme-dark, html.studio-theme-dark) .shell #composer .composer-card-topbar {
-    border-color: rgba(255, 255, 255, .10);
-    border-bottom-color: transparent;
+    border: 0;
+    border-color: transparent;
     background: var(--ui-surface-composer-topbar);
 }
 

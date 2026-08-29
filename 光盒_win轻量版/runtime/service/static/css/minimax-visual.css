@@ -3399,8 +3399,8 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     height: calc(var(--ui-composer-topbar-h) + var(--ui-space-5)) !important;
     max-height: calc(var(--ui-composer-topbar-h) + var(--ui-space-5)) !important;
     min-height: calc(var(--ui-composer-topbar-h) + var(--ui-space-5)) !important;
-    border: var(--ui-shell-divider-size) solid var(--ui-border) !important;
-    border-bottom-color: transparent !important;
+    border: 0 !important;
+    border-color: transparent !important;
     border-radius: var(--ui-composer-topbar-radius) var(--ui-composer-topbar-radius) 0 0 !important;
     background: var(--ui-surface-composer-topbar) !important;
     box-shadow: none !important;
@@ -5403,7 +5403,10 @@ html:not(#ui-group-fg-1):not(#ui-group-fg-2):not(#ui-group-fg-3):not(#ui-group-f
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-material {
     background: rgba(31, 31, 31, .80) !important;
-    border-color: rgba(255, 255, 255, .16) !important;
+    border: 0 !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: 0 !important;
     -webkit-backdrop-filter: none!important;
     backdrop-filter: none!important;
 }
