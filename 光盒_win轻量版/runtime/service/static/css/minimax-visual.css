@@ -5827,3 +5827,10 @@ html:not(.theme-dark):not(.studio-theme-dark) body
     stroke: currentColor !important;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    html body #shell.shell #composer.composer .composer-footer
+        :is(.composer-tool-btn, .composer-api-settings-btn) .composer-tool-caret {
+        transition: none !important;
+    }
+}
+
