@@ -1,10 +1,18 @@
 /*
- * minimax-visual.css —— 几何兜底（清零重建版）
- * ================================================================
- * 旧版 5000+ 行视觉覆盖规则已全部移除。
- * 仅保留：画布窗口底色、桌面模式舞台直角。
- * 新视觉规则请写入 design-tokens.css 后在此或 ui-primitives 逐项追加。
+ * minimax-visual.css —— 清零重建版（逐项追加）
+ * 当前：画布底色、桌面直角、字体、窗口栏底色、输入框底色、参考线、连线
  */
+
+/* 全站字体 */
+html,
+body,
+button,
+input,
+select,
+textarea,
+.prompt-input {
+    font-family: var(--ui-font);
+}
 
 /* 深色画布底色 + 点阵 */
 html.studio-theme-dark body .shell,
@@ -41,7 +49,104 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
     background-size: var(--ui-canvas-grid-size, 18px) var(--ui-canvas-grid-size, 18px);
 }
 
-/* 桌面模式：画布舞台直角（外窗圆角由原生窗口提供） */
+/* 窗口栏 / 侧栏 / 顶栏壳层底色 */
+html body :is(
+    .lightbox-native-titlebar,
+    .mm-sidebar,
+    .shell-primary-rail,
+    .gpt-dock .dock-chrome,
+    .composer-card-topbar
+) {
+    background-color: var(--ui-surface-shell);
+}
+
+html body :is(
+    .mm-sidebar-nav,
+    .shell-user-menu,
+    .asset-panel,
+    .canvas-history-panel
+) {
+    background-color: var(--ui-surface-chrome);
+}
+
+/* 输入框底色 */
+html body :is(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+    textarea,
+    select,
+    .prompt-input,
+    .composer-card .prompt-input,
+    .lightbox-native-search
+) {
+    background-color: var(--ui-surface-input);
+}
+
+/* 智能参考线 */
+html body #shell.shell .smart-guide-line,
+html body .smart-guide-line {
+    stroke: var(--ui-canvas-guide, var(--ui-accent));
+    stroke-width: 0.5;
+    stroke-dasharray: 6 4;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    shape-rendering: geometricPrecision;
+    animation: ui-guide-flow .9s linear infinite;
+}
+
+html body .smart-guide-line.is-spacing {
+    stroke-dasharray: 3 3;
+}
+
+html body .canvas-dynamic-line-overlay .canvas-dynamic-line {
+    stroke: var(--ui-canvas-guide, var(--ui-accent));
+    stroke-width: .5;
+    stroke-dasharray: 6 4;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    shape-rendering: geometricPrecision;
+    animation: ui-guide-flow .9s linear infinite;
+}
+
+@keyframes ui-guide-flow {
+    to { stroke-dashoffset: -10; }
+}
+
+/* 连线：粗细恒定 + 默认/选中/拖拽态颜色 */
+html body #shell.shell .connection-layer .conn-line,
+html body #shell.shell .connection-layer .port-drag-temp,
+html body #shell.shell .connection-layer .port-link-pending-line,
+html body #shell.shell .connection-layer .selection-multi-port-line {
+    vector-effect: none;
+    stroke-width: calc(0.5px / var(--world-scale, 1));
+    stroke: var(--ui-canvas-connection);
+}
+
+html body #shell.shell .connection-layer .conn-hit {
+    stroke-width: calc(14px / var(--world-scale, 1));
+}
+
+html body #shell.shell .connection-layer :is(
+    .conn-pending,
+    .conn-cascade-active,
+    .port-drag-temp,
+    .port-link-pending-line,
+    .selection-multi-port-line.conn-pending
+) {
+    stroke: var(--ui-canvas-connection-active, var(--ui-accent));
+    stroke-dasharray: 5 8;
+}
+
+html body #shell.shell .connection-layer .conn-line.conn-selected {
+    stroke: var(--ui-canvas-connection-active, var(--ui-accent));
+    stroke-width: calc(2.2px / var(--world-scale, 1));
+}
+
+html body #shell.shell .connection-layer .conn-end.conn-selected-end {
+    fill: var(--ui-canvas-connection-active, var(--ui-accent));
+    stroke: var(--ui-canvas-connection-active, var(--ui-accent));
+}
+
+/* 桌面模式：画布舞台直角 */
 html.lightbox-desktop-native .stage,
 html.lightbox-desktop-native .stage.stage,
 html.lightbox-desktop-native #canvas.stage,

@@ -1,24 +1,35 @@
 /*
- * 光盒 Design Tokens —— 几何专用（清零重建版）
+ * 光盒 Design Tokens —— 清零重建版（逐项追加）
  * ================================================================
- * 当前仅保留三类值，供后续逐项重定视觉规则：
- *   1. 圆角
- *   2. 布局（间距 / z-index / 组件尺寸）
- *   3. 画布窗口底色（含点阵网格几何）
- *
- * 颜色 / 字阶 / 磨砂 / Hover / 投影等视觉规则已全部移除。
+ * 当前已登记：
+ *   - 画布窗口底色 + 点阵
+ *   - 窗口栏底色 / 输入框底色
+ *   - 参考线 / 连线颜色
+ *   - 字体与字阶
+ *   - 圆角 / 布局 / z-index
  */
 
 /* ================================================================
- * 1. 画布窗口底色
+ * 1. 表面底色（画布 / 窗口栏 / 输入框）
  * ================================================================ */
 :root {
     --ui-surface-canvas: #fcfcfc;
+    --ui-surface-chrome: #f7f7f8;   /* 窗口栏 / 侧栏 / 面板壳 */
+    --ui-surface-shell: #fafafb;      /* 顶栏 / 主导航壳 */
+    --ui-surface-input: #ffffff;      /* 输入框内部 */
+
+    --ui-accent: #0a84ff;
+    --ui-accent-rgb: 10, 132, 255;
 
     --ui-canvas-grid-dot: rgba(0, 0, 0, .11);
     --ui-canvas-grid-dot-size: 0.6px;
     --ui-canvas-grid-dot-fade: 1.1px;
     --ui-canvas-grid-size: 18px;
+
+    --ui-canvas-guide: var(--ui-accent);
+    --ui-canvas-connection: rgba(0, 0, 0, .28);
+    --ui-canvas-connection-active: var(--ui-accent);
+    --ui-canvas-port-active: var(--ui-accent);
 }
 
 html.theme-dark,
@@ -26,11 +37,88 @@ html.studio-theme-dark,
 body.theme-dark,
 body.studio-theme-dark {
     --ui-surface-canvas: #101010;
+    --ui-surface-chrome: #1f1f1f;
+    --ui-surface-shell: #1f1f1f;
+    --ui-surface-input: #1f1f1f;
+
     --ui-canvas-grid-dot: rgba(255, 255, 255, .055);
+    --ui-canvas-connection: rgba(255, 255, 255, .24);
 }
 
 /* ================================================================
- * 2. 间距（4 的倍数，特例 2/6）
+ * 2. 字体与字阶（深浅共用）
+ * ================================================================ */
+@font-face {
+    font-family: "MiSans Variable";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("/static/fonts/misans-variable.ttf?v=2026.08.23.1") format("truetype");
+}
+
+@font-face {
+    font-family: "MiSans Latin 350";
+    font-style: normal;
+    font-weight: 350;
+    font-display: swap;
+    src: url("/static/fonts/misans-latin-350.ttf?v=2026.08.23.1") format("truetype");
+    unicode-range: U+0000-024F, U+1E00-1EFF, U+2000-206F, U+20A0-20CF,
+        U+2100-214F, U+FF10-FF19, U+FF21-FF3A, U+FF41-FF5A;
+}
+
+@font-face {
+    font-family: "MiSans CJK 380";
+    font-style: normal;
+    font-weight: 350;
+    font-display: swap;
+    src: url("/static/fonts/misans-cjk-380.ttf?v=2026.08.23.1") format("truetype");
+    unicode-range: U+2E80-2FFF, U+3000-303F, U+31C0-31EF, U+3400-4DBF,
+        U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF, U+20000-2FA1F;
+}
+
+@font-face {
+    font-family: "MiSans CJK Body 330";
+    font-style: normal;
+    font-weight: 350;
+    font-display: swap;
+    src: url("/static/fonts/misans-cjk-body-330.ttf?v=2026.08.23.1") format("truetype");
+    unicode-range: U+2E80-2FFF, U+3000-303F, U+31C0-31EF, U+3400-4DBF,
+        U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF, U+20000-2FA1F;
+}
+
+:root {
+    --ui-font-variable: "MiSans Variable", "Microsoft YaHei UI", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    --ui-font: "MiSans Latin 350", "MiSans CJK 380", "MiSans Variable", "Microsoft YaHei UI", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    --ui-font-body-cjk: "MiSans CJK Body 330", var(--ui-font);
+    --ui-font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+
+    --ui-type-display: 18px;
+    --ui-type-page: 18px;
+    --ui-type-panel: 18px;
+    --ui-type-section: 16px;
+    --ui-type-body: 16px;
+    --ui-type-control: 16px;
+    --ui-type-compact-label: 14px;
+    --ui-type-project-title: var(--ui-type-compact-label);
+    --ui-type-meta: 11px;
+    --ui-type-micro: 11px;
+
+    --ui-weight-regular: 300;
+    --ui-weight-medium: 300;
+    --ui-weight-menu-strong: 300;
+    --ui-weight-semibold: 300;
+    --ui-weight-latin: 300;
+    --ui-weight-dock-body: 300;
+    --ui-weight-placeholder: 250;
+
+    --ui-leading-control: 1;
+    --ui-leading-tight: 1.2;
+    --ui-leading-body: 1.5;
+    --ui-tracking-title: -0.01em;
+}
+
+/* ================================================================
+ * 3. 间距（4 的倍数，特例 2/6）
  * ================================================================ */
 :root {
     --ui-space-1: 2px;
@@ -45,7 +133,7 @@ body.studio-theme-dark {
 }
 
 /* ================================================================
- * 3. 圆角
+ * 4. 圆角
  * ================================================================ */
 :root {
     --ui-radius-control: 6px;
@@ -61,7 +149,7 @@ body.studio-theme-dark {
 }
 
 /* ================================================================
- * 4. z-index 阶
+ * 5. z-index 阶
  * ================================================================ */
 :root {
     --ui-z-raised: 10;
@@ -76,7 +164,7 @@ body.studio-theme-dark {
 }
 
 /* ================================================================
- * 5. 布局尺寸
+ * 6. 布局尺寸
  * ================================================================ */
 :root {
     --ui-titlebar-h: 28px;
