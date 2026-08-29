@@ -428,7 +428,7 @@ body.studio-theme-dark .shell.theme-dark {
     --sc-accent-soft: rgba(var(--ui-accent-rgb), .22) !important;
     --sc-danger: var(--mm-danger) !important;
     --sc-success: var(--mm-success) !important;
-    --sc-blur: 0px !important;
+    --sc-blur: 0px;
     --sc-glass: var(--mm-chrome) !important;
     --sc-glass-strong: var(--mm-elevated) !important;
     --sc-shadow: none !important;
@@ -562,8 +562,8 @@ html:is(.theme-dark, .studio-theme-dark) body :is(
     background: var(--mm-chrome, #1b1b1b) !important;
     border-color: var(--mm-border, rgba(255, 255, 255, .08)) !important;
     box-shadow: var(--ui-shadow-pop) !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
     color: var(--mm-text, #ededed) !important;
 }/* 悬停：深色下去掉黑底/内发光，仅保留边框与文字反馈。左侧「最近创作/更早」小字标题除外。 */
 body.studio-theme-dark :is(button, .btn, .action-btn, .tool-btn, .icon-btn, .mini-btn, .secondary-btn, .primary-btn):not(:disabled):not(.mm-recent-group-head):not(.dock-chrome-title-trigger):hover,
@@ -633,8 +633,8 @@ body.studio-theme-dark :is(
     border: 1px solid rgba(255, 255, 255, .10) !important;
     color: var(--mm-text, #ededed) !important;
     box-shadow: var(--mm-shadow-pop, 0 12px 32px rgba(0, 0, 0, .5)) !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
 }html:is(.theme-dark, .studio-theme-dark) .node-context-menu button:hover,
 html:is(.theme-dark, .studio-theme-dark) .node-context-menu button:focus-visible,
 html:is(.theme-dark, .studio-theme-dark) .create-menu button:hover,
@@ -973,8 +973,8 @@ html.is-shell-embedded:not(.is-shell-asset-peek) body #shell.shell #assetPanel.a
     border-left: 1px solid var(--line, rgba(0, 0, 0, .10)) !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
     transform: translateX(calc(100% + 24px)) !important;
 }
 
@@ -1000,8 +1000,8 @@ html.is-shell-embedded .shell .canvas-history-panel {
     border-left: 1px solid var(--line, rgba(0, 0, 0, .10)) !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
     transform: translateX(calc(100% + 24px)) !important;
 }
 
@@ -3344,8 +3344,8 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     .composer-card > .composer-card-topbar {
     border-color: transparent !important;
     background: transparent !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
 }
 
 /* 磨砂底不再画在顶排伪元素上（改由 composer-card-material 承载，见下）。 */
@@ -3373,8 +3373,8 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     background: var(--ui-surface-composer-topbar) !important;
     box-shadow: none !important;
     pointer-events: none !important;
-    -webkit-backdrop-filter: var(--ui-composer-topbar-filter) !important;
-    backdrop-filter: var(--ui-composer-topbar-filter) !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
@@ -5032,8 +5032,8 @@ html:not(.theme-dark):not(.studio-theme-dark) body
     border: .5px solid rgba(255, 255, 255, .36) !important;
     border-radius: 28px !important;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22) !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
     opacity: 1 !important;
     visibility: visible !important;
 }
@@ -5082,9 +5082,9 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
 }
 
 /* ================================================================
- * Dark chrome unify: #1F1F1F @ 80% + blur(60px) + 1px fine border
+ * Dark chrome unify: #1F1F1F @ 80% + 1px fine border（无磨砂）
  * 覆盖：媒体工具栏、打组/解组胶囊、右键菜单、引用/创建面板、
- * 底部一级上拉菜单、左下用户菜单。引用面板取消内层磨砂。
+ * 底部一级上拉菜单、左下用户菜单。全部取消 backdrop blur。
  * :not(#ui-shadow-reset-*) matches M76 weight so float shadow cannot
  * erase toolbar / capsule / menu edges.
  * ================================================================ */
@@ -5094,11 +5094,11 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
     --mm-card: #1f1f1f;
     --panel: rgba(31, 31, 31, .80) !important;
     --sc-glass: rgba(31, 31, 31, .80);
-    --sc-blur: 60px;
+    --sc-blur: 0px;
     --sc-border: rgba(255, 255, 255, .16);
     --lightbox-chrome-bg: #1f1f1f;
     --ui-panel-frost: rgba(31, 31, 31, .80);
-    --ui-panel-frost-blur: blur(60px);
+    --ui-panel-frost-blur: none;
     --ui-panel-frost-border: rgba(255, 255, 255, .16);
 }
 
@@ -5145,8 +5145,8 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     border-color: rgba(255, 255, 255, .16) !important;
     outline: 0 !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: blur(60px) !important;
-    backdrop-filter: blur(60px) !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
 }
 
 /* 顶栏 / 左栏 / 右栏：深色统一单条 1px hairline（与右侧栏一致，禁止 inset 叠粗） */
@@ -5186,8 +5186,8 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     border-color: transparent !important;
     outline: 0 !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
 }
 
 /* 模式切换上拉：去掉内层 kind-toggle 实色壳，露出面板磨砂 */
@@ -5218,8 +5218,8 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     border-color: #ffffff !important;
     outline: 0 !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
     opacity: 1 !important;
     visibility: visible !important;
 }
@@ -5255,16 +5255,16 @@ html:not(#ui-group-fg-1):not(#ui-group-fg-2):not(#ui-group-fg-3):not(#ui-group-f
     background-color: #1f1f1f !important;
     background-image: none !important;
     border: 1px solid rgba(255, 255, 255, .16) !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-material {
     background: rgba(31, 31, 31, .80) !important;
     border-color: rgba(255, 255, 255, .16) !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
 }
 
 /* 右侧栏底部输入栏：细描边（压过 M76 float 阴影） */
@@ -5289,8 +5289,8 @@ html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .dock-open-btn.
     background-image: none !important;
     border: 1px solid rgba(255, 255, 255, .16) !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
 }
 
 html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .dock-open-btn.dock-open-btn {
@@ -5573,4 +5573,21 @@ html.studio-theme-dark #shell.shell #composer.composer .input-thumb-upload:is(:h
     background-color: rgba(255, 255, 255, .42) !important;
     background-image: none !important;
     color: rgba(255, 255, 255, .92) !important;
+}
+
+
+/* GLOBAL: cancel all backdrop frost */
+html, html.theme-dark, html.studio-theme-dark,
+html body, html.theme-dark body, html.studio-theme-dark body {
+    --ui-panel-frost-blur: none !important;
+    --ui-composer-topbar-filter: none !important;
+    --sc-blur: 0px !important;
+    --vs-glass-blur: none !important;
+    --canvas-glass-blur: none !important;
+}
+html body *,
+html.theme-dark body *,
+html.studio-theme-dark body * {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }

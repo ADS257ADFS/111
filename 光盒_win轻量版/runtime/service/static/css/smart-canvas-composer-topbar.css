@@ -13,8 +13,8 @@
     border-radius: var(--ui-composer-topbar-radius) var(--ui-composer-topbar-radius) 0 0;
     background: var(--ui-surface-composer-topbar);
     box-shadow: none;
-    backdrop-filter: var(--ui-composer-topbar-filter);
-    -webkit-backdrop-filter: var(--ui-composer-topbar-filter);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     overflow: visible;
 }
 
