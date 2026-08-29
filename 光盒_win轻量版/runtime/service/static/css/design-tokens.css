@@ -21,7 +21,7 @@
     /* 表面 */
     --ui-surface-canvas: #fcfcfc;        /* 画布底 */
     --ui-surface-chrome: #f7f7f8;        /* 窗口栏 / 侧栏 / 全局面板 */
-    --ui-surface-shell: #fafafb;         /* 顶部窗口栏 / 左侧主导航 */
+    --ui-surface-shell: #fafafb;         /* 顶部窗口栏 / 左侧主导航（浅灰壳层，与画布 #fcfcfc 拉开层次） */
     --ui-surface-card: #ffffff;          /* 卡片 / 面板内容底 */
     --ui-surface-elevated: #ffffff;      /* 菜单 / 弹层 */
     --ui-surface-input: #ffffff;         /* 输入框 */
@@ -79,13 +79,17 @@ html.studio-theme-dark,
 body.theme-dark,
 body.studio-theme-dark {
     --ui-surface-canvas: #101010;
-    --ui-surface-chrome: #1b1b1b;
-    --ui-surface-shell: #181818;
-    --ui-surface-card: #212121;
-    --ui-surface-elevated: #232323;
-    --ui-surface-input: #1e1e1e;
-    --ui-surface-composer: #181818;
-    --ui-surface-composer-topbar: rgba(255, 255, 255, .04);
+    --ui-surface-chrome: #1f1f1f;
+    --ui-surface-shell: #1f1f1f;
+    --ui-surface-card: #1f1f1f;
+    --ui-surface-elevated: #1f1f1f;
+    --ui-surface-input: #1f1f1f;
+    --ui-surface-composer: #1f1f1f;      /* 底部输入栏：实色，无磨砂 */
+    --ui-surface-dock-composer: #242424;
+    --ui-surface-composer-topbar: rgba(31, 31, 31, .72);
+    --ui-panel-frost: rgba(31, 31, 31, .80);
+    --ui-panel-frost-blur: none;
+    --ui-panel-frost-border: rgba(255, 255, 255, .16);
 
     --ui-hover: rgba(255, 255, 255, .07);
     --ui-active: rgba(255, 255, 255, .11);
@@ -170,13 +174,13 @@ body.studio-theme-dark {
     --ui-font-body-cjk: "MiSans CJK Body 330", var(--ui-font);
     --ui-font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
 
-    --ui-type-display: 16px;   /* 展示标题与页级标题统一 */
+    --ui-type-display: 16px;   /* 展示标题与页级标题 */
     --ui-type-page: 16px;      /* 页级标题 */
-    --ui-type-panel: 14px;     /* 面板标题 */
-    --ui-type-section: 14px;   /* 分区标题 / 菜单项 */
-    --ui-type-body: 14px;      /* 正文 */
-    --ui-type-control: 14px;   /* 控件文字 */
-    --ui-type-compact-label: 12.5px; /* 项目名 / 画布底栏 / 对象工具栏 */
+    --ui-type-panel: 13px;     /* 面板标题 */
+    --ui-type-section: 13px;   /* 分区标题 / 菜单项 */
+    --ui-type-body: 13px;      /* 正文 */
+    --ui-type-control: 13px;   /* 控件文字 */
+    --ui-type-compact-label: 13px; /* 项目名 / 画布底栏 / 对象工具栏 */
     --ui-type-project-title: var(--ui-type-compact-label); /* 左侧最近创作项目名称 */
     --ui-type-meta: 11px;      /* 次要信息 */
     --ui-type-micro: 11px;     /* 徽标 / 角标 */
@@ -270,19 +274,21 @@ body.studio-theme-dark {
 :root {
     --ui-titlebar-h: 28px;
     --ui-sidebar-w: 208px;
-    --ui-sidebar-logo-h: 9.333px;
+    --ui-sidebar-logo-h: 14px; /* Welcome mark; +1/5 vs 11.7px */
     --ui-dock-w: 460px;
-    --ui-composer-w: 760px;
+    --ui-composer-w: 770px;
     --ui-composer-surface-h: 174px;
     --ui-composer-surface-side-inset: 7px;
     --ui-composer-surface-bottom-gap: 15px;
-    --ui-composer-topbar-h: 30px;
-    --ui-composer-topbar-growth: -10px;
-    --ui-composer-topbar-content-inset: 1px;
-    --ui-composer-topbar-filter: blur(14px) saturate(120%);
+    /* Tall enough for 28px 参考/批量/模式 controls; white surface starts below. */
+    --ui-composer-topbar-h: 40px;
+    --ui-composer-topbar-offset: 4px;
+    --ui-composer-topbar-growth: 0px;
+    --ui-composer-topbar-content-inset: 0px;
+    --ui-composer-topbar-filter: none;
     --ui-composer-topbar-radius: calc(var(--ui-radius-panel) + var(--ui-space-2));
     --ui-composer-surface-top: var(--ui-composer-topbar-h);
-    --ui-composer-prompt-padding-top: var(--ui-space-7);
+    --ui-composer-prompt-padding-top: var(--ui-composer-topbar-h);
     --ui-control-h: 28px;      /* 常规控件高度 */
     --ui-control-h-sm: 24px;   /* 小号（标题栏 / 工具条内） */
     --ui-control-h-lg: 32px;   /* 菜单项 / 强操作行 */
@@ -311,7 +317,7 @@ body.studio-theme-dark {
     --ui-canvas-selection: var(--ui-accent);
     --ui-canvas-selection-fill: rgba(var(--ui-accent-rgb), .08);
     --ui-canvas-node-border-size: 1px;
-    --ui-canvas-node-selected-border-size: 1.5px;
+    --ui-canvas-node-selected-border-size: 1.65px;
     --ui-canvas-guide: var(--ui-accent);
     --ui-canvas-port: var(--ui-text-secondary);
     --ui-canvas-port-active: var(--ui-accent);
@@ -323,7 +329,7 @@ html.theme-dark,
 html.studio-theme-dark,
 body.theme-dark,
 body.studio-theme-dark {
-    --ui-canvas-grid-dot: rgba(255, 255, 255, .055);
+    --ui-canvas-grid-dot: rgba(255, 255, 255, .10);
     --ui-canvas-selection-fill: rgba(var(--ui-accent-rgb), .12);
     --ui-canvas-connection: rgba(255, 255, 255, .24);
 }
