@@ -48,7 +48,10 @@
             ? textRefs
             : (node ? deps.visibleReferenceImagesFor(node) : []);
         const dedup = global.SmartCanvasComposerInputThumbs?.orderedInputThumbItems?.(node, rawRefs) || rawRefs;
+        const count = Array.isArray(dedup) ? dedup.length : 0;
         row.classList.toggle('has-items', Boolean(node));
+        row.classList.toggle('has-previews', count > 0);
+        row.classList.toggle('is-stacked', count > 1);
         if(!node){ row.innerHTML = ''; return; }
         const thumbsHtml = dedup.map((img, i) => {
             const isVid = deps.isVideoMediaItem(img);
@@ -59,10 +62,10 @@
             const inner = isVid ? `<video src="${deps.escapeHtml(img.url)}" muted preload="metadata" playsinline disablepictureinpicture controlslist="nodownload noplaybackrate noremoteplayback"></video>` : `<img src="${deps.escapeHtml(img.url)}" draggable="false">`;
             const label = `图${i + 1}`;
             const sourceUrl = img.originalLocalUrl || img.url || '';
-            return `<div class="input-thumb ${isSelf ? 'input-self' : ''}" draggable="false" data-reorderable="${dedup.length > 1 ? 'true' : 'false'}" data-thumb-index="${i}" data-node-id="${deps.escapeHtml(img.nodeId || '')}" data-image-index="${img.imageIndex ?? ''}" data-url="${deps.escapeHtml(img.url || '')}" data-source-url="${deps.escapeHtml(sourceUrl)}" title="${deps.escapeHtml(`${img.name || deps.tr('smart.inputNum').replace('{n}', String(i + 1))} · ${title}`)}">${inner}<span class="input-thumb-label">${deps.escapeHtml(label)}</span></div>`;
+            return `<div class="input-thumb ${isSelf ? 'input-self' : ''}" style="--thumb-i:${i}" draggable="false" data-reorderable="${count > 1 ? 'true' : 'false'}" data-thumb-index="${i}" data-node-id="${deps.escapeHtml(img.nodeId || '')}" data-image-index="${img.imageIndex ?? ''}" data-url="${deps.escapeHtml(img.url || '')}" data-source-url="${deps.escapeHtml(sourceUrl)}" title="${deps.escapeHtml(`${img.name || deps.tr('smart.inputNum').replace('{n}', String(i + 1))} · ${title}`)}">${inner}<span class="input-thumb-label">${deps.escapeHtml(label)}</span></div>`;
         }).join('');
         const uploadButton = `<button type="button" class="input-thumb input-thumb-upload" data-input-upload-media="1" title="上传并连接素材" aria-label="上传并连接素材"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-linecap="round"/></svg></button>`;
-        row.innerHTML = `<div class="input-thumb-list">${thumbsHtml}${uploadButton}${dedup.length > 1 ? `<span class="input-thumb-count">${deps.escapeHtml(deps.tr('smart.inputCount').replace('{n}', String(dedup.length)))}</span>` : ''}</div>`;
+        row.innerHTML = `<div class="input-thumb-list" style="--thumb-count:${Math.max(count, 0)}">${thumbsHtml}${uploadButton}</div>`;
         if(typeof deps.bindInputThumbsDrag === 'function') deps.bindInputThumbsDrag(node, dedup);
         global.SmartCanvasComposerInputThumbs?.bindInputThumbReferenceActions?.();
     }

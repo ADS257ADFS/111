@@ -109,3 +109,132 @@
 .shell #composer .composer-card-topbar .composer-kind-toggle .composer-mode-glider {
     height: var(--composer-mode-glider-height, 24px);
 }
+
+/* 预览图挂在上方窄条左侧：空态只有 +；多图叠放；悬停横向展开 */
+.shell #composer .composer-card-topbar-left {
+    position: relative;
+    z-index: 5;
+    flex: 0 1 auto;
+    align-items: flex-end;
+    align-self: flex-end;
+    min-height: 0;
+    overflow: visible;
+    pointer-events: auto;
+}
+
+.shell #composer .composer-card-topbar .input-thumbs-row {
+    display: none;
+    grid-area: auto;
+    position: relative;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0;
+    margin: 0 0 -2px;
+    min-width: 0;
+    overflow: visible;
+}
+
+.shell #composer .composer-card-topbar .input-thumbs-row.has-items {
+    display: flex;
+}
+
+.shell #composer .composer-card-topbar .input-thumb-list {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    min-width: 0;
+    height: 36px;
+    padding: 0;
+    overflow: visible;
+}
+
+.shell #composer .composer-card-topbar .input-thumb {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, .88);
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .18);
+    transform: translateY(-10px);
+    transition: transform .18s ease, margin .18s ease, left .18s ease, box-shadow .18s ease;
+}
+
+.shell #composer .composer-card-topbar .input-thumb:hover {
+    border-color: rgba(255, 255, 255, .95);
+    transform: translateY(-10px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .22);
+}
+
+.shell #composer .composer-card-topbar .input-thumb-label,
+.shell #composer .composer-card-topbar .input-thumb-count {
+    display: none !important;
+}
+
+.shell #composer .composer-card-topbar .input-thumb-upload {
+    border: 1px solid rgba(255, 255, 255, .88) !important;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .18) !important;
+}
+
+.shell #composer .composer-card-topbar .input-thumb-upload:is(:hover, :focus-visible, :active) {
+    border-color: rgba(255, 255, 255, .95) !important;
+    background: #ffffff !important;
+    background-image: none !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .18) !important;
+}
+
+.shell #composer .composer-card-topbar .input-thumb-upload svg {
+    transform: translateY(5px);
+}
+
+/* 多图默认叠放（图二） */
+.shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within) .input-thumb-list {
+    width: calc(36px + (min(var(--thumb-count, 1), 5) - 1) * 10px + 40px);
+}
+
+.shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within)
+    .input-thumb:not(.input-thumb-upload) {
+    position: absolute;
+    left: calc(var(--thumb-i, 0) * 10px);
+    bottom: 0;
+    margin: 0;
+    z-index: calc(2 + var(--thumb-i, 0));
+    transform: translateY(-10px) rotate(calc((var(--thumb-i, 0) - 1) * 4deg));
+}
+
+.shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within)
+    .input-thumb-upload {
+    position: absolute;
+    left: calc(min(var(--thumb-count, 1), 5) * 10px + 14px);
+    bottom: 0;
+    z-index: 20;
+    transform: translateY(-10px) rotate(6deg);
+}
+
+/* 悬停横向展开（图三） */
+.shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:is(:hover, :focus-within) .input-thumb-list {
+    gap: 8px;
+    width: auto;
+}
+
+.shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:is(:hover, :focus-within) .input-thumb {
+    position: relative;
+    left: auto !important;
+    z-index: 2;
+    transform: translateY(-10px) rotate(0deg);
+}
+
+html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar
+    .input-thumb-upload,
+html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar
+    .input-thumb-upload:is(:hover, :focus-visible, :active) {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    border-color: rgba(255, 255, 255, .92) !important;
+    color: #1a1a1a !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .22) !important;
+}

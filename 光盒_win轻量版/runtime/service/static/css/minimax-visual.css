@@ -3486,7 +3486,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover {
     color: var(--ui-text) !important;
-    background: #000000 !important;
+    background: transparent !important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
@@ -4878,8 +4878,8 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch):is(:hover, :focus-visible):not(.is-on):not([aria-pressed="true"]),
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card-topbar #apiKindToggle button:is(:hover, .is-mode-hover):not(.active) {
-    background: #000000 !important;
-    background-color: #000000 !important;
+    background: transparent !important;
+    background-color: transparent !important;
     background-image: none !important;
 }
 
@@ -5508,4 +5508,39 @@ html:not(#ui-dark-hov-flat-1):not(#ui-dark-hov-flat-2):not(#ui-dark-hov-flat-3):
 body .mm-sidebar .mm-recent-item:is(:hover, :focus-within, .menu-open, .active) {
     background-image: none !important;
     box-shadow: none !important;
+}
+
+/* 深色：彻底取消按钮悬停黑色圆角底（含顶栏 / 上传+ / 普通 button） */
+html:not(#ui-no-black-hov-1):not(#ui-no-black-hov-2):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer :is(
+    button,
+    .composer-asset-shortcut,
+    .co-create-switch,
+    .input-thumb-upload,
+    .composer-tool-btn,
+    .composer-api-settings-btn,
+    .composer-height-toggle
+):not(.run-btn):not(.cascade-run-btn):not(.primary):not(.primary-btn):not(.is-stop):not([aria-pressed="true"].co-create-switch):not(.is-on)
+:is(:hover, :focus-visible) {
+    background-image: none !important;
+    box-shadow: none !important;
+}
+html:not(#ui-no-black-hov-1):not(#ui-no-black-hov-2):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer :is(
+    .composer-asset-shortcut,
+    .co-create-switch,
+    .composer-height-toggle
+):not(.is-on):not([aria-pressed="true"])
+:is(:hover, :focus-visible) {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+html:not(#ui-no-black-hov-1):not(#ui-no-black-hov-2):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer .input-thumb-upload:is(:hover, :focus-visible, :active),
+html:not(#ui-no-black-hov-1):not(#ui-no-black-hov-2):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer .input-thumb-upload {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #1a1a1a !important;
 }
