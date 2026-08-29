@@ -18,7 +18,7 @@ internal static class LightboxLauncher
             return;
         }
 
-        Process.Start(new ProcessStartInfo
+        var startInfo = new ProcessStartInfo
         {
             FileName = python,
             Arguments = "\"" + script + "\"",
@@ -26,6 +26,12 @@ internal static class LightboxLauncher
             UseShellExecute = false,
             CreateNoWindow = true,
             WindowStyle = ProcessWindowStyle.Hidden
-        });
+        };
+
+        // The embedded Python runtime is part of the checked-out application
+        // bundle. Keep imports from rewriting tracked __pycache__ files every
+        // time Lightbox starts.
+        startInfo.EnvironmentVariables["PYTHONDONTWRITEBYTECODE"] = "1";
+        Process.Start(startInfo);
     }
 }
