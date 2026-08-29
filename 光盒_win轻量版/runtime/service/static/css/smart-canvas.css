@@ -5065,6 +5065,13 @@ html.canvas-performance-mode .image-node,
     contain: layout style;
 }
 
+/* Ports size/shadow via --world-scale; kill their transitions during pan/zoom too. */
+html.canvas-performance-mode .node-port,
+.world.viewport-transform-active .node-port {
+    transition: none !important;
+    animation: none !important;
+}
+
 /* While panning/zooming, force moving float chrome to solid fill (no blur thrash). */
 .world.viewport-transform-active ~ #imageQuickToolbar,
 .world.viewport-transform-active ~ #selectionBoxCapsule .selection-capsule-bar,

@@ -60,12 +60,11 @@ function applyViewport(options={}){
         S().viewport.y = Math.round(S().viewport.y * devicePixelRatio) / devicePixelRatio;
         S().world.style.transform = `translate(${S().viewport.x}px, ${S().viewport.y}px) scale(${S().viewport.scale})`;
     }
-    // Keep screen-constant strokes (selection border, ports) in sync during
-    // transform-only pan/zoom — otherwise borders thicken/thin with the scale.
-    S().world.style.setProperty('--world-scale', String(S().viewport.scale));
-    const generationLoaderCompensation = Math.min(2.4, Math.max(1, 1 / S().viewport.scale));
-    S().world.style.setProperty('--generation-loader-compensation', String(generationLoaderCompensation));
+    // transformOnly pan/zoom: only touch compositor transform. Writing --world-scale
+    // here invalidates every descendant (wires, ports, selection borders) every frame.
+    // flushViewportApply / settle path syncs --world-scale once after the gesture.
     if(options.transformOnly) return;
+    S().world.style.setProperty('--world-scale', String(S().viewport.scale));
     if(options.light) return;
     S().shell.style.backgroundSize = '24px 24px';
     S().shell.style.backgroundPosition = '0 0';
