@@ -5027,7 +5027,7 @@ html body #shell.shell .image-node:is(:hover,.selected) .node-resize-handle {
 }
 
 /* Dense canvases trade GPU-heavy glass on nodes/panels for interaction.
-   Float chrome keeps blur(60px) — only kill during pan/zoom below. */
+   Float chrome blur is also killed under canvas-performance-mode (always on). */
 html.canvas-performance-mode :is(
     .image-node,
     .image-resolution-badge,
