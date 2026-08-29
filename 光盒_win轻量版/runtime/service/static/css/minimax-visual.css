@@ -3391,6 +3391,19 @@ html body #shell.shell #composer.composer:not([data-height-state="expanded"])
     min-height: 71px !important;
 }
 
+/* 预览已挪到顶栏：把原先 thumbs 行高度还给输入区，底部栏总高不变 */
+html body #shell.shell #composer.composer:not([data-height-state="expanded"])
+    .composer-card:has(#inputThumbsRow.has-items) > .prompt-row {
+    min-height: calc(119px + var(--ui-composer-prompt-padding-top)) !important;
+    height: calc(119px + var(--ui-composer-prompt-padding-top)) !important;
+    max-height: calc(119px + var(--ui-composer-prompt-padding-top)) !important;
+}
+
+html body #shell.shell #composer.composer:not([data-height-state="expanded"])
+    .composer-card:has(#inputThumbsRow.has-items) > .prompt-row > #promptInput.prompt-input {
+    min-height: 119px !important;
+}
+
 /* M66：顶排控件只保留一层总背景；参考、共创和模式切换不再绘制独立底框。 */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card-topbar :is(.composer-asset-shortcuts, .co-create-bar, .composer-kind-toggle) {
@@ -3435,15 +3448,15 @@ html body #shell.shell #composer.composer:not([data-height-state="expanded"])
     transition: background-color var(--ui-motion-fast) var(--ui-ease), color var(--ui-motion-fast) var(--ui-ease) !important;
 }
 
-/* 参考 / 批量：悬停浅色底 */
+/* 参考 / 批量：悬停不要底框 */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch):is(:hover, :focus-visible):not(.is-on):not([aria-pressed="true"]) {
-    background: rgba(var(--ui-accent-rgb), .08) !important;
+    background: transparent !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch):is(:hover, :focus-visible):not(.is-on):not([aria-pressed="true"]) {
-    background: var(--ui-hover) !important;
+    background: transparent !important;
 }
 
 /* 四模式切换：选中由 glider 胶囊承载；悬停仅白底圆角，文字颜色不变（同批量） */
@@ -4336,7 +4349,7 @@ html.lightbox-desktop-native .create-menu[style] {
 
 /* Desktop composer footer control height (keep in sync with dock send). */
 html.lightbox-desktop-native #composer.composer {
-    --composer-footer-h: 36px;
+    --composer-footer-h: 40px;
 }
 
 /* ================================================================
@@ -5516,11 +5529,10 @@ body #shell.shell #composer.composer :is(
     button,
     .composer-asset-shortcut,
     .co-create-switch,
-    .input-thumb-upload,
     .composer-tool-btn,
     .composer-api-settings-btn,
     .composer-height-toggle
-):not(.run-btn):not(.cascade-run-btn):not(.primary):not(.primary-btn):not(.is-stop):not([aria-pressed="true"].co-create-switch):not(.is-on)
+):not(.run-btn):not(.cascade-run-btn):not(.primary):not(.primary-btn):not(.is-stop):not([aria-pressed="true"].co-create-switch):not(.is-on):not(.input-thumb-upload)
 :is(:hover, :focus-visible) {
     background-image: none !important;
     box-shadow: none !important;
