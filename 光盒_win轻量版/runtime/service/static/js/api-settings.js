@@ -6,12 +6,27 @@ let customModelsOpen = false;
 let customModels = null;
 let customModelsSaveTimer = null;
 const CUSTOM_MODEL_MODES = [
-    ['image', '生图', 'image_models'],
+    ['image', '图片', 'image_models'],
     ['text', '文本', 'chat_models'],
     ['video', '视频', 'video_models'],
     ['audio', '音频', 'audio_models']
 ];
+/** 主路径：按用途分类；次要：中转站管理 */
+let apiView = 'category'; // category | stations
+let activeCategory = 'image'; // image | text | video | audio
+let selectedDisplayIndex = 0;
+/** 拉取选择器：为某个显示名绑定时，锁定用途并单选 */
+let pickerBindMode = false;
+let pickerLockedCat = null; // image|chat|video|audio|null
+const CATEGORY_LABELS = { image:'图片', text:'文本', video:'视频', audio:'音频' };
 const providerList = document.getElementById('providerList');
+const displayNameList = document.getElementById('displayNameList');
+const bindingPanel = document.getElementById('bindingPanel');
+const bindingBody = document.getElementById('bindingBody');
+const bindingTitle = document.getElementById('bindingTitle');
+const bindingSub = document.getElementById('bindingSub');
+const bindingStatusPill = document.getElementById('bindingStatusPill');
+const stationEditor = document.getElementById('stationEditor');
 const editorTitle = document.getElementById('editorTitle');
 const editorSub = document.getElementById('editorSub');
 const statusEl = document.getElementById('status');
@@ -61,6 +76,15 @@ const RECOMMENDED_APIS = [
     }
 ];
 
+function categoryMeta(mode){
+    return CUSTOM_MODEL_MODES.find(row => row[0] === mode) || CUSTOM_MODEL_MODES[0];
+}
+function pickerCatForMode(mode){
+    return mode === 'text' ? 'chat' : mode;
+}
+function modeForPickerCat(cat){
+    return cat === 'chat' ? 'text' : cat;
+}
 function refreshIcons(){ if(window.lucide) lucide.createIcons(); }
 function tr(key){ return window.StudioI18n ? window.StudioI18n.t(key) : key; }
 function trf(key, vars={}){
@@ -285,24 +309,9 @@ function providerDragAttrs(item){
     return ` draggable="true" data-provider-id="${id}" ondragstart="handleProviderDragStart(event,'${id}')" ondragover="handleProviderDragOver(event,'${id}')" ondrop="handleProviderDrop(event,'${id}')" ondragend="handleProviderDragEnd()"`;
 }
 function renderProviderList(){
-    const overviewCard = `
-        <button class="provider-card provider-overview-card ${overviewOpen ? 'active' : ''}" type="button" data-provider-overview="1" onclick="selectOverview()">
-            <span class="provider-mark"><i data-lucide="layout-grid" class="w-4 h-4"></i></span>
-            <span class="provider-info">
-                <div class="provider-name">${escapeHtml(tr('api.overview'))}</div>
-                <div class="provider-meta">${escapeHtml(tr('api.overviewSub'))}</div>
-            </span>
-        </button>`;
-    const customModelsCard = `
-        <button class="provider-card provider-custom-models-card ${customModelsOpen ? 'active' : ''}" type="button" onclick="selectCustomModels()">
-            <span class="provider-mark"><i data-lucide="bookmark" class="w-4 h-4"></i></span>
-            <span class="provider-info">
-                <div class="provider-name">我的模型</div>
-                <div class="provider-meta">固定名字绑定中转站模型</div>
-            </span>
-        </button>`;
+    if(!providerList) return;
     const providerCards = sortedProviders().map(item => {
-        const active = !overviewOpen && !customModelsOpen && item.id === selectedId ? 'active' : '';
+        const active = apiView === 'stations' && !overviewOpen && item.id === selectedId ? 'active' : '';
         const stateClass = item.enabled === false ? 'is-disabled' : (item.has_key ? 'has-key' : 'missing-key');
         const protocolLabel = String(item.protocol || 'openai').toUpperCase();
         return `
@@ -320,9 +329,244 @@ function renderProviderList(){
             </button>
         `;
     }).join('');
-    providerList.innerHTML = overviewCard + customModelsCard + providerCards;
+    providerList.innerHTML = providerCards || '<div class="provider-empty-hint">还没有中转站，点下方新增</div>';
+    refreshIcons();
+    syncApiModeTabs();
+}
+
+function syncApiModeTabs(){
+    const onStations = apiView === 'stations';
+    document.body.classList.toggle('api-view-category', !onStations);
+    document.body.classList.toggle('api-view-stations', onStations);
+    document.body.classList.toggle('show-custom-models', !onStations);
+    document.querySelectorAll('[data-api-category]').forEach(btn => {
+        const on = !onStations && btn.dataset.apiCategory === activeCategory;
+        btn.classList.toggle('is-active', on);
+        btn.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.getElementById('apiStationsBtn')?.classList.toggle('is-active', onStations);
+    if(displayNameList) displayNameList.hidden = onStations;
+    if(providerList) providerList.hidden = !onStations;
+    const addBtn = document.getElementById('addProviderBtn');
+    if(addBtn) addBtn.hidden = !onStations;
+    if(bindingPanel) bindingPanel.hidden = onStations;
+    if(stationEditor) stationEditor.hidden = !onStations;
+    const sideTitle = document.getElementById('apiSideTitle');
+    const sideNote = document.getElementById('apiSideNote');
+    const pageSub = document.getElementById('apiPageSub');
+    if(sideTitle) sideTitle.textContent = onStations ? '① 选择中转站' : `① ${CATEGORY_LABELS[activeCategory] || ''}显示名`;
+    if(sideNote){
+        sideNote.hidden = onStations;
+        sideNote.textContent = '画布底部模型菜单显示这些名字；未绑定的会置灰。';
+    }
+    if(pageSub){
+        pageSub.textContent = onStations
+            ? '中转站只负责连接与模型库存；回到分类页把真实模型绑到显示名'
+            : '先选用途分类 → 点画布显示名 → 绑中转站里的真实模型';
+    }
+}
+
+function selectPlatformsMode(){
+    selectStationsView();
+}
+
+function selectStationsView(){
+    // 分类页未打开中转站表单，勿 sync 空表单覆盖真实配置
+    if(apiView === 'stations') syncEditor();
+    apiView = 'stations';
+    customModelsOpen = false;
+    overviewOpen = false;
+    recommendInlineOpen = false;
+    syncRecommendView?.();
+    const first = sortedProviders().find(item => item.id === selectedId) || sortedProviders()[0];
+    if(first){
+        selectedId = first.id;
+        renderEditor();
+    } else {
+        renderProviderList();
+        syncApiModeTabs();
+    }
+}
+
+async function selectApiCategory(mode){
+    if(!CUSTOM_MODEL_MODES.some(row => row[0] === mode)) mode = 'image';
+    apiView = 'category';
+    activeCategory = mode;
+    overviewOpen = false;
+    customModelsOpen = true;
+    document.body.classList.remove('show-provider-overview');
+    await ensureCustomModelsLoaded();
+    const rows = Array.isArray(customModels?.[mode]) ? customModels[mode] : [];
+    if(selectedDisplayIndex >= rows.length) selectedDisplayIndex = 0;
+    renderDisplayNameList();
+    renderBindingPanel();
+    syncApiModeTabs();
     refreshIcons();
 }
+
+function renderDisplayNameList(){
+    if(!displayNameList || !customModels) return;
+    const rows = Array.isArray(customModels[activeCategory]) ? customModels[activeCategory] : [];
+    if(!rows.length){
+        displayNameList.innerHTML = '<div class="provider-empty-hint">该分类暂无显示名</div>';
+        return;
+    }
+    displayNameList.innerHTML = rows.map((row, index) => {
+        const bound = !!(row.provider_id && row.model);
+        const active = index === selectedDisplayIndex ? 'active' : '';
+        const owner = visibleProviders().find(item => item.id === row.provider_id);
+        return `
+            <button class="provider-card display-name-card ${active} ${bound ? 'has-key' : 'missing-key'}" type="button" onclick="selectDisplayName(${index})">
+                <span class="provider-mark"><i data-lucide="${bound ? 'link-2' : 'unplug'}" class="w-4 h-4"></i></span>
+                <span class="provider-info">
+                    <div class="provider-name">${escapeHtml(row.name || `未命名 ${index + 1}`)}</div>
+                    <div class="provider-meta">${bound
+                        ? escapeHtml(`${owner?.name || row.provider_id} · ${row.model}`)
+                        : '未绑定中转站模型'}</div>
+                </span>
+                <span class="provider-side-meta">
+                    <span class="provider-status-dot"></span>
+                </span>
+            </button>
+        `;
+    }).join('');
+    refreshIcons();
+}
+
+function selectDisplayName(index){
+    selectedDisplayIndex = Math.max(0, Number(index) || 0);
+    renderDisplayNameList();
+    renderBindingPanel();
+}
+
+async function ensureCustomModelsLoaded(){
+    if(customModels) return true;
+    try {
+        const data = await fetch('/api/custom-models', {cache:'no-store'}).then(r => r.json());
+        customModels = data.models || {};
+        return true;
+    } catch(err) {
+        setStatus('加载画布显示名失败');
+        customModels = null;
+        return false;
+    }
+}
+
+function renderBindingPanel(){
+    if(!bindingBody) return;
+    const rows = Array.isArray(customModels?.[activeCategory]) ? customModels[activeCategory] : [];
+    const row = rows[selectedDisplayIndex];
+    const [, title, listKey] = categoryMeta(activeCategory);
+    if(!row){
+        if(bindingTitle) bindingTitle.textContent = `${title}显示名`;
+        if(bindingSub) bindingSub.textContent = '该分类还没有可绑定的显示名';
+        if(bindingStatusPill){
+            bindingStatusPill.textContent = '无';
+            bindingStatusPill.className = 'binding-status-pill is-unbound';
+        }
+        bindingBody.innerHTML = '<div class="binding-empty">该分类暂无显示名</div>';
+        return;
+    }
+    const bound = !!(row.provider_id && row.model);
+    const options = visibleProviders().filter(item => item.enabled !== false);
+    const owner = options.find(item => item.id === row.provider_id);
+    const suggestions = unique(owner?.[listKey] || []);
+    const datalistId = `bindingModelOptions-${activeCategory}-${selectedDisplayIndex}`;
+    if(bindingTitle) bindingTitle.textContent = row.name;
+    if(bindingSub) bindingSub.textContent = `用途：${title} · 只拉取/选用本类模型，绑到这个画布显示名`;
+    if(bindingStatusPill){
+        bindingStatusPill.textContent = bound ? '已绑定' : '未绑定';
+        bindingStatusPill.className = `binding-status-pill ${bound ? 'is-bound' : 'is-unbound'}`;
+    }
+    bindingBody.innerHTML = `
+        <section class="block binding-block">
+            <div class="block-head">
+                <div>
+                    <div class="block-title">② 选择中转站</div>
+                    <div class="block-desc">中转站在「中转站」页管理连接与 Key；这里只挑选要用哪一家</div>
+                </div>
+                <button class="ghost-btn" type="button" onclick="selectStationsView()"><i data-lucide="server" class="w-3.5 h-3.5"></i><span>管理中转站</span></button>
+            </div>
+            <div class="form">
+                <label class="field">
+                    <span class="label">中转站</span>
+                    <div class="field-frame">
+                        <select id="bindingProviderSelect" onchange="updateBindingProvider(this.value)">
+                            <option value="">未绑定</option>
+                            ${options.map(item => `<option value="${escapeAttr(item.id)}" ${item.id === row.provider_id ? 'selected' : ''}>${escapeHtml(item.name || item.id)}</option>`).join('')}
+                        </select>
+                    </div>
+                </label>
+            </div>
+        </section>
+        <section class="block binding-block">
+            <div class="block-head">
+                <div>
+                    <div class="block-title">③ 绑定真实${title}模型</div>
+                    <div class="block-desc">可从已选用列表联想，或拉取上游后只勾选本类模型</div>
+                </div>
+                <div class="models-toolbar-actions">
+                    <button class="action-btn primary-btn" type="button" onclick="fetchModelsForBinding()" ${row.provider_id ? '' : 'disabled'}>
+                        <i data-lucide="download-cloud" class="w-3.5 h-3.5"></i>
+                        <span>拉取${title}模型</span>
+                    </button>
+                </div>
+            </div>
+            <div class="form">
+                <label class="field">
+                    <span class="label">真实模型名</span>
+                    <div class="field-frame">
+                        <input id="bindingModelInput" type="text" list="${datalistId}" value="${escapeAttr(row.model || '')}" placeholder="例如 gpt-4.1 / hailuo-02" oninput="updateBindingModel(this.value)">
+                    </div>
+                    <datalist id="${datalistId}">${suggestions.map(model => `<option value="${escapeAttr(model)}"></option>`).join('')}</datalist>
+                    <span class="hint">${suggestions.length ? `该站已有 ${suggestions.length} 个${title}模型可联想` : (row.provider_id ? `该站还没有${title}模型库存，请先拉取` : '先选择中转站')}</span>
+                </label>
+            </div>
+        </section>
+    `;
+    refreshIcons();
+}
+
+function updateBindingProvider(providerId){
+    updateCustomModel(activeCategory, selectedDisplayIndex, 'provider_id', providerId);
+    if(providerId) selectedId = providerId;
+    renderDisplayNameList();
+    renderBindingPanel();
+}
+
+function updateBindingModel(model){
+    updateCustomModel(activeCategory, selectedDisplayIndex, 'model', model);
+    renderDisplayNameList();
+    if(bindingStatusPill){
+        const row = customModels?.[activeCategory]?.[selectedDisplayIndex];
+        const bound = !!(row?.provider_id && row?.model);
+        bindingStatusPill.textContent = bound ? '已绑定' : '未绑定';
+        bindingStatusPill.className = `binding-status-pill ${bound ? 'is-bound' : 'is-unbound'}`;
+    }
+}
+
+async function fetchModelsForBinding(){
+    const row = customModels?.[activeCategory]?.[selectedDisplayIndex];
+    if(!row?.provider_id){
+        alert('请先选择中转站');
+        return;
+    }
+    selectedId = row.provider_id;
+    // 同步表单到该中转站，便于 fetchModels 读 base/key
+    const item = provider();
+    if(!item){
+        alert('找不到该中转站');
+        return;
+    }
+    if(nameInput) nameInput.value = item.name || '';
+    if(idInput) idInput.value = item.id || '';
+    if(baseInput) baseInput.value = item.base_url || '';
+    if(protocolInput) protocolInput.value = item.protocol || 'openai';
+    pickerBindMode = true;
+    pickerLockedCat = pickerCatForMode(activeCategory);
+    await fetchModels();
+}
+
 function handleProviderDragStart(event, id){
     const item = providers.find(provider => provider.id === id);
     if(!item || isFixedProvider(item)){
@@ -365,10 +609,11 @@ function handleProviderDragEnd(){
 function renderEditor(){
     const item = provider();
     if(!item) return;
+    apiView = 'stations';
     customModelsOpen = false;
     document.body.classList.remove('show-provider-overview', 'show-custom-models');
     editorTitle.textContent = item.name || item.id;
-    if(editorSub) editorSub.textContent = tr('api.editorSub');
+    if(editorSub) editorSub.textContent = '只负责连上中转站、填 Key、按用途拉取可用模型';
     nameInput.value = item.name || '';
     idInput.value = item.id || '';
     updateIdPreview();
@@ -396,6 +641,7 @@ function renderEditor(){
     renderModels('video');
     renderModels('audio');
     renderProviderList();
+    syncApiModeTabs();
 }
 
 function aggregateModelsByKind(kind){
@@ -464,69 +710,13 @@ function selectOverview(){
 }
 
 async function selectCustomModels(){
-    if(!customModelsOpen) syncEditor();
-    recommendInlineOpen = false;
-    syncRecommendView();
-    renderRecommendApi();
-    overviewOpen = false;
-    customModelsOpen = true;
-    document.body.classList.remove('show-provider-overview');
-    document.body.classList.add('show-custom-models');
-    editorTitle.textContent = '我的模型';
-    if(editorSub) editorSub.textContent = '名字固定不变；为每个名字绑定中转站和该站的真实模型名，底部输入栏只显示这些名字';
-    renderProviderList();
-    if(!customModels){
-        try {
-            const data = await fetch('/api/custom-models', {cache:'no-store'}).then(r => r.json());
-            customModels = data.models || {};
-        } catch(err) {
-            setStatus('加载我的模型失败');
-            customModels = null;
-            return;
-        }
-    }
-    renderCustomModelsView();
+    await selectApiCategory(activeCategory || 'image');
 }
 
 function renderCustomModelsView(){
-    const view = document.getElementById('customModelsView');
-    if(!view || !customModels) return;
-    const options = visibleProviders().filter(item => item.enabled !== false);
-    const toolbar = `<section class="block custom-models-toolbar">
-        <div class="block-head">
-            <div>
-                <div class="block-title">一键智能匹配</div>
-                <div class="block-desc">按名字自动在所有中转站已拉取的模型里匹配未绑定的条目；已手动绑定的不会被覆盖</div>
-            </div>
-            <button class="action-btn primary-btn" type="button" onclick="autoMatchCustomModels()"><i data-lucide="wand-2" class="w-3.5 h-3.5"></i><span>一键智能匹配</span></button>
-        </div>
-    </section>`;
-    view.innerHTML = toolbar + CUSTOM_MODEL_MODES.map(([mode, title, listKey]) => {
-        const rows = Array.isArray(customModels[mode]) ? customModels[mode] : [];
-        return `<section class="block">
-            <div class="block-head">
-                <div>
-                    <div class="block-title">${title}模型</div>
-                    <div class="block-desc">选择中转站并填写该站的真实模型名</div>
-                </div>
-            </div>
-            <div class="model-list">${rows.map((row, index) => {
-                const owner = options.find(item => item.id === row.provider_id);
-                const suggestions = unique(owner?.[listKey] || []);
-                const datalistId = `customModelOptions-${mode}-${index}`;
-                return `<div class="model-row custom-model-row">
-                    <span class="custom-model-name" title="${escapeAttr(row.name)}">${escapeHtml(row.name)}</span>
-                    <select class="custom-model-provider" onchange="updateCustomModel('${mode}',${index},'provider_id',this.value)">
-                        <option value="">未绑定</option>
-                        ${options.map(item => `<option value="${escapeAttr(item.id)}" ${item.id === row.provider_id ? 'selected' : ''}>${escapeHtml(item.name || item.id)}</option>`).join('')}
-                    </select>
-                    <input class="custom-model-input" type="text" list="${datalistId}" value="${escapeAttr(row.model || '')}" placeholder="真实模型名" oninput="updateCustomModel('${mode}',${index},'model',this.value)">
-                    <datalist id="${datalistId}">${suggestions.map(model => `<option value="${escapeAttr(model)}"></option>`).join('')}</datalist>
-                </div>`;
-            }).join('')}</div>
-        </section>`;
-    }).join('');
-    refreshIcons();
+    // 旧四宫格视图已由分类绑定面板替代；保留函数以免外部调用报错。
+    renderDisplayNameList();
+    renderBindingPanel();
 }
 
 function updateCustomModel(mode, index, field, value){
@@ -545,18 +735,18 @@ function scheduleCustomModelsSave(){
 
 async function saveCustomModels(){
     if(!customModels) return;
-    setStatus('正在保存我的模型...');
+    setStatus('正在保存画布显示名...');
     try {
         const res = await fetch('/api/custom-models', {
             method:'PUT',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({models:customModels})
         });
-        if(!res.ok) throw new Error((await res.json()).detail || '保存我的模型失败');
-        setStatus('我的模型已保存');
+        if(!res.ok) throw new Error((await res.json()).detail || '保存画布显示名失败');
+        setStatus('画布显示名已保存');
         broadcastStudioApiChange('providers-changed');
     } catch(err) {
-        setStatus(err.message || '保存我的模型失败');
+        setStatus(err.message || '保存画布显示名失败');
     }
 }
 
@@ -831,21 +1021,47 @@ function openModelPicker(){
         else if(lastFetchedSuggestion?.audio?.has(id)) cat = 'audio';
         else cat = 'chat';
         pickerState.category[id] = cat;
-        // 默认只勾选已在模型列表里的模型；新拉取的一律不勾选，由用户自己挑。
-        pickerState.selected[id] = existing.image.has(id)
-            || existing.chat.has(id)
-            || existing.video.has(id)
-            || existing.audio.has(id);
+        // 绑定模式：默认只勾选当前显示名已绑模型；库存模式：勾选已在列表里的
+        if(pickerBindMode){
+            const row = customModels?.[activeCategory]?.[selectedDisplayIndex];
+            pickerState.selected[id] = !!(row?.model && row.model === id);
+        } else {
+            pickerState.selected[id] = existing.image.has(id)
+                || existing.chat.has(id)
+                || existing.video.has(id)
+                || existing.audio.has(id);
+        }
     });
-    // 默认 tab 切回「全部」
-    document.querySelectorAll('.picker-cat-tab').forEach(t => t.classList.toggle('active', t.dataset.cat === 'all'));
+    const defaultCat = pickerLockedCat || 'all';
+    document.querySelectorAll('.picker-cat-tab').forEach(t => {
+        const cat = t.dataset.cat;
+        const locked = !!pickerLockedCat;
+        t.classList.toggle('active', cat === defaultCat);
+        t.hidden = locked && cat !== 'all' && cat !== pickerLockedCat;
+        if(locked && cat === 'all') t.hidden = true;
+    });
+    const pickerTitle = document.getElementById('pickerTitle');
+    const applyBtn = document.getElementById('pickerApplyBtn');
+    if(pickerBindMode){
+        const label = CATEGORY_LABELS[activeCategory] || '';
+        if(pickerTitle) pickerTitle.textContent = `选择要绑到「${customModels?.[activeCategory]?.[selectedDisplayIndex]?.name || ''}」的${label}模型`;
+        if(applyBtn) applyBtn.textContent = '绑到此显示名';
+    } else {
+        if(pickerTitle) pickerTitle.textContent = '从上游拉取的模型清单';
+        if(applyBtn) applyBtn.textContent = '应用到模型列表';
+    }
     document.getElementById('modelPickerOverlay').style.display = 'flex';
     renderModelPicker();
 }
-function closeModelPicker(){ document.getElementById('modelPickerOverlay').style.display = 'none'; }
+function closeModelPicker(){
+    document.getElementById('modelPickerOverlay').style.display = 'none';
+    pickerBindMode = false;
+    pickerLockedCat = null;
+    document.querySelectorAll('.picker-cat-tab').forEach(t => { t.hidden = false; });
+}
 function renderModelPicker(){
     const filter = (document.getElementById('pickerFilter')?.value || '').toLowerCase();
-    const currentTab = document.querySelector('.picker-cat-tab.active')?.dataset.cat || 'all';
+    const currentTab = pickerLockedCat || document.querySelector('.picker-cat-tab.active')?.dataset.cat || 'all';
     const ids = Object.keys(pickerState.category).sort();
     // 各分类总数 / 已选数
     const totals = { all: ids.length, image:0, chat:0, video:0, audio:0 };
@@ -855,14 +1071,15 @@ function renderModelPicker(){
         totals[cat]++;
         if(pickerState.selected[id]){ selecteds[cat]++; selecteds.all++; }
     });
-    // 过滤显示
+    // 过滤显示：绑定模式下强制只看当前用途
     const list = ids.filter(id => {
         if(filter && !id.toLowerCase().includes(filter)) return false;
+        if(pickerLockedCat) return pickerState.category[id] === pickerLockedCat;
         if(currentTab === 'all') return true;
         return pickerState.category[id] === currentTab;
     });
     pickerVisibleIds = list;
-    document.getElementById('pickerCount').textContent = `共 ${totals.all} 个模型 · 当前显示 ${list.length} 个`;
+    document.getElementById('pickerCount').textContent = `共 ${totals.all} 个模型 · 当前显示 ${list.length} 个${pickerLockedCat ? ` · 仅${CATEGORY_LABELS[modeForPickerCat(pickerLockedCat)] || pickerLockedCat}` : ''}`;
     document.querySelectorAll('.picker-cat-tab').forEach(tab => {
         const cat = tab.dataset.cat;
         tab.querySelector('.cat-count').textContent = `${selecteds[cat]}/${totals[cat]}`;
@@ -881,7 +1098,7 @@ function renderModelPicker(){
             </div>
         `;
     }).join('');
-    document.getElementById('pickerList').innerHTML = html || `<div style="padding:32px;text-align:center;color:var(--faint);font-size:12px">无匹配</div>`;
+    document.getElementById('pickerList').innerHTML = html || `<div style="padding:32px;text-align:center;color:var(--faint);font-size:12px">无匹配本类模型</div>`;
     // 底部汇总
     const sumImage = document.getElementById('sumImage');
     const sumChat = document.getElementById('sumChat');
@@ -895,7 +1112,15 @@ function renderModelPicker(){
     if(sumUnsel){ sumUnsel.textContent = `未选 ${totals.all - selecteds.all}`; }
 }
 function togglePickerRow(id){
-    pickerState.selected[id] = !pickerState.selected[id];
+    if(pickerBindMode){
+        // 单选：只保留当前点中的模型
+        Object.keys(pickerState.selected).forEach(key => { pickerState.selected[key] = false; });
+        pickerState.selected[id] = true;
+        // 若分类与锁定用途不一致，强制归入锁定用途
+        if(pickerLockedCat) pickerState.category[id] = pickerLockedCat;
+    } else {
+        pickerState.selected[id] = !pickerState.selected[id];
+    }
     renderModelPicker();
 }
 function togglePickerRowByIndex(index){
@@ -909,6 +1134,25 @@ function selectPickerCat(cat){
 }
 function applyModelPicker(){
     const item = provider(); if(!item) return;
+    if(pickerBindMode){
+        const selectedIdModel = Object.entries(pickerState.selected).find(([, sel]) => sel)?.[0];
+        if(!selectedIdModel){
+            alert('请先勾选一个模型');
+            return;
+        }
+        const cat = pickerLockedCat || pickerState.category[selectedIdModel] || 'chat';
+        const listKey = modelListKey(cat);
+        item[listKey] = unique([...(item[listKey] || []), selectedIdModel]);
+        updateCustomModel(activeCategory, selectedDisplayIndex, 'provider_id', item.id);
+        updateCustomModel(activeCategory, selectedDisplayIndex, 'model', selectedIdModel);
+        setStatus(`已绑到「${customModels?.[activeCategory]?.[selectedDisplayIndex]?.name || ''}」· ${selectedIdModel}`);
+        closeModelPicker();
+        renderDisplayNameList();
+        renderBindingPanel();
+        // 同步库存到中转站，避免下次联想为空
+        saveProviders();
+        return;
+    }
     const image = [], chat = [], video = [], audio = [];
     Object.entries(pickerState.selected).forEach(([id, sel]) => {
         if(!sel) return;
@@ -972,22 +1216,24 @@ function selectProvider(id){
     recommendInlineOpen = false;
     syncRecommendView();
     renderRecommendApi();
-    syncEditor();
+    if(apiView === 'stations') syncEditor();
     selectedId = id;
     overviewOpen = false;
+    apiView = 'stations';
     renderEditor();
 }
 function addProvider(){
     recommendInlineOpen = false;
     syncRecommendView();
     renderRecommendApi();
-    syncEditor();
+    if(apiView === 'stations') syncEditor();
     let id = 'custom-api';
     let index = 2;
     while(providers.some(item => item.id === id)) id = `custom-api-${index++}`;
     providers.push({id, name:'API', base_url:'', protocol:'openai', image_generation_endpoint:'', image_edit_endpoint:'', enabled:true, primary:false, image_models:[], chat_models:[], video_models:[], audio_models:[], has_key:false, key_preview:''});
     selectedId = id;
     overviewOpen = false;
+    apiView = 'stations';
     renderEditor();
 }
 function deleteProvider(){
@@ -1023,15 +1269,14 @@ async function loadProviders(){
         const data = await fetch('/api/providers').then(r => r.json());
         providers = data.providers || [];
         selectedId = sortedProviders()[0]?.id || '';
-        if(overviewOpen) renderModelOverview();
-        else renderEditor();
+        await selectApiCategory(activeCategory || 'image');
         setStatus('');
     } catch(err) {
         setStatus(tr('api.loadFailed'));
     }
 }
 async function saveProviders(){
-    syncEditor();
+    if(apiView === 'stations') syncEditor();
     const activeProviders = visibleProviders();
     activeProviders.forEach(item => {
         item.id = normalizeId(item.id);
@@ -1078,8 +1323,15 @@ async function saveProviders(){
             delete item._clearKey;
         });
         selectedId = provider()?.id || visibleProviders()[0]?.id || '';
-        if(overviewOpen) renderModelOverview();
-        else renderEditor();
+        if(apiView === 'category'){
+            renderDisplayNameList();
+            renderBindingPanel();
+            syncApiModeTabs();
+        } else if(overviewOpen) {
+            renderModelOverview();
+        } else {
+            renderEditor();
+        }
         setStatus(tr('api.saved'));
         broadcastStudioApiChange('providers-changed');
         return true;
@@ -1124,6 +1376,7 @@ window.addEventListener('message', event => {
         requestAnimationFrame(() => {
             syncRecommendView();
             if(recommendInlineOpen) renderRecommendApi();
+            else if(apiView === 'category') selectApiCategory(activeCategory || 'image');
             else if(overviewOpen) renderModelOverview();
             else renderEditor();
             refreshIcons();
@@ -1132,6 +1385,7 @@ window.addEventListener('message', event => {
     if(event.data?.type === 'studio-lang' && window.StudioI18n) {
         window.StudioI18n.set(event.data.lang);
         if(recommendInlineOpen) renderRecommendApi();
+        else if(apiView === 'category') selectApiCategory(activeCategory || 'image');
         else if(overviewOpen) renderModelOverview();
         else renderEditor();
     }
@@ -1142,6 +1396,7 @@ recommendApiOverlay?.addEventListener('mousedown', event => {
 window.addEventListener('studio-lang-change', () => {
     syncRecommendView();
     if(recommendInlineOpen) renderRecommendApi();
+    else if(apiView === 'category') selectApiCategory(activeCategory || 'image');
     else if(overviewOpen) renderModelOverview();
     else renderEditor();
 });

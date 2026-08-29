@@ -106,8 +106,8 @@
                 justify-content: center;
                 padding: clamp(18px, 4vw, 38px);
                 background: rgba(248,250,252,.42);
-                backdrop-filter: blur(18px);
-                -webkit-backdrop-filter: blur(18px);
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
             }
             .theme-dark .director3d-modal {
                 background: rgba(2,6,23,.64);
