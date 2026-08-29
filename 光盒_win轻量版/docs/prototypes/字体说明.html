@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>光盒 · 字体与描边说明</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", "Microsoft YaHei UI", "MiSans Variable", sans-serif;
+      font-size: 16px; line-height: 1.6; color: #292929; background: #f5f5f5; padding: 32px 24px 48px;
+    }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 20px; margin-bottom: 8px; }
+    .sub { color: #717171; font-size: 14px; margin-bottom: 28px; }
+    h2 { font-size: 16px; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid rgba(0,0,0,.07); }
+    p { margin-bottom: 10px; color: #505050; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 14px; }
+    th, td { padding: 10px 12px; text-align: left; border: 1px solid rgba(0,0,0,.10); }
+    th { background: #fafafa; font-weight: 600; }
+    .sample { margin: 8px 0 16px; padding: 14px 16px; background: #fff; border: 1px solid rgba(0,0,0,.10); border-radius: 10px; }
+    .s17 { font-size: 17px; }
+    .s15 { font-size: 15px; }
+    .s13 { font-size: 13px; }
+    .s12 { font-size: 12px; color: #717171; }
+    .w380 { font-weight: 380; }
+    .w350 { font-weight: 350; }
+    .w250 { font-weight: 250; color: #a0a0a0; }
+    .note { padding: 12px 14px; background: #eef6ff; border-radius: 8px; font-size: 14px; margin: 16px 0; }
+    .toolbar { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+    a.btn {
+      display: inline-flex; align-items: center; height: 30px; padding: 0 12px;
+      border: 1px solid rgba(0,0,0,.10); border-radius: 8px; background: #fff;
+      color: #292929; text-decoration: none; font-size: 13px;
+    }
+    a.btn.primary { background: #0a84ff; border-color: #0a84ff; color: #fff; }
+    code { font-size: 12px; background: #efefef; padding: 2px 6px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="toolbar">
+      <a class="btn primary" href="spectrum-full-shell.html">← 返回完整样板</a>
+      <a class="btn" href="index.html">样板入口</a>
+    </div>
+
+    <h1>光盒字体 & 描边说明</h1>
+    <p class="sub">亮/暗主题只有颜色不同，字号、字重、描边、分割线完全相同。</p>
+
+    <div class="note">
+      <strong>v5 更新：</strong>磨砂透明度 60%、模糊 blur(50px)；深色底部输入栏对齐软件玻璃底 <code>rgba(255,255,255,.06)</code>；画布打组面板为框选胶囊工具栏（非底部批量）。
+    </div>
+
+    <h2>一、字体家族</h2>
+    <table>
+      <tr><th>字体</th><th>用在</th></tr>
+      <tr><td><strong>MiSans</strong>（主字体）</td><td>全部界面文字</td></tr>
+      <tr><td><strong>JetBrains Mono</strong></td><td>代码（极少出现）</td></tr>
+    </table>
+
+    <h2>二、字号（v3，再加大一档）</h2>
+    <table>
+      <tr><th>大小</th><th>名称</th><th>用在</th><th>预览</th></tr>
+      <tr>
+        <td><strong>18px</strong></td><td>展示标题</td><td>弹窗主标题</td>
+        <td class="sample" style="font-size:18px">用户中心</td>
+      </tr>
+      <tr>
+        <td><strong>16px</strong></td><td>正文 / 控件</td><td>按钮、菜单、输入、对话</td>
+        <td class="sample" style="font-size:16px">新建画布 · 描述你想生成的图片</td>
+      </tr>
+      <tr>
+        <td><strong>14px</strong></td><td>紧凑标签</td><td>项目名、工具栏、资产文件夹</td>
+        <td class="sample" style="font-size:14px">未命名画布 · 图片资产</td>
+      </tr>
+      <tr>
+        <td><strong>13px</strong></td><td>次要信息</td><td>快捷键、积分提示</td>
+        <td class="sample" style="font-size:13px">Ctrl + Z · 预计 5 积分</td>
+      </tr>
+    </table>
+
+    <h2>三、字重</h2>
+    <table>
+      <tr><th>字重</th><th>适用</th></tr>
+      <tr><td><strong>380</strong></td><td>中文正文、按钮、菜单（默认）</td></tr>
+      <tr><td><strong>350</strong></td><td>英文、数字（略细）</td></tr>
+      <tr><td><strong>250</strong></td><td>输入框占位提示文字</td></tr>
+    </table>
+
+    <h2>四、描边参数（与软件 design-tokens 一致）</h2>
+    <table>
+      <tr><th>名称</th><th>亮色值</th><th>暗色值</th><th>用在</th></tr>
+      <tr>
+        <td>普通描边</td>
+        <td><code>rgba(0,0,0, .10)</code></td>
+        <td><code>rgba(255,255,255, .08)</code></td>
+        <td>面板、输入框、卡片边框</td>
+      </tr>
+      <tr>
+        <td>强描边</td>
+        <td><code>rgba(0,0,0, .16)</code></td>
+        <td><code>rgba(255,255,255, .14)</code></td>
+        <td>需要更明显的边界时</td>
+      </tr>
+      <tr>
+        <td>节点选中描边</td>
+        <td colspan="2"><code>1.5px</code> 主色</td>
+        <td>画布节点被选中</td>
+      </tr>
+    </table>
+
+    <h2>五、分割线参数</h2>
+    <table>
+      <tr><th>名称</th><th>亮色值</th><th>线宽</th><th>用在</th></tr>
+      <tr>
+        <td>壳层分割线</td>
+        <td><code>rgba(0,0,0, .07)</code></td>
+        <td><code>1px</code></td>
+        <td>侧栏与画布交界、菜单内分隔、工具栏竖线</td>
+      </tr>
+      <tr>
+        <td>暗色分割线</td>
+        <td><code>rgba(255,255,255, .08)</code></td>
+        <td><code>1px</code></td>
+        <td>同上（暗色主题）</td>
+      </tr>
+    </table>
+    <p><strong>注意：</strong>画布与左/右侧栏交界处只有 1px 分割线，<strong>不加投影</strong>。</p>
+
+    <h2>六、圆角分层（拉开差异）</h2>
+    <table>
+      <tr><th>层级</th><th>圆角</th><th>示例</th></tr>
+      <tr><td>结构区</td><td>6px</td><td>菜单项、小按钮</td></tr>
+      <tr><td>控件</td><td>8px</td><td>输入框、普通按钮</td></tr>
+      <tr><td>卡片</td><td>10px</td><td>节点、小面板</td></tr>
+      <tr><td>浮层</td><td>12px</td><td>下拉菜单、用户菜单</td></tr>
+      <tr><td>弹窗</td><td>14px</td><td>个人主页、对话输入框</td></tr>
+      <tr><td>生成栏</td><td>22px</td><td>底部大输入卡片</td></tr>
+      <tr><td>生成栏顶条</td><td>18px（仅上角）</td><td>上方窄工具栏</td></tr>
+      <tr><td>画布</td><td><strong>0px（直角）</strong></td><td>中间画布区域</td></tr>
+    </table>
+
+    <h2>七、连线</h2>
+    <table>
+      <tr><th>属性</th><th>值</th></tr>
+      <tr><td>粗细</td><td><code>1.05px</code>（普通）/ <code>1.25px</code>（输入连线）</td></tr>
+      <tr><td>缩放</td><td><strong>不随视角远近变化</strong>（non-scaling-stroke）</td></tr>
+      <tr><td>动效连线</td><td>粗细不变，仅虚线动画</td></tr>
+      <tr><td>颜色</td><td><code>rgba(135,145,158, .62)</code></td></tr>
+    </table>
+
+    <h2>八、磨砂浮层（v5）</h2>
+    <ul style="padding-left:20px;font-size:14px;color:#505050">
+      <li>背景透明度 <strong>60%</strong>（亮色 <code>rgba(255,255,255,.60)</code>，暗色菜单 <code>rgba(35,35,35,.60)</code>）</li>
+      <li>模糊 <code>blur(50px) saturate(160%)</code></li>
+      <li>深色画布底部输入栏：玻璃底 <code>rgba(255,255,255,.06)</code> + 内阴影（与软件 canvas-glass 一致）</li>
+      <li>画布底层有彩色图案 + 右上角「磨砂透视示意」条纹卡</li>
+    </ul>
+
+    <h2>九、画布网格（与软件一致）</h2>
+    <p>网格点间距：<strong>18px</strong>（<code>--ui-canvas-grid-size</code>）</p>
+    <table>
+      <tr><th>主题</th><th>网格点颜色</th><th>点大小</th></tr>
+      <tr>
+        <td>亮色</td>
+        <td><code>rgba(0,0,0, .11)</code></td>
+        <td><code>0.6px</code>（渐变至 1.1px 透明）</td>
+      </tr>
+      <tr>
+        <td>暗色</td>
+        <td><code>rgba(255,255,255, .055)</code></td>
+        <td><code>0.6px</code>（渐变至 1.1px 透明）</td>
+      </tr>
+    </table>
+
+    <p style="margin-top:32px;font-size:13px;color:#999">看完请回到 <a href="spectrum-full-shell.html">完整壳层样板</a> 对照效果。</p>
+  </div>
+</body>
+</html>

@@ -1,14 +1,6 @@
 /*
- * 光盒 Shared UI Primitives —— 新 UI 的唯一组件基类
- * ================================================================
- * 用法（详见 docs/DESIGN_SYSTEM.md）：
- *   - 今后新增的按钮 / 输入框 / 菜单 / 对话框 / 面板，一律使用
- *     本文件的 .ui-* 类，禁止 feature 自己另写一套。
- *   - 全部视觉值来自 design-tokens.css（--ui-*），本文件不出现
- *     硬编码颜色 / 字号 / 圆角 / 阴影。
- *   - 已有成熟组件（.dock-chrome-btn / .asset-panel / .node-port 等）
- *     保持原样继续用，不强制迁移；清单见 DESIGN_SYSTEM.md 第 3 节。
- *   - 深浅主题自动生效（token 层切换），组件内不写 theme-dark 分支。
+ * 光盒 Shared UI Primitives —— 共享组件基类
+ * 详见 docs/DESIGN_SYSTEM.md
  */
 
 /* ================================================================

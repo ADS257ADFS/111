@@ -1,0 +1,804 @@
+#!/usr/bin/env python3
+"""Generate spectrum-full-shell.html — complete static visual prototype."""
+
+OUTPUT = "spectrum-full-shell.html"
+
+CSS = r"""
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: var(--lb-font);
+  font-size: var(--lb-type-body);
+  font-weight: var(--lb-weight-body);
+  color: var(--lb-text);
+  background: var(--lb-bg-canvas);
+}
+
+/* —— 对齐软件 design-tokens.css —— */
+:root {
+  --lb-accent: #0a84ff;
+  --lb-accent-subtle: rgba(10, 132, 255, 0.12);
+  --lb-bg-canvas: #ececee;
+  --lb-bg-shell: #fafafb;
+  --lb-bg-chrome: #f7f7f8;
+  --lb-bg-stage: #fcfcfc;
+  --lb-bg-elevated: #ffffff;
+  --lb-bg-composer: #ffffff;
+  --lb-text: #292929;
+  --lb-text-secondary: #505050;
+  --lb-text-muted: #717171;
+  /* 描边（与软件一致） */
+  --lb-border: rgba(0, 0, 0, 0.10);
+  --lb-border-strong: rgba(0, 0, 0, 0.16);
+  /* 分割线（与软件一致） */
+  --lb-divider: rgba(0, 0, 0, 0.07);
+  --lb-divider-size: 1px;
+  --lb-hover: #efefef;
+  --lb-selected: rgba(10, 132, 255, 0.12);
+  --lb-danger: #e34850;
+  --lb-conn: rgba(135, 145, 158, 0.62);
+  --lb-conn-pending: rgba(10, 132, 255, 0.68);
+  /* 磨砂浮层：统一 80% 透明 + blur(80px) */
+  --lb-glass-bg: rgba(255, 255, 255, 0.80);
+  --lb-glass-popover: rgba(255, 255, 255, 0.80);
+  --lb-glass-topbar: rgba(243, 245, 247, 0.80);
+  --lb-glass-filter: blur(80px) saturate(160%);
+  --lb-shadow-float: 0 4px 18px rgba(0, 0, 0, 0.12);
+  --lb-float-r: 16px;
+  /* 正文字号统一：工具栏 = 菜单 = 右侧对话 = 16px */
+  --lb-font: "Segoe UI", "Microsoft YaHei UI", "MiSans Variable", sans-serif;
+  --lb-type-display: 18px;
+  --lb-type-body: 16px;
+  --lb-type-compact: 14px;
+  --lb-type-meta: 13px;
+  --lb-weight-body: 380;
+  --lb-weight-latin: 350;
+  /* 圆角分层（拉开差异） */
+  --lb-r-chrome: 6px;
+  --lb-r-control: 8px;
+  --lb-r-card: 10px;
+  --lb-r-float: 12px;
+  --lb-r-dialog: 14px;
+  --lb-r-composer: 22px;
+  --lb-r-composer-top: 18px;
+  --lb-r-pill: 999px;
+  --lb-titlebar-h: 28px;
+  --lb-sidebar-w: 250px;
+  --lb-panel-w: 400px;
+  --lb-composer-w: 760px;
+  /* 画布网格（对齐 design-tokens.css + minimax-visual.css） */
+  --lb-canvas-grid-size: 18px;
+  --lb-canvas-grid-dot-size: 0.6px;
+  --lb-canvas-grid-dot-fade: 1.1px;
+  --lb-canvas-grid-dot: rgba(0, 0, 0, 0.11);
+}
+html.theme-dark {
+  /* 与 design-tokens.css 深色完全一致 */
+  --lb-bg-canvas: #101010;
+  --lb-bg-shell: #181818;
+  --lb-bg-chrome: #1b1b1b;
+  --lb-bg-stage: #101010;
+  --lb-bg-elevated: #232323;
+  --lb-bg-composer: #181818;
+  --lb-text: #d1d3d6;
+  --lb-text-secondary: #9c9c9c;
+  --lb-text-muted: #6e6e6e;
+  --lb-border: rgba(255, 255, 255, 0.08);
+  --lb-border-strong: rgba(255, 255, 255, 0.14);
+  --lb-divider: rgba(255, 255, 255, 0.08);
+  --lb-hover: rgba(255, 255, 255, 0.07);
+  --lb-selected: rgba(10, 132, 255, 0.16);
+  --lb-glass-bg: rgba(35, 35, 35, 0.80);
+  --lb-glass-popover: rgba(35, 35, 35, 0.80);
+  --lb-glass-topbar: rgba(35, 35, 35, 0.80);
+  --lb-conn: rgba(255, 255, 255, 0.24);
+  --lb-shadow-float: 0 4px 16px rgba(0, 0, 0, 0.30);
+  /* 深色画布网格：与软件 shell 最终渲染一致 */
+  --lb-canvas-grid-dot: rgba(255, 255, 255, 0.055);
+}
+
+/* —— 全部悬浮层：80% 透明 + blur(80px) + 轻外投影 —— */
+.lb-float {
+  border: var(--lb-divider-size) solid var(--lb-border);
+  border-radius: var(--lb-float-r);
+  background-color: var(--lb-glass-popover);
+  backdrop-filter: var(--lb-glass-filter);
+  -webkit-backdrop-filter: var(--lb-glass-filter);
+  box-shadow: var(--lb-shadow-float);
+  color: var(--lb-text);
+}
+/* 所有上拉/下拉菜单：同一套磨砂参数，只允许改 padding */
+.lb-float.is-menu {
+  padding: 6px;
+}
+.lb-float.is-pill { border-radius: var(--lb-r-pill); }
+.lb-float :is(button, .chip, h5, .zoom-val, .menu-item, .create-item, .user-menu-item) {
+  font-weight: var(--lb-weight-body);
+  font-variant-numeric: tabular-nums;
+}
+.lb-float .chip.is-active { font-weight: var(--lb-weight-body); }
+.lb-float .menu-item.is-active { background: var(--lb-hover); }
+
+.proto-badge {
+  position: fixed; top: 4px; left: 50%; transform: translateX(-50%); z-index: 99999;
+  padding: 3px 10px; border-radius: var(--lb-r-pill); background: var(--lb-accent); color: #fff;
+  font-size: var(--lb-type-meta); pointer-events: none;
+}
+.proto-toolbar {
+  position: fixed; bottom: 8px; left: calc(var(--lb-sidebar-w) + 8px); z-index: 99999;
+  display: flex; gap: 6px;
+}
+.proto-label {
+  position: absolute; z-index: 300; padding: 2px 6px; border-radius: 4px;
+  background: rgba(10,132,255,.92); color: #fff; font-size: 10px; white-space: nowrap; pointer-events: none;
+}
+.spec-panel {
+  position: fixed; top: 36px; right: calc(var(--lb-panel-w) + 12px); z-index: 250;
+  width: 200px; padding: 10px 12px;
+  font-size: var(--lb-type-meta); color: var(--lb-text-secondary); line-height: 1.5;
+}
+.spec-panel h4 { font-size: var(--lb-type-compact); color: var(--lb-text); margin-bottom: 6px; }
+.spec-panel code { font-size: 11px; background: var(--lb-hover); padding: 1px 4px; border-radius: 3px; }
+
+.app { display: grid; grid-template-rows: var(--lb-titlebar-h) 1fr; height: 100vh; }
+.body-row { display: grid; grid-template-columns: var(--lb-sidebar-w) 1fr var(--lb-panel-w); min-height: 0; }
+
+/* titlebar */
+.titlebar {
+  display: flex; align-items: center; height: var(--lb-titlebar-h);
+  padding: 0 8px; background: var(--lb-bg-shell);
+  border-bottom: var(--lb-divider-size) solid var(--lb-divider);
+}
+.titlebar-drag { flex: 1; }
+.titlebar-tools { display: flex; align-items: center; gap: 6px; }
+.titlebar-search {
+  width: 210px; height: 24px; padding: 0 10px;
+  border: var(--lb-divider-size) solid var(--lb-border); border-radius: var(--lb-r-control);
+  background: var(--lb-bg-elevated); font-size: var(--lb-type-compact);
+}
+.titlebar-btn {
+  width: 28px; height: 22px; border: none; border-radius: var(--lb-r-chrome);
+  background: transparent; color: var(--lb-text-secondary); cursor: pointer; font-size: 12px;
+}
+.titlebar-btn:hover { background: var(--lb-hover); }
+.points-capsule {
+  display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 10px;
+  border: var(--lb-divider-size) solid var(--lb-border); border-radius: var(--lb-r-pill);
+  background: var(--lb-glass-bg); font-size: var(--lb-type-meta);
+}
+
+/* sidebar — 无交界处投影 */
+.sidebar {
+  display: flex; flex-direction: column; background: var(--lb-bg-shell);
+  border-right: var(--lb-divider-size) solid var(--lb-divider);
+  padding: 8px; min-height: 0; position: relative; box-shadow: none;
+}
+.sidebar-head { display: flex; align-items: center; justify-content: space-between; padding: 4px 8px 12px; }
+.sidebar-logo { font-size: var(--lb-type-compact); font-weight: 600; color: var(--lb-text-secondary); }
+.nav-btn {
+  display: flex; align-items: center; gap: 12px; width: 100%; height: 32px;
+  padding: 0 12px; border: none; border-radius: var(--lb-r-control);
+  background: transparent; font-size: var(--lb-type-body); color: var(--lb-text); text-align: left; cursor: pointer;
+}
+.nav-btn:hover { background: var(--lb-hover); }
+.nav-btn .ico { width: 16px; text-align: center; opacity: .75; }
+.nav-btn.is-expanded { margin-bottom: 2px; }
+.asset-tree { padding-left: 20px; margin-bottom: 6px; }
+.asset-folder {
+  display: flex; align-items: center; gap: 6px; height: 28px; padding: 0 8px 0 4px;
+  font-size: var(--lb-type-compact); font-weight: var(--lb-weight-latin); color: var(--lb-text);
+  border-radius: var(--lb-r-chrome);
+}
+.asset-folder .chev { font-size: 10px; color: var(--lb-text-muted); }
+.asset-folder.is-open .chev { transform: rotate(0deg); }
+.asset-sub { padding-left: 22px; font-size: var(--lb-type-compact); color: var(--lb-text-muted); line-height: 1.8; }
+.sidebar-recent { flex: 1; min-height: 0; margin-top: 8px; overflow: hidden; }
+.recent-label { padding: 0 12px; font-size: var(--lb-type-meta); color: var(--lb-text-muted); margin-bottom: 4px; }
+.recent-item {
+  height: 30px; padding: 0 12px 0 24px; display: flex; align-items: center;
+  font-size: var(--lb-type-compact); border-radius: var(--lb-r-control);
+}
+.recent-item.is-active { background: var(--lb-selected); color: var(--lb-accent); }
+.sidebar-footer {
+  display: flex; align-items: center; gap: 6px; padding-top: 8px;
+  border-top: var(--lb-divider-size) solid var(--lb-divider);
+}
+.user-btn {
+  flex: 1; display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 8px;
+  border: none; border-radius: var(--lb-r-control); background: transparent; cursor: pointer;
+}
+.user-btn:hover { background: var(--lb-hover); }
+.user-avatar {
+  width: 28px; height: 28px; border-radius: 50%; background: var(--lb-hover);
+  border: var(--lb-divider-size) solid var(--lb-border); display: grid; place-items: center;
+}
+
+/* user menu */
+.user-menu {
+  position: absolute; left: 8px; bottom: 52px; width: 224px; z-index: 300;
+}
+.user-menu-item {
+  display: flex; align-items: center; gap: 8px; width: 100%; height: 34px; padding: 0 8px;
+  border: none; border-radius: var(--lb-r-chrome); background: transparent;
+  font-size: var(--lb-type-body); color: var(--lb-text); text-align: left; cursor: pointer;
+}
+.user-menu-item:hover { background: var(--lb-hover); color: var(--lb-text); }
+.user-menu-item small { margin-left: auto; color: var(--lb-text-muted); font-size: var(--lb-type-meta); }
+.user-menu-divider { height: var(--lb-divider-size); background: var(--lb-divider); margin: 6px 0; }
+.user-menu-points {
+  width: 100%; padding: 10px; margin-bottom: 8px;
+  border: var(--lb-divider-size) solid var(--lb-border); border-radius: var(--lb-r-card);
+  background: rgba(0,0,0,.03); text-align: left; cursor: pointer;
+}
+
+/* 画布：实色底 + 网格点（无条纹、无彩色图案） */
+.stage-wrap { background: var(--lb-bg-canvas); min-height: 0; display: flex; box-shadow: none; }
+.stage {
+  flex: 1; border-radius: 0; overflow: hidden;
+  background: var(--lb-bg-stage); border: none; box-shadow: none; position: relative; min-height: 0;
+}
+.canvas {
+  position: absolute; inset: 0; z-index: 1;
+  background-color: var(--lb-bg-stage);
+  background-image: radial-gradient(
+    var(--lb-canvas-grid-dot) var(--lb-canvas-grid-dot-size),
+    transparent var(--lb-canvas-grid-dot-fade)
+  );
+  background-size: var(--lb-canvas-grid-size) var(--lb-canvas-grid-size);
+}
+
+/* nodes */
+.node {
+  position: absolute; border-radius: var(--lb-float-r);
+  overflow: hidden;
+}
+.node-media { height: calc(100% - 30px); background: linear-gradient(135deg, #d4e8ff, #f0e6ff); }
+html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a2040); }
+.node-title {
+  height: 30px; padding: 0 10px; display: flex; align-items: center;
+  font-size: var(--lb-type-compact); color: var(--lb-text-secondary);
+  border-top: var(--lb-divider-size) solid var(--lb-divider);
+}
+.node-port {
+  position: absolute; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--lb-bg-elevated); border: 1.2px solid #fff;
+  box-shadow: 0 0 3px rgba(10,132,255,.5);
+}
+.node-port.out { right: -5px; top: 50%; transform: translateY(-50%); }
+.node-port.in { left: -5px; top: 50%; transform: translateY(-50%); }
+.node.is-selected {
+  outline: 1.5px solid var(--lb-accent);
+  outline-offset: 2px;
+}
+
+/* 框选区域 + 打组胶囊工具栏（画布上） */
+.selection-box {
+  position: absolute; z-index: 82; box-sizing: border-box; pointer-events: none;
+  border: 1.5px dashed rgba(10, 132, 255, 0.55);
+  background: rgba(10, 132, 255, 0.08); border-radius: 14px;
+}
+html.theme-dark .selection-box {
+  border-color: rgba(10, 132, 255, 0.65);
+  background: rgba(10, 132, 255, 0.12);
+}
+.selection-box-capsule {
+  position: absolute; left: 50%; top: 0;
+  transform: translate(-50%, calc(-100% - 8px));
+  pointer-events: auto; z-index: 86;
+}
+.selection-capsule-bar {
+  min-height: 46px; padding: 6px 8px;
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+.selection-capsule-btn {
+  height: 34px; padding: 0 11px; border: none; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: transparent; font-size: var(--lb-type-body); color: inherit; cursor: pointer;
+  font-weight: var(--lb-weight-body);
+}
+.selection-capsule-btn:hover { background: var(--lb-hover); }
+.selection-capsule-btn.is-danger { color: var(--lb-danger); }
+.selection-capsule-divider {
+  width: var(--lb-divider-size); height: 18px; margin: 0 1px;
+  background: var(--lb-divider); flex-shrink: 0;
+}
+
+/* connections — 固定粗细，不随缩放变 */
+.conn-layer { position: absolute; inset: 0; pointer-events: none; z-index: 5; overflow: visible; }
+.conn-line {
+  fill: none; stroke: var(--lb-conn); stroke-width: 1.05;
+  vector-effect: non-scaling-stroke; stroke-linecap: round;
+}
+.conn-line.is-pending {
+  stroke: var(--lb-accent); stroke-width: 1.05; opacity: .68;
+  stroke-dasharray: 2 5;
+}
+.conn-line.is-cascade {
+  stroke: var(--lb-accent); stroke-width: 1.05;
+  stroke-dasharray: 3 6;
+}
+
+/* image toolbar */
+.iqt {
+  position: absolute; z-index: 86; display: flex; align-items: center; gap: 4px;
+  min-height: 46px; padding: 6px 8px;
+  transform: translateX(-50%);
+}
+.iqt button {
+  height: 34px; padding: 0 10px; border: none; border-radius: 14px;
+  background: transparent; font-size: var(--lb-type-body); color: inherit; cursor: pointer;
+  font-weight: var(--lb-weight-body);
+}
+.iqt button:hover { background: var(--lb-hover); }
+.iqt .divider { width: var(--lb-divider-size); height: 18px; background: var(--lb-divider); }
+
+/* canvas chrome */
+.canvas-chrome {
+  position: absolute; top: 12px; right: 12px; z-index: 80;
+  display: flex; align-items: center; height: 34px; padding: 0 4px;
+}
+.canvas-chrome button {
+  width: 28px; height: 28px; border: none; border-radius: var(--lb-r-chrome);
+  background: transparent; font-size: var(--lb-type-meta); color: var(--lb-text-muted); cursor: pointer;
+}
+.canvas-chrome .zoom-val { width: 42px; text-align: center; font-size: var(--lb-type-meta); font-weight: var(--lb-weight-latin); }
+
+/* menus — 结构类；磨砂参数全部由 .lb-float.is-menu 控制 */
+.float-menu { /* padding 见 .lb-float.is-menu */ }
+.menu-item {
+  display: flex; align-items: center; justify-content: space-between; width: 100%;
+  height: 34px; padding: 0 10px; border: none; border-radius: var(--lb-r-chrome);
+  background: transparent; font-size: var(--lb-type-body); color: inherit;
+  text-align: left; cursor: pointer; font-weight: var(--lb-weight-body);
+}
+.menu-item:hover { background: var(--lb-hover); color: var(--lb-text); }
+.menu-item kbd { color: var(--lb-text-muted); font-size: var(--lb-type-meta); font-weight: var(--lb-weight-latin); }
+.menu-divider { height: var(--lb-divider-size); background: var(--lb-divider); margin: 4px 6px; }
+.menu-item.is-danger { color: var(--lb-danger); }
+
+.create-menu {
+  position: absolute; left: 36%; top: 38%; z-index: 85; width: 244px;
+}
+.create-menu h4 { font-size: var(--lb-type-compact); color: var(--lb-text-secondary); margin: 8px 0 4px; font-weight: var(--lb-weight-body); }
+.create-item {
+  display: flex; align-items: center; gap: 10px; width: 100%; height: 38px; padding: 0 10px;
+  border: none; border-radius: var(--lb-r-control); background: transparent;
+  font-size: var(--lb-type-body); color: inherit; text-align: left; cursor: pointer;
+  font-weight: var(--lb-weight-body);
+}
+.create-item:hover { background: var(--lb-hover); color: var(--lb-text); }
+.ctx-menu { position: absolute; left: 54%; top: 52%; z-index: 87; width: 190px; }
+.zoom-menu { position: absolute; top: 50px; right: 48px; width: 168px; z-index: 90; }
+
+/* —— 底部生成栏：下方宽面板压住上方窄工具栏 —— */
+.composer {
+  position: absolute; left: 50%; bottom: 16px; z-index: 85;
+  width: min(var(--lb-composer-w), calc(100% - 40px));
+  transform: translateX(-50%);
+}
+.composer-topbar-rail.lb-float {
+  margin: 0 22px;
+  border-radius: var(--lb-r-composer-top) var(--lb-r-composer-top) 0 0;
+  border-bottom: none;
+  box-shadow: none;
+}
+.composer-main-card.lb-float {
+  border-radius: var(--lb-r-composer);
+  margin-top: -1px;
+}
+.composer-topbar-rail {
+  position: relative; z-index: 1;
+  margin: 0 22px; height: 42px; padding: 3px 8px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.composer-topbar-left, .composer-topbar-right { display: flex; align-items: center; gap: 4px; }
+.composer-topbar-rail button {
+  height: 30px; padding: 0 12px; border: none; border-radius: var(--lb-r-pill);
+  background: transparent; font-size: var(--lb-type-body); color: inherit; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 5px;
+  font-weight: var(--lb-weight-body);
+  transition: background 120ms ease;
+}
+.composer-topbar-rail button:hover { background: var(--lb-hover); color: var(--lb-text); }
+.composer-topbar-rail button.is-active {
+  background: var(--lb-accent); color: #fff;
+}
+.composer-topbar-rail button.is-on {
+  background: var(--lb-accent); color: #fff;
+}
+.composer-topbar-rail .vdiv {
+  width: var(--lb-divider-size); height: 14px; background: var(--lb-divider); margin: 0 4px;
+}
+.composer-main-card {
+  position: relative; z-index: 3;
+  padding: 8px; overflow: visible;
+}
+.composer-prompt {
+  min-height: 56px; padding: 8px 14px 4px; margin-top: 28px;
+  font-size: var(--lb-type-body); line-height: 1.65;
+  font-weight: var(--lb-weight-body);
+}
+.composer-thumbs { display: flex; gap: 8px; padding: 8px 10px; }
+.thumb {
+  width: 56px; height: 56px; border-radius: var(--lb-r-control);
+  border: 2px solid var(--lb-accent); background: linear-gradient(135deg,#a8d8a8,#c8e8c8);
+  display: grid; place-items: center; font-size: var(--lb-type-meta); color: var(--lb-text-muted);
+}
+.thumb-add {
+  width: 56px; height: 56px; border-radius: var(--lb-r-control);
+  border: 1.5px dashed var(--lb-border-strong); display: grid; place-items: center;
+  color: var(--lb-text-muted); font-size: 18px;
+}
+.composer-footer { display: flex; align-items: center; justify-content: space-between; padding: 4px 2px 2px; }
+.tool-wrap { position: relative; }
+.tool-btn {
+  display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px;
+  border: none; border-radius: var(--lb-r-pill); background: transparent;
+  font-size: var(--lb-type-body); font-weight: var(--lb-weight-body); color: inherit; cursor: pointer;
+}
+.tool-btn:hover { background: var(--lb-hover); }
+html.theme-dark .tool-btn:hover { background: rgba(255, 255, 255, 0.06); color: inherit; }
+.tool-popover {
+  position: absolute; bottom: 44px; left: 0; min-width: 220px; z-index: 220;
+  pointer-events: none; opacity: 0; visibility: hidden;
+}
+.tool-popover.is-open {
+  pointer-events: auto; opacity: 1; visibility: visible;
+}
+.tool-popover h5 {
+  font-size: var(--lb-type-compact); color: var(--lb-text-secondary); margin-bottom: 8px;
+  font-weight: var(--lb-weight-body);
+}
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  height: 30px; padding: 0 10px; border: var(--lb-divider-size) solid var(--lb-border);
+  border-radius: var(--lb-r-pill); font-size: var(--lb-type-body); color: inherit; cursor: pointer;
+  background: transparent; font-weight: var(--lb-weight-body);
+  font-family: inherit;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.chip:hover:not(.is-active) { background: var(--lb-hover); border-color: var(--lb-border-strong); }
+.chip.is-active { border-color: transparent; background: var(--lb-selected); color: var(--lb-accent); }
+
+.run-capsule {
+  display: flex; align-items: center; height: 34px; border-radius: var(--lb-r-pill);
+  background: var(--lb-accent); overflow: hidden;
+}
+.run-cost { padding: 0 10px; color: rgba(255,255,255,.9); font-size: var(--lb-type-compact); }
+.run-btn {
+  height: 34px; padding: 0 14px; border: none; background: transparent;
+  color: #fff; font-size: var(--lb-type-body); font-weight: var(--lb-weight-body); cursor: pointer;
+}
+.expand-btn {
+  position: absolute; top: 36px; right: 12px; width: 24px; height: 24px;
+  border: none; background: transparent; color: var(--lb-text-muted); cursor: pointer; font-size: 12px;
+}
+
+.minimap {
+  position: absolute; right: 12px; bottom: 210px; width: 120px; height: 80px; z-index: 70;
+  opacity: .9;
+}
+.minimap-viewport {
+  position: absolute; left: 20%; top: 15%; width: 45%; height: 50%;
+  border: 1px solid var(--lb-accent); background: var(--lb-accent-subtle);
+}
+
+/* dock */
+.dock {
+  display: flex; flex-direction: column; background: var(--lb-bg-chrome);
+  border-left: var(--lb-divider-size) solid var(--lb-divider); min-height: 0; box-shadow: none;
+  overflow: visible; position: relative;
+}
+.dock-chrome {
+  display: flex; align-items: center; height: 36px; padding: 0 10px;
+  border-bottom: var(--lb-divider-size) solid var(--lb-divider);
+  background: var(--lb-bg-shell); position: relative; z-index: 2;
+  overflow: visible;
+}
+.dock-title-btn {
+  display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 8px;
+  border: none; border-radius: var(--lb-r-control); background: transparent;
+  font-size: var(--lb-type-body); color: var(--lb-text); cursor: pointer;
+}
+.dock-title-menu {
+  position: absolute; top: 8px; left: 8px; width: 220px; z-index: 120;
+}
+.dock-close { margin-left: auto; width: 28px; height: 28px; border: none; border-radius: var(--lb-r-chrome); background: transparent; cursor: pointer; }
+.dock-body {
+  flex: 1; display: flex; flex-direction: column; min-height: 0; padding: 12px;
+  background: var(--lb-bg-chrome); position: relative; overflow: visible;
+}
+.dock-msg {
+  align-self: flex-start; max-width: 88%; padding: 10px 12px; margin-bottom: 10px;
+  border-radius: var(--lb-r-float); background: var(--lb-bg-elevated);
+  border: var(--lb-divider-size) solid var(--lb-border);
+  font-size: var(--lb-type-body); line-height: 1.5; color: var(--lb-text);
+}
+.dock-msg.is-user { align-self: flex-end; background: var(--lb-accent-subtle); border-color: transparent; }
+.dock-composer {
+  margin-top: auto; padding: 10px;
+}
+.dock-input {
+  width: 100%; min-height: 56px; border: none; resize: none; outline: none;
+  background: transparent; font-family: inherit; font-size: var(--lb-type-body);
+  color: var(--lb-text); margin-bottom: 8px;
+}
+.dock-foot { display: flex; align-items: center; justify-content: space-between; }
+.dock-foot-left, .dock-foot-right { display: flex; align-items: center; gap: 6px; }
+.attach-btn {
+  width: 32px; height: 32px; border: var(--lb-divider-size) solid var(--lb-border);
+  border-radius: var(--lb-r-control); background: rgba(0,0,0,.03); cursor: pointer;
+}
+.skill-wrap { position: relative; }
+.skill-menu { position: absolute; bottom: 38px; left: 0; width: 200px; z-index: 110; }
+.send-btn {
+  width: 36px; height: 36px; border: none; border-radius: 50%;
+  background: var(--lb-accent); color: #fff; font-size: 16px; cursor: pointer;
+}
+.lb-btn {
+  display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px;
+  border: var(--lb-divider-size) solid var(--lb-border); border-radius: var(--lb-r-control);
+  background: var(--lb-glass-bg); font-size: var(--lb-type-compact); color: var(--lb-text);
+  text-decoration: none; cursor: pointer;
+}
+.lb-btn.is-primary { background: var(--lb-accent); border-color: transparent; color: #fff; }
+"""
+
+HTML_BODY = r"""
+<div class="proto-badge">完整壳层样板 v10</div>
+<div class="proto-toolbar">
+  <button class="lb-btn" onclick="document.documentElement.classList.toggle('theme-dark')">切换亮/暗</button>
+  <a class="lb-btn" href="字体说明.html">字体说明</a>
+  <a class="lb-btn" href="个人主页-样板.html">个人主页</a>
+  <a class="lb-btn" href="index.html">← 入口</a>
+</div>
+
+<div class="spec-panel lb-float is-menu">
+  <h4>悬浮层统一</h4>
+  全部菜单/浮层<br>
+  <code>80%</code> 透明 + <code>blur(80px)</code><br>
+  窄工具栏无投影<br>
+  <br>
+  <h4>画布（深色 · 与软件一致）</h4>
+  底 <code>#101010</code><br>
+  点 <code>rgba(255,255,255,.055)</code><br>
+  点径 <code>0.6px</code> · 间距 <code>18px</code>
+</div>
+
+<div class="app">
+  <header class="titlebar">
+    <div class="titlebar-drag"></div>
+    <div class="titlebar-tools">
+      <input class="titlebar-search" placeholder="搜索画布内节点与功能" readonly>
+      <button class="titlebar-btn">👤</button>
+      <button class="titlebar-btn">🕐</button>
+      <button class="titlebar-btn">☀</button>
+      <span class="points-capsule">⚡ 2365</span>
+      <button class="titlebar-btn">—</button><button class="titlebar-btn">□</button><button class="titlebar-btn">×</button>
+    </div>
+  </header>
+
+  <div class="body-row">
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <span class="sidebar-logo">Welcome to 光盒</span>
+        <button class="titlebar-btn">☰</button>
+      </div>
+      <button class="nav-btn"><span class="ico">＋</span><span>新建画布</span></button>
+      <button class="nav-btn is-expanded"><span class="ico">📁</span><span>资产中心</span><span style="margin-left:auto;font-size:10px">▾</span></button>
+      <div class="asset-tree">
+        <span class="proto-label" style="top:-2px;left:0">资产中心展开</span>
+        <div class="asset-folder is-open"><span class="chev">▾</span>图片资产</div>
+        <div class="asset-sub">风景参考 · 角色立绘</div>
+        <div class="asset-folder is-open"><span class="chev">▾</span>提示词</div>
+        <div class="asset-sub">3D 低多边形 · 民间风格</div>
+        <div class="asset-folder"><span class="chev">▸</span>视频资产</div>
+        <div class="asset-folder"><span class="chev">▸</span>音频资产</div>
+      </div>
+      <button class="nav-btn"><span class="ico">✦</span><span>Skill</span></button>
+      <button class="nav-btn"><span class="ico">▦</span><span>全部创作</span></button>
+      <div class="sidebar-recent">
+        <div class="recent-label">最近创作</div>
+        <div class="recent-item is-active">未命名画布</div>
+        <div class="recent-item">品牌海报方案</div>
+      </div>
+      <div class="sidebar-footer">
+        <button class="user-btn"><span class="user-avatar">👤</span><span class="user-name">用户</span></button>
+        <button class="titlebar-btn">?</button>
+      </div>
+      <div class="user-menu lb-float is-menu">
+        <span class="proto-label" style="top:-18px;left:0">用户菜单</span>
+        <button class="user-menu-item"><span class="ico">🏠</span><a href="个人主页-样板.html" style="color:inherit;text-decoration:none">个人主页</a></button>
+        <button class="user-menu-item"><span class="ico">🌓</span>主题<small>浅色</small></button>
+        <button class="user-menu-item"><span class="ico">⚙</span>设置</button>
+        <div class="user-menu-divider"></div>
+        <button class="user-menu-item" style="color:var(--lb-danger)">↪ 退出账号</button>
+      </div>
+    </aside>
+
+    <div class="stage-wrap">
+      <div class="stage">
+        <div class="canvas">
+          <span class="proto-label" style="top:8px;left:8px">画布直角 · 网格 18px · 点 0.6px · rgba(255,255,255,.055)</span>
+
+          <svg class="conn-layer" viewBox="0 0 1200 800" preserveAspectRatio="none">
+            <path class="conn-line" d="M 310 200 C 410 200, 480 260, 550 280" />
+            <path class="conn-line is-pending" d="M 720 280 C 800 280, 860 340, 930 360" />
+            <path class="conn-line is-cascade" d="M 550 280 C 620 280, 660 300, 720 280" style="opacity:.5" />
+          </svg>
+
+          <div class="node lb-float is-selected" style="left:170px;top:110px;width:200px;height:165px">
+            <div class="node-port out"></div>
+            <div class="node-media"></div>
+            <div class="node-title">参考图片</div>
+          </div>
+          <div class="node lb-float is-selected" style="left:510px;top:200px;width:220px;height:185px">
+            <div class="node-port in"></div><div class="node-port out"></div>
+            <div class="node-media"></div>
+            <div class="node-title">生成结果</div>
+          </div>
+
+          <!-- 框选打组胶囊工具栏（画布上，非底部批量） -->
+          <div class="selection-box" style="left:158px;top:98px;width:580px;height:300px">
+            <div class="selection-box-capsule">
+              <span class="proto-label" style="top:-18px;left:0">打组面板（框选多节点）</span>
+              <div class="selection-capsule-bar lb-float is-pill" role="toolbar" aria-label="选区操作">
+                <button type="button" class="selection-capsule-btn">⊞ 打组</button>
+                <button type="button" class="selection-capsule-btn">⛓ 消除连线</button>
+                <button type="button" class="selection-capsule-btn">⇄ 整理</button>
+                <span class="selection-capsule-divider"></span>
+                <button type="button" class="selection-capsule-btn">📁 资产库</button>
+                <button type="button" class="selection-capsule-btn">↓ 下载</button>
+                <button type="button" class="selection-capsule-btn is-danger">🗑 删除</button>
+              </div>
+            </div>
+          </div>
+          <div class="iqt lb-float is-pill" style="left:620px;top:178px">
+            <span class="proto-label" style="top:-18px;left:0">媒体工具栏</span>
+            <button>✂ 裁切</button><button>↻ 多角度</button><button>▢ 框选</button>
+            <span class="divider"></span><button>HD</button><button>PSD</button><button>↓</button>
+          </div>
+          <div class="node lb-float" style="left:870px;top:290px;width:180px;height:150px">
+            <div class="node-port in"></div>
+            <div class="node-media"></div>
+            <div class="node-title">视频帧</div>
+          </div>
+
+          <div class="create-menu lb-float is-menu">
+            <span class="proto-label" style="top:-18px;left:0">双击画布菜单</span>
+            <h4 style="margin-top:0">创建节点</h4>
+            <button class="create-item"><span class="ico">T</span>文本</button>
+            <button class="create-item"><span class="ico">🖼</span>图片</button>
+            <button class="create-item"><span class="ico">🎬</span>视频</button>
+            <button class="create-item"><span class="ico">🎵</span>音频</button>
+          </div>
+          <div class="ctx-menu float-menu lb-float is-menu">
+            <span class="proto-label" style="top:-18px;left:0">右键菜单</span>
+            <button class="menu-item"><span>新建画布</span></button>
+            <button class="menu-item"><span>整理全局</span></button>
+            <div class="menu-divider"></div>
+            <button class="menu-item is-danger"><span>删除</span><kbd>Del</kbd></button>
+          </div>
+
+          <div class="canvas-chrome lb-float is-pill">
+            <button>▦</button><button>−</button><span class="zoom-val">100%</span><button>＋</button>
+            <button>↓</button><button>🗺</button>
+          </div>
+          <div class="zoom-menu float-menu lb-float is-menu">
+            <button class="menu-item"><span>缩小</span><kbd>Ctrl -</kbd></button>
+            <button class="menu-item"><span>放大</span><kbd>Ctrl +</kbd></button>
+            <div class="menu-divider"></div>
+            <button class="menu-item"><span>100%</span></button>
+          </div>
+          <div class="minimap lb-float"><div class="minimap-viewport"></div></div>
+
+          <!-- 底部生成栏：普通模式 + 上拉菜单展开示意 -->
+          <div class="composer">
+            <div class="composer-topbar-rail lb-float">
+              <span class="proto-label" style="top:-18px;left:0">上方窄工具栏</span>
+              <div class="composer-topbar-left">
+                <button>⊕ 参考</button>
+                <span class="vdiv"></span>
+                <button>👤 批量</button>
+              </div>
+              <div class="composer-topbar-right">
+                <button>♪ Audio</button>
+                <button>💬 Text</button>
+                <button class="is-active">🖼 Image</button>
+                <button>🎬 Video</button>
+              </div>
+            </div>
+            <div class="composer-main-card lb-float">
+              <button class="expand-btn">⤢</button>
+              <div class="composer-prompt">改成低多边形简易 3D 动画本体画面，民间自制建模风格。</div>
+              <div class="composer-thumbs">
+                <div class="thumb">图 1</div>
+                <div class="thumb-add">＋</div>
+              </div>
+              <div class="composer-footer">
+                <div style="display:flex;gap:6px">
+                  <div class="tool-wrap">
+                    <button class="tool-btn" type="button">⚙ GPT Image 2 ▾</button>
+                    <div class="tool-popover lb-float is-menu is-open">
+                      <span class="proto-label" style="top:-18px;left:0">API 上拉菜单</span>
+                      <h5>模型</h5>
+                      <div class="chip-row"><button type="button" class="chip is-active">GPT Image 2</button><button type="button" class="chip">Seedream</button></div>
+                    </div>
+                  </div>
+                  <div class="tool-wrap">
+                    <button class="tool-btn" type="button">▣ Auto · 1K | 1张 ▾</button>
+                    <div class="tool-popover lb-float is-menu is-open" style="width:240px">
+                      <span class="proto-label" style="top:-18px;left:0">尺寸上拉菜单</span>
+                      <h5>尺寸</h5>
+                      <div class="chip-row" style="margin-bottom:6px"><button type="button" class="chip is-active">Auto</button><button type="button" class="chip">1:1</button><button type="button" class="chip">16:9</button></div>
+                      <h5>质量</h5>
+                      <div class="chip-row"><button type="button" class="chip is-active">1K</button><button type="button" class="chip">2K</button></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="run-capsule">
+                  <div class="run-cost">⚡ 5</div>
+                  <button class="run-btn">↑</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="dock">
+      <div class="dock-chrome">
+        <button class="dock-title-btn">未命名对话 ▾</button>
+        <button class="dock-close">⊟</button>
+      </div>
+      <div class="dock-body">
+        <div class="dock-title-menu float-menu lb-float is-menu">
+          <span class="proto-label" style="top:-18px;left:0">对话下拉</span>
+          <button class="menu-item is-active">＋ 新建对话</button>
+          <button class="menu-item">未命名对话</button>
+          <button class="menu-item">海报文案讨论</button>
+        </div>
+        <div class="dock-msg">你好，我可以帮你整理创意、写提示词。</div>
+        <div class="dock-msg is-user">帮我把色调调暖一点</div>
+        <div class="dock-composer lb-float">
+          <textarea class="dock-input" placeholder="描述创意或需求，/使用技能，@引用参考" readonly></textarea>
+          <div class="dock-foot">
+            <div class="dock-foot-left">
+              <button class="attach-btn">📎</button>
+              <div class="skill-wrap">
+                <button class="attach-btn">✦</button>
+                <div class="skill-menu float-menu lb-float is-menu">
+                  <span class="proto-label" style="top:-18px;left:0">技能包</span>
+                  <button class="menu-item">图片风格分析</button>
+                  <button class="menu-item">提示词优化</button>
+                </div>
+              </div>
+            </div>
+            <button class="send-btn">↑</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+"""
+
+TEMPLATE = f"""<!DOCTYPE html>
+<html lang="zh-CN" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>光盒 · 完整壳层视觉样板 v10</title>
+  <style>{CSS}</style>
+</head>
+<body>
+{HTML_BODY}
+</body>
+</html>
+"""
+
+if __name__ == "__main__":
+    with open(OUTPUT, "w", encoding="utf-8") as f:
+        f.write(TEMPLATE)
+    print(f"Wrote {OUTPUT}")

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>视觉样板 B · 浮层与交互组件</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--lb-font);
+      font-size: var(--lb-type-body);
+      color: var(--lb-text);
+      background: var(--lb-bg-canvas);
+      min-height: 100vh;
+      padding: 48px 32px 80px;
+    }
+
+    .proto-badge {
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      padding: 4px 12px;
+      border-radius: var(--lb-radius-pill);
+      background: var(--lb-accent);
+      color: #fff;
+      font-size: var(--lb-type-meta);
+    }
+
+    .proto-header {
+      max-width: 960px;
+      margin: 0 auto 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .proto-header h1 { font-size: var(--lb-type-title); font-weight: var(--lb-weight-title); }
+    .proto-header p { margin-top: 4px; font-size: var(--lb-type-compact); color: var(--lb-text-muted); }
+
+    .sections {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .section-title {
+      font-size: var(--lb-type-compact);
+      font-weight: var(--lb-weight-medium);
+      color: var(--lb-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--lb-space-4);
+    }
+
+    .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--lb-space-3); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--lb-space-5); }
+    @media (max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .card-demo {
+      padding: var(--lb-space-5);
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-card);
+      background: var(--lb-bg-elevated);
+    }
+
+    /* 状态演示行 */
+    .state-row { display: flex; flex-direction: column; gap: var(--lb-space-2); }
+    .state-label { font-size: var(--lb-type-meta); color: var(--lb-text-muted); width: 72px; flex-shrink: 0; }
+    .state-item { display: flex; align-items: center; gap: var(--lb-space-4); }
+
+    /* 浮层演示区 */
+    .float-stage {
+      position: relative;
+      min-height: 280px;
+      padding: var(--lb-space-5);
+      border: 1px dashed var(--lb-border);
+      border-radius: var(--lb-radius-card);
+      background: var(--lb-bg-chrome);
+    }
+
+    .float-menu {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+    }
+
+    .float-toolbar {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: flex;
+      gap: 2px;
+      padding: 4px;
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-float);
+      background: var(--lb-bg-elevated);
+      box-shadow: var(--lb-shadow-float);
+    }
+    .float-toolbar .lb-btn.is-icon.is-sm { border-radius: var(--lb-radius-chrome); }
+
+    .float-popover {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 220px;
+      padding: var(--lb-space-3);
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-float);
+      background: var(--lb-bg-elevated);
+      box-shadow: var(--lb-shadow-float);
+    }
+    .float-popover-title {
+      font-size: var(--lb-type-meta);
+      color: var(--lb-text-muted);
+      margin-bottom: var(--lb-space-2);
+    }
+    .float-popover .row { gap: var(--lb-space-2); }
+
+    /* 对话框 */
+    .dialog-backdrop {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: var(--lb-backdrop);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+    }
+    .dialog-backdrop.is-open { display: flex; }
+    .dialog {
+      width: min(420px, calc(100vw - 48px));
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-dialog);
+      background: var(--lb-bg-elevated);
+      box-shadow: var(--lb-shadow-dialog);
+      overflow: hidden;
+    }
+    .dialog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--lb-space-4) var(--lb-space-5);
+      border-bottom: 1px solid var(--lb-divider);
+      font-weight: var(--lb-weight-medium);
+    }
+    .dialog-body { padding: var(--lb-space-5); color: var(--lb-text-secondary); line-height: var(--lb-leading-body); }
+    .dialog-foot {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--lb-space-2);
+      padding: var(--lb-space-3) var(--lb-space-5) var(--lb-space-5);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: var(--lb-space-3);
+      padding: var(--lb-space-3) var(--lb-space-4);
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-float);
+      background: var(--lb-bg-elevated);
+      box-shadow: var(--lb-shadow-float);
+      font-size: var(--lb-type-compact);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--lb-motion-base);
+      z-index: 150;
+    }
+    .toast.is-show { opacity: 1; }
+    .toast svg { width: 16px; height: 16px; color: var(--lb-success); }
+
+    /* 颜色选择器 mock */
+    .color-picker {
+      display: grid;
+      grid-template-columns: repeat(8, 24px);
+      gap: 6px;
+    }
+    .swatch {
+      width: 24px; height: 24px;
+      border-radius: var(--lb-radius-chrome);
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform var(--lb-motion-fast);
+    }
+    .swatch:hover { transform: scale(1.08); }
+    .swatch.is-selected { border-color: var(--lb-accent); box-shadow: 0 0 0 2px var(--lb-focus-ring); }
+
+    .select-mock {
+      position: relative;
+      min-width: 160px;
+    }
+    .select-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: var(--lb-control-md);
+      padding: 0 var(--lb-space-3);
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-control);
+      background: var(--lb-bg-input);
+      font-size: var(--lb-type-body);
+      cursor: pointer;
+    }
+    .select-trigger:hover { border-color: var(--lb-border-strong); }
+    .select-dropdown {
+      margin-top: 4px;
+      padding: var(--lb-space-1);
+      border: 1px solid var(--lb-border);
+      border-radius: var(--lb-radius-float);
+      background: var(--lb-bg-elevated);
+      box-shadow: var(--lb-shadow-float);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: var(--lb-space-7);
+      color: var(--lb-text-muted);
+    }
+    .empty-state svg { width: 40px; height: 40px; margin-bottom: var(--lb-space-3); opacity: 0.5; }
+
+    .proto-nav {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      display: flex;
+      gap: var(--lb-space-2);
+    }
+
+    .token-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--lb-type-compact);
+    }
+    .token-table th, .token-table td {
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--lb-divider);
+    }
+    .token-table th { color: var(--lb-text-muted); font-weight: var(--lb-weight-medium); }
+    .token-swatch {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-right: 6px;
+      border: 1px solid var(--lb-border);
+    }
+  </style>
+<style>
+/* === 内嵌 Token === */
+/**
+ * 光盒 · Spectrum 2 桌面创作版 · 视觉样板 Token
+ * 参考：Adobe Spectrum 2（medium 桌面尺度）+ Express 友好圆角浮层
+ * 亮/暗仅颜色不同，结构尺寸完全相同
+ */
+
+:root {
+  /* —— 品牌强调色（保留光盒蓝，结构对齐 Spectrum accent） —— */
+  --lb-accent: #0a84ff;
+  --lb-accent-hover: #339dff;
+  --lb-accent-subtle: rgba(10, 132, 255, 0.12);
+  --lb-accent-rgb: 10, 132, 255;
+
+  /* —— 亮色 · Spectrum 灰阶语义 —— */
+  --lb-bg-canvas: #f5f5f5;
+  --lb-bg-chrome: #f8f8f8;
+  --lb-bg-shell: #fafafa;
+  --lb-bg-elevated: #ffffff;
+  --lb-bg-input: #ffffff;
+  --lb-bg-composer: #ffffff;
+  --lb-bg-composer-top: rgba(245, 245, 247, 0.72);
+
+  --lb-text: #292929;
+  --lb-text-secondary: #505050;
+  --lb-text-muted: #717171;
+  --lb-text-disabled: #c6c6c6;
+  --lb-text-on-accent: #ffffff;
+
+  --lb-border: #dadada;
+  --lb-border-strong: #c6c6c6;
+  --lb-divider: #e8e8e8;
+
+  --lb-hover: #efefef;
+  --lb-pressed: #e3e3e3;
+  --lb-selected: rgba(10, 132, 255, 0.12);
+  --lb-focus-ring: rgba(10, 132, 255, 0.35);
+  --lb-danger: #e34850;
+  --lb-danger-subtle: rgba(227, 72, 80, 0.1);
+  --lb-success: #2d9d78;
+  --lb-backdrop: rgba(0, 0, 0, 0.42);
+
+  --lb-shadow-float: 0 2px 8px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.06);
+  --lb-shadow-dialog: 0 4px 16px rgba(0, 0, 0, 0.08), 0 16px 48px rgba(0, 0, 0, 0.1);
+
+  /* —— 字号（桌面创作工具密度，比手机 App 更紧凑） —— */
+  --lb-font: "MiSans Variable", "MiSans", "Segoe UI", "Microsoft YaHei UI", sans-serif;
+  --lb-type-title: 14px;
+  --lb-type-body: 13px;
+  --lb-type-compact: 12px;
+  --lb-type-meta: 11px;
+  --lb-weight-body: 400;
+  --lb-weight-medium: 500;
+  --lb-weight-title: 600;
+  --lb-leading-tight: 1.25;
+  --lb-leading-body: 1.45;
+
+  /* —— 圆角：结构区克制，浮层更圆润（Express 方向） —— */
+  --lb-radius-chrome: 6px;
+  --lb-radius-control: 8px;
+  --lb-radius-card: 10px;
+  --lb-radius-float: 12px;
+  --lb-radius-dialog: 14px;
+  --lb-radius-pill: 999px;
+
+  /* —— 控件高度（Spectrum desktop medium 略收紧） —— */
+  --lb-control-sm: 24px;
+  --lb-control-md: 30px;
+  --lb-control-lg: 32px;
+  --lb-menu-item-h: 32px;
+
+  /* —— 间距（4px 网格） —— */
+  --lb-space-1: 4px;
+  --lb-space-2: 6px;
+  --lb-space-3: 8px;
+  --lb-space-4: 12px;
+  --lb-space-5: 16px;
+  --lb-space-6: 20px;
+  --lb-space-7: 24px;
+  --lb-space-8: 32px;
+
+  /* —— 布局尺寸 —— */
+  --lb-titlebar-h: 28px;
+  --lb-sidebar-w: 232px;
+  --lb-panel-w: 320px;
+  --lb-composer-w: 720px;
+  --lb-icon: 16px;
+  --lb-icon-sm: 14px;
+  --lb-icon-xs: 12px;
+  --lb-icon-stroke: 1.75;
+
+  --lb-motion-fast: 120ms ease;
+  --lb-motion-base: 160ms ease;
+}
+
+html.theme-dark {
+  --lb-bg-canvas: #111111;
+  --lb-bg-chrome: #1b1b1b;
+  --lb-bg-shell: #181818;
+  --lb-bg-elevated: #262626;
+  --lb-bg-input: #1e1e1e;
+  --lb-bg-composer: #1a1a1a;
+  --lb-bg-composer-top: rgba(255, 255, 255, 0.04);
+
+  --lb-text: #dbdbdb;
+  --lb-text-secondary: #b3b3b3;
+  --lb-text-muted: #8f8f8f;
+  --lb-text-disabled: #5c5c5c;
+
+  --lb-border: #3a3a3a;
+  --lb-border-strong: #484848;
+  --lb-divider: #2a2a2a;
+
+  --lb-hover: rgba(255, 255, 255, 0.07);
+  --lb-pressed: rgba(255, 255, 255, 0.11);
+  --lb-selected: rgba(10, 132, 255, 0.18);
+  --lb-focus-ring: rgba(10, 132, 255, 0.42);
+  --lb-danger: #ff6b6b;
+  --lb-danger-subtle: rgba(255, 107, 107, 0.14);
+  --lb-backdrop: rgba(0, 0, 0, 0.58);
+
+  --lb-shadow-float: 0 2px 8px rgba(0, 0, 0, 0.28), 0 8px 24px rgba(0, 0, 0, 0.22);
+  --lb-shadow-dialog: 0 4px 16px rgba(0, 0, 0, 0.32), 0 16px 48px rgba(0, 0, 0, 0.36);
+}
+
+/* —— 基础组件（样板专用） —— */
+
+.lb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--lb-space-2);
+  height: var(--lb-control-md);
+  padding: 0 var(--lb-space-4);
+  border: 1px solid transparent;
+  border-radius: var(--lb-radius-control);
+  background: transparent;
+  color: var(--lb-text);
+  font-family: var(--lb-font);
+  font-size: var(--lb-type-body);
+  font-weight: var(--lb-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--lb-motion-fast), border-color var(--lb-motion-fast);
+}
+.lb-btn:hover { background: var(--lb-hover); }
+.lb-btn:active { background: var(--lb-pressed); }
+.lb-btn:focus-visible { outline: 2px solid var(--lb-focus-ring); outline-offset: 1px; }
+.lb-btn:disabled { color: var(--lb-text-disabled); pointer-events: none; }
+.lb-btn.is-primary { background: var(--lb-accent); color: var(--lb-text-on-accent); }
+.lb-btn.is-primary:hover { background: var(--lb-accent-hover); }
+.lb-btn.is-secondary { border-color: var(--lb-border-strong); background: var(--lb-bg-elevated); }
+.lb-btn.is-tonal { background: var(--lb-accent-subtle); color: var(--lb-accent); }
+.lb-btn.is-danger { color: var(--lb-danger); }
+.lb-btn.is-danger:hover { background: var(--lb-danger-subtle); }
+.lb-btn.is-sm { height: var(--lb-control-sm); padding: 0 var(--lb-space-3); font-size: var(--lb-type-compact); }
+.lb-btn.is-icon { width: var(--lb-control-md); padding: 0; }
+.lb-btn.is-icon.is-sm { width: var(--lb-control-sm); }
+
+.lb-input {
+  height: var(--lb-control-md);
+  padding: 0 var(--lb-space-3);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-radius-control);
+  background: var(--lb-bg-input);
+  color: var(--lb-text);
+  font-family: var(--lb-font);
+  font-size: var(--lb-type-body);
+  transition: border-color var(--lb-motion-fast), box-shadow var(--lb-motion-fast);
+}
+.lb-input::placeholder { color: var(--lb-text-muted); }
+.lb-input:hover { border-color: var(--lb-border-strong); }
+.lb-input:focus { outline: none; border-color: var(--lb-accent); box-shadow: 0 0 0 2px var(--lb-focus-ring); }
+
+.lb-menu {
+  min-width: 168px;
+  padding: var(--lb-space-1);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-radius-float);
+  background: var(--lb-bg-elevated);
+  box-shadow: var(--lb-shadow-float);
+}
+.lb-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--lb-space-3);
+  width: 100%;
+  height: var(--lb-menu-item-h);
+  padding: 0 var(--lb-space-3);
+  border: none;
+  border-radius: var(--lb-radius-chrome);
+  background: transparent;
+  color: var(--lb-text);
+  font-family: var(--lb-font);
+  font-size: var(--lb-type-body);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--lb-motion-fast);
+}
+.lb-menu-item:hover { background: var(--lb-hover); }
+.lb-menu-item.is-active { background: var(--lb-selected); color: var(--lb-accent); }
+.lb-menu-item.is-danger { color: var(--lb-danger); }
+.lb-menu-divider { height: 1px; margin: var(--lb-space-1) var(--lb-space-2); background: var(--lb-divider); }
+
+.lb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lb-space-2);
+  height: var(--lb-control-sm);
+  padding: 0 var(--lb-space-3);
+  border: 1px solid var(--lb-border);
+  border-radius: var(--lb-radius-pill);
+  background: var(--lb-bg-elevated);
+  color: var(--lb-text-secondary);
+  font-size: var(--lb-type-compact);
+  cursor: pointer;
+  transition: background-color var(--lb-motion-fast), border-color var(--lb-motion-fast);
+}
+.lb-chip:hover { background: var(--lb-hover); }
+.lb-chip.is-selected { border-color: transparent; background: var(--lb-selected); color: var(--lb-accent); }
+
+.lb-switch {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  border-radius: var(--lb-radius-pill);
+  background: var(--lb-border);
+  cursor: pointer;
+  transition: background-color var(--lb-motion-base);
+}
+.lb-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform var(--lb-motion-base);
+}
+.lb-switch.is-on { background: var(--lb-accent); }
+.lb-switch.is-on::after { transform: translateX(14px); }
+
+.ico { display:inline-flex; align-items:center; justify-content:center; width:14px; font-size:12px; line-height:1; opacity:.85; }
+</style>
+</head>
+<body>
+  <div class="proto-badge">视觉样板 B · 浮层与交互组件（Express 圆润浮层）</div>
+
+  <header class="proto-header">
+    <div>
+      <h1>浮层与交互组件</h1>
+      <p>菜单、工具栏、弹窗、输入框等浮层使用更明显的圆角（12～14px），形成层级</p>
+    </div>
+    <button class="lb-btn is-secondary" id="themeToggle" type="button"><span class="ico" aria-hidden="true">☀</span> 切换主题</button>
+  </header>
+
+  <div class="sections">
+    <!-- 按钮 -->
+    <section>
+      <div class="section-title">按钮 · 5 种类型 × 完整状态</div>
+      <div class="grid-2">
+        <div class="card-demo">
+          <div class="state-row">
+            <div class="state-item"><span class="state-label">主要</span><button class="lb-btn is-primary" type="button">确认保存</button></div>
+            <div class="state-item"><span class="state-label">次要</span><button class="lb-btn is-secondary" type="button">取消</button></div>
+            <div class="state-item"><span class="state-label">文字</span><button class="lb-btn" type="button">了解更多</button></div>
+            <div class="state-item"><span class="state-label">色调</span><button class="lb-btn is-tonal" type="button">已选中工具</button></div>
+            <div class="state-item"><span class="state-label">危险</span><button class="lb-btn is-danger" type="button">删除</button></div>
+            <div class="state-item"><span class="state-label">图标</span><button class="lb-btn is-icon" type="button"><span class="ico" aria-hidden="true">⚙</span></button></div>
+            <div class="state-item"><span class="state-label">禁用</span><button class="lb-btn is-primary" type="button" disabled>不能点击</button></div>
+          </div>
+        </div>
+        <div class="card-demo">
+          <div class="section-title" style="margin-bottom:12px">尺寸</div>
+          <div class="row">
+            <button class="lb-btn is-primary is-sm" type="button">小 24px</button>
+            <button class="lb-btn is-primary" type="button">中 30px</button>
+            <button class="lb-btn is-primary" style="height:32px" type="button">大 32px</button>
+          </div>
+          <p style="margin-top:16px;font-size:11px;color:var(--lb-text-muted)">鼠标放上去 / 按下：只改背景色，不改文字颜色</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 输入 -->
+    <section>
+      <div class="section-title">输入类组件</div>
+      <div class="grid-2">
+        <div class="card-demo row" style="flex-direction:column;align-items:stretch">
+          <input class="lb-input" type="text" placeholder="普通输入框">
+          <input class="lb-input" type="text" value="已输入内容" style="margin-top:8px">
+          <input class="lb-input" type="text" placeholder="报错状态" style="border-color:var(--lb-danger);margin-top:8px">
+          <div class="row" style="margin-top:12px">
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px"><input type="checkbox" checked> 复选框</label>
+            <div class="lb-switch is-on" role="switch" aria-checked="true" tabindex="0"></div>
+            <span style="font-size:12px;color:var(--lb-text-muted)">开关</span>
+          </div>
+        </div>
+        <div class="card-demo">
+          <div class="select-mock">
+            <div class="select-trigger">Seedream 5.0 <i data-lucide="chevron-down" style="width:14px"></i></div>
+            <div class="select-dropdown lb-menu" style="margin-top:6px">
+              <button class="lb-menu-item is-active" type="button">Seedream 5.0</button>
+              <button class="lb-menu-item" type="button">Nano Banana 2</button>
+              <button class="lb-menu-item" type="button">GPT Image 2</button>
+            </div>
+          </div>
+          <div style="margin-top:20px">
+            <div class="section-title" style="margin-bottom:8px">颜色选择器</div>
+            <div class="color-picker">
+              <div class="swatch is-selected" style="background:#0a84ff"></div>
+              <div class="swatch" style="background:#292929"></div>
+              <div class="swatch" style="background:#ffffff;border-color:#dadada"></div>
+              <div class="swatch" style="background:#e34850"></div>
+              <div class="swatch" style="background:#2d9d78"></div>
+              <div class="swatch" style="background:#f5a623"></div>
+              <div class="swatch" style="background:#8b5cf6"></div>
+              <div class="swatch" style="background:#ec4899"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 浮层组合 -->
+    <section>
+      <div class="section-title">浮层组合（圆角 12px + 轻阴影）</div>
+      <div class="float-stage">
+        <div class="float-menu lb-menu">
+          <button class="lb-menu-item" type="button"><span class="ico" aria-hidden="true">⎘</span> 复制</button>
+          <button class="lb-menu-item" type="button"><span class="ico" aria-hidden="true">↓</span> 下载</button>
+          <div class="lb-menu-divider"></div>
+          <button class="lb-menu-item is-danger" type="button"><span class="ico" aria-hidden="true">🗑</span> 删除</button>
+        </div>
+        <div class="float-toolbar">
+          <button class="lb-btn is-icon is-sm" type="button"><span class="ico" aria-hidden="true">⌗</span></button>
+          <button class="lb-btn is-icon is-sm" type="button"><span class="ico" aria-hidden="true">⤢</span></button>
+          <button class="lb-btn is-icon is-sm is-tonal" type="button"><span class="ico" aria-hidden="true">✨</span></button>
+          <button class="lb-btn is-icon is-sm" type="button"><span class="ico" aria-hidden="true">⋯</span></button>
+        </div>
+        <div class="float-popover">
+          <div class="float-popover-title">生成参数</div>
+          <div class="row">
+            <button class="lb-chip is-selected" type="button">2K</button>
+            <button class="lb-chip" type="button">4K</button>
+            <button class="lb-chip" type="button">×1</button>
+            <button class="lb-chip" type="button">×2</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 特殊状态 -->
+    <section>
+      <div class="section-title">特殊状态</div>
+      <div class="grid-2">
+        <div class="card-demo empty-state">
+          <span class="ico" aria-hidden="true">📥</span>
+          <div>暂无数据</div>
+          <button class="lb-btn is-tonal" type="button" style="margin-top:12px">新建项目</button>
+        </div>
+        <div class="card-demo" style="display:flex;align-items:center;justify-content:center;gap:12px">
+          <svg width="20" height="20" viewBox="0 0 24 24" style="animation:spin 1s linear infinite"><circle cx="12" cy="12" r="10" fill="none" stroke="var(--lb-accent)" stroke-width="2" stroke-dasharray="32" stroke-linecap="round"/></svg>
+          <span style="color:var(--lb-text-muted)">加载中…</span>
+        </div>
+      </div>
+      <div style="margin-top:16px">
+        <button class="lb-btn is-primary" id="openDialog" type="button">打开确认弹窗</button>
+        <button class="lb-btn is-secondary" id="showToast" type="button" style="margin-left:8px">显示提示消息</button>
+      </div>
+    </section>
+
+    <!-- Token 参数表 -->
+    <section>
+      <div class="section-title">本样板采用的参数（亮/暗仅颜色不同）</div>
+      <table class="token-table card-demo" style="display:table">
+        <thead>
+          <tr><th>项目</th><th>数值</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>控件高度</td><td>24 / 30 / 32 px</td><td>小 / 中 / 大</td></tr>
+          <tr><td>结构圆角</td><td>6 px</td><td>侧栏行、列表项</td></tr>
+          <tr><td>控件圆角</td><td>8 px</td><td>按钮、输入框</td></tr>
+          <tr><td>浮层圆角</td><td>12 px</td><td>菜单、工具栏、提示</td></tr>
+          <tr><td>弹窗圆角</td><td>14 px</td><td>对话框</td></tr>
+          <tr><td>正文字号</td><td>13 px</td><td>菜单、按钮、输入</td></tr>
+          <tr><td>辅助字号</td><td>11 px</td><td>时间、状态</td></tr>
+          <tr><td>主色</td><td><span class="token-swatch" style="background:#0a84ff"></span>#0a84ff</td><td>光盒品牌蓝</td></tr>
+          <tr><td>阴影</td><td>仅浮层</td><td>平面风格，画布无阴影</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <div class="dialog-backdrop" id="dialog">
+    <div class="dialog" role="dialog">
+      <div class="dialog-head">
+        <span>确认删除</span>
+        <button class="lb-btn is-icon is-sm" id="closeDialog" type="button"><span class="ico" aria-hidden="true">×</span></button>
+      </div>
+      <div class="dialog-body">删除后无法恢复，是否继续？</div>
+      <div class="dialog-foot">
+        <button class="lb-btn" id="closeDialog2" type="button">取消</button>
+        <button class="lb-btn is-danger" type="button">删除</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><span class="ico" aria-hidden="true">✓</span> 已保存到画布</div>
+
+  <div class="proto-nav">
+    <a class="lb-btn is-secondary" href="spectrum-workspace-shell.html">← 样板 A</a>
+  </div>
+
+  <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+  <script>
+    const html = document.documentElement;
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      html.classList.toggle('theme-dark');});
+    const dialog = document.getElementById('dialog');
+    document.getElementById('openDialog').addEventListener('click', () => dialog.classList.add('is-open'));
+    document.getElementById('closeDialog').addEventListener('click', () => dialog.classList.remove('is-open'));
+    document.getElementById('closeDialog2').addEventListener('click', () => dialog.classList.remove('is-open'));
+    document.getElementById('showToast').addEventListener('click', () => {
+      const t = document.getElementById('toast');
+      t.classList.add('is-show');
+      setTimeout(() => t.classList.remove('is-show'), 2200);
+    });</script>
+</body>
+</html>

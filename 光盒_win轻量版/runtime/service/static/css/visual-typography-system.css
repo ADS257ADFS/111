@@ -4,7 +4,7 @@
  * positioning, DOM structure, interaction logic, or responsive layout.
  */
 
-/* --gh-* 已别名化为 --ui-*（design-tokens.css 为唯一真相源，见 docs/DESIGN_SYSTEM.md §5） */
+/* --gh-* 已别名化为 --ui-*（design-tokens.css 为唯一真相源） */
 :root {
     --gh-font-ui: var(--ui-font);
     --gh-font-mono: var(--ui-font-mono);
