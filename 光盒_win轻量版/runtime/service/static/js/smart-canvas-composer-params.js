@@ -712,11 +712,16 @@ let _jimengLastVideoCommand = null;
     </div>`;
     }
 
-    // 菜单行内容：公司图标 + 模型名（悬停时下方上滑一句话说明）+ 选中对号
+    // 菜单行内容：公司图标 + 模型名（悬停时下方上滑一句话说明）+ 选中对号（始终输出，不依赖图标库）
+    const MODE_MODEL_CHECK_FALLBACK =
+        '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
+        + '<path d="M5 12.5 10 17.5 19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>'
+        + '</svg>';
     function modeModelChoiceInner(label, escapeHtml){
         const BI = global.ModelBrandIcons;
         const icon = BI ? `<span class="mode-model-ico">${BI.iconFor(label)}</span>` : '';
-        const check = BI ? `<span class="mode-model-check">${BI.CHECK_SVG}</span>` : '';
+        const checkSvg = (BI && BI.CHECK_SVG) || MODE_MODEL_CHECK_FALLBACK;
+        const check = `<span class="mode-model-check" aria-hidden="true">${checkSvg}</span>`;
         const desc = BI?.descFor ? BI.descFor(label) : '';
         const descHtml = desc ? `<span class="mode-model-desc">${escapeHtml(desc)}</span>` : '';
         return `${icon}<span class="mode-model-copy"><span class="mode-model-title-row"><span class="mode-model-name">${escapeHtml(label)}</span></span>${descHtml}</span>${check}`;
