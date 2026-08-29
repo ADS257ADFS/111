@@ -746,6 +746,18 @@ class DesktopBridge:
         y = work_y + (work_height - height) // 2
         return x, y, width, height
 
+    def _normalize_restore_bounds(self, bounds):
+        """Reject intro/compact-sized restore targets; fall back to ~68% default."""
+        if not bounds or len(bounds) != 4:
+            return self._default_window_bounds()
+        _x, _y, width, height = bounds
+        if width < WINDOW_MIN_WIDTH or height < WINDOW_MIN_HEIGHT:
+            return self._default_window_bounds()
+        # Intro panel is 880×520 — never use that as the app windowed size.
+        if width <= INTRO_WINDOW_WIDTH + 40 and height <= INTRO_WINDOW_HEIGHT + 40:
+            return self._default_window_bounds()
+        return bounds
+
     def _intro_window_bounds(self):
         work_x, work_y, work_width, work_height = self._work_area()
         width = min(INTRO_WINDOW_WIDTH, max(INTRO_WINDOW_MIN_WIDTH, work_width - 96))
@@ -773,7 +785,10 @@ class DesktopBridge:
     def enter_app_from_intro(self) -> str:
         """After welcome animation: restore min size and open fullscreen software."""
         self._set_form_min_size(WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT)
-        self.maximize_to_work_area(remember=True)
+        # Never remember the intro panel size as the restore target — that made
+        # the first windowed toggle shrink to the tiny startup panel.
+        self._restore_bounds = self._default_window_bounds()
+        self.maximize_to_work_area(remember=False)
         return "maximized"
 
     def show_default_window(self) -> None:
@@ -791,9 +806,8 @@ class DesktopBridge:
 
     def restore_window(self) -> None:
         # Restore to the most recent windowed bounds (updated after every
-        # user move/resize), falling back to the centered default layout.
-        if self._restore_bounds is None:
-            self._restore_bounds = self._default_window_bounds()
+        # user move/resize), falling back to the centered ~68% default layout.
+        self._restore_bounds = self._normalize_restore_bounds(self._restore_bounds)
         x, y, width, height = self._restore_bounds
         hwnd = self._hwnd()
         if ctypes.windll.user32.IsZoomed(hwnd) or ctypes.windll.user32.IsIconic(hwnd):
@@ -809,7 +823,7 @@ class DesktopBridge:
         if remember and not self._maximized and not self._is_work_area_maximized():
             current = self._window_rect()
             if current:
-                self._restore_bounds = current
+                self._restore_bounds = self._normalize_restore_bounds(current)
         hwnd = self._hwnd()
         self._set_resize_style(False)
         if ctypes.windll.user32.IsZoomed(hwnd):
