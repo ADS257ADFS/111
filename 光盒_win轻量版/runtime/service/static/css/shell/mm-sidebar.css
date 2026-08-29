@@ -110,7 +110,7 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
 .mm-sidebar-nav .mm-asset-tree-root > span { flex: 1 1 auto; min-width: 0; }
 .mm-sidebar-nav .mm-asset-tree-root .mm-asset-tree-chevron { width: var(--ui-icon-xs); height: var(--ui-icon-xs); flex: 0 0 var(--ui-icon-xs); stroke-width: var(--ui-icon-stroke); transition: transform var(--ui-motion-base) var(--ui-ease); }
 .mm-asset-tree.is-collapsed .mm-asset-tree-chevron { transform: rotate(-90deg); }
-.mm-asset-tree-folders { display: flex; flex-direction: column; gap: var(--ui-space-1); padding-left: var(--ui-space-6); }
+.mm-asset-tree-folders { display: flex; flex-direction: column; gap: var(--ui-space-2); padding-left: var(--ui-space-6); }
 .mm-asset-tree.is-collapsed .mm-asset-tree-folders { display: none; }
 .mm-asset-tree-folder { display: flex; flex-direction: column; }
 .mm-asset-tree-folder-btn {
@@ -495,7 +495,7 @@ html.studio-theme-dark .mm-kind-item-preview {
 .mm-recent-group-head :is(i, svg) { width: var(--ui-icon-sm); height: var(--ui-icon-sm); flex: 0 0 var(--ui-icon-sm); stroke-width: var(--ui-icon-stroke); }
 .mm-recent-group.is-collapsed .mm-recent-group-head :is(i, svg) { transform: rotate(-90deg); }
 .mm-recent-group.is-collapsed .mm-recent-group-items { display: none; }
-.mm-recent-group-items { display: flex; flex-direction: column; gap: 0; }
+.mm-recent-group-items { display: flex; flex-direction: column; gap: var(--ui-space-2); }
 .mm-recent-item { position: relative; display: flex; align-items: center; min-width: 0; min-height: var(--ui-control-h); margin-left: var(--ui-space-6); padding: 0 var(--ui-space-2); border: 1px solid transparent; border-radius: var(--ui-radius-control); }
 .mm-recent-item:hover, .mm-recent-item.menu-open, .mm-recent-item.active { background: var(--ui-hover); }
 .mm-recent-open { appearance: none; min-width: 0; flex: 1 1 auto; height: 100%; display: flex; align-items: center; gap: var(--ui-space-3); padding: 0 var(--ui-space-2); padding-right: calc(78px + var(--ui-space-3)); border: 0; border-radius: var(--ui-radius-control); background: transparent; color: var(--ui-text); text-align: left; cursor: pointer; position: relative; z-index: 0; }
