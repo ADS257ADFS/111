@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="/static/css/canvas-clear-glass.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-footer-previews.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-control-metrics.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/smart-canvas-composer-topbar.css?v=2026.08.29.frost2">
+    <link rel="stylesheet" href="/static/css/smart-canvas-composer-topbar.css?v=2026.08.29.frost3">
     <link rel="stylesheet" href="/static/css/smart-canvas-shell-chrome.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-control-weight.css?v=2026.08.11.82">
     <script>
@@ -60,9 +60,9 @@
 <link rel="stylesheet" href="/static/css/dark-desaturated/smart-canvas.css?v=2026.08.29.lagroot1">
 <link rel="stylesheet" href="/static/css/dark-desaturated/panel-polish.css?v=2026.08.11.82">
 <link rel="stylesheet" href="/static/css/native-ui-zoom.css?v=2026.08.11.82">
-  <link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.29.frost2">
+  <link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.29.frost3">
   <link rel="stylesheet" href="/static/css/ui-primitives.css?v=2026.08.11.82">
-  <link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.29.frost2">
+  <link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.29.frost3">
   <style id="canvasZoomCompactType">
     #shell.shell #canvasZoomMenuBtn.canvas-zoom-value-btn {
       font-size: 11px !important;
@@ -249,15 +249,23 @@
     }
   </style>
   <style id="composerTopbarFrostLock">
-    /* Last-load: dark topbar frost ON TOP of sheet; sheet presses into rail */
+    /* Last-load: dark topbar = 半透明磨砂；底框压进窄条 */
+    html.theme-dark #composer .composer-card,
+    html.studio-theme-dark #composer .composer-card {
+      isolation: auto !important;
+      background: transparent !important;
+      background-color: transparent !important;
+    }
     html.theme-dark #composer .composer-card > .composer-card-topbar,
     html.studio-theme-dark #composer .composer-card > .composer-card-topbar {
       z-index: 26 !important;
-      background: rgba(31, 31, 31, .42) !important;
-      background-color: rgba(31, 31, 31, .42) !important;
-      border: 1px solid rgba(255, 255, 255, .16) !important;
-      -webkit-backdrop-filter: blur(60px) saturate(140%) !important;
-      backdrop-filter: blur(60px) saturate(140%) !important;
+      isolation: auto !important;
+      transform: none !important;
+      background: rgba(20, 20, 20, .32) !important;
+      background-color: rgba(20, 20, 20, .32) !important;
+      border: 1px solid rgba(255, 255, 255, .18) !important;
+      -webkit-backdrop-filter: blur(60px) saturate(160%) !important;
+      backdrop-filter: blur(60px) saturate(160%) !important;
     }
     html.theme-dark #composer .composer-card > .composer-card-surface,
     html.studio-theme-dark #composer .composer-card > .composer-card-surface {

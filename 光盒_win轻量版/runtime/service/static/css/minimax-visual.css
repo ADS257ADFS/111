@@ -3436,14 +3436,15 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
 /* 深色：窄条半透明磨砂（底框上移压进窄条，透过磨砂可见） */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-topbar {
-    border: 1px solid rgba(255, 255, 255, .16) !important;
-    border-color: rgba(255, 255, 255, .16) !important;
-    background: rgba(31, 31, 31, .42) !important;
-    background-color: rgba(31, 31, 31, .42) !important;
+    border: 1px solid rgba(255, 255, 255, .18) !important;
+    border-color: rgba(255, 255, 255, .18) !important;
+    background: rgba(20, 20, 20, .32) !important;
+    background-color: rgba(20, 20, 20, .32) !important;
     background-image: none !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: blur(60px) saturate(140%) !important;
-    backdrop-filter: blur(60px) saturate(140%) !important;
+    isolation: auto !important;
+    -webkit-backdrop-filter: blur(60px) saturate(160%) !important;
+    backdrop-filter: blur(60px) saturate(160%) !important;
 }
 
 /* 磨砂底不再画在顶排伪元素上（改由 composer-card-material 承载，见下）。 */
@@ -6003,15 +6004,28 @@ html.studio-theme-dark body #shell.shell #composer.composer
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-topbar,
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer.open
+    .composer-card > .composer-card-topbar,
+html.canvas-performance-mode:is(.theme-dark, .studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-topbar {
     z-index: calc(var(--ui-z-raised) + 6) !important;
-    border: 1px solid rgba(255, 255, 255, .16) !important;
-    border-color: rgba(255, 255, 255, .16) !important;
-    background: rgba(31, 31, 31, .42) !important;
-    background-color: rgba(31, 31, 31, .42) !important;
+    isolation: auto !important;
+    transform: none !important;
+    will-change: auto !important;
+    filter: none !important;
+    border: 1px solid rgba(255, 255, 255, .18) !important;
+    border-color: rgba(255, 255, 255, .18) !important;
+    /* 更透：让画布点阵/底框顶边透过，磨砂才看得出 */
+    background: rgba(20, 20, 20, .32) !important;
+    background-color: rgba(20, 20, 20, .32) !important;
     background-image: none !important;
-    -webkit-backdrop-filter: blur(60px) saturate(140%) !important;
-    backdrop-filter: blur(60px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(60px) saturate(160%) !important;
+    backdrop-filter: blur(60px) saturate(160%) !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card {
+    isolation: auto !important;
+    background: transparent !important;
+    background-color: transparent !important;
 }
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-material {
