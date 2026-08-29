@@ -174,13 +174,13 @@ body.studio-theme-dark {
     --ui-font-body-cjk: "MiSans CJK Body 330", var(--ui-font);
     --ui-font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
 
-    --ui-type-display: 16px;   /* 展示标题与页级标题统一 */
+    --ui-type-display: 16px;   /* 展示标题与页级标题 */
     --ui-type-page: 16px;      /* 页级标题 */
-    --ui-type-panel: 14px;     /* 面板标题 */
-    --ui-type-section: 14px;   /* 分区标题 / 菜单项 */
-    --ui-type-body: 14px;      /* 正文 */
-    --ui-type-control: 14px;   /* 控件文字 */
-    --ui-type-compact-label: 12.5px; /* 项目名 / 画布底栏 / 对象工具栏 */
+    --ui-type-panel: 13px;     /* 面板标题 */
+    --ui-type-section: 13px;   /* 分区标题 / 菜单项 */
+    --ui-type-body: 13px;      /* 正文 */
+    --ui-type-control: 13px;   /* 控件文字 */
+    --ui-type-compact-label: 13px; /* 项目名 / 画布底栏 / 对象工具栏 */
     --ui-type-project-title: var(--ui-type-compact-label); /* 左侧最近创作项目名称 */
     --ui-type-meta: 11px;      /* 次要信息 */
     --ui-type-micro: 11px;     /* 徽标 / 角标 */

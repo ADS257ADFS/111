@@ -3127,7 +3127,7 @@ html body .shell #composer .composer-card-topbar .composer-asset-shortcuts:not(:
     justify-content:flex-end;
 }
 .shell .composer-card #composerKindWrap {
-    display:none !important;
+    display:inline-flex !important;
 }
 .shell .composer-card-topbar .composer-kind-toggle {
     position:relative;

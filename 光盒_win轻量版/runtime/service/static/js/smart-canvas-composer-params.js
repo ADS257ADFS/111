@@ -2014,12 +2014,13 @@ let _jimengLastVideoCommand = null;
         const apiKindToggle = deps?.apiKindToggle;
         const isApiLikeEngine = deps?.isApiLikeEngine;
         if(!settings || !apiKindToggle) return;
-        const topbarHost = document.getElementById('composerKindTopbar');
-        if(topbarHost && apiKindToggle.parentElement !== topbarHost) topbarHost.appendChild(apiKindToggle);
-        apiKindToggle.setAttribute('aria-label', 'Generation type');
-        const topbarKindLabels = {audio:'Audio', text:'Text', image:'Image', video:'Video'};
+        // 顶部窄条不再展示 Audio/Text/Image/Video；类型切换留在底部 footer 下拉。
+        const popoverHost = document.getElementById('composerKindPopover');
+        if(popoverHost && apiKindToggle.parentElement !== popoverHost) popoverHost.appendChild(apiKindToggle);
+        apiKindToggle.setAttribute('aria-label', '生成类型');
+        const kindLabels = {audio:'音频', text:'文本', image:'图片', video:'视频'};
         apiKindToggle.querySelectorAll('[data-kind]').forEach(button => {
-            const label = topbarKindLabels[button.dataset.kind];
+            const label = kindLabels[button.dataset.kind];
             if(!label) return;
             const text = button.querySelector('span');
             if(text) text.textContent = label;
