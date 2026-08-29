@@ -192,6 +192,7 @@
     padding: 0;
     overflow: visible;
     pointer-events: auto;
+    transition: gap .34s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .shell #composer .composer-card-topbar .input-thumb {
@@ -199,13 +200,20 @@
     height: 48px;
     flex: 0 0 48px;
     margin: 0;
+    margin-right: 0;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, .88);
     background: #ffffff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, .18);
-    transform: translateY(8px);
-    transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
-    will-change: transform;
+    transform: translateY(8px) rotate(0deg);
+    transform-origin: 50% 85%;
+    transition:
+        transform .34s cubic-bezier(0.22, 1, 0.36, 1),
+        margin-right .34s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow .28s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color .28s ease,
+        z-index 0s linear .12s;
+    will-change: transform, margin-right;
 }
 
 .shell #composer .composer-card-topbar .input-thumbs-row:not(.is-stacked) .input-thumb:hover,
@@ -277,25 +285,28 @@
     .input-thumb:not(.input-thumb-upload) {
     margin-right: -34px;
     z-index: calc(2 + var(--thumb-i, 0));
-    transform: translateY(8px) rotate(var(--thumb-rot, -10deg)) !important;
+    transform: translateY(8px) rotate(var(--thumb-rot, -10deg));
+    transition-delay: 0s, 0s, 0s, 0s, 0s;
 }
 
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within)
     .input-thumb-upload {
     margin-right: 0;
     z-index: 20;
-    transform: translateY(8px) rotate(var(--thumb-rot, -10deg)) !important;
+    transform: translateY(8px) rotate(var(--thumb-rot, -10deg));
+    transition-delay: 0s, 0s, 0s, 0s, 0s;
 }
 
-/* 悬停横向展开（保持垂直位置，避免图标下沉躲避） */
+/* 悬停横向展开：margin/gap/rotate 同一条曲线，避免间距瞬跳 */
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:is(:hover, :focus-within) .input-thumb-list {
     gap: 8px;
 }
 
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:is(:hover, :focus-within) .input-thumb {
     margin-right: 0;
-    z-index: 2;
-    transform: translateY(8px) rotate(0deg) !important;
+    z-index: calc(12 + var(--thumb-i, 0));
+    transform: translateY(8px) rotate(0deg);
+    transition-delay: 0s, 0s, 0s, 0s, .28s;
 }
 
 html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar
