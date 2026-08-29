@@ -51,7 +51,7 @@
     <link rel="stylesheet" href="/static/css/shell/history.css?v=2026.08.11.82">
     <script src="/static/js/shell/history.js?v=2026.08.11.82" defer></script>
     <script src="/static/js/shell/storage-location.js?v=2026.08.11.82" defer></script>
-    <script src="/static/js/shell/settings.js?v=2026.08.11.82" defer></script>
+    <script src="/static/js/shell/settings.js?v=2026.08.29.nohist1" defer></script>
     <script src="/static/js/shell/user-menu.js?v=2026.08.11.82" defer></script>
     <script src="/static/js/shell/index-boot.js?v=2026.08.11.82"></script>
     <script src="/static/js/shell/index-shell.js?v=2026.08.11.82" defer></script>
@@ -347,9 +347,6 @@ html.lightbox-desktop-native .stage.stage > iframe {
                         <button class="shell-settings-nav-btn" type="button" data-shell-settings-pane="usage">
                             <i data-lucide="chart-no-axes-column-increasing"></i><span>用量看板</span>
                         </button>
-                        <button class="shell-settings-nav-btn" type="button" data-shell-settings-pane="history">
-                            <i data-lucide="history"></i><span>历史记录</span>
-                        </button>
                         <button class="shell-settings-nav-btn" type="button" data-shell-settings-pane="api" data-shell-settings-api-trigger>
                             <i data-lucide="sliders-horizontal"></i><span data-i18n="common.apiSettings">API 设置</span>
                         </button>
@@ -503,47 +500,6 @@ html.lightbox-desktop-native .stage.stage > iframe {
                             </div>
                             <section class="shell-settings-info-card"><h3>用量明细</h3><p>按模型、日期和任务类型的详细统计将在服务接入后显示在这里。</p></section>
                         </section>
-                        <section id="shellProjectHistoryModal" class="shell-project-history-modal" aria-label="历史记录" aria-hidden="true" hidden>
-                            <div class="shell-project-history-backdrop" data-project-history-close aria-hidden="true"></div>
-                            <div class="shell-project-history-dialog" aria-labelledby="shellProjectHistoryTitle">
-                                <header class="shell-project-history-head">
-                                    <div>
-                                        <h2 id="shellProjectHistoryTitle">历史记录</h2>
-                                        <span id="shellProjectHistoryCount">0 条记录</span>
-                                    </div>
-                                    <button class="shell-project-history-close" type="button" data-project-history-close title="关闭" aria-label="关闭历史记录"><i data-lucide="x"></i></button>
-                                </header>
-                                <div class="shell-project-history-tools">
-                                    <nav class="shell-project-history-filters" aria-label="历史类型">
-                                        <button class="active" type="button" data-project-filter="all">全部</button>
-                                        <button type="button" data-project-filter="general">通用画布</button>
-                                    </nav>
-                                    <div class="shell-project-history-controls">
-                                        <label class="shell-project-history-search">
-                                            <i data-lucide="search"></i>
-                                            <input id="shellProjectHistorySearch" type="search" placeholder="搜索历史记录" autocomplete="off" aria-label="搜索历史记录">
-                                        </label>
-                                        <select id="shellProjectHistorySort" class="shell-project-history-sort" aria-label="历史排序">
-                                            <option value="updated-desc">最近修改</option>
-                                            <option value="created-desc">最新创建</option>
-                                            <option value="created-asc">最早创建</option>
-                                            <option value="title-asc">名称 A–Z</option>
-                                            <option value="title-desc">名称 Z–A</option>
-                                        </select>
-                                        <div class="shell-project-history-view-toggle" role="group" aria-label="历史项目视图">
-                                            <button class="active" type="button" data-project-view="grid" title="卡片视图" aria-label="卡片视图" aria-pressed="true">
-                                                <i data-lucide="layout-grid"></i>
-                                            </button>
-                                            <button type="button" data-project-view="list" title="列表视图" aria-label="列表视图" aria-pressed="false">
-                                                <i data-lucide="list"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="shellProjectHistoryError" class="shell-project-history-error" hidden></div>
-                                <div id="shellProjectHistoryList" class="shell-project-history-list" aria-live="polite"></div>
-                            </div>
-                        </section>
                         <section class="shell-settings-pane" data-shell-settings-pane="help" aria-label="帮助中心">
                             <div class="shell-settings-section-head"><h2>帮助中心</h2><p>常用操作与快捷键。</p></div>
                             <div class="shell-settings-shortcut-list">
@@ -661,6 +617,47 @@ html.lightbox-desktop-native .stage.stage > iframe {
                 </div>
             </div>
         </div>
+        <section id="shellProjectHistoryModal" class="shell-project-history-modal" aria-label="历史记录" aria-hidden="true" hidden>
+            <div class="shell-project-history-backdrop" data-project-history-close aria-hidden="true"></div>
+            <div class="shell-project-history-dialog" aria-labelledby="shellProjectHistoryTitle">
+                <header class="shell-project-history-head">
+                    <div>
+                        <h2 id="shellProjectHistoryTitle">历史记录</h2>
+                        <span id="shellProjectHistoryCount">0 条记录</span>
+                    </div>
+                    <button class="shell-project-history-close" type="button" data-project-history-close title="关闭" aria-label="关闭历史记录"><i data-lucide="x"></i></button>
+                </header>
+                <div class="shell-project-history-tools">
+                    <nav class="shell-project-history-filters" aria-label="历史类型">
+                        <button class="active" type="button" data-project-filter="all">全部</button>
+                        <button type="button" data-project-filter="general">通用画布</button>
+                    </nav>
+                    <div class="shell-project-history-controls">
+                        <label class="shell-project-history-search">
+                            <i data-lucide="search"></i>
+                            <input id="shellProjectHistorySearch" type="search" placeholder="搜索历史记录" autocomplete="off" aria-label="搜索历史记录">
+                        </label>
+                        <select id="shellProjectHistorySort" class="shell-project-history-sort" aria-label="历史排序">
+                            <option value="updated-desc">最近修改</option>
+                            <option value="created-desc">最新创建</option>
+                            <option value="created-asc">最早创建</option>
+                            <option value="title-asc">名称 A–Z</option>
+                            <option value="title-desc">名称 Z–A</option>
+                        </select>
+                        <div class="shell-project-history-view-toggle" role="group" aria-label="历史项目视图">
+                            <button class="active" type="button" data-project-view="grid" title="卡片视图" aria-label="卡片视图" aria-pressed="true">
+                                <i data-lucide="layout-grid"></i>
+                            </button>
+                            <button type="button" data-project-view="list" title="列表视图" aria-label="列表视图" aria-pressed="false">
+                                <i data-lucide="list"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="shellProjectHistoryError" class="shell-project-history-error" hidden></div>
+                <div id="shellProjectHistoryList" class="shell-project-history-list" aria-live="polite"></div>
+            </div>
+        </section>
         <main class="stage">
             <iframe id="frame-gpt-chat" data-src="/static/apps/gpt-dock/gpt-chat.html?v=2026.08.11.82" scrolling="yes"></iframe>
             <iframe id="frame-agent-chat" data-src="/static/apps/studio-coding/agent-chat.html?v=2026.08.11.82" scrolling="yes"></iframe>
