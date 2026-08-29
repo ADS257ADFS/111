@@ -432,6 +432,17 @@ html.theme-dark .selection-box {
   width: min(var(--lb-composer-w), calc(100% - 40px));
   transform: translateX(-50%);
 }
+.composer-topbar-rail.lb-canvas-float {
+  border-radius: var(--lb-r-composer-top) var(--lb-r-composer-top) 0 0;
+  border-bottom: none;
+}
+.composer-main-card.lb-canvas-float {
+  border-radius: 0 0 var(--lb-r-composer) var(--lb-r-composer);
+  margin-top: -1px;
+}
+html.theme-dark .composer-main-card.lb-canvas-float {
+  border-radius: 0 0 var(--lb-float-r) var(--lb-float-r);
+}
 .composer-topbar-rail {
   position: relative; z-index: 1;
   margin: 0 22px; height: 42px; padding: 3px 8px;
