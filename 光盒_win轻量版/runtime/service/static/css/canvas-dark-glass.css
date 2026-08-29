@@ -9,7 +9,7 @@ html.studio-theme-dark {
     --canvas-glass-text: var(--sc-text-secondary) !important;
     --canvas-glass-shadow: var(--sc-shadow-raised) !important;
     --canvas-glass-radius: var(--sc-radius) !important;
-    --canvas-glass-blur: var(--sc-blur) !important;
+    --canvas-glass-blur: none;
     --canvas-glass-glider-bg: var(--sc-selected) !important;
     --canvas-glass-glider-shadow: inset 0 1px 0 rgba(255, 255, 255, .10) !important;
 }
@@ -18,7 +18,8 @@ html.studio-theme-dark {
 
 :is(html.theme-dark, html.studio-theme-dark) :is(.stage, .board, #shell.shell, .shell) {
     background-color: #090909 !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12.5' cy='12.5' r='.35' fill='%238f8f8f'/%3E%3C/svg%3E") !important;
+    /* Very dim white dots (~0.6%). Hardcoded SVG #8f8f8f previously ignored tokens. */
+    background-image: radial-gradient(rgba(255, 255, 255, .10) .65px, transparent 1.2px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
     background-position: 0 0 !important;
 }
@@ -36,7 +37,7 @@ html.studio-theme-dark {
 
 :is(html.theme-dark, html.studio-theme-dark).canvas-empty-dot-grid-active #shell.shell {
     background-color: #090909 !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12.5' cy='12.5' r='.35' fill='%238f8f8f'/%3E%3C/svg%3E") !important;
+    background-image: radial-gradient(rgba(255, 255, 255, .10) .65px, transparent 1.2px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
     background-position: 0 0 !important;
 }
@@ -286,12 +287,16 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card .composer-card-surface {
     position: absolute;
     z-index: 1;
-    inset: 40px 10px 10px;
+    inset: auto;
+    top: 40px;
+    right: 10px;
+    bottom: 8px;
+    left: 10px;
     display: block;
     border: 1px solid var(--sc-border);
     border-radius: 18px;
     pointer-events: none;
-    background: #0e0e0e !important;
+    background: var(--ui-surface-composer) !important;
     background-image: none !important;
     opacity: 1 !important;
     -webkit-backdrop-filter: none !important;
@@ -458,7 +463,6 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
 
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
     .composer-kind-toggle button,
-    .has-size-choice-glider > button,
     .image-quick-toolbar button,
     .selection-capsule-bar button,
     .port-link-pick-shell button
@@ -469,7 +473,17 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
     border-color: transparent !important;
     background: transparent !important;
     box-shadow: none !important;
-}:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
+}
+/* Size/quality/count cells: idle transparent; hover fill comes from minimax end layer */
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell .has-size-choice-glider > button:not(:hover):not(:focus-visible) {
+    position: relative;
+    z-index: 2;
+    color: var(--sc-text-secondary) !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
     .composer-kind-toggle button,
     .has-size-choice-glider > button,
     .image-quick-toolbar button,
@@ -505,10 +519,9 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
     #selectionBoxCapsule .selection-capsule-glider
 ) {
     border: 1px solid rgba(255, 255, 255, .08) !important;
-    background: radial-gradient(ellipse at 50% 42%, rgba(9, 11, 15, .94) 0 58%, rgba(31, 34, 39, .82) 100%) !important;
+    background: transparent !important;
     box-shadow:
-        inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+        none !important;
 }:is(html.theme-dark, html.studio-theme-dark) body #shell.shell :is(
     #imageQuickToolbar.image-quick-toolbar button:not(.active):not(.open):not([aria-pressed="true"]),
     #selectionBoxCapsule .selection-capsule-btn:not(.active):not(.open):not([aria-pressed="true"])
@@ -733,7 +746,6 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
     .size-picker-option,
     .count-cell,
-    .mode-model-choice,
     .composer-api-models button,
     .composer-hd-scales button,
     .composer-hd-actions button,
@@ -748,7 +760,6 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
 }:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
     .size-picker-option,
     .count-cell,
-    .mode-model-choice,
     .composer-api-models button,
     .composer-hd-scales button,
     .composer-hd-actions button,
@@ -763,7 +774,6 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
     .size-picker-option.active,
     .count-cell.active,
-    .mode-model-choice.active,
     .composer-api-models button.active,
     .composer-hd-scales button.active,
     .port-link-pick-option.active
@@ -1037,19 +1047,10 @@ and these rows must not depend on a travelling glider. */
         #composerSizePopover
     ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){
     border: 1px solid rgba(255, 255, 255, .08) !important;
-    background: radial-gradient(
-        ellipse at 50% 42%,
-        rgba(9, 11, 15, .94) 0 58%,
-        rgba(31, 34, 39, .82) 100%
-    ) !important;
-    background-image: radial-gradient(
-        ellipse at 50% 42%,
-        rgba(9, 11, 15, .94) 0 58%,
-        rgba(31, 34, 39, .82) 100%
-    ) !important;
+    background: transparent !important;
+    background-image: none !important;
     box-shadow:
-        inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+        none !important;
     outline: none !important;
     transform: none !important;
     animation: none !important;
@@ -1316,19 +1317,10 @@ and these rows must not depend on a travelling glider. */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer .composer-tool-wrap > .composer-tool-btn:is(:hover, :focus-visible) {
     border-color: rgba(255, 255, 255, .08) !important;
-    background: radial-gradient(
-        ellipse at 50% 42%,
-        rgba(9, 11, 15, .94) 0 58%,
-        rgba(31, 34, 39, .82) 100%
-    ) !important;
-    background-image: radial-gradient(
-        ellipse at 50% 42%,
-        rgba(9, 11, 15, .94) 0 58%,
-        rgba(31, 34, 39, .82) 100%
-    ) !important;
+    background: transparent !important;
+    background-image: none !important;
     box-shadow:
-        inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+        none !important;
 }
 
 /* Port-link picker: keep the left-rail glass, without the extra top sheen or
@@ -1426,14 +1418,9 @@ and these rows must not depend on a travelling glider. */
 :is(html.theme-dark, html.studio-theme-dark) body
     .port-link-pick-item:not(:disabled).is-hover{
     border-color: rgba(255, 255, 255, .08) !important;
-    background: radial-gradient(
-        ellipse at 50% 42%,
-        rgba(9, 11, 15, .94) 0 58%,
-        rgba(31, 34, 39, .82) 100%
-    ) !important;
+    background: transparent !important;
     box-shadow:
-        inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+        none !important;
     transform: none !important;
     animation: none !important;
 }
@@ -1550,14 +1537,9 @@ and these rows must not depend on a travelling glider. */
     .composer-footer .composer-tool-wrap > .composer-tool-btn[aria-expanded="true"]{
     border-color: rgba(255, 255, 255, .08) !important;
     border-radius: 13px !important;
-    background: radial-gradient(
-        ellipse at 50% 42%,
-        rgba(9, 11, 15, .94) 0 58%,
-        rgba(31, 34, 39, .82) 100%
-    ) !important;
+    background: transparent !important;
     box-shadow:
-        inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+        none !important;
     transform: none !important;
     animation: none !important;
 }
@@ -1663,12 +1645,12 @@ and these rows must not depend on a travelling glider. */
     gap: 4px !important;
 }
 
+/* Model rows stay borderless/transparent idle; size/quality grids keep quiet chip chrome. */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover :is(
         .composer-api-branch summary,
-        .composer-api-models button,
-        .composer-mode-model-list .mode-model-choice
-    ),
+        .composer-api-models button
+    ):not(:hover):not(:focus-visible),
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerSizePopover :is(
         .size-picker-option,
@@ -1677,7 +1659,7 @@ and these rows must not depend on a travelling glider. */
         #composerCountPanel .count-cell,
         #composerVideoSizeMenu .count-cell,
         .video-flat-segments button
-    ) {
+    ):not(:hover):not(:focus-visible) {
     box-sizing: border-box !important;
     border: 1px solid rgba(255, 255, 255, .08) !important;
     border-radius: 8px !important;
@@ -1688,10 +1670,15 @@ and these rows must not depend on a travelling glider. */
 
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice {
-    min-height: 28px !important;
-    padding: 2px 10px !important;
+    min-height: 34px !important;
+    padding: 6px 12px !important;
     font-size: 10px !important;
     font-weight: 400 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice:has(.mode-model-desc) {
+    min-height: 34px !important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
@@ -1749,7 +1736,7 @@ and these rows must not depend on a travelling glider. */
     gap: 6px !important;
     color: var(--sc-text-secondary) !important;
     border: 1px solid transparent !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
     background: transparent !important;
     box-shadow: none !important;
     font-size: 13px !important;
@@ -1807,14 +1794,9 @@ and these rows must not depend on a travelling glider. */
     ){
     border: 1px solid rgba(255, 255, 255, .08) !important;
     border-radius: 13px !important;
-    background: radial-gradient(
-        ellipse at 50% 42%,
-        rgba(9, 11, 15, .94) 0 58%,
-        rgba(31, 34, 39, .82) 100%
-    ) !important;
+    background: transparent !important;
     box-shadow:
-        inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+        none !important;
     transform: none !important;
     animation: none !important;
 }
@@ -1920,14 +1902,9 @@ and these rows must not depend on a travelling glider. */
     ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){
     border: 1px solid rgba(255, 255, 255, .08) !important;
     border-radius: 8px !important;
-    background: radial-gradient(
-        ellipse at 50% 42%,
-        rgba(9, 11, 15, .94) 0 58%,
-        rgba(31, 34, 39, .82) 100%
-    ) !important;
+    background: transparent !important;
     box-shadow:
-        inset 0 0 10px rgba(255, 255, 255, .10),
-        inset 0 1px 1px rgba(255, 255, 255, .14) !important;
+        none !important;
     outline: none !important;
     transform: none !important;
     animation: none !important;
