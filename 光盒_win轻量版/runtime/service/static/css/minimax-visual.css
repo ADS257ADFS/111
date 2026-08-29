@@ -5484,3 +5484,57 @@ body #shell.shell #composer.composer .composer-card-topbar
     stroke: #ffffff !important;
 }
 
+/* ================================================================
+ * M-v10：磨砂浮层统一（80% + blur(80px)）
+ * 压过 M4 深色实色菜单、canvas-dark-glass 等遗留实底。
+ * ================================================================ */
+html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body :is(
+    .node-context-menu,
+    .canvas-context-menu,
+    .create-menu,
+    .port-link-pick-menu,
+    .iqt-dropdown-menu,
+    .history-popover,
+    .skill-menu,
+    .shell-user-menu,
+    .dock-chrome-title-menu,
+    .emoji-picker,
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover,
+    #imageQuickToolbar.image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar
+) {
+    background-color: var(--ui-glass-popover) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
+    border-radius: var(--ui-radius-float) !important;
+    box-shadow: var(--ui-shadow-float) !important;
+}
+
+html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body #selectionBoxCapsule .selection-capsule-bar {
+    border-radius: var(--ui-radius-capsule) !important;
+}
+
+html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body #shell.shell #composer.composer
+    .composer-card > .composer-card-surface {
+    background-color: var(--ui-glass-popover) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
+    border-radius: var(--ui-radius-composer) !important;
+    box-shadow: var(--ui-shadow-float) !important;
+}
+
+html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body #shell.shell #composer.composer
+    .composer-card > .composer-card-material {
+    background: var(--ui-glass-bg) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
+    border-radius: var(--ui-radius-composer-top) var(--ui-radius-composer-top) 0 0 !important;
+    box-shadow: none !important;
+}
+
