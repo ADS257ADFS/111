@@ -214,7 +214,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
     margin: 0 2px 0 0;
     padding: 0;
     align-self: center;
@@ -227,74 +227,102 @@
 
 .co-create-switch-label {
     flex: 0 0 auto;
-    font-size: 11px;
-    font-weight: 400;
-    color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--ui-font);
+    font-size: 11.5px;
+    font-weight: var(--ui-weight-medium, 445);
+    color: var(--ui-text-secondary, var(--muted));
     line-height: 1;
     white-space: nowrap;
     letter-spacing: 0;
+    user-select: none;
+    pointer-events: none;
 }
 
-.theme-dark .co-create-switch-label {
-    color: #9aa0a9;
+.co-create-switch-label :is(i, svg) {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
+    stroke-width: 1.55px;
+}
+
+.theme-dark .co-create-switch-label,
+html.studio-theme-dark .co-create-switch-label {
+    color: rgba(241, 241, 241, 0.78);
 }
 
 .co-create-switch {
     border: 0;
     padding: 0;
     margin: 0;
-    background: transparent;
+    background: transparent !important;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     flex: 0 0 auto;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    border-radius: 0;
+    box-shadow: none !important;
+    outline: none;
+}
+
+.co-create-switch:hover,
+.co-create-switch:focus,
+.co-create-switch:focus-visible,
+.co-create-switch:active,
+.co-create-switch.is-on,
+.co-create-switch[aria-pressed="true"] {
+    background: transparent !important;
+    box-shadow: none !important;
+    color: inherit;
 }
 
 .co-create-switch-track {
     position: relative;
-    width: 50px;
-    height: 22px;
-    border-radius: 999px;
+    display: block;
+    box-sizing: border-box;
+    width: 34px;
+    height: 16px;
+    border-radius: 999px !important;
+    -webkit-border-radius: 999px !important;
     border: 1px solid var(--line);
-    background: #fff;
-    box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.1);
-    transition: border-color 0.14s ease;
+    background: rgba(15, 23, 42, 0.06);
+    box-shadow: inset 0 1px 3px rgba(15, 23, 42, 0.14);
+    transition: border-color 0.14s ease, background-color 0.14s ease;
     overflow: hidden;
+    --co-switch-travel: 20px;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) .co-create-switch-track {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(148, 163, 184, 0.24);
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.38);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(148, 163, 184, 0.28);
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.42);
+}
+
+.co-create-switch.is-on .co-create-switch-track,
+.co-create-switch[aria-pressed="true"] .co-create-switch-track {
+    background: rgba(10, 132, 255, 0.22);
+    border-color: rgba(10, 132, 255, 0.42);
 }
 
 .co-create-switch-text {
-    position: absolute;
-    top: 50%;
-    right: 7px;
-    transform: translateY(-50%);
-    font-size:10px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    color: var(--muted);
-    pointer-events: none;
-    user-select: none;
-    transition: left 0.16s ease, right 0.16s ease;
-}
-
-.theme-dark .co-create-switch-text {
-    color: #9aa0a9;
+    display: none;
 }
 
 .co-create-switch-thumb {
     position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 16px;
-    height: 16px;
-    border-radius: 999px;
-    background: linear-gradient(145deg, var(--ui-accent), var(--ui-accent));
-    box-shadow: 0 1px 5px rgba(0, 109, 232, 0.32);
+    top: 1px;
+    left: 1px;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px !important;
+    -webkit-border-radius: 999px !important;
+    background: linear-gradient(145deg, #0a84ff, #0077e6);
+    box-shadow: 0 1px 4px rgba(0, 109, 232, 0.4);
     transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -302,15 +330,9 @@
     border-color: rgba(100, 116, 139, 0.55);
 }
 
-.co-create-switch.is-on .co-create-switch-text,
-.co-create-switch[aria-checked="true"] .co-create-switch-text {
-    right: auto;
-    left: 8px;
-}
-
 .co-create-switch.is-on .co-create-switch-thumb,
-.co-create-switch[aria-checked="true"] .co-create-switch-thumb {
-    transform: translateX(var(--co-switch-travel, 28px));
+.co-create-switch[aria-pressed="true"] .co-create-switch-thumb {
+    transform: translateX(var(--co-switch-travel, 18px));
 }
 
 .co-create-output {
