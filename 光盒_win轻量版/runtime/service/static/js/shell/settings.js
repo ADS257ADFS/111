@@ -71,27 +71,13 @@
         });
     }
 
-    /* 历史记录在用户中心里是一个内嵌汇总页（复用 #shellProjectHistoryModal
-       的列表 DOM），不再关掉本弹窗去弹侧滑抽屉；顶栏历史按钮的抽屉模式
-       仍由 history.js 的 open() 负责，打开抽屉时会把该元素收回 body。 */
-    function embedHistoryPane(){
-        const modal = modalEl();
-        const history = document.getElementById('shellProjectHistoryModal');
-        const panes = modal?.querySelector('.shell-settings-panes');
-        if(!history || !panes) return;
-        global.SmartCanvasShellHistory?.init?.();
-        if(history.classList.contains('open')) global.SmartCanvasShellHistory?.close?.();
-        history.classList.add('shell-settings-pane', 'shell-settings-history-pane', 'shell-project-history-embedded');
-        history.dataset.shellSettingsPane = 'history';
-        if(history.parentElement !== panes) panes.appendChild(history);
-        history.hidden = false;
-    }
+    /* 历史记录已移出设置中心；顶栏历史按钮仍由 history.js 的 open() 负责。 */
 
     function setPane(id){
         activePane = id || DEFAULT_PANE;
+        if(activePane === 'history') activePane = DEFAULT_PANE;
         const modal = modalEl();
         if(!modal) return;
-        if(activePane === 'history') embedHistoryPane();
         modal.querySelectorAll('[data-shell-settings-pane]').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.shellSettingsPane === activePane);
         });
@@ -106,7 +92,6 @@
         });
         if(activePane === 'storage') global.ShellStorageLocation?.load?.();
         if(activePane === 'account' || activePane === 'usage') syncAccount();
-        if(activePane === 'history') void global.SmartCanvasShellHistory?.load?.();
     }
 
     function refreshIcons(){
@@ -122,6 +107,7 @@
         modal.hidden = false;
         modal.setAttribute('aria-hidden', 'false');
         modal.classList.add('open');
+        document.documentElement.classList.add('shell-settings-open');
         setPane(pane || activePane || DEFAULT_PANE);
         document.getElementById('toolbarSettingsBtn')?.classList.add('active');
         document.getElementById('topUserBtn')?.setAttribute('aria-expanded', 'true');
@@ -134,6 +120,7 @@
         modal.classList.remove('open');
         modal.hidden = true;
         modal.setAttribute('aria-hidden', 'true');
+        document.documentElement.classList.remove('shell-settings-open');
         document.getElementById('toolbarSettingsBtn')?.classList.remove('active');
         document.getElementById('topUserBtn')?.setAttribute('aria-expanded', 'false');
     }
