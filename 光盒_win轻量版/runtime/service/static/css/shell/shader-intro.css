@@ -199,10 +199,13 @@ html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro
     left: 50%;
     bottom: 20px;
     z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     transform: translateX(-50%);
     pointer-events: none;
     opacity: 0.92;
-    /* Allow the progress hairline to render under the clipped Loading strip. */
     overflow: visible;
 }
 
@@ -377,38 +380,26 @@ html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro
     color: transparent;
 }
 
-/* Sit below the clipped 1em Loading strip — parent overflow:hidden was eating the bar. */
-.lightbox-shader-intro-loader .loader .line {
-    position: absolute;
-    left: 50%;
-    top: calc(100% + 0.55em);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    height: 3px;
+/* Progress bar sits as a sibling under Loading — never inside overflow:hidden. */
+.lightbox-shader-intro-progress {
+    position: relative;
+    display: block;
     width: 7.3em;
-    margin: 0;
+    height: 3px;
+    overflow: hidden;
     border-radius: 999px;
-    background: rgba(255, 255, 255, .22);
-    transform: translateX(-50%);
-    pointer-events: none;
+    background: rgba(255, 255, 255, .28);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .08);
 }
 
-.lightbox-shader-intro-loader .loader .line::before {
-    content: none;
-    display: none;
-}
-
-.lightbox-shader-intro-loader .loader .line::after {
-    content: "";
+.lightbox-shader-intro-progress-bar {
     position: absolute;
     left: 0;
     top: 0;
     height: 100%;
     width: 38%;
-    background: linear-gradient(90deg, rgba(255,255,255,.35), #fff 55%, rgba(255,255,255,.35));
     border-radius: 999px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, .45), #fff 55%, rgba(255, 255, 255, .45));
     transform: translateX(-120%);
     animation: lightbox-intro-progress-slide 1.35s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
@@ -436,10 +427,10 @@ html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro
 
 @media (prefers-reduced-motion: reduce) {
     .lightbox-shader-intro-loader .loader .text span,
-    .lightbox-shader-intro-loader .loader .line::after {
+    .lightbox-shader-intro-progress-bar {
         animation: none !important;
     }
-    .lightbox-shader-intro-loader .loader .line::after {
+    .lightbox-shader-intro-progress-bar {
         transform: none;
         width: 55%;
         left: 22.5%;
