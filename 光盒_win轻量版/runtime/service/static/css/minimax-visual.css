@@ -1349,9 +1349,9 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body .shell-settings-nav .shell-settings-nav-btn.active {
-    color: var(--ui-text) !important;
+    color: var(--ui-accent) !important;
     background: var(--ui-selected) !important;
-    border-color: var(--ui-border-strong) !important;
+    border-color: color-mix(in srgb, var(--ui-accent) 28%, transparent) !important;
     font-weight: var(--ui-weight-medium) !important;
 }/* 设置中心状态桥：覆盖旧 dark-desaturated 皮肤，统一回语义状态 token。 */
 :is(html, html.theme-dark, html.studio-theme-dark) body .shell-settings-nav .shell-settings-nav-btn:not(.active):hover{
