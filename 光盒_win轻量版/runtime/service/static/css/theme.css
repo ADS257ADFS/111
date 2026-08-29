@@ -295,7 +295,7 @@ html.studio-theme-dark body #lightbox,
 body.studio-theme-dark .gallery-lightbox,
 body.studio-theme-dark #lightbox {
     background: rgba(15,20,29,.78) !important;
-    backdrop-filter: blur(28px) saturate(115%);
+    backdrop-filter: none;
 }
 
 html.studio-theme-dark body .masonry-item:hover,
@@ -765,7 +765,7 @@ html.studio-theme-dark body .shell .drop-overlay,
 body.studio-theme-dark .shell .drop-overlay {
     background: rgba(15,20,29,.44) !important;
     color: #b9bec7 !important;
-    backdrop-filter: blur(2px) !important;
+    backdrop-filter: none !important;
 }
 
 html.studio-theme-dark body .output-drag-preview,
