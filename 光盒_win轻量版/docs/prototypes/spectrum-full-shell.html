@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>光盒 · 完整壳层视觉样板 v9</title>
+  <title>光盒 · 完整壳层视觉样板 v10</title>
   <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; }
@@ -67,7 +67,10 @@ body {
   --lb-sidebar-w: 250px;
   --lb-panel-w: 400px;
   --lb-composer-w: 760px;
-  --lb-grid-size: 22px;
+  /* 画布网格（对齐 design-tokens.css + minimax-visual.css） */
+  --lb-canvas-grid-size: 18px;
+  --lb-canvas-grid-dot-size: 0.6px;
+  --lb-canvas-grid-dot-fade: 1.1px;
   --lb-canvas-grid-dot: rgba(0, 0, 0, 0.11);
 }
 html.theme-dark {
@@ -91,7 +94,7 @@ html.theme-dark {
   --lb-glass-topbar: rgba(35, 35, 35, 0.80);
   --lb-conn: rgba(255, 255, 255, 0.24);
   --lb-shadow-float: 0 4px 16px rgba(0, 0, 0, 0.30);
-  /* 画布网格（与 design-tokens --ui-canvas-grid-dot 一致） */
+  /* 深色画布网格：与软件 shell 最终渲染一致 */
   --lb-canvas-grid-dot: rgba(255, 255, 255, 0.055);
 }
 
@@ -238,8 +241,11 @@ html.theme-dark {
 .canvas {
   position: absolute; inset: 0; z-index: 1;
   background-color: var(--lb-bg-stage);
-  background-image: radial-gradient(var(--lb-canvas-grid-dot) 0.6px, transparent 1.1px);
-  background-size: var(--lb-grid-size) var(--lb-grid-size);
+  background-image: radial-gradient(
+    var(--lb-canvas-grid-dot) var(--lb-canvas-grid-dot-size),
+    transparent var(--lb-canvas-grid-dot-fade)
+  );
+  background-size: var(--lb-canvas-grid-size) var(--lb-canvas-grid-size);
 }
 
 /* nodes */
@@ -541,7 +547,7 @@ html.theme-dark .tool-btn:hover { background: rgba(255, 255, 255, 0.06); color: 
 </head>
 <body>
 
-<div class="proto-badge">完整壳层样板 v9</div>
+<div class="proto-badge">完整壳层样板 v10</div>
 <div class="proto-toolbar">
   <button class="lb-btn" onclick="document.documentElement.classList.toggle('theme-dark')">切换亮/暗</button>
   <a class="lb-btn" href="字体说明.html">字体说明</a>
@@ -555,9 +561,10 @@ html.theme-dark .tool-btn:hover { background: rgba(255, 255, 255, 0.06); color: 
   <code>80%</code> 透明 + <code>blur(80px)</code><br>
   窄工具栏无投影<br>
   <br>
-  <h4>画布（深色）</h4>
+  <h4>画布（深色 · 与软件一致）</h4>
   底 <code>#101010</code><br>
-  网格点 <code>rgba(255,255,255,.055)</code>
+  点 <code>rgba(255,255,255,.055)</code><br>
+  点径 <code>0.6px</code> · 间距 <code>18px</code>
 </div>
 
 <div class="app">
@@ -614,7 +621,7 @@ html.theme-dark .tool-btn:hover { background: rgba(255, 255, 255, 0.06); color: 
     <div class="stage-wrap">
       <div class="stage">
         <div class="canvas">
-          <span class="proto-label" style="top:8px;left:8px">画布直角 · 网格 22px · 实色底无条纹</span>
+          <span class="proto-label" style="top:8px;left:8px">画布直角 · 网格 18px · 点 0.6px · rgba(255,255,255,.055)</span>
 
           <svg class="conn-layer" viewBox="0 0 1200 800" preserveAspectRatio="none">
             <path class="conn-line" d="M 310 200 C 410 200, 480 260, 550 280" />
