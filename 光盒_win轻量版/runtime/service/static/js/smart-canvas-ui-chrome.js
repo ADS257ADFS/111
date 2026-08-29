@@ -40,6 +40,7 @@
             global.SmartCanvasBottomChrome?.bindBottomChrome?.(ctx);
 window.addEventListener('paste', e => {
     const current = liveCtx();
+    if(current.isEditableTarget?.(e.target)) return;
     const files = [...(e.clipboardData?.files || [])].filter(current.isSupportedUploadFile);
     if(files.length){
         e.preventDefault();
@@ -47,7 +48,7 @@ window.addEventListener('paste', e => {
         current.handleFiles(files, current.selectedId);
         return;
     }
-    if(current.nodeClipboard?.nodes?.length && !current.isEditableTarget(e.target)){
+    if(current.nodeClipboard?.nodes?.length){
         e.preventDefault();
         current.pasteNodes();
     }
@@ -87,15 +88,24 @@ window.addEventListener('keydown', e => {
         const selectionText = window.getSelection?.().toString() || '';
         if(selectionText) return;
         e.preventDefault();
+        current.focusCanvasForShortcuts?.();
         current.copySelectedNodes();
         return;
     }
-    if((e.ctrlKey || e.metaKey) && key === 'v' && !current.isEditableTarget(e.target) && current.nodeClipboard?.nodes?.length){
+    if((e.ctrlKey || e.metaKey) && key === 'v' && !current.isEditableTarget(e.target)){
         const requestedAt = Date.now();
+        // Prefer immediate node paste when internal clipboard has content.
+        if(current.nodeClipboard?.nodes?.length){
+            e.preventDefault();
+            current.focusCanvasForShortcuts?.();
+            current.pasteNodes();
+            return;
+        }
         setTimeout(() => {
             const latest = liveCtx();
             if(latest.lastImagePasteAt >= requestedAt) return;
             if(latest.lastNodePasteAt >= requestedAt) return;
+            if(!latest.nodeClipboard?.nodes?.length) return;
             latest.pasteNodes();
         }, 90);
     }
