@@ -5040,7 +5040,9 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
 }
 
 /* ================================================================
- * Dark chrome unify: #1F1F1F @ 70% + blur(18px) + 1px fine border
+ * Dark chrome unify: #1F1F1F @ 80% + blur(60px) + 1px fine border
+ * 覆盖：媒体工具栏、打组/解组胶囊、右键菜单、引用/创建面板、
+ * 底部一级上拉菜单、左下用户菜单。引用面板取消内层磨砂。
  * :not(#ui-shadow-reset-*) matches M76 weight so float shadow cannot
  * erase toolbar / capsule / menu edges.
  * ================================================================ */
@@ -5048,13 +5050,13 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
     --mm-chrome: #1f1f1f;
     --mm-elevated: #1f1f1f;
     --mm-card: #1f1f1f;
-    --panel: rgba(31, 31, 31, .70) !important;
-    --sc-glass: rgba(31, 31, 31, .70);
-    --sc-blur: 18px;
+    --panel: rgba(31, 31, 31, .80) !important;
+    --sc-glass: rgba(31, 31, 31, .80);
+    --sc-blur: 60px;
     --sc-border: rgba(255, 255, 255, .16);
     --lightbox-chrome-bg: #1f1f1f;
-    --ui-panel-frost: rgba(31, 31, 31, .70);
-    --ui-panel-frost-blur: blur(18px) saturate(140%);
+    --ui-panel-frost: rgba(31, 31, 31, .80);
+    --ui-panel-frost-blur: blur(60px);
     --ui-panel-frost-border: rgba(255, 255, 255, .16);
 }
 
@@ -5066,7 +5068,15 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     .node-context-menu,
     .canvas-context-menu,
     .ui-menu.node-context-menu,
-    .create-menu
+    .create-menu,
+    .port-link-pick-menu,
+    .shell-user-menu,
+    #shellUserMenu.shell-user-menu,
+    .composer-tool-popover,
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
 ),
 :is(html.theme-dark, html.studio-theme-dark) body :is(
     #imageQuickToolbar.image-quick-toolbar,
@@ -5076,17 +5086,25 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     .node-context-menu,
     .canvas-context-menu,
     .ui-menu.node-context-menu,
-    .create-menu
+    .create-menu,
+    .port-link-pick-menu,
+    .shell-user-menu,
+    #shellUserMenu.shell-user-menu,
+    .composer-tool-popover,
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
 ) {
-    background: rgba(31, 31, 31, .70) !important;
-    background-color: rgba(31, 31, 31, .70) !important;
+    background: rgba(31, 31, 31, .80) !important;
+    background-color: rgba(31, 31, 31, .80) !important;
     background-image: none !important;
     border: 1px solid rgba(255, 255, 255, .16) !important;
     border-color: rgba(255, 255, 255, .16) !important;
     outline: 0 !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
-    backdrop-filter: blur(18px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(60px) !important;
+    backdrop-filter: blur(60px) !important;
 }
 
 /* 顶栏 / 左栏 / 右栏：深色统一单条 1px hairline（与右侧栏一致，禁止 inset 叠粗） */
@@ -5115,31 +5133,30 @@ html.lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native:is(
     border-left-color: rgba(255, 255, 255, .08) !important;
 }
 
-/* 双击引用面板：外壳无边，内层 shell 70% + 18px 磨砂 + 单条细描边 */
+/* 双击引用/创建面板：材质只在外壳；内层 shell 取消磨砂与描边 */
 html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body
-    .port-link-pick-menu,
-:is(html.theme-dark, html.studio-theme-dark) body .port-link-pick-menu {
+    .port-link-pick-menu .port-link-pick-shell,
+:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-menu .port-link-pick-shell {
     background: transparent !important;
     background-color: transparent !important;
     border: 0 !important;
-    outline: none !important;
+    border-color: transparent !important;
+    outline: 0 !important;
     box-shadow: none !important;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
 }
 
+/* 模式切换上拉：去掉内层 kind-toggle 实色壳，露出面板磨砂 */
 html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body
-    .port-link-pick-menu .port-link-pick-shell,
+    #composerKindPopover .composer-kind-toggle,
 :is(html.theme-dark, html.studio-theme-dark) body
-    .port-link-pick-menu .port-link-pick-shell {
-    background: rgba(31, 31, 31, .70) !important;
-    background-color: rgba(31, 31, 31, .70) !important;
-    border: 1px solid rgba(255, 255, 255, .16) !important;
-    border-color: rgba(255, 255, 255, .16) !important;
-    outline: 0 !important;
+    #composerKindPopover .composer-kind-toggle {
+    background: transparent !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
-    backdrop-filter: blur(18px) saturate(140%) !important;
 }
 
 /* 打组面板：70% 深色磨砂；边框必须不透明实色（禁止 rgba alpha） */
