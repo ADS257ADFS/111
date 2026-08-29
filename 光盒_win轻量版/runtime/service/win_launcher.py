@@ -1267,7 +1267,7 @@ def install_local_asset_compat(app) -> None:
 # 名字绑定「中转站 + 该站的真实模型名」；底部输入栏永远显示这些名字。
 CUSTOM_MODEL_PRESETS: dict[str, list[str]] = {
     "image": [
-        "GPT Image2",
+        "Gpt Image2",
         "Nano Banana PRO",
         "Seedream 5.0",
         "Midjourney V7",
