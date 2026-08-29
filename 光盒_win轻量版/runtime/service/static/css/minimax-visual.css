@@ -4056,16 +4056,6 @@ html body #shell.shell #composer.composer.open[data-height-state="default"] {
     transition-property: opacity !important;
 }
 
-/* 底边单独下拉 5px：多 5px padding-bottom + 整体下移 5px，内容屏上位置与圆角不变。 */
-html body #shell.shell #composer.composer.open,
-html body #shell.shell #composer.composer.open[data-height-state="expanded"],
-html body #shell.shell #composer.composer.open[data-height-state="default"] {
-    bottom: calc(var(--composer-bottom-gap) - 5px) !important;
-}
-html body #shell.shell #composer.composer .composer-card {
-    padding-bottom: 13px !important;
-}
-
 /* Outer sheet follows content; expanded state grows via --composer-prompt-h only. */
 html body #shell.shell #composer.composer {
     --composer-sheet-min-h: 0px;
