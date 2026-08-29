@@ -57,6 +57,27 @@
     function removeLegacyBarSlot(){
         document.getElementById('coCreateBarSlot')?.remove();
     }
+    function bindSwitchClick(btn){
+        if(!btn || btn.dataset.coCreateSwitchBound === '1') return;
+        btn.addEventListener('click', event => {
+            event.preventDefault();
+            event.stopPropagation();
+            const deps = d();
+            const node = deps?.selectedNode?.();
+            if(!isSupportedNode(deps, node)) return;
+            setEnabled(node, !isEnabled(node));
+            syncComposer(node);
+            deps?.scheduleComposerReposition?.(node);
+        });
+        btn.dataset.coCreateSwitchBound = '1';
+    }
+    function mountCoCreateSwitchMarkup(host){
+        if(!host) return null;
+        host.innerHTML = '<span class="co-create-switch-label">共创</span><button type="button" class="co-create-switch" aria-pressed="false" aria-label="共创" data-co-create-switch><span class="co-create-switch-track" aria-hidden="true"><span class="co-create-switch-thumb"></span></span></button>';
+        switchBtn = host.querySelector('[data-co-create-switch]');
+        bindSwitchClick(switchBtn);
+        return switchBtn;
+    }
     function ensureToggleBar(actions){
         if(!actions) return null;
         removeLegacyBarSlot();
@@ -64,19 +85,12 @@
             toggleBarEl = document.createElement('div');
             toggleBarEl.className = 'co-create-bar';
             toggleBarEl.dataset.coCreateBar = '1';
-            toggleBarEl.innerHTML = '<button type="button" class="composer-asset-shortcut co-create-switch" aria-pressed="false" aria-label="批量" data-co-create-switch><i data-lucide="users"></i><span>批量</span></button>';
-            window.lucide?.createIcons?.();
+            mountCoCreateSwitchMarkup(toggleBarEl);
+        } else if(!toggleBarEl.querySelector('.co-create-switch-track')){
+            mountCoCreateSwitchMarkup(toggleBarEl);
+        } else {
             switchBtn = toggleBarEl.querySelector('[data-co-create-switch]');
-            switchBtn?.addEventListener('click', event => {
-                event.preventDefault();
-                event.stopPropagation();
-                const deps = d();
-                const node = deps?.selectedNode?.();
-                if(!isSupportedNode(deps, node)) return;
-                setEnabled(node, !isEnabled(node));
-                syncComposer(node);
-                deps?.scheduleComposerReposition?.(node);
-            });
+            bindSwitchClick(switchBtn);
         }
         if(!actions.contains(toggleBarEl)){
             const kindToggle = actions.querySelector('#apiKindToggle');
@@ -152,7 +166,7 @@
         }
         ensurePanel(card);
         ensureToggleBar(actions);
-        if(switchBtn) switchBtn.setAttribute('aria-label', '批量');
+        if(switchBtn) switchBtn.setAttribute('aria-label', '共创');
         thumbsRow?.classList.remove('has-co-create-slot');
         if(toggleBarEl) toggleBarEl.hidden = false;
         syncBarMetrics(composer);

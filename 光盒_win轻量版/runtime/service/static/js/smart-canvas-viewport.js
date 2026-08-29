@@ -59,13 +59,12 @@ function applyViewport(options={}){
         S().viewport.y = Math.round(S().viewport.y * devicePixelRatio) / devicePixelRatio;
         S().world.style.transform = `translate(${S().viewport.x}px, ${S().viewport.y}px) scale(${S().viewport.scale})`;
     }
-    if(options.transformOnly) return;
+    // Keep screen-constant strokes (selection border, ports) in sync during
+    // transform-only pan/zoom — otherwise borders thicken/thin with the scale.
     S().world.style.setProperty('--world-scale', String(S().viewport.scale));
-    // Keep the generation wave readable when the canvas is zoomed out without
-    // letting it grow beyond the pending card. Ports use the same screen-size
-    // compensation principle, but the loader is deliberately capped.
     const generationLoaderCompensation = Math.min(2.4, Math.max(1, 1 / S().viewport.scale));
     S().world.style.setProperty('--generation-loader-compensation', String(generationLoaderCompensation));
+    if(options.transformOnly) return;
     if(options.light) return;
     S().shell.style.backgroundSize = '24px 24px';
     S().shell.style.backgroundPosition = '0 0';
