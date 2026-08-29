@@ -38,11 +38,11 @@ body {
   --lb-danger: #e34850;
   --lb-conn: rgba(135, 145, 158, 0.62);
   --lb-conn-pending: rgba(10, 132, 255, 0.68);
-  /* 磨砂浮层（菜单/弹层用；壳层区域用实色底） */
-  --lb-glass-bg: rgba(255, 255, 255, 0.60);
-  --lb-glass-popover: rgba(255, 255, 255, 0.60);
-  --lb-glass-topbar: rgba(243, 245, 247, 0.60);
-  --lb-glass-filter: blur(50px) saturate(160%);
+  /* 磨砂浮层：统一 80% 透明 + blur(80px) */
+  --lb-glass-bg: rgba(255, 255, 255, 0.80);
+  --lb-glass-popover: rgba(255, 255, 255, 0.80);
+  --lb-glass-topbar: rgba(243, 245, 247, 0.80);
+  --lb-glass-filter: blur(80px) saturate(160%);
   --lb-shadow-float: 0 4px 18px rgba(0, 0, 0, 0.12);
   --lb-float-r: 16px;
   /* 正文字号统一：工具栏 = 菜单 = 右侧对话 = 16px */
@@ -85,15 +85,16 @@ html.theme-dark {
   --lb-divider: rgba(255, 255, 255, 0.08);
   --lb-hover: rgba(255, 255, 255, 0.07);
   --lb-selected: rgba(10, 132, 255, 0.16);
-  --lb-glass-bg: rgba(35, 35, 35, 0.60);
-  --lb-glass-popover: rgba(35, 35, 35, 0.60);
-  --lb-glass-topbar: rgba(35, 35, 35, 0.60);
+  --lb-glass-bg: rgba(35, 35, 35, 0.80);
+  --lb-glass-popover: rgba(35, 35, 35, 0.80);
+  --lb-glass-topbar: rgba(35, 35, 35, 0.80);
   --lb-conn: rgba(255, 255, 255, 0.24);
   --lb-shadow-float: 0 4px 16px rgba(0, 0, 0, 0.30);
+  /* 画布网格（与 design-tokens --ui-canvas-grid-dot 一致） */
   --lb-canvas-grid-dot: rgba(255, 255, 255, 0.055);
 }
 
-/* —— 全部悬浮层统一：60% 透明 + blur(50px) + 轻外投影 —— */
+/* —— 全部悬浮层：80% 透明 + blur(80px) + 轻外投影 —— */
 .lb-float {
   border: var(--lb-divider-size) solid var(--lb-border);
   border-radius: var(--lb-float-r);
@@ -373,6 +374,7 @@ html.theme-dark .selection-box {
   margin: 0 22px;
   border-radius: var(--lb-r-composer-top) var(--lb-r-composer-top) 0 0;
   border-bottom: none;
+  box-shadow: none;
 }
 .composer-main-card.lb-float {
   border-radius: var(--lb-r-composer);
@@ -446,7 +448,10 @@ html.theme-dark .tool-btn:hover { background: rgba(255, 255, 255, 0.06); color: 
   height: 30px; padding: 0 10px; border: var(--lb-divider-size) solid var(--lb-border);
   border-radius: var(--lb-r-pill); font-size: var(--lb-type-body); color: inherit; cursor: pointer;
   background: transparent; font-weight: var(--lb-weight-body);
+  font-family: inherit;
+  transition: background 120ms ease, border-color 120ms ease;
 }
+.chip:hover:not(.is-active) { background: var(--lb-hover); border-color: var(--lb-border-strong); }
 .chip.is-active { border-color: transparent; background: var(--lb-selected); color: var(--lb-accent); }
 
 .run-capsule {
@@ -472,15 +477,17 @@ html.theme-dark .tool-btn:hover { background: rgba(255, 255, 255, 0.06); color: 
   border: 1px solid var(--lb-accent); background: var(--lb-accent-subtle);
 }
 
-/* dock — 无交界处投影 */
+/* dock */
 .dock {
   display: flex; flex-direction: column; background: var(--lb-bg-chrome);
   border-left: var(--lb-divider-size) solid var(--lb-divider); min-height: 0; box-shadow: none;
+  overflow: visible; position: relative;
 }
 .dock-chrome {
   display: flex; align-items: center; height: 36px; padding: 0 10px;
   border-bottom: var(--lb-divider-size) solid var(--lb-divider);
-  background: var(--lb-bg-shell); position: relative;
+  background: var(--lb-bg-shell); position: relative; z-index: 2;
+  overflow: visible;
 }
 .dock-title-btn {
   display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 8px;
@@ -488,10 +495,13 @@ html.theme-dark .tool-btn:hover { background: rgba(255, 255, 255, 0.06); color: 
   font-size: var(--lb-type-body); color: var(--lb-text); cursor: pointer;
 }
 .dock-title-menu {
-  position: absolute; top: 34px; left: 8px; width: 220px; z-index: 100;
+  position: absolute; top: 8px; left: 8px; width: 220px; z-index: 120;
 }
 .dock-close { margin-left: auto; width: 28px; height: 28px; border: none; border-radius: var(--lb-r-chrome); background: transparent; cursor: pointer; }
-.dock-body { flex: 1; display: flex; flex-direction: column; min-height: 0; padding: 12px; background: var(--lb-bg-chrome); }
+.dock-body {
+  flex: 1; display: flex; flex-direction: column; min-height: 0; padding: 12px;
+  background: var(--lb-bg-chrome); position: relative; overflow: visible;
+}
 .dock-msg {
   align-self: flex-start; max-width: 88%; padding: 10px 12px; margin-bottom: 10px;
   border-radius: var(--lb-r-float); background: var(--lb-bg-elevated);
@@ -529,7 +539,7 @@ html.theme-dark .tool-btn:hover { background: rgba(255, 255, 255, 0.06); color: 
 """
 
 HTML_BODY = r"""
-<div class="proto-badge">完整壳层样板 v8</div>
+<div class="proto-badge">完整壳层样板 v9</div>
 <div class="proto-toolbar">
   <button class="lb-btn" onclick="document.documentElement.classList.toggle('theme-dark')">切换亮/暗</button>
   <a class="lb-btn" href="字体说明.html">字体说明</a>
@@ -538,14 +548,14 @@ HTML_BODY = r"""
 </div>
 
 <div class="spec-panel lb-float is-menu">
-  <h4>悬浮层统一（含全部菜单）</h4>
-  上拉/下拉菜单、工具栏、生成栏<br>
-  全部 <code>60%</code> + <code>blur(50px)</code><br>
-  外投影 <code>0 4px 16~18px</code><br>
+  <h4>悬浮层统一</h4>
+  全部菜单/浮层<br>
+  <code>80%</code> 透明 + <code>blur(80px)</code><br>
+  窄工具栏无投影<br>
   <br>
-  <h4>画布底</h4>
-  实色 <code>#101010</code> + 网格点<br>
-  无条纹、无彩色图案
+  <h4>画布（深色）</h4>
+  底 <code>#101010</code><br>
+  网格点 <code>rgba(255,255,255,.055)</code>
 </div>
 
 <div class="app">
@@ -705,7 +715,7 @@ HTML_BODY = r"""
                     <div class="tool-popover lb-float is-menu is-open">
                       <span class="proto-label" style="top:-18px;left:0">API 上拉菜单</span>
                       <h5>模型</h5>
-                      <div class="chip-row"><span class="chip is-active">GPT Image 2</span><span class="chip">Seedream</span></div>
+                      <div class="chip-row"><button type="button" class="chip is-active">GPT Image 2</button><button type="button" class="chip">Seedream</button></div>
                     </div>
                   </div>
                   <div class="tool-wrap">
@@ -713,9 +723,9 @@ HTML_BODY = r"""
                     <div class="tool-popover lb-float is-menu is-open" style="width:240px">
                       <span class="proto-label" style="top:-18px;left:0">尺寸上拉菜单</span>
                       <h5>尺寸</h5>
-                      <div class="chip-row" style="margin-bottom:6px"><span class="chip is-active">Auto</span><span class="chip">1:1</span><span class="chip">16:9</span></div>
+                      <div class="chip-row" style="margin-bottom:6px"><button type="button" class="chip is-active">Auto</button><button type="button" class="chip">1:1</button><button type="button" class="chip">16:9</button></div>
                       <h5>质量</h5>
-                      <div class="chip-row"><span class="chip is-active">1K</span><span class="chip">2K</span></div>
+                      <div class="chip-row"><button type="button" class="chip is-active">1K</button><button type="button" class="chip">2K</button></div>
                     </div>
                   </div>
                 </div>
@@ -734,14 +744,14 @@ HTML_BODY = r"""
       <div class="dock-chrome">
         <button class="dock-title-btn">未命名对话 ▾</button>
         <button class="dock-close">⊟</button>
+      </div>
+      <div class="dock-body">
         <div class="dock-title-menu float-menu lb-float is-menu">
           <span class="proto-label" style="top:-18px;left:0">对话下拉</span>
           <button class="menu-item is-active">＋ 新建对话</button>
           <button class="menu-item">未命名对话</button>
           <button class="menu-item">海报文案讨论</button>
         </div>
-      </div>
-      <div class="dock-body">
         <div class="dock-msg">你好，我可以帮你整理创意、写提示词。</div>
         <div class="dock-msg is-user">帮我把色调调暖一点</div>
         <div class="dock-composer lb-float">
@@ -772,7 +782,7 @@ TEMPLATE = f"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>光盒 · 完整壳层视觉样板 v8</title>
+  <title>光盒 · 完整壳层视觉样板 v9</title>
   <style>{CSS}</style>
 </head>
 <body>
