@@ -4091,13 +4091,13 @@ html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-d
 /* M72：右上画布导航长条使用白色常驻面与浅灰细描边。 */
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell .canvas-bottom-capsule {
     background: var(--ui-surface-card) !important;
-    border: 1px solid var(--ui-border) !important;
+    border: 1px solid var(--ui-glass-border) !important;
     box-shadow: none !important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule {
     background: var(--ui-active) !important;
-    border: 1px solid var(--ui-border) !important;
+    border: 1px solid var(--ui-glass-border) !important;
     box-shadow: none !important;
 }
 
@@ -4500,9 +4500,8 @@ html:is(.theme-dark, .studio-theme-dark):not(#ui-shadow-reset-1):not(#ui-shadow-
         0 8px 20px rgba(0, 0, 0, .32) !important;
 }
 
-/* v10：上拉菜单选项 16px；分组小标题 13px */
- * M83：底部一级按钮上拉菜单使用 --ui-shadow-float。
- * 选项文字走 --ui-type-control（16px）；分组标签走 --ui-type-meta（13px）。 */
+/* v10：上拉菜单选项 16px；分组小标题 13px。
+ * M83：底部一级按钮上拉菜单使用 --ui-shadow-float。 */
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer :is(
     #composerApiSettingsPopover,
@@ -5148,7 +5147,7 @@ html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body :is(
     background-image: none !important;
     -webkit-backdrop-filter: var(--ui-glass-filter) !important;
     backdrop-filter: var(--ui-glass-filter) !important;
-    border: 1px solid var(--ui-border) !important;
+    border: 1px solid var(--ui-glass-border) !important;
     border-radius: var(--ui-radius-float) !important;
     box-shadow: var(--ui-shadow-float) !important;
 }
@@ -5210,7 +5209,6 @@ html:not(#ui-hover-v10-1):not(#ui-hover-v10-2) body
     ) {
     background-color: var(--ui-hover) !important;
     background-image: none !important;
-    border-color: transparent !important;
     box-shadow: none !important;
 }
 
@@ -5226,7 +5224,6 @@ html:not(#ui-chrome-v10-1):not(#ui-chrome-v10-2) body #shell.shell :is(
 ):not(.active):not([aria-pressed="true"]):is(:hover, :focus-visible) {
     background-color: var(--ui-hover) !important;
     background-image: none !important;
-    border-color: transparent !important;
     box-shadow: none !important;
 }
 
@@ -5235,7 +5232,6 @@ html:not(#ui-chrome-v10-1):not(#ui-chrome-v10-2) body #shell.shell #composer.com
     .mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
     background-color: var(--ui-hover) !important;
     background-image: none !important;
-    border-color: transparent !important;
     box-shadow: none !important;
 }
 
@@ -5333,4 +5329,147 @@ html:not(#ui-v10-type-1):not(#ui-v10-type-2) body #shell.shell :is(
 html:not(#ui-v10-type-1):not(#ui-v10-type-2) body #shell.shell
     .mm-recent-item .mm-recent-title {
     font-size: var(--ui-type-compact-label) !important;
+}
+
+/* M-v10-final：生成栏叠层 / 底栏按钮 / 上拉菜单磨砂（压过 M9 实色菜单与 dark-desaturated 渐变） */
+html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.composer
+    .composer-card > .composer-card-material {
+    display: block !important;
+    position: absolute !important;
+    z-index: 0 !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    background-color: var(--ui-glass-bg) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
+    border: 1px solid var(--ui-glass-border) !important;
+    border-radius: var(--ui-radius-composer) !important;
+    box-shadow: none !important;
+}
+
+html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.composer
+    .composer-card > .composer-card-surface {
+    display: block !important;
+    position: absolute !important;
+    z-index: 1 !important;
+    top: var(--ui-composer-topbar-h, 42px) !important;
+    right: var(--ui-composer-surface-side-inset, 7px) !important;
+    bottom: var(--ui-composer-surface-bottom-gap, 15px) !important;
+    left: var(--ui-composer-surface-side-inset, 7px) !important;
+    pointer-events: none !important;
+    background-color: var(--ui-glass-popover) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
+    border: 1px solid var(--ui-glass-border) !important;
+    border-radius: var(--ui-radius-composer) !important;
+    box-shadow: var(--ui-shadow-float) !important;
+}
+
+html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.composer
+    .composer-card > :not(.composer-card-material):not(.composer-card-surface) {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.composer
+    .composer-card-topbar {
+    z-index: 4 !important;
+}
+
+html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.composer
+    .composer-footer {
+    position: relative !important;
+    z-index: 3 !important;
+}
+
+html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn,
+        .composer-tool-btn,
+        .composer-api-settings-btn
+    ),
+html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn,
+        .composer-tool-btn,
+        .composer-api-settings-btn
+    ):is(:hover, :focus-visible, :active),
+html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap.open > :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn,
+        .composer-tool-btn
+    ) {
+    border: 1px solid var(--ui-glass-border) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    color: var(--ui-text) !important;
+}
+
+html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn,
+        .composer-tool-btn,
+        .composer-api-settings-btn
+    ):is(:hover, :focus-visible),
+html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.composer
+    .composer-footer .composer-tool-wrap.open > :is(
+        #composerApiSettingsBtn,
+        #composerSizeBtn,
+        #composerVideoReferenceBtn,
+        #composerKindBtn,
+        .composer-tool-btn
+    ) {
+    background-color: var(--ui-hover) !important;
+}
+
+html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.composer
+    .composer-footer .composer-footer-glider {
+    border: 1px solid var(--ui-glass-border) !important;
+    background: var(--ui-hover) !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.composer
+    .composer-footer :is(
+        #composerApiSettingsPopover,
+        #composerSizePopover,
+        #composerKindPopover,
+        #composerVideoReferencePopover
+    ) {
+    isolation: isolate !important;
+    background-color: var(--ui-glass-popover) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
+    border: 1px solid var(--ui-glass-border) !important;
+    border-radius: var(--ui-radius-float) !important;
+    box-shadow: var(--ui-shadow-float) !important;
+}
+
+html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell :is(
+    .create-menu,
+    .port-link-pick-shell,
+    .node-context-menu,
+    .canvas-context-menu,
+    .shell-user-menu,
+    .iqt-dropdown-menu
+) {
+    border: 1px solid var(--ui-glass-border) !important;
 }

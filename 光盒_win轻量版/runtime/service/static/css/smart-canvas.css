@@ -2980,7 +2980,7 @@ blue primary canvas actions. */.shell .create-card:hover,
     box-shadow:none;
 }
 .theme-dark .node-type-placeholder { color:#b8bec8; }
-.composer-card-material,.composer-card-surface { display:none; }
+/* composer 材质层由 M-v10 启用（窄底框 + 主卡片叠层） */
 /* Composer outer frame: match the light image quick-toolbar glass material. */
 @property --composer-outline-angle {
     syntax:"<angle>";
@@ -3666,7 +3666,6 @@ html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover .has-strong-s
 .shell .composer .composer-footer .composer-footer-bar {
     position:relative;
     isolation:isolate;
-    transform:translateY(-10px);
 }
 .shell .composer .composer-footer .composer-footer-tools {
     position:relative;

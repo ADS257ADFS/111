@@ -26,7 +26,8 @@
     --ui-surface-composer: #ffffff;      /* 画布底部输入卡片 */
     --ui-surface-composer-topbar: rgba(255, 255, 255, .80);
 
-    /* 磨砂浮层（v10：80% 不透明 + blur(80px)） */
+    /* 磨砂浮层细描边（比 --ui-border 略明显，深浅共用几何） */
+    --ui-glass-border: rgba(0, 0, 0, .12);
     --ui-glass-bg: rgba(255, 255, 255, .80);
     --ui-glass-popover: rgba(255, 255, 255, .80);
     --ui-glass-filter: blur(80px) saturate(160%);
@@ -131,7 +132,7 @@ body.studio-theme-dark {
     --ui-shadow-pop: none;
     --ui-shadow-dialog: none;
     --ui-shadow-float: 0 4px 16px rgba(0, 0, 0, .30);
-}
+    --ui-glass-border: rgba(255, 255, 255, .16);
 
 /* ================================================================
  * 3. 字体与字阶（深浅共用）
@@ -194,14 +195,14 @@ body.studio-theme-dark {
     --ui-type-control: 16px;   /* 控件、输入、chip */
     --ui-type-compact-label: 14px; /* 项目名、资产夹、搜索框 */
     --ui-type-project-title: var(--ui-type-compact-label);
-    --ui-type-meta: 13px;      /* 快捷键、积分、时间、次要信息 */
-    --ui-type-micro: 13px;     /* 徽标、角标 */
+    --ui-type-meta: 11px;      /* 快捷键、积分、时间、次要信息 */
+    --ui-type-micro: 11px;     /* 徽标、角标 */
 
-    --ui-weight-regular: 380;
-    --ui-weight-medium: 380;
-    --ui-weight-menu-strong: 380;
-    --ui-weight-semibold: 380;
-    --ui-weight-latin: 350; /* computed 与实际拉丁字形均为 350；中文由固定实例保留原字重 */
+    --ui-weight-regular: 300;
+    --ui-weight-medium: 300;
+    --ui-weight-menu-strong: 300;
+    --ui-weight-semibold: 300;
+    --ui-weight-latin: 300;
     --ui-weight-dock-body: 300;
     --ui-weight-placeholder: 250; /* 底部输入栏与右侧对话栏占位说明；走可变轴，避开 350 固定实例 */
 
