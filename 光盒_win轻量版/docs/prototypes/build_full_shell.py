@@ -66,6 +66,7 @@ body {
   --lb-panel-w: 400px;
   --lb-composer-w: 760px;
   --lb-grid-size: 22px;
+  --lb-canvas-grid-dot: rgba(0, 0, 0, 0.11);
 }
 html.theme-dark {
   /* 与 design-tokens.css 深色完全一致 */
@@ -95,6 +96,8 @@ html.theme-dark {
     inset 1px 1px 4px rgba(255, 255, 255, 0.2),
     inset -1px -1px 6px rgba(0, 0, 0, 0.3),
     0 4px 12px rgba(0, 0, 0, 0.15);
+  /* 画布网格点（与 design-tokens --ui-canvas-grid-dot 一致） */
+  --lb-canvas-grid-dot: rgba(255, 255, 255, 0.055);
 }
 
 .proto-badge {
@@ -248,7 +251,7 @@ html.theme-dark {
 .canvas {
   position: absolute; inset: 0; z-index: 1;
   background-color: var(--lb-bg-stage);
-  background-image: radial-gradient(circle, rgba(0,0,0,.11) 1px, transparent 1px);
+  background-image: radial-gradient(var(--lb-canvas-grid-dot) 0.6px, transparent 1.1px);
   background-size: var(--lb-grid-size) var(--lb-grid-size);
 }
 /* 画布底层彩色图案 — 用于直观感受磨砂透视 */
@@ -273,7 +276,7 @@ html.theme-dark .canvas-bg-pattern {
     repeating-linear-gradient(-32deg, rgba(255,255,255,.04) 0 10px, transparent 10px 22px);
 }
 html.theme-dark .canvas {
-  background-image: radial-gradient(circle, rgba(255,255,255,.055) 1px, transparent 1px);
+  background-image: radial-gradient(var(--lb-canvas-grid-dot) 0.6px, transparent 1.1px);
 }
 
 /* nodes */
@@ -623,6 +626,7 @@ HTML_BODY = r"""
   顶/左栏 <code>#181818</code><br>
   右栏 <code>#1b1b1b</code><br>
   画布 <code>#101010</code><br>
+  网格点 <code>rgba(255,255,255,.055)</code><br>
   输入栏玻璃 <code>rgba(255,255,255,.06)</code><br>
   <br>
   <h4>磨砂菜单</h4>
