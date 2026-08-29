@@ -76,10 +76,11 @@ html.lightbox-desktop-native.mm-sidebar-collapsed:not(.lightbox-compact-mode) .m
     display: flex;
     align-items: center;
     gap: var(--ui-space-5);
-    height: var(--ui-control-h);
+    height: 36px;
+    min-height: 36px;
     padding: 0 var(--ui-space-5);
     border: 1px solid transparent;
-    border-radius: var(--ui-radius-control);
+    border-radius: 10px;
     background: transparent;
     color: inherit;
     font-size: var(--ui-type-section);
