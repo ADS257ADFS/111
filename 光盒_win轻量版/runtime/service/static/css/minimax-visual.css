@@ -3433,17 +3433,17 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     backdrop-filter: none!important;
 }
 
-/* 深色：窄条本身纯黑 + 细描边（不再透明露灰底） */
+/* 深色：窄条半透明磨砂（底框可透出细描边） */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-topbar {
-    border: 1px solid rgba(255, 255, 255, .16) !important;
-    border-color: rgba(255, 255, 255, .16) !important;
-    background: #000000 !important;
-    background-color: #000000 !important;
+    border: 1px solid var(--ui-panel-frost-border, rgba(255, 255, 255, .16)) !important;
+    border-color: var(--ui-panel-frost-border, rgba(255, 255, 255, .16)) !important;
+    background: var(--ui-panel-frost, rgba(31, 31, 31, .55)) !important;
+    background-color: var(--ui-panel-frost, rgba(31, 31, 31, .55)) !important;
     background-image: none !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: none!important;
-    backdrop-filter: none!important;
+    -webkit-backdrop-filter: var(--ui-panel-frost-blur, blur(60px) saturate(140%)) !important;
+    backdrop-filter: var(--ui-panel-frost-blur, blur(60px) saturate(140%)) !important;
 }
 
 /* 磨砂底不再画在顶排伪元素上（改由 composer-card-material 承载，见下）。 */
@@ -5998,26 +5998,47 @@ html.studio-theme-dark body #shell.shell #composer.composer
     box-shadow: none !important;
 }
 
-/* 深色底栏窄条：末层锁定纯黑 + 细描边（压过 transparent / token 灰） */
+/* 深色底栏窄条：半透明磨砂；底框抬到窄条之上露出细描边；控件仍在最上 */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-topbar,
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer.open
     .composer-card > .composer-card-topbar {
-    border: 1px solid rgba(255, 255, 255, .16) !important;
-    border-color: rgba(255, 255, 255, .16) !important;
-    background: #000000 !important;
-    background-color: #000000 !important;
+    border: 1px solid var(--ui-panel-frost-border, rgba(255, 255, 255, .16)) !important;
+    border-color: var(--ui-panel-frost-border, rgba(255, 255, 255, .16)) !important;
+    background: var(--ui-panel-frost, rgba(31, 31, 31, .55)) !important;
+    background-color: var(--ui-panel-frost, rgba(31, 31, 31, .55)) !important;
     background-image: none !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: var(--ui-panel-frost-blur, blur(60px) saturate(140%)) !important;
+    backdrop-filter: var(--ui-panel-frost-blur, blur(60px) saturate(140%)) !important;
 }
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-material {
     display: none !important;
 }
+/* 底框压在窄条背景之上，顶边细描边可见；左右控件/输入区再压上来 */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card > .composer-card-surface {
+    z-index: calc(var(--ui-z-raised) + 4) !important;
+    border: 1px solid rgba(255, 255, 255, .16) !important;
+    border-color: rgba(255, 255, 255, .16) !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card > .composer-card-topbar > :is(.composer-card-topbar-left, .composer-card-topbar-right),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card > :not(.composer-card-material):not(.composer-card-surface):not(.composer-card-topbar) {
+    z-index: calc(var(--ui-z-raised) + 5) !important;
+}
+/* 预览相对窄条下移 5px（原 22px → 17px） */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card-topbar .input-thumbs-row {
-    bottom: calc(100% + 22px) !important;
+    bottom: calc(100% + 17px) !important;
+}
+/* 发送按钮向右、向上各 5px（不用 transform，避免与 hover 动画打架） */
+html body #shell.shell #composer.composer
+    .composer-footer .composer-actions #runBtn.run-btn {
+    position: relative !important;
+    top: -5px !important;
+    left: 5px !important;
 }
 
 /* 模式切换上拉：行距拉开、英文小字、选中尾部对号（压过 canvas-dark-glass 34px） */
