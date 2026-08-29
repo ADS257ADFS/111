@@ -158,6 +158,19 @@
                     <div class="composer-footer">
                         <div class="composer-footer-bar">
                             <div class="composer-footer-tools">
+                                <div id="composerKindWrap" class="composer-tool-wrap composer-kind-wrap">
+                                    <button id="composerKindBtn" class="composer-tool-btn" type="button" title="模式切换" aria-label="模式切换" aria-haspopup="true" aria-expanded="false">
+                                        <i data-lucide="image"></i><span id="composerKindBtnLabel">图片生成</span><i data-lucide="chevron-up" class="composer-tool-caret"></i>
+                                    </button>
+                                    <div id="composerKindPopover" class="composer-tool-popover" role="menu" aria-label="模式切换">
+                                        <div id="apiKindToggle" class="composer-kind-toggle" role="group" aria-label="模式切换">
+                                            <button type="button" data-kind="image" class="active" title="图片生成" aria-label="图片生成" role="menuitem"><i data-lucide="image"></i><span>图片生成</span></button>
+                                            <button type="button" data-kind="video" title="视频生成" aria-label="视频生成" role="menuitem"><i data-lucide="film"></i><span>视频生成</span></button>
+                                            <button type="button" data-kind="text" title="文本生成" aria-label="文本生成" role="menuitem"><i data-lucide="message-square-text"></i><span>文本生成</span></button>
+                                            <button type="button" data-kind="audio" title="音频生成" aria-label="音频生成" role="menuitem"><i data-lucide="music-2"></i><span>音频生成</span></button>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div id="composerApiSettingsWrap" class="composer-tool-wrap">
                                     <button id="composerApiSettingsBtn" class="composer-tool-btn" type="button" title="API设置" aria-label="API设置">
                                         <span id="composerApiSettingsBtnIcon" class="composer-model-brand-icon" aria-hidden="true"><i data-lucide="settings-2"></i></span><span id="composerApiSettingsBtnLabel">API设置</span><i data-lucide="chevron-up" class="composer-tool-caret"></i>
@@ -173,19 +186,6 @@
                                     </button>
                                     <div id="composerVideoReferencePopover" class="composer-tool-popover composer-video-reference-popover">
                                         <div id="composerVideoReferencePanel" class="composer-video-reference-panel"></div>
-                                    </div>
-                                </div>
-                                <div id="composerKindWrap" class="composer-tool-wrap composer-kind-wrap">
-                                    <button id="composerKindBtn" class="composer-tool-btn" type="button" title="生成类型" aria-label="生成类型">
-                                        <i data-lucide="image"></i><span id="composerKindBtnLabel">图片</span><i data-lucide="chevron-up" class="composer-tool-caret"></i>
-                                    </button>
-                                    <div id="composerKindPopover" class="composer-tool-popover">
-                                        <div id="apiKindToggle" class="composer-kind-toggle" role="group" aria-label="生成类型">
-                                            <button type="button" data-kind="audio" title="音频" aria-label="音频"><i data-lucide="music-2"></i><span>音频</span></button>
-                                            <button type="button" data-kind="text" title="文本" aria-label="文本"><i data-lucide="message-square-text"></i><span>文本</span></button>
-                                            <button type="button" data-kind="image" class="active" title="图片" aria-label="图片"><i data-lucide="image"></i><span>图片</span></button>
-                                            <button type="button" data-kind="video" title="视频" aria-label="视频"><i data-lucide="film"></i><span>视频</span></button>
-                                        </div>
                                     </div>
                                 </div>
                                 <div id="composerSizeWrap" class="composer-tool-wrap">

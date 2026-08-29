@@ -261,7 +261,7 @@
         const activeMode = modeFor(node);
         toggle?.querySelectorAll('[data-kind]').forEach(button => button.classList.toggle('active', button.dataset.kind === activeMode));
         const kindLabel = document.getElementById('composerKindBtnLabel');
-        if(kindLabel) kindLabel.textContent = ({audio:'音频', text:'文本', image:'图片', video:'视频'})[activeMode] || '图片';
+        if(kindLabel) kindLabel.textContent = ({audio:'音频生成', text:'文本生成', image:'图片生成', video:'视频生成'})[activeMode] || '图片生成';
         // audio / video 模式:主动触发一次 dynamic params 渲染,否则切到 audio 后底部 params 不会刷新
         if(!textMode && (activeMode === 'audio' || activeMode === 'video')){
             try { global.SmartCanvasComposerParams?.renderDynamicParams?.(); } catch(_e) {}

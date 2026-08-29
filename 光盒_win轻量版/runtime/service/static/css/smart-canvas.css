@@ -761,7 +761,18 @@ video.node-img { object-fit:cover; background:transparent; }
 .composer-api-settings-wrap.open .composer-api-settings-btn { color:var(--ui-text); }
 .composer-tool-popover,
 .composer-api-settings-popover { position:absolute; left:0; bottom:calc(100% + 8px); z-index:130; width:max-content; min-width:180px; max-width:min(320px, calc(100vw - 64px)); max-height:min(250px, 42vh); overflow:auto; padding:8px; border-radius:var(--ui-radius-card); background:var(--panel); border:1px solid var(--line); box-shadow:var(--ui-shadow-pop); backdrop-filter:none; display:flex; flex-direction:column; gap:6px; opacity:0; visibility:hidden; pointer-events:none; transform:translateY(7px) scale(.985); transform-origin:left bottom; transition:opacity var(--ui-motion-base) var(--ui-ease-emphasized), transform var(--ui-motion-base) var(--ui-ease-emphasized), visibility 0s linear var(--ui-motion-base); }
-#composerKindPopover { width:166px; min-width:166px; }
+#composerKindPopover { width:180px; min-width:180px; }
+#composerKindPopover .composer-kind-toggle { width:100%; height:auto; padding:5px; flex-direction:column; align-items:stretch; gap:3px; border:1px solid rgba(150,158,171,.2); border-radius:12px; background:rgba(241,243,246,.9); box-shadow:none; display:flex; }
+#composerKindPopover .composer-kind-toggle button { width:100%; height:34px; justify-content:flex-start; padding:0 12px; border-radius:9px; font-size:var(--ui-type-control, 13px); }
+#composerKindPopover .composer-kind-toggle button i,#composerKindPopover .composer-kind-toggle button svg { width:14px !important; height:14px !important; }
+.shell .composer-card #composerKindWrap {
+    display:inline-flex !important;
+}
+.theme-dark #composerKindPopover .composer-kind-toggle,
+html.studio-theme-dark #composerKindPopover .composer-kind-toggle {
+    border-color: rgba(255,255,255,.12);
+    background: rgba(40,40,40,.96);
+}
 #composerSizePopover { width:min(340px, calc(100vw - 64px)); }
 #composerApiSettingsPopover { width:min(248px, calc(100vw - 64px)); }
 #composerSizeBtn { width:auto; min-width:0; justify-content:center; padding-inline:12px; }
@@ -1021,9 +1032,6 @@ video.node-img { object-fit:cover; background:transparent; }
 .composer.composer-text-mode #composerQualityBtnLabel {
     display:none !important;
 }
-#composerKindPopover .composer-kind-toggle { width:100%; height:auto; padding:5px; flex-direction:column; align-items:stretch; gap:3px; border:1px solid rgba(150,158,171,.2); border-radius:12px; background:rgba(241,243,246,.9); box-shadow:none; }
-#composerKindPopover .composer-kind-toggle button { width:100%; height:34px; justify-content:flex-start; padding:0 12px; border-radius:9px; font-size:11px; }
-#composerKindPopover .composer-kind-toggle button i,#composerKindPopover .composer-kind-toggle button svg { width:14px !important; height:14px !important; }
 
 .composer-api-tree { display:flex; width:100%; min-width:0; flex-direction:column; gap:4px; padding:5px; box-sizing:border-box; border:1px solid rgba(150,158,171,.2); border-radius:12px; background:rgba(241,243,246,.9); }
 .composer-api-tree-title { padding:2px 7px 5px; color:var(--ui-text-muted); font-size:10px; font-weight:600; letter-spacing:.05em; }
