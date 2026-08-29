@@ -6344,3 +6344,21 @@ html.theme-dark .dock-turn-timing {
     border-bottom-color: transparent !important;
     box-shadow: none !important;
 }
+
+/* 流体思考小字 = 上方「已完成/处理中」同字号字重（压过全局 body 14px !important） */
+html:not(#ui-dock-fluid-1):not(#ui-dock-fluid-2):not(#ui-dock-fluid-3):not(#ui-dock-fluid-4)
+body.gpt-dock-canvas-mode .chat-shell #messages.messages
+    :is(.dock-thinking-line, .dock-thinking-text),
+html:not(#ui-dock-fluid-1):not(#ui-dock-fluid-2):not(#ui-dock-fluid-3):not(#ui-dock-fluid-4)
+body.gpt-dock-canvas-mode .chat-shell
+    :is(.dock-thinking-line, .dock-thinking-text),
+html:not(#ui-type-reset-1):not(#ui-type-reset-2):not(#ui-type-reset-3):not(#ui-type-reset-4)
+body.gpt-dock-canvas-mode .chat-shell
+    :is(.dock-thinking-line, .dock-thinking-text) {
+    font-family: var(--ui-font) !important;
+    font-size: var(--ui-type-meta) !important;
+    font-weight: var(--ui-weight-latin) !important;
+    font-variation-settings: "wght" var(--ui-weight-latin) !important;
+    line-height: 20px !important;
+    letter-spacing: 0 !important;
+}
