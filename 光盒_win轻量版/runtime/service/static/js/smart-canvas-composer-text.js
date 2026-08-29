@@ -35,11 +35,16 @@
         return target;
     }
 
-    // 菜单行内容：公司图标 + 模型名（悬停时下方上滑一句话说明）+ 选中对号
+    // 菜单行内容：公司图标 + 模型名（悬停时下方上滑一句话说明）+ 选中对号（始终输出）
+    const MODE_MODEL_CHECK_FALLBACK =
+        '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
+        + '<path d="M5 12.5 10 17.5 19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>'
+        + '</svg>';
     function modelChoiceInner(label, esc){
         const BI = global.ModelBrandIcons;
         const icon = BI ? `<span class="mode-model-ico">${BI.iconFor(label)}</span>` : '';
-        const check = BI ? `<span class="mode-model-check">${BI.CHECK_SVG}</span>` : '';
+        const checkSvg = (BI && BI.CHECK_SVG) || MODE_MODEL_CHECK_FALLBACK;
+        const check = `<span class="mode-model-check" aria-hidden="true">${checkSvg}</span>`;
         const desc = BI?.descFor ? BI.descFor(label) : '';
         const descHtml = desc ? `<span class="mode-model-desc">${esc(desc)}</span>` : '';
         return `${icon}<span class="mode-model-copy"><span class="mode-model-title-row"><span class="mode-model-name">${esc(label)}</span></span>${descHtml}</span>${check}`;
@@ -170,7 +175,7 @@
             if(activeIdx < 0) activeIdx = customs.findIndex(entry => bound(entry) && entry.model === node.llmModel);
             listHtml = customs.map((entry, idx) => bound(entry)
                 ? `<button type="button" class="mode-model-choice ${idx === activeIdx ? 'active' : ''}" data-mode-model-select="text" data-mode-model-value="${esc(entry.name)}">${modelChoiceInner(entry.name, esc)}</button>`
-                : `<button type="button" class="mode-model-choice is-unbound" disabled title="未绑定，请在 API 设置 · 我的模型中绑定中转站">${modelChoiceInner(entry.name, esc)}</button>`).join('');
+                : `<button type="button" class="mode-model-choice is-unbound" disabled title="未绑定，请在 API 设置 · 画布显示名中绑定平台">${modelChoiceInner(entry.name, esc)}</button>`).join('');
         } else {
             const models = MB?.enabledModels('text') || [];
             listHtml = models.map(model => `<button type="button" class="mode-model-choice ${model === node.llmModel ? 'active' : ''}" data-mode-model-select="text" data-mode-model-value="${esc(model)}">${modelChoiceInner(model, esc)}</button>`).join('');
@@ -222,7 +227,9 @@
             };
         });
         syncApiButtonLabel(node);
-        global.lucide?.createIcons?.();
+        const composerRoot = document.getElementById('composer');
+        try { global.lucide?.createIcons?.(composerRoot ? { root: composerRoot } : undefined); }
+        catch(_e) { try { global.lucide?.createIcons?.(); } catch(__e) {} }
         return true;
     }
 
@@ -261,7 +268,7 @@
         const activeMode = modeFor(node);
         toggle?.querySelectorAll('[data-kind]').forEach(button => button.classList.toggle('active', button.dataset.kind === activeMode));
         const kindLabel = document.getElementById('composerKindBtnLabel');
-        if(kindLabel) kindLabel.textContent = ({audio:'音频', text:'文本', image:'图片', video:'视频'})[activeMode] || '图片';
+        if(kindLabel) kindLabel.textContent = ({audio:'音频生成', text:'文本生成', image:'图片生成', video:'视频生成'})[activeMode] || '图片生成';
         // audio / video 模式:主动触发一次 dynamic params 渲染,否则切到 audio 后底部 params 不会刷新
         if(!textMode && (activeMode === 'audio' || activeMode === 'video')){
             try { global.SmartCanvasComposerParams?.renderDynamicParams?.(); } catch(_e) {}

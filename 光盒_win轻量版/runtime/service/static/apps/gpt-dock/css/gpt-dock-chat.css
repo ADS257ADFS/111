@@ -26,8 +26,28 @@ body.gpt-dock-canvas-mode { margin:0; height:100vh; overflow:hidden; color:#1718
 .topbar { height:82px; padding:0 clamp(18px,5vw,36px); border-bottom:1px solid var(--ui-border,#eef2f7); background:var(--ui-surface-chrome,#f8fafc); backdrop-filter:none; z-index:5; }
 .topbar-inner { width:min(var(--content-width),100%); height:100%; margin:0 auto; padding-right:52px; display:flex; align-items:center; justify-content:space-between; gap:18px; }
 .title-block { min-width:0; }
-/* 精简模式：左上角标题让位给外层的置顶/回归按钮 */
-html.lightbox-compact-mode .title-block { visibility:hidden; }
+/* 精简模式：壳层 dock-chrome 已接管标题，iframe 内顶栏完全收起 */
+html.lightbox-compact-mode .topbar,
+html.lightbox-compact-mode .topbar-inner,
+html.lightbox-compact-mode .title-block {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+}
+
+html.lightbox-compact-mode .messages {
+    padding-top: 12px !important;
+    padding-bottom: 16px !important;
+}
+
+html.lightbox-compact-mode .composer-wrap {
+    padding-top: 10px !important;
+    padding-bottom: 8px !important;
+}
 .title-block h1 { font-size:14px; font-weight:600; letter-spacing:.28em; text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .title-block p { margin-top:5px; font-size:10px; color:#9aa0a9; font-weight:600; }
 .top-actions { display:flex; align-items:center; gap:10px; position:relative; }
@@ -51,22 +71,22 @@ html.lightbox-compact-mode .title-block { visibility:hidden; }
 .dock-turn-timing-label svg { width:13px; height:13px; stroke-width:1.8; opacity:.65; }
 .dock-turn-timing[data-state="running"] .dock-turn-timing-text { color:#555b63; font-variant-numeric:tabular-nums; }
 .dock-turn-timing[data-state="complete"] .dock-turn-timing-text { font-variant-numeric:tabular-nums; }
-.bubble { max-width:min(780px,78%); border-radius:24px; padding:15px 18px; font-size:14px; line-height:1.7; white-space:pre-wrap; word-break:break-word; box-shadow:none; }
+.bubble { max-width:min(780px,78%); border-radius:24px; padding:15px 18px; font-size:14px; line-height:1.42; white-space:pre-wrap; word-break:break-word; box-shadow:none; }
 .bubble.user { position:relative; background:rgba(148,163,184,.11); color:#17181b; border-bottom-right-radius:8px; }
 .bubble.assistant { background:#fff; border:1px solid #edf2f7; border-bottom-left-radius:8px; }
 .bubble-text.is-markdown { white-space:normal; }
-.bubble-text.is-markdown p { margin:0 0 8px; }
+.bubble-text.is-markdown p { margin:0 0 6px; }
 .bubble-text.is-markdown p:last-child { margin-bottom:0; }
 .bubble-text.is-markdown ul,
-.bubble-text.is-markdown ol { margin:4px 0 8px; padding-left:20px; }
-.bubble-text.is-markdown li + li { margin-top:3px; }
+.bubble-text.is-markdown ol { margin:3px 0 6px; padding-left:20px; }
+.bubble-text.is-markdown li + li { margin-top:2px; }
 .bubble-text.is-markdown strong,
 .bubble-text.is-markdown b { font-weight:inherit; color:inherit; }
 .bubble-text.is-markdown em { font-style:italic; }
 .bubble-text.is-markdown code { padding:1px 4px; border-radius:5px; background:rgba(148,163,184,.14); font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; }
 .bubble-text.is-markdown h2,
 .bubble-text.is-markdown h3,
-.bubble-text.is-markdown h4 { margin:2px 0 8px; font-size:1em; font-weight:inherit; line-height:1.5; }
+.bubble-text.is-markdown h4 { margin:2px 0 6px; font-size:1em; font-weight:inherit; line-height:1.38; }
 .dock-message-sources { margin-top:12px; padding-top:10px; border-top:1px solid rgba(148,163,184,.22); white-space:normal; }
 .dock-message-sources-label { margin-bottom:7px; color:#747b85; font-size:10px; font-weight:445; letter-spacing:.08em; }
 .dock-message-sources-list { display:flex; flex-wrap:wrap; gap:6px; }
@@ -685,7 +705,7 @@ body.studio-theme-dark .assistant .message-file {
     .ref-chip { width:100%; max-width:100%; }
 }
 
-/* Right-dock message content: medium copy with zero tracking and a tighter frame. */
+/* Right-dock message content: match left-rail project title type; open body leading. */
 html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
     .bubble.user,
     .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
@@ -693,9 +713,47 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
 ) {
     padding:var(--ui-space-5) var(--ui-space-6) !important;
     border-radius:var(--ui-radius-card) !important;
-    font-family:var(--ui-font);
-    font-size:var(--ui-type-section);
-    font-weight:var(--ui-weight-medium) !important;
+}
+
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
+    .bubble.user,
+    .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
+    .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble)
+),
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
+    .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
+    .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble)
+) .bubble-text {
+    font-family:var(--ui-font-body-cjk);
+    font-size:var(--ui-type-compact-label);
+    font-weight:var(--ui-weight-latin) !important;
+    font-variation-settings:"wght" var(--ui-weight-latin);
+    letter-spacing:0;
+    line-height:1.38;
+}
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
+    .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
+    .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble)
+),
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
+    .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
+    .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble)
+) .bubble-text {
+    color:var(--ui-text);
+}
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user,
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user .bubble-text {
+    color:var(--ui-text-on-accent);
+}
+
+html body.gpt-dock-canvas-mode .chat-shell .composer-body textarea,
+html body.gpt-dock-canvas-mode .chat-shell .composer textarea {
+    font-family:var(--ui-font-body-cjk) !important;
+    font-size:var(--ui-type-compact-label) !important;
+    font-weight:var(--ui-weight-latin) !important;
+    font-variation-settings:"wght" var(--ui-weight-latin);
+    color:var(--ui-text) !important;
+    line-height:1.38 !important;
     letter-spacing:0;
 }
 
