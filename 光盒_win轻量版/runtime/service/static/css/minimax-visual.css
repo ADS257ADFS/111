@@ -5569,10 +5569,21 @@ html.theme-dark #shell.shell #composer.composer .input-thumb-upload,
 html.theme-dark #shell.shell #composer.composer .input-thumb-upload:is(:hover, :focus-visible, :active),
 html.studio-theme-dark #shell.shell #composer.composer .input-thumb-upload,
 html.studio-theme-dark #shell.shell #composer.composer .input-thumb-upload:is(:hover, :focus-visible, :active) {
-    background: rgba(255, 255, 255, .42) !important;
-    background-color: rgba(255, 255, 255, .42) !important;
+    background: rgba(31, 31, 31, .80) !important;
+    background-color: rgba(31, 31, 31, .80) !important;
     background-image: none !important;
-    color: rgba(255, 255, 255, .92) !important;
+    border: 1px dashed rgba(166, 166, 166, .55) !important;
+    border-color: rgba(166, 166, 166, .55) !important;
+    color: rgba(241, 241, 241, .86) !important;
+    -webkit-backdrop-filter: blur(60px) !important;
+    backdrop-filter: blur(60px) !important;
+}
+
+/* 添加预览钮：单独保留虚线 + 60px 磨砂（不受全局 frosted kill / perf 模式影响） */
+html body #shell.shell #composer.composer .input-thumb-upload,
+html.canvas-performance-mode body #shell.shell #composer.composer .input-thumb-upload {
+    -webkit-backdrop-filter: blur(60px) !important;
+    backdrop-filter: blur(60px) !important;
 }
 
 

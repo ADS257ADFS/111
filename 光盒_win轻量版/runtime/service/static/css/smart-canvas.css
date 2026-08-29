@@ -1156,28 +1156,33 @@ body.input-thumb-pointer-dragging, body.input-thumb-pointer-dragging * { cursor:
     justify-content:center;
     padding:0;
     overflow:hidden;
-    border:1px solid rgba(255,255,255,.72);
-    background:#ffffff;
-    color:#1a1a1a;
+    border:1px dashed var(--ui-border-strong, rgba(148,163,184,.55));
+    background:rgba(255,255,255,.80);
+    color:rgba(26,26,26,.78);
     box-shadow:none;
-    backdrop-filter:none;
-    -webkit-backdrop-filter:none;
+    backdrop-filter:blur(60px);
+    -webkit-backdrop-filter:blur(60px);
 }
 .input-thumb-upload svg { width:16px; height:16px; stroke-width:1.35; pointer-events:none; transform:none; }
 .input-thumb-upload:hover,
 .input-thumb-upload:focus-visible{
-    border-color:rgba(255,255,255,.88);
-    background:#ffffff;
+    border-color:rgba(100,116,139,.72);
+    background:rgba(255,255,255,.88);
     box-shadow:none;
     outline:none;
 }
 .theme-dark .input-thumb-upload,
+html.studio-theme-dark .input-thumb-upload,
 .theme-dark .input-thumb-upload:hover,
-.theme-dark .input-thumb-upload:focus-visible {
-    background:#ffffff !important;
-    border-color:rgba(255,255,255,.88) !important;
-    color:#1a1a1a !important;
+.theme-dark .input-thumb-upload:focus-visible,
+html.studio-theme-dark .input-thumb-upload:hover,
+html.studio-theme-dark .input-thumb-upload:focus-visible {
+    background:rgba(31,31,31,.80) !important;
+    border:1px dashed rgba(166,166,166,.55) !important;
+    color:rgba(241,241,241,.86) !important;
     box-shadow:none !important;
+    backdrop-filter:blur(60px) !important;
+    -webkit-backdrop-filter:blur(60px) !important;
 }
 .composer-head { grid-area:head; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 2px; min-width:0; }
 .composer-head-left { min-width:0; display:flex; align-items:center; gap:6px; flex:1 1 auto; overflow:visible; }
@@ -4956,6 +4961,13 @@ html.canvas-performance-mode :is(
 ) {
     background: #1f1f1f !important;
     background-color: #1f1f1f !important;
+}
+
+/* Add-preview button keeps dashed frost even in performance mode. */
+html.canvas-performance-mode #composer .input-thumb-upload,
+html.canvas-performance-mode .shell #composer .input-thumb-upload {
+    backdrop-filter: blur(60px) !important;
+    -webkit-backdrop-filter: blur(60px) !important;
 }
 
 html.canvas-performance-mode :is(

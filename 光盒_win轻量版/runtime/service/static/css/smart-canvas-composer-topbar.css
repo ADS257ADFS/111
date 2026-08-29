@@ -206,20 +206,24 @@
     align-items: center !important;
     justify-content: center !important;
     padding: 0 !important;
-    border: 1px solid rgba(255, 255, 255, .55) !important;
-    background: rgba(255, 255, 255, .42) !important;
-    background-color: rgba(255, 255, 255, .42) !important;
-    color: rgba(255, 255, 255, .92) !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, .14) !important;
+    border: 1px dashed rgba(148, 163, 184, .55) !important;
+    background: rgba(255, 255, 255, .80) !important;
+    background-color: rgba(255, 255, 255, .80) !important;
+    color: rgba(26, 26, 26, .78) !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: blur(60px) !important;
+    backdrop-filter: blur(60px) !important;
 }
 
 .shell #composer .composer-card-topbar .input-thumb-upload:is(:hover, :focus-visible, :active) {
-    border-color: rgba(255, 255, 255, .72) !important;
-    background: rgba(255, 255, 255, .52) !important;
-    background-color: rgba(255, 255, 255, .52) !important;
+    border-color: rgba(100, 116, 139, .72) !important;
+    background: rgba(255, 255, 255, .88) !important;
+    background-color: rgba(255, 255, 255, .88) !important;
     background-image: none !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, .16) !important;
+    box-shadow: none !important;
     transform: translateY(-12px) !important;
+    -webkit-backdrop-filter: blur(60px) !important;
+    backdrop-filter: blur(60px) !important;
 }
 
 .shell #composer .composer-card-topbar .input-thumb-upload :is(i, svg) {
@@ -266,17 +270,20 @@ html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar
     .input-thumb-upload,
 html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar
     .input-thumb-upload:is(:hover, :focus-visible, :active) {
-    background: rgba(255, 255, 255, .42) !important;
-    background-color: rgba(255, 255, 255, .42) !important;
+    background: rgba(31, 31, 31, .80) !important;
+    background-color: rgba(31, 31, 31, .80) !important;
     background-image: none !important;
-    border-color: rgba(255, 255, 255, .55) !important;
-    color: rgba(255, 255, 255, .92) !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, .16) !important;
+    border: 1px dashed rgba(166, 166, 166, .55) !important;
+    border-color: rgba(166, 166, 166, .55) !important;
+    color: rgba(241, 241, 241, .86) !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: blur(60px) !important;
+    backdrop-filter: blur(60px) !important;
 }
 
 html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar
     .input-thumb-upload:is(:hover, :focus-visible, :active) {
-    background: rgba(255, 255, 255, .52) !important;
-    background-color: rgba(255, 255, 255, .52) !important;
-    border-color: rgba(255, 255, 255, .72) !important;
+    background: rgba(31, 31, 31, .88) !important;
+    background-color: rgba(31, 31, 31, .88) !important;
+    border-color: rgba(190, 190, 190, .68) !important;
 }
