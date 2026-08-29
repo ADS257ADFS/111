@@ -161,8 +161,9 @@ body.studio-theme-dark .shell .node-head {
     border-radius: var(--ui-radius-card);
 }
 
-/* 按钮 / 输入统一小圆角（含原胶囊按钮 → MiniMax 小方钮） */
-body button,
+/* 按钮 / 输入统一小圆角（含原胶囊按钮 → MiniMax 小方钮）。
+   右上角窗口三键悬停要直角，排除 data-native-window-action。 */
+body button:not([data-native-window-action]),
 body .btn,
 body input,
 body select,
@@ -294,22 +295,26 @@ html body #shell.shell #composer.composer {
     );
 }
 
-/* 与右侧对话输入框底边对齐：整体下移，不改变面板和内部控件尺寸。 */
+/* 底部输入栏：只做水平居中，禁止 translateY（高度变化时 %-Y 会带动底边）。 */
 html body #shell.shell #composer.composer.open {
-    transform: translate(-50%, 10px);
+    transform: translateX(-50%);
 }
 
-/* 底部框整体紧凑化：只收间距与区块高度，不改任何文字/图标大小 */
+/* 画布底部输入栏：只动 #composer，不动右侧对话栏；折叠态 71px，底边距/圆角/顶排磨砂不变 */
 html body #shell.shell #composer.composer {
-    --composer-prompt-h: 84px;
-    --composer-sheet-min-h: 224px;
+    --composer-prompt-h: 71px;
+    /* 不再用过大的 min-height 撑出底部空底板 */
+    --composer-sheet-min-h: 0px;
 }
 html body #shell.shell #composer.composer .composer-card {
     gap: var(--ui-space-2) !important;
     padding: var(--ui-space-2) !important;
+    min-height: 0 !important;
+    height: auto !important;
 }
+/* Keep prompt padding for the topbar rail (参考/批量/模式); do not collapse to 0. */
 html body #shell.shell #composer.composer .composer-card .prompt-row {
-    padding-top: 0 !important;
+    padding-top: var(--ui-composer-prompt-padding-top) !important;
 }
 
 /* 底部输入栏只保留内部输入面，移除包住整组控件的最外层底框。 */
@@ -331,15 +336,35 @@ html body #shell.shell #composer.composer .composer-card .prompt-row {
     border-radius: var(--ui-radius-control) !important;
 }
 
+/* 共创开关凹槽必须是胶囊，覆盖上面的 control 圆角。 */
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #composer.composer .co-create-switch-track,
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #composer.composer .co-create-switch-thumb {
+    border-radius: 999px !important;
+    -webkit-border-radius: 999px !important;
+}
+
 html.lightbox-desktop-native body #shell.shell #gptDockOpenBtn.dock-open-btn {
     border-radius: var(--ui-radius-control) !important;
 }
 
-/* 例外：确需保持圆形的元素（开关滑钮、主题切换钮、加载圈、头像、状态点） */
+/* 用户菜单主题/对齐开关凹槽必须是胶囊，覆盖全局 control 圆角。 */
+:is(html, html.theme-dark, html.studio-theme-dark) body
+    #shellUserMenu.shell-user-menu .shell-user-theme-switch,
+:is(html, html.theme-dark, html.studio-theme-dark) body
+    #shellUserMenu.shell-user-menu .shell-user-theme-switch span {
+    border-radius: 999px !important;
+    -webkit-border-radius: 999px !important;
+}
+
+/* 例外：确需保持圆形的元素（开关滑钮、主题切换钮、加载圈、头像、状态点）
+   窗口控制按钮悬停改为方框，故不在此列。 */
 body :is(
     .tt-knob, .tt-face, .ios-slider::before,
-    .lightbox-native-window-controls button,
-    [class*="spinner"], [class*="avatar"], [class*="-dot"], .gate-trash-badge
+    [class*="spinner"], [class*="avatar"], [class*="-dot"], .gate-trash-badge,
+    .co-create-switch-track, .co-create-switch-thumb,
+    .shell-user-theme-switch, .shell-user-theme-switch span
 ) {
     border-radius: 999px !important;
 }
@@ -365,7 +390,7 @@ html.studio-theme-dark body .shell.theme-dark,
 body.studio-theme-dark .shell.theme-dark {
     /* —— 旧通用语义变量（smart-canvas / canvas / index-shell / api-settings）—— */
     --page: var(--mm-canvas) !important;
-    --grid: rgba(255, 255, 255, .055) !important;
+    --grid: rgba(255, 255, 255, .10) !important;
     --panel: rgba(27, 27, 27, .97) !important;
     --card: var(--mm-card) !important;
     --card-solid: var(--mm-card) !important;
@@ -423,7 +448,7 @@ body.studio-theme-dark .shell.theme-dark {
     --sc-accent-soft: rgba(var(--ui-accent-rgb), .22) !important;
     --sc-danger: var(--mm-danger) !important;
     --sc-success: var(--mm-success) !important;
-    --sc-blur: 0px !important;
+    --sc-blur: 0px;
     --sc-glass: var(--mm-chrome) !important;
     --sc-glass-strong: var(--mm-elevated) !important;
     --sc-shadow: none !important;
@@ -477,6 +502,8 @@ html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .lightbox-nativ
     background: var(--ui-surface-shell) !important;
     background-image: none !important;
     color: #d9d9d9 !important;
+    /* Single hairline — same weight as right dock, no inset double-draw */
+    border-bottom: 1px solid rgba(255, 255, 255, .08) !important;
     box-shadow: none !important;
 }
 
@@ -555,13 +582,15 @@ html:is(.theme-dark, .studio-theme-dark) body :is(
     background: var(--mm-chrome, #1b1b1b) !important;
     border-color: var(--mm-border, rgba(255, 255, 255, .08)) !important;
     box-shadow: var(--ui-shadow-pop) !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
     color: var(--mm-text, #ededed) !important;
-}/* 悬停：深色下只轻微提亮，不再整体变蓝 */
-body.studio-theme-dark :is(button, .btn, .action-btn, .tool-btn, .icon-btn, .mini-btn, .secondary-btn, .primary-btn):not(:disabled):hover,
-html:is(.theme-dark, .studio-theme-dark) body :is(button, .btn, .action-btn, .tool-btn, .icon-btn, .mini-btn, .secondary-btn, .primary-btn):not(:disabled):hover{
-    background: #2a2a2a !important;
+}/* 悬停：深色下去掉黑底/内发光，仅保留边框与文字反馈。左侧「最近创作/更早」小字标题除外。 */
+body.studio-theme-dark :is(button, .btn, .action-btn, .tool-btn, .icon-btn, .mini-btn, .secondary-btn, .primary-btn):not(:disabled):not(.mm-recent-group-head):not(.dock-chrome-title-trigger):hover,
+html:is(.theme-dark, .studio-theme-dark) body :is(button, .btn, .action-btn, .tool-btn, .icon-btn, .mini-btn, .secondary-btn, .primary-btn):not(:disabled):not(.mm-recent-group-head):not(.dock-chrome-title-trigger):hover{
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
     border-color: var(--mm-border-strong, rgba(255, 255, 255, .14)) !important;
     box-shadow: none !important;
 }body.studio-theme-dark :is(button, .btn, .action-btn, .tool-btn, .icon-btn, .mini-btn, .secondary-btn, .primary-btn):not(:disabled):hover svg,
@@ -624,8 +653,8 @@ body.studio-theme-dark :is(
     border: 1px solid rgba(255, 255, 255, .10) !important;
     color: var(--mm-text, #ededed) !important;
     box-shadow: var(--mm-shadow-pop, 0 12px 32px rgba(0, 0, 0, .5)) !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
 }html:is(.theme-dark, .studio-theme-dark) .node-context-menu button:hover,
 html:is(.theme-dark, .studio-theme-dark) .node-context-menu button:focus-visible,
 html:is(.theme-dark, .studio-theme-dark) .create-menu button:hover,
@@ -644,16 +673,18 @@ body.studio-theme-dark .shell,
 .theme-dark .shell,
 .shell.theme-dark,
 html.studio-theme-dark body .shell .board,
-body.studio-theme-dark .shell .board {
+body.studio-theme-dark .shell .board,
+:is(html.theme-dark, html.studio-theme-dark) body :is(#shell.shell, .shell, .board, .stage) {
     background-color: var(--mm-canvas, #101010) !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .055)) .6px, transparent 1.1px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .10)) .65px, transparent 1.2px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
 html.studio-theme-dark body .canvas-gate,
-body.studio-theme-dark .canvas-gate {
+body.studio-theme-dark .canvas-gate,
+:is(html.theme-dark, html.studio-theme-dark) body .canvas-gate {
     background-color: var(--mm-canvas, #101010) !important;
-    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .055)) .6px, transparent 1.1px) !important;
+    background-image: radial-gradient(var(--ui-canvas-grid-dot, rgba(255, 255, 255, .10)) .65px, transparent 1.2px) !important;
     background-size: var(--ui-canvas-grid-size) var(--ui-canvas-grid-size) !important;
 }
 
@@ -744,7 +775,7 @@ html.lightbox-desktop-native .lightbox-native-titlebar {
     height: var(--mm-titlebar-h, 28px) !important;
 }
 
-/* 浅色窗框：顶栏与左侧栏同用略深的壳层表面色 + 1px 发丝分割线 */
+/* 浅色窗框：顶栏 / 宿主抗锯齿补边 / CSS 窗框统一壳层浅灰 #fafafb。 */
 html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark):not(.lightbox-compact-mode) {
     --lightbox-chrome-bg: var(--ui-surface-shell) !important;
     --lightbox-chrome-surface: none !important;
@@ -786,36 +817,53 @@ html.lightbox-desktop-native .lightbox-native-window-controls {
     width: auto !important;
     min-width: 0 !important;
     flex-basis: auto !important;
-    height: 26px !important;
-    gap: 10px !important;
-    padding: 0 6px !important;
+    height: 30px !important;
+    gap: 8px !important;
+    padding: 0 4px !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button {
-    width: 24px !important;
-    height: 24px !important;
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    overflow: visible !important;
+    background: transparent !important;
+}
+
+html.lightbox-desktop-native .lightbox-native-window-controls button:is(:hover, :focus, :focus-visible, :active) {
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    background: transparent !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button::before {
-    width: 18px !important;
-    height: 18px !important;
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+}
+
+html.lightbox-desktop-native .lightbox-native-window-controls button:is(:hover, :focus-visible, :active)::before {
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button:is([data-native-window-action="minimize"], [data-native-window-action="maximize"]) span {
     width: 8px !important;
-    left: 8px !important;
+    left: 11px !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button[data-native-window-action="maximize"] span {
     width: 7px !important;
     height: 7px !important;
-    left: 8.5px !important;
+    left: 11.5px !important;
 }
 
 html.lightbox-desktop-native .lightbox-native-window-controls button[data-native-window-action="close"] span {
     width: 10px !important;
     height: 10px !important;
-    left: 7px !important;
+    left: 10px !important;
 }
 
 /* —— 8.2 壳层三栏：左侧栏 / 中画布 / 右对话栏，无窗框 —— */
@@ -874,24 +922,37 @@ html.lightbox-desktop-native.gpt-dock-collapsed:not(.lightbox-compact-mode) .gpt
     opacity: 1 !important;
 }
 
-/* 面板卡片层（::before）铺满整块，圆角/投影/四周描边 → 左侧 1px 分割线 */
+/* 面板卡片层（::before）铺满整块；分割线画在 .gpt-dock 自身 border 上，
+   避免被 iframe / dock-chrome 盖住。 */
+html.lightbox-desktop-native.lightbox-desktop-native:not(.lightbox-compact-mode) .gpt-dock {
+    border-left: 1px solid var(--ui-shell-divider, rgba(0, 0, 0, .10)) !important;
+}
+
 html.lightbox-desktop-native.lightbox-desktop-native:not(.lightbox-compact-mode) .gpt-dock::before {
     inset: 0 !important;
     border: 0 !important;
-    border-left: 1px solid rgba(0, 0, 0, .10) !important;
     border-radius: 0 !important;
     box-shadow: none !important;
+    background: var(--ui-surface-elevated, #fff) !important;
+}
+
+html.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark):not(.lightbox-compact-mode) .gpt-dock {
+    border-left-color: var(--mm-border, rgba(255, 255, 255, .08)) !important;
 }
 
 html.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark):not(.lightbox-compact-mode) .gpt-dock::before {
     background: var(--mm-chrome, #1b1b1b) !important;
-    border-left-color: var(--mm-border, rgba(255, 255, 255, .08)) !important;
 }
 
-/* iframe 左缩 1px 露出分割线；圆角清零 */
+/* Dock content stays full-bleed and symmetric. Scrollbar vs resize is handled
+ * by a 3px native right-band in winforms + a matching thin HTML handle. */
+html.lightbox-desktop-native.lightbox-desktop-native:not(.lightbox-compact-mode) .gpt-dock {
+    padding-right: 0 !important;
+}
+
 html.lightbox-desktop-native.lightbox-desktop-native:not(.lightbox-compact-mode) .gpt-dock iframe {
-    margin: 0 0 0 1px !important;
-    width: calc(100% - 1px) !important;
+    margin: 0 !important;
+    width: 100% !important;
     border-radius: 0 !important;
     backface-visibility: hidden;
     transform: translate3d(0, 0, 0);
@@ -908,7 +969,7 @@ html.lightbox-desktop-native #shellNewCanvasBtn {
 
 /* Agent 胶囊（对话栏收起时的展开按钮）跟随对话栏移到右上角 */
 html.lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native .dock-open-btn.dock-open-btn {
-    top: calc(var(--mm-titlebar-h, 28px) + 13px) !important;
+    top: calc(var(--mm-titlebar-h, 28px) + 14px) !important;
     right: 16px !important;
     left: auto !important;
 }
@@ -932,8 +993,8 @@ html.is-shell-embedded:not(.is-shell-asset-peek) body #shell.shell #assetPanel.a
     border-left: 1px solid var(--line, rgba(0, 0, 0, .10)) !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
     transform: translateX(calc(100% + 24px)) !important;
 }
 
@@ -959,8 +1020,8 @@ html.is-shell-embedded .shell .canvas-history-panel {
     border-left: 1px solid var(--line, rgba(0, 0, 0, .10)) !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
     transform: translateX(calc(100% + 24px)) !important;
 }
 
@@ -990,8 +1051,8 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
  * 二级/三级被 canvas-dark-glass / visual-typography-system 用
  * 10px !important 钉死。压缩 :is() 会丢掉中间类、输掉优先级，
  * 所以这里复刻完整 ID+类链，并多写一档同类名，保证后加载胜出。
- * 一级 footer 保持 --ui-type-section；上拉菜单选项用 --ui-type-meta，
- * 避免和一级按钮一样大。
+ * 一级 footer 保持 --ui-type-section；其它上拉菜单选项用 --ui-type-meta。
+ * 模式切换上拉、模型选择上拉的模型名字与一级按钮同字号（--ui-type-section）。
  * ================================================================ */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer .composer-tool-wrap > .composer-tool-btn,
@@ -1044,21 +1105,11 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice,
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover .composer-api-branch summary,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover .composer-api-models button,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerApiSettingsPopover .direct-option {
-    font-size: var(--ui-type-meta) !important;
-    font-weight: var(--ui-weight-medium) !important;
-    line-height: var(--ui-leading-tight) !important;
-    letter-spacing: 0 !important;
-}
-
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerSizePopover .size-picker-option.size-picker-option,
+    #composerApiSettingsPopover .direct-option,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerSizePopover .size-picker-option span,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
@@ -1095,8 +1146,17 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
     letter-spacing: 0 !important;
 }
 
+/* 模式切换上拉：字号与一级 #composerKindBtn（--ui-type-section）一致 */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindPopover .composer-kind-toggle button,
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindPopover .composer-kind-toggle button span {
+    font-size: var(--ui-type-section) !important;
+    font-weight: var(--ui-weight-menu-strong) !important;
+    line-height: var(--ui-leading-tight) !important;
+    letter-spacing: 0 !important;
+}
+
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerVideoReferencePopover .video-reference-option,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
@@ -1174,9 +1234,9 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card-topbar .composer-asset-shortcut span,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar .co-create-switch,
+    .composer-card-topbar .co-create-switch-label,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar .co-create-switch span,
+    .composer-card-topbar .co-create-switch-label span,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card-topbar .composer-kind-toggle button,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
@@ -1299,9 +1359,9 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body .shell-settings-nav .shell-settings-nav-btn.active {
-    color: var(--ui-text) !important;
+    color: var(--ui-accent) !important;
     background: var(--ui-selected) !important;
-    border-color: var(--ui-border-strong) !important;
+    border-color: color-mix(in srgb, var(--ui-accent) 28%, transparent) !important;
     font-weight: var(--ui-weight-medium) !important;
 }/* 设置中心状态桥：覆盖旧 dark-desaturated 皮肤，统一回语义状态 token。 */
 :is(html, html.theme-dark, html.studio-theme-dark) body .shell-settings-nav .shell-settings-nav-btn:not(.active):hover{
@@ -1512,11 +1572,15 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
 
 :is(html, html.theme-dark, html.studio-theme-dark) body :is(
     .dock-chrome-title,
-    .dock-chrome-menu-new,
-    .dock-chrome-menu-item
+    .dock-chrome-menu-new
 ) {
     color: var(--ui-text) !important;
-    font-weight: var(--ui-weight-medium) !important;
+    font-family: var(--ui-font) !important;
+    font-size: var(--ui-type-section) !important;
+    font-weight: var(--ui-weight-menu-strong) !important;
+    /* Keep fixed MiSans CJK/Latin instances like left「新建画布」; do not force Variable axis. */
+    font-variation-settings: normal !important;
+    font-synthesis: none !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-history-panel {
@@ -1550,7 +1614,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
     color: var(--ui-text) !important;
 }
 
-/* 底部输入框表面：浅色纯白；深色沿用壳层 #181818，压过冻结层 #0e0e0e。 */
+/* 底部输入框表面：浅色纯白；深色比画布更浅，压过冻结层 #0e0e0e。 */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card .composer-card-surface {
     background-color: var(--ui-surface-composer) !important;
@@ -1621,88 +1685,106 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
     button.is-mode-hover,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindTopbar #apiKindToggle.composer-kind-toggle
-    button.is-mode-hover :is(i, svg, span),
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
-    button.active,
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
-    button.active :is(i, svg, span) {
-    color: var(--ui-text) !important;
+    button.is-mode-hover :is(i, svg, span) {
+    color: #747b85 !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindTopbar #apiKindToggle.composer-kind-toggle
-    button:not(.is-mode-hover),
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle
-    button:not(.is-mode-hover) :is(i, svg, span),
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
     button.active,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
     button.active :is(i, svg, span) {
-    color: var(--ui-text) !important;
+    color: #fff !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover):not(.active),
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover):not(.active) :is(i, svg, span) {
+    color: #747b85 !important;
+}
+
+/* 深色磨砂顶排：未选中不得再用会跟 #1f1f1f 输入底糊在一起的深灰；改用可读浅色 */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover):not(.active),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover):not(.active) :is(i, svg, span),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button.is-mode-hover,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button.is-mode-hover :is(i, svg, span) {
+    color: rgba(241, 241, 241, .78) !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindTopbar #apiKindToggle.composer-kind-toggle
     button.is-mode-hover :is(i, svg),
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover))
-    button.active :is(i, svg) {
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle
+    button:not(.is-mode-hover):not(.active) :is(i, svg) {
     stroke: currentColor !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindTopbar #apiKindToggle.composer-kind-toggle
-    button:not(.is-mode-hover) :is(i, svg),
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover)
     button.active :is(i, svg) {
-    stroke: currentColor !important;
+    stroke: #fff !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover,
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover :is(i, svg, span),
-html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover)) button.active,
-html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover)) button.active :is(i, svg, span) {
-    color: var(--ui-text) !important;
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover :is(i, svg, span) {
+    color: #747b85 !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:not(.is-mode-hover),
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active,
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:not(.is-mode-hover) :is(i, svg, span),
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active :is(i, svg, span) {
+    color: #fff !important;
+}
+
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover) button.active,
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:not(.is-mode-hover):not(.active),
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover) button.active :is(i, svg, span) {
-    color: var(--ui-text) !important;
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:not(.is-mode-hover):not(.active) :is(i, svg, span) {
+    color: #747b85 !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover :is(i, svg),
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:not(:has(.is-mode-hover)) button.active :is(i, svg) {
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:not(.is-mode-hover):not(.active) :is(i, svg) {
     stroke: currentColor !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle button:not(.is-mode-hover) :is(i, svg),
-html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindTopbar #apiKindToggle.composer-kind-toggle:has(.is-mode-hover) button.active :is(i, svg) {
-    stroke: currentColor !important;
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active :is(i, svg) {
+    stroke: #fff !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover .mode-model-choice .mode-model-desc {
     color: var(--ui-text-muted) !important;
+    font-size: 9.5px !important;
+    font-weight: 300 !important;
+    font-variation-settings: "wght" 300 !important;
+    line-height: 1.25 !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice .mode-model-name {
+    font-size: var(--ui-type-section) !important;
+    font-weight: var(--ui-weight-menu-strong) !important;
+    font-variation-settings: "wght" var(--ui-weight-menu-strong) !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer :is(
@@ -2211,6 +2293,14 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     .emoji-picker
 ) :is(button, [role="menuitem"], [role="option"]):disabled {
     color: var(--ui-text-disabled) !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body :is(
+    .node-context-menu,
+    .canvas-context-menu
+) :is(button, [role="menuitem"]):disabled :is(i, svg, span) {
+    color: var(--ui-text-disabled) !important;
+    stroke: var(--ui-text-disabled) !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body .port-link-pick-menu
@@ -2749,7 +2839,8 @@ html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-menu
     box-shadow: var(--ui-shadow-pop) !important;
 }
 
-/* 单行菜单项：32px 行高与 8px 圆角；复合卡片在下一组单独处理。 */
+/* 单行菜单项：32px 行高与 8px 圆角；复合卡片在下一组单独处理。
+   右侧对话标题下拉单独收紧，不走通用 32px。 */
 :is(html, html.theme-dark, html.studio-theme-dark) body :is(
     .node-context-menu,
     .node-port-menu,
@@ -2767,8 +2858,6 @@ html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-menu
     .size-picker-popover,
     .skill-menu,
     .composer-popover,
-    .dock-chrome-menu,
-    .dock-chrome-title-menu,
     .emoji-picker
 ) :is(button, [role="menuitem"], [role="option"]):not(.thread-item):not(.skill-menu-item):not(.composer-mode-option):not(.port-link-pick-item):not(.mode-model-choice):not(.create-card):not(.video-reference-option):not(.menu-btn) {
     box-sizing: border-box;
@@ -3045,6 +3134,16 @@ html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-menu
     padding: var(--ui-space-4) !important;
 }
 
+:is(html, html.theme-dark, html.studio-theme-dark) body .canvas-context-menu:not([hidden]) {
+    /* 分割线占高后略加长面板，避免条目挤在一起 */
+    padding-block: calc(var(--ui-space-4) + 4px) !important;
+    padding-inline: var(--ui-space-4) !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body .canvas-context-menu .ui-menu-divider {
+    margin-block: calc(var(--ui-space-2) + 2px) !important;
+}
+
 :is(html, html.theme-dark, html.studio-theme-dark) body .node-context-menu button {
     height: auto !important;
     min-height: calc(var(--ui-control-h) + var(--ui-space-2)) !important;
@@ -3053,19 +3152,29 @@ html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-menu
 
 /* M13：软件内容区一律扁平无投影。窗口外框阴影由 win_launcher 的
    独立原生伴随窗口绘制，不在任一 WebView/iframe 的 CSS 树中。
-   :not(#...) 仅提升优先级，用于压过旧皮肤中带 !important 的组件投影。 */
+   仅压在 body / #shell，禁止 body * 全树匹配（WebView2 下会持续拖垮样式）。 */
 html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body,
-html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body *,
-html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body *::before,
-html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body *::after {
+html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) #shell.shell {
     box-shadow:none !important;
     text-shadow:none !important;
 }
 
-/* 圆角边缘只由背景与 1px 边界构成，避免背景在边框下方叠色发毛。 */
-html body *,
-html body *::before,
-html body *::after {
+/* 圆角边缘只由背景与 1px 边界构成；限定到常见面板，避免 body * 税。 */
+html body #shell.shell :is(
+    .composer-card,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .port-link-pick-shell,
+    .create-menu,
+    .node-context-menu,
+    .canvas-context-menu,
+    .shell-user-menu,
+    .smart-popover,
+    .asset-panel,
+    .canvas-bottom-capsule,
+    .image-quick-toolbar,
+    .selection-capsule-bar
+) {
     background-clip: padding-box;
 }
 
@@ -3079,11 +3188,24 @@ html body :is(
     filter: none;
 }
 
-/* 连线粗细不随视角缩放变化：世界层用 CSS transform:scale(--world-scale)，
-   端口(.node-port)已按同一变量反向补偿，这里让连线紧随其后保持视觉恒定
-   （覆盖 SVG 内联 stroke-width，wait/pending 等虚线变体仍保留各自 stroke-width）。 */
-html body #shell.shell .connection-layer .conn-line {
-    stroke-width: calc(1.05px / var(--world-scale, 1));
+/* 连线粗细与智能参考线一致（0.5px 屏上恒定）。
+   .world 用 CSS transform:scale，SVG vector-effect:non-scaling-stroke
+   对 HTML 祖先变换无效；与端口一样用 --world-scale 反向补偿。 */
+html body #shell.shell .connection-layer .conn-line,
+html body #shell.shell .connection-layer .port-drag-temp,
+html body #shell.shell .connection-layer .port-link-pending-line,
+html body #shell.shell .connection-layer .selection-multi-port-line {
+    vector-effect: none !important;
+    stroke-width: calc(0.5px / var(--world-scale, 1)) !important;
+}
+
+html body #shell.shell .connection-layer .conn-hit {
+    stroke-width: calc(14px / var(--world-scale, 1)) !important;
+}
+
+html body #shell.shell .connection-layer .conn-end {
+    vector-effect: none !important;
+    stroke-width: calc(0.5px / var(--world-scale, 1)) !important;
 }
 
 /* 全局统一：浅色主题所有普通按钮、菜单项和工具栏项的悬停底色与
@@ -3107,7 +3229,8 @@ html:not(.theme-dark):not(.studio-theme-dark) body
         [aria-pressed="true"], [aria-selected="true"], [aria-checked="true"],
         .primary, .primary-btn, .is-primary, .btn-primary,
         .danger, .danger-btn, .is-danger, .btn-danger,
-        .composer-run-capsule, .run-btn, #runBtn, .send-btn, .titlebar-theme-toggle
+        .composer-run-capsule, .run-btn, #runBtn, .send-btn, .titlebar-theme-toggle,
+        .dock-chrome-title-trigger
     ) {
     background-color: var(--gh-quiet-hover-surface) !important;
     border-color: var(--gh-quiet-hover-border);
@@ -3200,8 +3323,8 @@ html:not(.theme-dark):not(.studio-theme-dark) body :is(
     letter-spacing: 0 !important;
 }
 
-/* M34：顶部窗口栏与左侧栏共用同一条发丝分割线参数。 */
-html.lightbox-desktop-native .lightbox-native-titlebar {
+/* M34：顶部窗口栏与左侧栏共用同一条发丝分割线参数。深色见文末：禁止顶栏/左侧细描边。 */
+html.lightbox-desktop-native:not(.theme-dark):not(.studio-theme-dark) .lightbox-native-titlebar {
     box-sizing: border-box !important;
     border-bottom: var(--ui-shell-divider-size) solid var(--ui-shell-divider) !important;
 }
@@ -3221,6 +3344,7 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-topbar {
     z-index: calc(var(--ui-z-raised) + 3) !important;
+    top: var(--ui-composer-topbar-offset, 0) !important;
     height: var(--ui-composer-topbar-h) !important;
     padding-top: var(--ui-composer-topbar-content-inset) !important;
 }
@@ -3231,6 +3355,7 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     top: var(--ui-composer-surface-top) !important;
     right: var(--ui-composer-surface-side-inset) !important;
     left: var(--ui-composer-surface-side-inset) !important;
+    bottom: var(--ui-composer-surface-bottom-gap) !important;
     border-top: var(--ui-shell-divider-size) solid var(--ui-border) !important;
 }
 
@@ -3251,8 +3376,8 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     .composer-card > .composer-card-topbar {
     border-color: transparent !important;
     background: transparent !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
 }
 
 /* 磨砂底不再画在顶排伪元素上（改由 composer-card-material 承载，见下）。 */
@@ -3261,33 +3386,61 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     content: none;
 }
 
-/* 顶排磨砂材质：独立底层，向下延伸到白色输入面顶边之下，
-   白色主体（z 更高）直接压在磨砂上，顶排与白色之间不留缝隙。 */
+/* 顶排磨砂材质：高度只跟顶排 token，不跟 --composer-prompt-h；
+   输入栏加高时半透明条保持原高，仍贴在输入面板上方。 */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-material {
     display: block !important;
     position: absolute !important;
     z-index: var(--ui-z-raised) !important;
-    top: 0 !important;
+    top: var(--ui-composer-topbar-offset, 0) !important;
     left: 18px !important;
     right: 18px !important;
     height: calc(var(--ui-composer-topbar-h) + var(--ui-space-5)) !important;
-    border: var(--ui-shell-divider-size) solid var(--ui-border) !important;
-    border-bottom-color: transparent !important;
+    max-height: calc(var(--ui-composer-topbar-h) + var(--ui-space-5)) !important;
+    min-height: calc(var(--ui-composer-topbar-h) + var(--ui-space-5)) !important;
+    border: 0 !important;
+    border-color: transparent !important;
     border-radius: var(--ui-composer-topbar-radius) var(--ui-composer-topbar-radius) 0 0 !important;
     background: var(--ui-surface-composer-topbar) !important;
     box-shadow: none !important;
     pointer-events: none !important;
-    -webkit-backdrop-filter: var(--ui-composer-topbar-filter) !important;
-    backdrop-filter: var(--ui-composer-topbar-filter) !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .prompt-row {
-    min-height: calc(var(--composer-prompt-h) + var(--ui-composer-topbar-growth)) !important;
-    height: calc(var(--composer-prompt-h) + var(--ui-composer-topbar-growth)) !important;
-    max-height: calc(var(--composer-prompt-h) + var(--ui-composer-topbar-growth)) !important;
+    min-height: calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top)) !important;
+    height: calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top)) !important;
+    max-height: calc(var(--composer-prompt-h) + var(--ui-composer-prompt-padding-top)) !important;
     padding-top: var(--ui-composer-prompt-padding-top) !important;
+}
+
+/* 折叠态强制 71：写死 calc，避免任何脚本把 --composer-prompt-h 打回旧值 */
+html body #shell.shell #composer.composer:not([data-height-state="expanded"])
+    .composer-card > .prompt-row {
+    min-height: calc(71px + var(--ui-composer-prompt-padding-top)) !important;
+    height: calc(71px + var(--ui-composer-prompt-padding-top)) !important;
+    max-height: calc(71px + var(--ui-composer-prompt-padding-top)) !important;
+}
+
+html body #shell.shell #composer.composer:not([data-height-state="expanded"])
+    .composer-card > .prompt-row > #promptInput.prompt-input {
+    min-height: 71px !important;
+}
+
+/* 预览已在顶栏浮层：不再把旧 thumbs 行高度还给输入区，避免底框被撑高/压低 */
+html body #shell.shell #composer.composer:not([data-height-state="expanded"])
+    .composer-card.has-input-thumbs > .prompt-row {
+    min-height: calc(71px + var(--ui-composer-prompt-padding-top)) !important;
+    height: calc(71px + var(--ui-composer-prompt-padding-top)) !important;
+    max-height: calc(71px + var(--ui-composer-prompt-padding-top)) !important;
+}
+
+html body #shell.shell #composer.composer:not([data-height-state="expanded"])
+    .composer-card.has-input-thumbs > .prompt-row > #promptInput.prompt-input {
+    min-height: 71px !important;
 }
 
 /* M66：顶排控件只保留一层总背景；参考、共创和模式切换不再绘制独立底框。 */
@@ -3321,23 +3474,7 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar .composer-mode-glider {
-    display: none !important;
-}
-
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch, #apiKindToggle button),
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch, #apiKindToggle button):is(
-        :hover,
-        :focus,
-        :focus-visible,
-        :active,
-        .active,
-        .is-on,
-        .is-mode-hover,
-        [aria-pressed="true"]
-    ) {
+    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch, #apiKindToggle button) {
     color: var(--ui-text-secondary) !important;
     border: 0 !important;
     outline: 0 !important;
@@ -3347,7 +3484,128 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
     filter: none !important;
     transform: none !important;
     animation: none !important;
-    transition: none !important;
+    transition: background-color var(--ui-motion-fast) var(--ui-ease), color var(--ui-motion-fast) var(--ui-ease) !important;
+}
+
+/* 参考 / 批量：悬停不要底框 */
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch):is(:hover, :focus-visible):not(.is-on):not([aria-pressed="true"]) {
+    background: transparent !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch):is(:hover, :focus-visible):not(.is-on):not([aria-pressed="true"]) {
+    background: transparent !important;
+}
+
+/* 四模式切换：选中由 glider 胶囊承载；悬停仅白底圆角，文字颜色不变（同批量） */
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active,
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active:is(:hover, :focus, :focus-visible, :active),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active:is(:hover, :focus, :focus-visible, :active) {
+    color: #fff !important;
+    background: transparent !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active :is(i, svg, span),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.active :is(i, svg, span) {
+    color: #fff !important;
+    stroke: #fff !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover,
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover {
+    color: #747b85 !important;
+    background: #ffffff !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover :is(i, svg, span),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover :is(i, svg, span) {
+    color: #747b85 !important;
+    stroke: #747b85 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover {
+    color: var(--ui-text) !important;
+    background: transparent !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerKindTopbar #apiKindToggle.composer-kind-toggle button.is-mode-hover :is(i, svg, span) {
+    color: var(--ui-text) !important;
+    stroke: currentColor !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcut:is(.is-on, [aria-pressed="true"]) {
+    color: #fff !important;
+    background: var(--ui-accent) !important;
+}
+
+/* 共创：文字 + 胶囊开关，开启时不整钮刷蓝 */
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .co-create-switch,
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .co-create-switch:is(:hover, :focus, :focus-visible, :active),
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .co-create-switch:is(.is-on, [aria-pressed="true"]) {
+    color: inherit !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .co-create-switch-label,
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .co-create-switch-label span {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-family: var(--ui-font) !important;
+    font-size: 11.5px !important;
+    font-weight: var(--ui-weight-medium, 445) !important;
+    line-height: 1 !important;
+    color: var(--ui-text-secondary) !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .co-create-switch-label,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .co-create-switch-label span {
+    color: rgba(241, 241, 241, .78) !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .co-create-switch-label :is(i, svg) {
+    width: 12px !important;
+    height: 12px !important;
+    flex: 0 0 12px !important;
+    color: currentColor !important;
+    stroke: currentColor !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .co-create-switch-track {
+    width: 34px !important;
+    height: 16px !important;
+    border-radius: 999px !important;
+    -webkit-border-radius: 999px !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
@@ -3359,7 +3617,7 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card-topbar :is(.composer-asset-shortcut, .co-create-switch, #apiKindToggle button)
+    .composer-card-topbar :is(.composer-asset-shortcut, #apiKindToggle button)
         :is(i, svg, span) {
     color: currentColor !important;
     stroke: currentColor !important;
@@ -3484,17 +3742,13 @@ html:not(#ui-type-reset-1):not(#ui-type-reset-2):not(#ui-type-reset-3):not(#ui-t
     font-size: var(--ui-type-meta) !important;
 }
 
-html:not(#ui-type-reset-1):not(#ui-type-reset-2):not(#ui-type-reset-3):not(#ui-type-reset-4) body *::before,
-html:not(#ui-type-reset-1):not(#ui-type-reset-2):not(#ui-type-reset-3):not(#ui-type-reset-4) body *::after,
-html:not(#ui-type-reset-1):not(#ui-type-reset-2):not(#ui-type-reset-3):not(#ui-type-reset-4) body *::placeholder {
+html:not(#ui-type-reset-1):not(#ui-type-reset-2):not(#ui-type-reset-3):not(#ui-type-reset-4) body {
     font-weight: var(--ui-weight-latin) !important;
     font-variation-settings: "wght" var(--ui-weight-latin) !important;
 }
 
-/* 复杂 :where/:not 在旧 WebView2 中可能只留下 body 继承值；这里直接覆盖每个元素，
-   确保模型名、尺寸数字、媒体类型和动态生成菜单统一命中当前全局字重。 */
-html:not(#ui-latin-weight-1):not(#ui-latin-weight-2):not(#ui-latin-weight-3):not(#ui-latin-weight-4) body,
-html:not(#ui-latin-weight-1):not(#ui-latin-weight-2):not(#ui-latin-weight-3):not(#ui-latin-weight-4) body * {
+/* 字重靠继承，禁止 body * + font-variation-settings（全树样式税是卡顿主因之一）。 */
+html:not(#ui-latin-weight-1):not(#ui-latin-weight-2):not(#ui-latin-weight-3):not(#ui-latin-weight-4) body {
     font-weight: var(--ui-weight-latin) !important;
     font-variation-settings: "wght" var(--ui-weight-latin) !important;
 }
@@ -3547,13 +3801,63 @@ html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not
         .mm-asset-tree-folder-label,
         .mm-asset-tree-folder-label > span,
         .node-context-menu button,
-        .node-context-menu button :where(:not(svg):not(svg *))
+        .node-context-menu button :where(:not(svg):not(svg *)),
+        .canvas-context-menu button,
+        .canvas-context-menu button :where(:not(svg):not(svg *))
     ) {
     font-family: var(--ui-font-body-cjk) !important;
     font-size: var(--ui-type-compact-label) !important;
     font-weight: var(--ui-weight-latin) !important;
     font-variation-settings: "wght" var(--ui-weight-latin) !important;
     color: var(--ui-text) !important;
+}
+
+/* M43 会把右键菜单文字锁成 --ui-text；禁用项（撤销/黏贴等）需同级 specificity
+   才能让文字与图标一起进入不可点击的灰色态。 */
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"]):disabled,
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"])[aria-disabled="true"],
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"]):disabled :where(:not(svg):not(svg *)),
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"])[aria-disabled="true"] :where(:not(svg):not(svg *)) {
+    color: var(--ui-text-disabled) !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"]):disabled :is(i, svg, svg *),
+html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not(#ui-context-type-4) body
+    :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"])[aria-disabled="true"] :is(i, svg, svg *) {
+    color: var(--ui-text-disabled) !important;
+    stroke: currentColor !important;
+}
+
+/* 右侧对话栏：用户输入与助手正文复用“未命名项目”字号/颜色/字重，行距略收。 */
+html body.gpt-dock-canvas-mode .chat-shell #messages.messages :is(
+    .bubble.user,
+    .bubble.assistant:not(.dock-thinking):not(.dock-image-only):not(.ecommerce-flow-bubble),
+    .bubble.assistant.dock-has-reply:not(.dock-image-only):not(.ecommerce-flow-bubble),
+    .bubble.user .bubble-text,
+    .bubble.assistant .bubble-text
+),
+html body.gpt-dock-canvas-mode .chat-shell .composer-body textarea,
+html body.gpt-dock-canvas-mode .chat-shell .composer textarea {
+    font-family: var(--ui-font-body-cjk) !important;
+    font-size: var(--ui-type-compact-label) !important;
+    font-weight: var(--ui-weight-latin) !important;
+    font-variation-settings: "wght" var(--ui-weight-latin) !important;
+    color: var(--ui-text) !important;
+    line-height: 1.38 !important;
+    letter-spacing: 0 !important;
 }
 
 /* M44：深色模式下发送区只保留积分内容和发送按钮，移除两者外层底框。 */
@@ -3682,24 +3986,32 @@ html:not(#ui-context-type-1):not(#ui-context-type-2):not(#ui-context-type-3):not
     line-height:1.5;
 }
 
-/* Composer inner alignment: preserve control sizes while easing edge crowding. */
+/* Composer inner alignment: keep canvas footer tools level with dock input tools. */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
     #composer.composer .composer-footer .composer-footer-tools {
     position:relative;
     left:3px;
+    top:0;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
     #composer.composer .composer-footer .composer-actions {
     position:relative;
-    top:-5px;
+    top:0;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #composer.composer .composer-footer .composer-footer-bar {
+    /* Primary tools stay inside the card; nudge up 10px per layout request. */
+    transform: translateY(-10px) !important;
 }
 
 html:not(#ui-composer-hint-1):not(#ui-composer-hint-2):not(#ui-composer-hint-3):not(#ui-composer-hint-4) body #shell.shell
     #composer.composer .composer-card .prompt-input:empty::before {
-    position:relative;
-    left:5px;
-    top:5px;
+    position:static;
+    left:auto;
+    top:auto;
+    margin:0;
     color:var(--ui-text-muted) !important;
     opacity:.62 !important;
     font-family:var(--ui-font-variable) !important;
@@ -3707,13 +4019,57 @@ html:not(#ui-composer-hint-1):not(#ui-composer-hint-2):not(#ui-composer-hint-3):
     font-variation-settings:"wght" var(--ui-weight-placeholder) !important;
 }
 
-:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
-    #composer.composer #composerHeightToggle.composer-height-toggle {
-    right:17px;
-    top:48px;
+/* Keep typed prompt text on the same origin as the empty-state hint. */
+html:not(#ui-composer-hint-1):not(#ui-composer-hint-2):not(#ui-composer-hint-3):not(#ui-composer-hint-4) body #shell.shell
+    #composer.composer .composer-card .prompt-row > #promptInput.prompt-input {
+    text-indent:0 !important;
 }
 
-/* M64：选中态直接加粗节点原边框，不再在节点外追加第二层描边。 */
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #composer.composer #composerHeightToggle.composer-height-toggle {
+    right:17px !important;
+    top:41px !important;
+    border:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+}
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #composer.composer #composerHeightToggle.composer-height-toggle:is(:hover, :focus-visible) {
+    border:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+}
+
+/* Expanded composer grows upward only; bottom edge must never move.
+   No translateY — percentage-Y transforms shift when height changes. */
+html body #shell.shell #composer.composer.open,
+html body #shell.shell #composer.composer.open[data-height-state="expanded"],
+html body #shell.shell #composer.composer.open[data-height-state="default"] {
+    top: auto !important;
+    bottom: var(--composer-bottom-gap) !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    height: auto !important;
+    max-height: min(72vh, calc(100vh - 96px)) !important;
+    transform: translateX(-50%) !important;
+    transform-origin: bottom center !important;
+    transition-property: opacity !important;
+}
+
+/* Outer sheet follows content; expanded state grows via --composer-prompt-h only. */
+html body #shell.shell #composer.composer {
+    --composer-sheet-min-h: 0px;
+}
+html body #shell.shell #composer.composer .composer-card {
+    min-height: 0 !important;
+}
+
+html body #shell.shell #composer.composer.open[data-height-state="expanded"] .composer-card,
+html body #shell.shell #composer.composer.open[data-height-state="default"] .composer-card {
+    align-content: end !important;
+}
+
+/* M64：选中态直接加粗节点原边框；宽度按 1/world-scale 补偿，屏幕上粗细不随缩放变。 */
 html:not(#ui-selection-edge-1):not(#ui-selection-edge-2):not(#ui-selection-edge-3):not(#ui-selection-edge-4) body #shell.shell
     .world .image-node.selected {
     outline:none !important;
@@ -3727,10 +4083,11 @@ html:not(#ui-selection-edge-1):not(#ui-selection-edge-2):not(#ui-selection-edge-
         video.node-img,
         .media-video-card
     ) {
-    border-width:var(--ui-canvas-node-selected-border-size) !important;
+    border-width:calc(var(--ui-canvas-node-selected-border-size) / var(--world-scale, 1)) !important;
     border-style:solid !important;
     border-color:var(--ui-accent) !important;
     box-shadow:none !important;
+    outline:none !important;
 }
 
 html:not(#ui-selection-edge-1):not(#ui-selection-edge-2):not(#ui-selection-edge-3):not(#ui-selection-edge-4) body #shell.shell
@@ -3747,10 +4104,11 @@ html:not(#ui-selection-edge-1):not(#ui-selection-edge-2):not(#ui-selection-edge-
         .node-pending-batch,
         .co-create-node
     ) {
-    border-width:var(--ui-canvas-node-selected-border-size) !important;
+    border-width:calc(var(--ui-canvas-node-selected-border-size) / var(--world-scale, 1)) !important;
     border-style:solid !important;
     border-color:var(--ui-accent) !important;
     box-shadow:none !important;
+    outline:none !important;
 }
 
 /* Reference/create picker: slightly taller rhythm without changing width,
@@ -3868,12 +4226,20 @@ html:not(#ui-dock-copy-1):not(#ui-dock-copy-2):not(#ui-dock-copy-3):not(#ui-dock
     font-variation-settings:"wght" var(--ui-weight-dock-body) !important;
 }
 
+/* Same type recipe as .mm-sidebar-nav button（新建画布）:
+   fixed font instances + menu-strong weight. Never force Variable wght here —
+   that made 未命名对话 look heavier than the left rail. */
 html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
-    .gpt-dock .dock-chrome-title {
+    .gpt-dock .dock-chrome-title,
+html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
+    .gpt-dock .dock-chrome-title-trigger {
     color:var(--ui-text) !important;
-    font-family:var(--ui-font-body-cjk) !important;
-    font-weight:var(--ui-weight-latin) !important;
-    font-variation-settings:"wght" var(--ui-weight-latin) !important;
+    font-family:var(--ui-font-variable) !important;
+    font-size:var(--ui-type-section) !important;
+    font-weight:300 !important;
+    font-variation-settings:"wght" 300 !important;
+    font-synthesis:none !important;
+    line-height:var(--ui-leading-tight) !important;
 }
 
 html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
@@ -3881,13 +4247,19 @@ html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-d
     color:var(--ui-text) !important;
 }
 
+/* stroke-width is not inherited — must hit nested Lucide <svg>, same as left nav. */
 html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
-    .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg) {
+    .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg),
+html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
+    .gpt-dock .dock-chrome-title-trigger-icon,
+html:not(#ui-dock-title-1):not(#ui-dock-title-2):not(#ui-dock-title-3):not(#ui-dock-title-4) body
+    .gpt-dock .dock-chrome-title-trigger-icon svg {
     width:var(--ui-sidebar-nav-icon-size) !important;
     height:var(--ui-sidebar-nav-icon-size) !important;
     flex:0 0 var(--ui-sidebar-nav-icon-size) !important;
     color:currentColor !important;
-    stroke-width:var(--ui-icon-stroke) !important;
+    stroke:currentColor !important;
+    stroke-width:1.35 !important;
 }
 /* M62：右上画布导航统一尺寸与外框几何。 */
 #shell.shell .canvas-bottom-chrome {
@@ -3920,35 +4292,47 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell .canvas-bottom-c
 /* M63：左下用户面板与最近创作项目共用主文字层级，并收紧外框。 */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shellUserMenu.shell-user-menu {
     width: var(--ui-user-menu-w) !important;
-    padding: var(--ui-space-3) !important;
+    padding: var(--ui-space-2) !important;
     border-radius: var(--ui-radius-panel) !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body
     #shellUserMenu.shell-user-menu .shell-user-menu-profile {
-    padding: var(--ui-space-1) var(--ui-space-2) var(--ui-space-3) !important;
+    padding: var(--ui-space-1) var(--ui-space-2) var(--ui-space-2) !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body
     #shellUserMenu.shell-user-menu .shell-user-points {
-    padding: var(--ui-space-2) var(--ui-space-4) !important;
+    padding: 10px 12px !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body
+    #shellUserMenu.shell-user-menu .shell-user-points-track {
+    height: 6px !important;
+    margin-top: 6px !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body
+    #shellUserMenu.shell-user-menu .shell-user-points-meta {
+    margin-top: 6px !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body
     #shellUserMenu.shell-user-menu .shell-user-menu-list {
+    gap: 2px !important;
     padding: var(--ui-space-1) 0 !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body
     #shellUserMenu.shell-user-menu .shell-user-menu-item {
     min-height: var(--ui-control-h) !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 html:not(#ui-user-menu-type-1):not(#ui-user-menu-type-2):not(#ui-user-menu-type-3):not(#ui-user-menu-type-4) body
     #shellUserMenu.shell-user-menu :is(
         #shellUserNameInput,
-        .shell-user-points-head,
-        .shell-user-points-head strong,
         .shell-user-menu-item:not(.shell-user-menu-logout),
         .shell-user-menu-item:not(.shell-user-menu-logout) > span:not(.shell-user-menu-item-icon):not(.shell-user-theme-switch)
     ) {
@@ -3971,11 +4355,12 @@ html:not(#ui-user-menu-logout-type-1):not(#ui-user-menu-logout-type-2):not(#ui-u
 }
 
 /* M73：浅色全产品普通悬停面统一为 #F3F3F4；任何按钮型控件在
-   鼠标悬停时都不得新增边框、轮廓或伪描边阴影。 */
+   鼠标悬停时都不得新增边框、轮廓或伪描边阴影。
+   「最近创作 / 更早」分组小字标题不出现悬停底色（项目行仍保留）。 */
 html:not(.theme-dark):not(.studio-theme-dark) body :where(
-    button:not(:disabled),
+    button:not(:disabled):not(.mm-recent-group-head):not(.dock-chrome-title-trigger),
     input:is([type="button"], [type="submit"], [type="reset"]):not(:disabled),
-    [role="button"]:not([aria-disabled="true"]),
+    [role="button"]:not([aria-disabled="true"]):not(.mm-recent-group-head):not(.dock-chrome-title-trigger),
     [role="menuitem"]:not([aria-disabled="true"]),
     [role="option"]:not([aria-disabled="true"]),
     .ui-menu-item:not([aria-disabled="true"]),
@@ -3986,8 +4371,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body :where(
     .direct-option,
     .skill-menu-item,
     .shell-user-menu-item,
-    .mm-recent-item,
-    .mm-recent-group-head
+    .mm-recent-item
 ):not(
     .active, .selected, .is-active, .is-current, .checked, .is-on,
     [aria-pressed="true"], [aria-selected="true"], [aria-checked="true"],
@@ -3999,9 +4383,9 @@ html:not(.theme-dark):not(.studio-theme-dark) body :where(
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body :where(
-    button:not(:disabled),
+    button:not(:disabled):not(.mm-recent-group-head):not(.dock-chrome-title-trigger),
     input:is([type="button"], [type="submit"], [type="reset"]):not(:disabled),
-    [role="button"]:not([aria-disabled="true"]),
+    [role="button"]:not([aria-disabled="true"]):not(.mm-recent-group-head):not(.dock-chrome-title-trigger),
     [role="menuitem"]:not([aria-disabled="true"]),
     [role="option"]:not([aria-disabled="true"]),
     .ui-menu-item:not([aria-disabled="true"]),
@@ -4012,8 +4396,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body :where(
     .direct-option,
     .skill-menu-item,
     .shell-user-menu-item,
-    .mm-recent-item,
-    .mm-recent-group-head
+    .mm-recent-item
 ):hover {
     border-color: transparent !important;
     outline: none !important;
@@ -4068,11 +4451,9 @@ html.lightbox-desktop-native .create-menu[style] {
     border-radius: var(--ui-radius-card) !important;
 }
 
-/* ================================================================
- * Composer Footer 一键按钮整体向上移动 4px
- * ================================================================ */
+/* Desktop composer footer control height (keep in sync with dock send). */
 html.lightbox-desktop-native #composer.composer {
-    --composer-footer-h: 36px;
+    --composer-footer-h: 40px;
 }
 
 /* ================================================================
@@ -4116,66 +4497,162 @@ html.lightbox-desktop-native .stage iframe {
 }
 
 /* ================================================================
- * 右侧栏左上角"未命名对话"样式——与左侧栏"新建画布"一致
+ * 右侧栏左上角"未命名对话"：降低字重；右上三角标描边变细
+ * （不与左侧栏强行对齐）
  * ================================================================ */
-html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger {
-    font-size: var(--ui-type-section, 14px) !important;
-    font-weight: var(--ui-weight-menu-strong, 380) !important;
-    color: var(--ui-text, inherit) !important;
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger,
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title {
+    font-family: var(--ui-font-variable) !important;
+    font-size: var(--ui-type-section) !important;
+    font-weight: 300 !important;
+    font-variation-settings: "wght" 300 !important;
+    font-synthesis: none !important;
+    color: var(--ui-text) !important;
+    line-height: var(--ui-leading-tight) !important;
 }
 
-/* 右侧栏右上角两个按钮（折叠/关闭）变细 */
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger:is(:hover, :focus-visible) {
+    background: transparent !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* 右侧栏右上角三个图标：描边更细 */
 html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .dock-chrome-btn {
-    width: 26px !important;
-    height: 26px !important;
-    min-width: 26px !important;
-    padding: 0 !important;
+    color: var(--ui-text) !important;
 }
-html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg) {
-    width: 12px !important;
-    height: 12px !important;
+html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg),
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon,
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title-trigger-icon svg {
+    width: var(--ui-sidebar-nav-icon-size) !important;
+    height: var(--ui-sidebar-nav-icon-size) !important;
+    flex: 0 0 var(--ui-sidebar-nav-icon-size) !important;
+    color: var(--ui-text) !important;
+    stroke: currentColor !important;
+    stroke-width: 1.35 !important;
 }
 
-/* 下拉菜单样式优化 */
+/* 下拉菜单：更小字号；面板内边距略加大。 */
 html.lightbox-desktop-native .gpt-dock .dock-chrome-title-menu {
-    min-width: 180px !important;
-    max-width: 260px !important;
-    padding: 4px !important;
+    width: 168px !important;
+    min-width: 152px !important;
+    max-width: 168px !important;
+    padding: 6px !important;
+    min-height: auto !important;
+    gap: 0 !important;
 }
 
-/* 下拉菜单项行间距缩小 */
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-list {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    border-top: 0 !important;
+    gap: 3px !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item,
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-open,
+html.lightbox-desktop-native .gpt-dock .dock-chrome-title-menu :is(button, [role="menuitem"]) {
+    min-height: 24px !important;
+    height: auto !important;
+    max-height: none !important;
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+    line-height: 1.3 !important;
+}
+
 html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item {
     position: relative !important;
-    min-height: 24px !important;
-    padding: 2px 6px 2px 10px !important;
-    margin-bottom: 1px !important;
+    padding: 3px 8px !important;
+    margin: 0 !important;
+    gap: 4px !important;
+    font-size: 10px !important;
+    font-weight: 400 !important;
+    font-variation-settings: "wght" 400 !important;
+    color: var(--ui-text) !important;
 }
 
-/* 下拉菜单项底部边框拉低 */
-html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item::after {
-    content: "" !important;
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 10px !important;
-    right: 6px !important;
-    height: 1px !important;
-    background: rgba(148, 163, 184, 0.12) !important;
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-new,
+html.lightbox-desktop-native .gpt-dock #dockShellMenuNewBtn {
+    display: none !important;
 }
 
-/* 整个下拉面板缩小 */
-html.lightbox-desktop-native .gpt-dock .dock-chrome-title-menu {
-    min-height: auto !important;
+html.lightbox-desktop-native .gpt-dock .dock-chrome-actions {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 2px !important;
 }
 
-/* 菜单内文字行高缩小 */
-html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-open {
+html.lightbox-desktop-native .gpt-dock .dock-chrome-actions #dockShellNewBtn {
+    order: 1 !important;
+    display: inline-flex !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-actions .lightbox-compact-btn {
+    order: 2 !important;
+    display: inline-flex !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-actions #gptDockCloseBtn {
+    order: 3 !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-title {
+    font-size: 10px !important;
+    font-weight: 400 !important;
+    font-variation-settings: "wght" 400 !important;
     line-height: 1.3 !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-time {
+    /* Match left-sidebar .mm-recent-meta exactly. */
+    font-family: var(--ui-font) !important;
+    font-size: 9px !important;
+    font-weight: var(--ui-weight-latin, 350) !important;
+    font-variation-settings: "wght" var(--ui-weight-latin, 350) !important;
+    line-height: var(--ui-leading-tight, 1.2) !important;
+    color: var(--ui-text-muted) !important;
+    max-width: 96px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item::after {
+    display: none !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-open {
+    line-height: 1.35 !important;
+    font-size: 11px !important;
+    min-width: 0 !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-rename,
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-delete {
+    width: 16px !important;
+    height: 16px !important;
+    min-height: 16px !important;
+    min-width: 16px !important;
+    border-radius: 5px !important;
+}
+
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-rename :is(i, svg),
+html.lightbox-desktop-native .gpt-dock .dock-chrome-menu-item-delete :is(i, svg) {
+    width: 11px !important;
+    height: 11px !important;
+}
+
+/* Left sidebar user chip: rounder hover face. */
+html.lightbox-desktop-native .mm-sidebar .mm-sidebar-user:is(:hover, :focus-visible) {
+    border-radius: 14px !important;
 }
 
 /* ================================================================
  * M76：指定浮层表面恢复投影（--ui-shadow-float）。
  * 覆盖范围：画布底部输入白面、右侧对话输入卡、媒体上方工具栏、
- * 选区打组/解组胶囊、双击空白引用面板、画布右键面板、左下用户面板。
+ * 选区打组/解组胶囊、双击空白引用面板、画布右键面板、左下用户面板、
+ * 右侧栏顶部对话标题下拉菜单。
  * :not(#ui-shadow-reset-*) 前缀用于压过 M13 的全局投影清零。
  * ================================================================ */
 html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body :is(
@@ -4186,6 +4663,7 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     .node-context-menu,
     .canvas-context-menu,
     .shell-user-menu,
+    .dock-chrome-title-menu,
     #composerApiSettingsPopover,
     #composerSizePopover,
     #composerKindPopover,
@@ -4196,9 +4674,35 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
 }
 
 /* ================================================================
+ * M76b：设置中心与历史记录面板用更明显的对话框投影。
+ * 浮层 float 阴影在深色遮罩上几乎看不见，这里单独加一档。
+ * ================================================================ */
+html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body :is(
+    .shell-settings-dialog,
+    .shell-project-history-dialog,
+    .canvas-history-panel
+) {
+    box-shadow:
+        0 22px 54px rgba(28, 34, 42, .28),
+        0 8px 20px rgba(28, 34, 42, .14) !important;
+}
+
+html:is(.theme-dark, .studio-theme-dark):not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body :is(
+    .shell-settings-dialog,
+    .shell-project-history-dialog,
+    .canvas-history-panel
+) {
+    box-shadow:
+        0 22px 54px rgba(0, 0, 0, .52),
+        0 8px 20px rgba(0, 0, 0, .32) !important;
+}
+
+/* ================================================================
  * M83：底部一级按钮上拉菜单小于一级，并使用 --ui-shadow-float。
  * 选项文字走 --ui-type-meta（11px），行高走紧凑控件档；面板内边距
  * 与宽度一并收一档。一级 footer 按钮尺寸与字号不变。
+ * 例外：#composerKindPopover 模式切换、#composerApiSettingsPopover 模型名
+ * 与一级按钮同字号（--ui-type-section）。
  * ================================================================ */
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer :is(
@@ -4235,22 +4739,112 @@ body #shell.shell #composer.composer .composer-footer #composerVideoReferencePop
     min-width: 200px !important;
 }
 
+/* 紧凑字号：排除模型名/说明，避免悬停两行被压成同字号。
+   模式切换菜单单独保持与一级按钮相同的 --ui-type-section。 */
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer :is(
     #composerApiSettingsPopover,
     #composerSizePopover,
-    #composerKindPopover,
     #composerVideoReferencePopover
-) :where(:not(svg):not(svg *)) {
+) :where(:not(svg):not(svg *):not(.mode-model-name):not(.mode-model-desc):not(.mode-model-copy):not(.mode-model-title-row)) {
     font-size: var(--ui-type-meta) !important;
+    line-height: var(--ui-leading-tight) !important;
+}
+
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer #composerKindPopover
+    :where(:not(svg):not(svg *)) {
+    font-size: var(--ui-type-section) !important;
     line-height: var(--ui-leading-tight) !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice {
-    min-height: var(--ui-control-h) !important;
-    padding: 0 var(--ui-space-4) !important;
+    min-height: 46px !important;
+    height: 46px !important;
+    padding: 6px 12px !important;
+}
+
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer
+    #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:has(.mode-model-desc) {
+    min-height: 46px !important;
+    height: 46px !important;
+}
+
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer
+    #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:has(.mode-model-desc):is(:hover, :focus-visible) {
+    min-height: 46px !important;
+    height: 46px !important;
+    padding: 6px 12px !important;
+}
+
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-name {
+    font-size: var(--ui-type-section) !important;
+    font-weight: var(--ui-weight-menu-strong) !important;
+    font-variation-settings: "wght" var(--ui-weight-menu-strong) !important;
+    line-height: var(--ui-leading-tight) !important;
+}
+
+/* 模型列表其它入口（分支/直选）字号同一级按钮 */
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer #composerApiSettingsPopover :is(
+    .composer-api-branch summary,
+    .composer-api-models button,
+    .direct-option
+) {
+    font-size: var(--ui-type-section) !important;
+    font-weight: var(--ui-weight-menu-strong) !important;
+    line-height: var(--ui-leading-tight) !important;
+}
+
+/* Desc is absolutely positioned; idle name stays vertically centered. */
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-desc {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: calc(50% + 2px) !important;
+    max-height: none !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    transform: translateY(4px) !important;
+    font-size: 9.5px !important;
+    font-weight: 300 !important;
+    font-variation-settings: "wght" 300 !important;
+    line-height: 1.25 !important;
+    color: var(--ui-text-muted) !important;
+    transition: opacity .18s ease, transform .18s cubic-bezier(.22, .8, .28, 1) !important;
+}
+
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-title-row {
+    transition: transform .18s cubic-bezier(.22, .8, .28, 1) !important;
+    transform: translateY(0) !important;
+}
+
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer
+    #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:is(:hover, :focus-visible) .mode-model-title-row {
+    transform: translateY(-8px) !important;
+}
+
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer
+    #composerApiSettingsPopover .composer-mode-model-list
+    .mode-model-choice:is(:hover, :focus-visible) .mode-model-desc {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
 }
 
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
@@ -4292,3 +4886,986 @@ body #shell.shell #composer.composer .composer-footer
     padding: var(--ui-space-2) var(--ui-space-3) !important;
     gap: var(--ui-space-3) !important;
 }
+
+/* Dark canvas composer: no outer solid plate — keep frosted topbar + rounded input surface only. */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer .composer-card {
+    background: transparent !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card > .composer-card-surface {
+    display: block !important;
+    background: var(--ui-surface-composer) !important;
+    background-color: var(--ui-surface-composer) !important;
+    background-image: none !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-footer-bar {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Right dock chat input: slightly lighter than dock chrome, but not too pale. */
+:is(html.theme-dark, html.studio-theme-dark).gpt-dock-canvas-mode
+body.gpt-dock-canvas-mode .chat-shell .composer {
+    background: var(--ui-surface-dock-composer, #242424) !important;
+    background-color: var(--ui-surface-dock-composer, #242424) !important;
+    background-image: none !important;
+}
+
+/* Left model / size / credits / send: same baseline as dock foot controls. */
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #composer.composer .composer-footer .composer-footer-tools,
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #composer.composer .composer-footer .composer-actions {
+    top: 0 !important;
+}
+
+/* 用户面板：去掉头像/用户名，顶部小字 ID，充值卡蓝底白字（压过主题皮肤灰卡）。 */
+html body #shellUserMenu.shell-user-menu :is(
+    .shell-user-avatar,
+    .shell-user-avatar-edit,
+    .shell-user-name-field,
+    .shell-user-name-caption,
+    .shell-user-name-row,
+    #shellUserAvatarBtn,
+    #shellUserAvatarInput,
+    #shellUserNameInput
+) {
+    display: none !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-menu-profile {
+    display: block !important;
+    padding: 0 2px 8px !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-id {
+    display: block !important;
+    margin: 0 !important;
+    color: var(--ui-text-muted) !important;
+    font-family: var(--ui-font) !important;
+    font-size: 7px !important;
+    font-weight: 320 !important;
+    font-variation-settings: "wght" 320 !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0 !important;
+    font-variant-numeric: tabular-nums !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-points,
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-points {
+    color: #ffffff !important;
+    border: 0 !important;
+    border-color: transparent !important;
+    background: var(--ui-accent, #0a84ff) !important;
+    background-color: var(--ui-accent, #0a84ff) !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-points
+    :is(.shell-user-points-head, .shell-user-points-meta, strong, span),
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-points
+    :is(.shell-user-points-head, .shell-user-points-meta, strong, span) {
+    color: #ffffff !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-points-head svg,
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-points-head svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-points-track,
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-points-track {
+    background: rgba(255, 255, 255, .28) !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-points-track span,
+html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .shell-user-points-track span {
+    background: #ffffff !important;
+}
+
+html body #shellUserMenu.shell-user-menu .shell-user-points-meta {
+    color: rgba(255, 255, 255, .86) !important;
+}
+
+/* 参考/批量/图片/视频：浅色悬停白、深色悬停黑（文件末尾压过其它皮肤）。
+   模式按钮悬停排除 .active，避免盖住选中胶囊。 */
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcut:is(:hover, :focus-visible),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar #apiKindToggle button:is(:hover, .is-mode-hover):not(.active) {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #747b85 !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar #apiKindToggle button:is(:hover, .is-mode-hover):not(.active) :is(i, svg, span) {
+    color: #747b85 !important;
+    stroke: #747b85 !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar .composer-asset-shortcut:is(:hover, :focus-visible):not(.is-on):not([aria-pressed="true"]),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card-topbar #apiKindToggle button:is(:hover, .is-mode-hover):not(.active) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+
+/* 底栏上拉菜单打开时：
+   顶栏(30)仍高于白色输入面，保持参考/批量/模式可见；
+   footer(40)+菜单(50)更高，避免被顶栏按钮挡住。 */
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-tool-wrap.open)
+    .composer-footer,
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-api-settings-wrap.open)
+    .composer-footer {
+    position: relative !important;
+    z-index: 40 !important;
+}
+
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-tool-wrap.open)
+    .composer-card-topbar,
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-api-settings-wrap.open)
+    .composer-card-topbar {
+    z-index: 30 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: none !important;
+}
+
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-tool-wrap.open)
+    .composer-card-topbar
+    :is(.composer-card-topbar-left, .composer-card-topbar-right, .composer-asset-shortcut, .co-create-switch, .composer-kind-toggle, .composer-kind-toggle button),
+html body #shell.shell #composer.composer.open
+    .composer-card:has(.composer-api-settings-wrap.open)
+    .composer-card-topbar
+    :is(.composer-card-topbar-left, .composer-card-topbar-right, .composer-asset-shortcut, .co-create-switch, .composer-kind-toggle, .composer-kind-toggle button) {
+    pointer-events: auto !important;
+}
+
+html body #shell.shell #composer.composer
+    .composer-tool-wrap.open > .composer-tool-popover,
+html body #shell.shell #composer.composer
+    .composer-api-settings-wrap.open > .composer-api-settings-popover {
+    z-index: 50 !important;
+}
+
+/* 右侧栏顶栏：未命名对话降字重；右侧三图标描边变细（末层压过对齐规则） */
+html body .gpt-dock .dock-chrome-title,
+html body .gpt-dock .dock-chrome-title-trigger,
+html.lightbox-desktop-native body .gpt-dock .dock-chrome-title,
+html.lightbox-desktop-native body .gpt-dock .dock-chrome-title-trigger {
+    font-family: var(--ui-font-variable) !important;
+    font-weight: 300 !important;
+    font-variation-settings: "wght" 300 !important;
+    font-synthesis: none !important;
+}
+
+html body .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg),
+html.lightbox-desktop-native body .gpt-dock .dock-chrome-actions .dock-chrome-btn :is(i, svg) {
+    stroke-width: 1.35 !important;
+}
+
+/* 右键菜单禁用项：文字与图标同为不可点击灰色（末层压过 M43 文字锁色） */
+html body :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"]):is(:disabled, [aria-disabled="true"]),
+html body :is(.node-context-menu, .canvas-context-menu)
+    :is(button, .ui-menu-item, [role="menuitem"]):is(:disabled, [aria-disabled="true"])
+    :is(span, i, svg, svg *) {
+    color: var(--ui-text-disabled) !important;
+    stroke: currentColor !important;
+    cursor: not-allowed !important;
+}
+
+/* 智能分组半透明面板：浅色皮肤；深色见文末 70% frost 块 */
+html:not(.theme-dark):not(.studio-theme-dark) body
+    .image-node.smart-group-node .smart-group-frame-hit {
+    background: rgba(255, 255, 255, .28) !important;
+    border: .5px solid rgba(255, 255, 255, .36) !important;
+    border-radius: 28px !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22) !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* 右侧栏「未命名对话」：悬停不出现背景 */
+html body .gpt-dock .dock-chrome-title-trigger,
+html body .gpt-dock .dock-chrome-title-trigger:is(:hover, :focus, :focus-visible, :active),
+html.lightbox-desktop-native body .gpt-dock .dock-chrome-title-trigger,
+html.lightbox-desktop-native body .gpt-dock .dock-chrome-title-trigger:is(:hover, :focus, :focus-visible, :active) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* 用户面板 ID：压过全局 14px 字阶重置，缩到一半 */
+html:not(#ui-userid-sz-1):not(#ui-userid-sz-2):not(#ui-userid-sz-3):not(#ui-userid-sz-4) body
+    #shellUserMenu.shell-user-menu .shell-user-id,
+html:not(#ui-userid-sz-1):not(#ui-userid-sz-2):not(#ui-userid-sz-3):not(#ui-userid-sz-4) body
+    #shellUserMenu.shell-user-menu #shellUserIdLabel {
+    font-size: 7px !important;
+    line-height: 1.25 !important;
+    font-weight: 320 !important;
+    font-variation-settings: "wght" 320 !important;
+    letter-spacing: 0 !important;
+    color: var(--ui-text-muted) !important;
+}
+
+/* 底部输入栏左下角工具按钮：悬停圆角略收 */
+html body #shell.shell #composer.composer .composer-footer
+    :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn),
+html body #shell.shell #composer.composer .composer-footer
+    :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn)
+    :is(:hover, :focus-visible, :active),
+html body #shell.shell #composer.composer .composer-footer
+    .composer-tool-wrap.open > :is(#composerApiSettingsBtn, #composerSizeBtn, #composerVideoReferenceBtn, #composerKindBtn),
+html body #shell.shell #composer.composer .composer-footer .composer-footer-glider {
+    border-radius: 10px !important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-footer .composer-footer-glider {
+    border-radius: 12px !important;
+}
+
+/* ================================================================
+ * Dark chrome unify: #1F1F1F @ 80% + blur(60px) 磨砂
+ * 覆盖：媒体工具栏、打组/解组胶囊、右键菜单、引用/创建面板、
+ * 底部一级上拉菜单、左下用户菜单、端口选择面板。
+ * 平移/缩放时由 .shell-panning / viewport-transform-active 临时关 blur。
+ * ================================================================ */
+:is(html.theme-dark, html.studio-theme-dark) {
+    --mm-chrome: #1f1f1f;
+    --mm-elevated: #1f1f1f;
+    --mm-card: #1f1f1f;
+    --panel: rgba(31, 31, 31, .80) !important;
+    --sc-glass: rgba(31, 31, 31, .80);
+    --sc-blur: 60px;
+    --sc-border: rgba(255, 255, 255, .16);
+    --lightbox-chrome-bg: #1f1f1f;
+    --ui-panel-frost: rgba(31, 31, 31, .80);
+    --ui-panel-frost-blur: blur(60px);
+    --ui-panel-frost-border: rgba(255, 255, 255, .16);
+}
+
+html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body :is(
+    #imageQuickToolbar.image-quick-toolbar,
+    .image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar,
+    .selection-capsule-bar,
+    .node-context-menu,
+    .canvas-context-menu,
+    .ui-menu.node-context-menu,
+    .create-menu,
+    .port-link-pick-menu,
+    .shell-user-menu,
+    #shellUserMenu.shell-user-menu,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover,
+    .iqt-dropdown-menu
+),
+:is(html.theme-dark, html.studio-theme-dark) body :is(
+    #imageQuickToolbar.image-quick-toolbar,
+    .image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar,
+    .selection-capsule-bar,
+    .node-context-menu,
+    .canvas-context-menu,
+    .ui-menu.node-context-menu,
+    .create-menu,
+    .port-link-pick-menu,
+    .shell-user-menu,
+    #shellUserMenu.shell-user-menu,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover,
+    .iqt-dropdown-menu
+),
+html.canvas-performance-mode:is(.theme-dark, .studio-theme-dark) body :is(
+    #imageQuickToolbar.image-quick-toolbar,
+    .image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar,
+    .selection-capsule-bar,
+    .node-context-menu,
+    .canvas-context-menu,
+    .ui-menu.node-context-menu,
+    .create-menu,
+    .port-link-pick-menu,
+    .shell-user-menu,
+    #shellUserMenu.shell-user-menu,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover,
+    .iqt-dropdown-menu
+) {
+    background: rgba(31, 31, 31, .80) !important;
+    background-color: rgba(31, 31, 31, .80) !important;
+    background-image: none !important;
+    border: 1px solid rgba(255, 255, 255, .16) !important;
+    border-color: rgba(255, 255, 255, .16) !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: blur(60px) !important;
+    backdrop-filter: blur(60px) !important;
+}
+
+/* 浅色浮层同规格：白 80% + blur(60px) */
+html:not(.theme-dark):not(.studio-theme-dark) body :is(
+    #imageQuickToolbar.image-quick-toolbar,
+    .image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar,
+    .selection-capsule-bar,
+    .node-context-menu,
+    .canvas-context-menu,
+    .ui-menu.node-context-menu,
+    .create-menu,
+    .port-link-pick-menu,
+    .shell-user-menu,
+    #shellUserMenu.shell-user-menu,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover,
+    .iqt-dropdown-menu
+),
+html.canvas-performance-mode:not(.theme-dark):not(.studio-theme-dark) body :is(
+    #imageQuickToolbar.image-quick-toolbar,
+    .image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar,
+    .selection-capsule-bar,
+    .node-context-menu,
+    .canvas-context-menu,
+    .ui-menu.node-context-menu,
+    .create-menu,
+    .port-link-pick-menu,
+    .shell-user-menu,
+    #shellUserMenu.shell-user-menu,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover,
+    .iqt-dropdown-menu
+) {
+    background: rgba(255, 255, 255, .80) !important;
+    background-color: rgba(255, 255, 255, .80) !important;
+    background-image: none !important;
+    border: 1px solid rgba(0, 0, 0, .10) !important;
+    border-color: rgba(0, 0, 0, .10) !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: blur(60px) !important;
+    backdrop-filter: blur(60px) !important;
+}
+
+/* 顶栏 / 左栏 / 右栏：深色统一单条 1px hairline（与右侧栏一致，禁止 inset 叠粗） */
+html:not(#ui-chrome-div-1):not(#ui-chrome-div-2):not(#ui-chrome-div-3):not(#ui-chrome-div-4).lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.lightbox-native-titlebar {
+    border: 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, .08) !important;
+    border-bottom-color: rgba(255, 255, 255, .08) !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+html:not(#ui-chrome-div-1):not(#ui-chrome-div-2):not(#ui-chrome-div-3):not(#ui-chrome-div-4).lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.mm-sidebar {
+    border: 0 !important;
+    border-right: 1px solid rgba(255, 255, 255, .08) !important;
+    border-right-color: rgba(255, 255, 255, .08) !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+/* 右侧栏贴画布：同色同粗 */
+html.lightbox-desktop-native.lightbox-desktop-native.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark):not(.lightbox-compact-mode)
+.gpt-dock {
+    border-left: 1px solid rgba(255, 255, 255, .08) !important;
+    border-left-color: rgba(255, 255, 255, .08) !important;
+}
+
+/* 双击引用/创建面板：磨砂在 .port-link-pick-menu；内层 shell 透明不抢材质 */
+html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body
+    .port-link-pick-menu .port-link-pick-shell,
+:is(html.theme-dark, html.studio-theme-dark) body
+    .port-link-pick-menu .port-link-pick-shell,
+html:not(.theme-dark):not(.studio-theme-dark) body
+    .port-link-pick-menu .port-link-pick-shell {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    border-color: transparent !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/* 模式切换上拉：去掉内层 kind-toggle 实色壳，露出面板磨砂 */
+html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body
+    #composerKindPopover .composer-kind-toggle,
+:is(html.theme-dark, html.studio-theme-dark) body
+    #composerKindPopover .composer-kind-toggle {
+    background: transparent !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* 打组面板：70% 深色磨砂；边框必须不透明实色（禁止 rgba alpha） */
+html:not(#ui-group-bd-1):not(#ui-group-bd-2):not(#ui-group-bd-3):not(#ui-group-bd-4):is(.theme-dark, .studio-theme-dark) body
+    .image-node.smart-group-node .smart-group-frame-hit.smart-group-frame-hit,
+html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body
+    .image-node.smart-group-node .smart-group-frame-hit,
+:is(html.theme-dark, html.studio-theme-dark) body
+    .image-node.smart-group-node .smart-group-frame-hit {
+    background: rgba(31, 31, 31, .70) !important;
+    background-color: rgba(31, 31, 31, .70) !important;
+    border: 1px solid #ffffff !important;
+    border-top-color: #ffffff !important;
+    border-right-color: #ffffff !important;
+    border-bottom-color: #ffffff !important;
+    border-left-color: #ffffff !important;
+    border-color: #ffffff !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+html:not(#ui-group-fg-1):not(#ui-group-fg-2):not(#ui-group-fg-3):not(#ui-group-fg-4):is(.theme-dark, .studio-theme-dark) body
+    .image-node.smart-group-node :is(
+        .smart-group-summary,
+        .smart-group-empty,
+        .node-title,
+        .node-hint,
+        .node-head,
+        .node-actions button,
+        .smart-group-member-grab
+    ),
+html:not(#ui-group-fg-1):not(#ui-group-fg-2):not(#ui-group-fg-3):not(#ui-group-fg-4):is(.theme-dark, .studio-theme-dark) body
+    .image-node.smart-group-node :is(
+        .smart-group-summary,
+        .smart-group-empty,
+        .node-title,
+        .node-hint,
+        .node-head,
+        .node-actions button,
+        .smart-group-member-grab
+    ) :is(i, svg, span) {
+    color: rgba(241, 241, 241, .86) !important;
+    stroke: currentColor !important;
+}
+
+/* 底部输入栏：实色 #1F1F1F，不磨砂；保留细描边 */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card > .composer-card-surface {
+    background: #1f1f1f !important;
+    background-color: #1f1f1f !important;
+    background-image: none !important;
+    border: 1px solid rgba(255, 255, 255, .16) !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
+}
+
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    .composer-card > .composer-card-material {
+    background: rgba(31, 31, 31, .80) !important;
+    border: 0 !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
+}
+
+/* 右侧栏底部输入栏：细描边（压过 M76 float 阴影） */
+html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark).gpt-dock-canvas-mode
+body.gpt-dock-canvas-mode .chat-shell .composer,
+:is(html.theme-dark, html.studio-theme-dark).gpt-dock-canvas-mode
+body.gpt-dock-canvas-mode .chat-shell .composer {
+    background: var(--ui-surface-dock-composer, #242424) !important;
+    background-color: var(--ui-surface-dock-composer, #242424) !important;
+    background-image: none !important;
+    border: 1px solid rgba(255, 255, 255, .16) !important;
+    border-color: rgba(255, 255, 255, .16) !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+}
+
+/* 右上对话按钮：背景参数对齐左侧长条形导航胶囊（尺寸不变） */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell .canvas-bottom-capsule,
+html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .dock-open-btn.dock-open-btn {
+    background: rgba(31, 31, 31, .80) !important;
+    background-color: rgba(31, 31, 31, .80) !important;
+    background-image: none !important;
+    border: 1px solid rgba(255, 255, 255, .16) !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none!important;
+    backdrop-filter: none!important;
+}
+
+html.lightbox-desktop-native:is(.theme-dark, .studio-theme-dark) .dock-open-btn.dock-open-btn {
+    color: rgba(241, 241, 241, .74) !important;
+}
+
+/* 底部输入栏一级上拉菜单：悬停必须有背景（覆盖 transparent !important 与空 hover 规则） */
+html body #shell.shell #composer.composer .composer-footer :is(
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
+).composer-tool-popover :is(
+    .composer-mode-option,
+    .composer-api-models button,
+    .composer-api-branch summary,
+    .size-picker-option,
+    .video-flat-choice,
+    .video-flat-segments button,
+    #composerQualityPanel .quality-choice-grid button,
+    #composerCountPanel .count-cell,
+    #composerVideoSizeMenu .count-cell,
+    .video-reference-option,
+    .composer-kind-toggle button
+):not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
+    background-color: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
+    background-image: none !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer .composer-footer :is(
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
+).composer-tool-popover :is(
+    .composer-mode-option,
+    .composer-api-models button,
+    .composer-api-branch summary,
+    .size-picker-option,
+    .video-flat-choice,
+    .video-flat-segments button,
+    #composerQualityPanel .quality-choice-grid button,
+    #composerCountPanel .count-cell,
+    #composerVideoSizeMenu .count-cell,
+    .video-reference-option,
+    .composer-kind-toggle button
+):not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: #f1f3f6 !important;
+    background-color: #f1f3f6 !important;
+}
+
+/* 模型名行：悬停无方块底色（仅保留名字上移 / 说明淡入） */
+html body #shell.shell #composer.composer #composerApiSettingsPopover
+    .composer-mode-model-list
+    .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible),
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover
+    .composer-mode-model-list
+    .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* 上拉菜单内部按钮（含 has-size-choice-glider / 尺寸·质量·张数格子）：
+ * 压过 canvas-dark-glass 与 smart-canvas 的 transparent !important，
+ * 与一级菜单条目同一套悬停底。 */
+html body #shell.shell #composer.composer .composer-footer :is(
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
+).composer-tool-popover :is(
+    .has-size-choice-glider > button,
+    .size-picker-option,
+    .quality-choice-grid > button,
+    .count-grid > .count-cell,
+    .count-cell,
+    .video-flat-choice,
+    .video-flat-segments > button,
+    .video-reference-option,
+    .composer-kind-toggle > button,
+    .composer-api-models > button,
+    .composer-api-branch > summary,
+    .direct-option
+):not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
+    background-color: var(--ui-hover, rgba(255, 255, 255, .08)) !important;
+    background-image: none !important;
+    border-color: transparent !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer .composer-footer :is(
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
+).composer-tool-popover :is(
+    .has-size-choice-glider > button,
+    .size-picker-option,
+    .quality-choice-grid > button,
+    .count-grid > .count-cell,
+    .count-cell,
+    .video-flat-choice,
+    .video-flat-segments > button,
+    .video-reference-option,
+    .composer-kind-toggle > button,
+    .composer-api-models > button,
+    .composer-api-branch > summary,
+    .direct-option
+):not(.is-unbound):not(:disabled):is(:hover, :focus-visible) {
+    background: #f1f3f6 !important;
+    background-color: #f1f3f6 !important;
+    background-image: none !important;
+}
+
+/* 深色网格点：必须看得见：约 10% 白点 + 稍大半径（曾误压到 .006/.035） */
+:is(html.theme-dark, html.studio-theme-dark) {
+    --ui-canvas-grid-dot: rgba(255, 255, 255, .10) !important;
+    --grid: rgba(255, 255, 255, .10) !important;
+}
+
+html:not(#ui-grid-dim-1):not(#ui-grid-dim-2):not(#ui-grid-dim-3):not(#ui-grid-dim-4):is(.theme-dark, .studio-theme-dark)
+body :is(#shell.shell, .shell, .board, .stage, .canvas-gate),
+:is(html.theme-dark, html.studio-theme-dark) body :is(#shell.shell, .shell, .board, .stage, .canvas-gate) {
+    background-image: radial-gradient(rgba(255, 255, 255, .10) .65px, transparent 1.2px) !important;
+    background-size: var(--ui-canvas-grid-size, 18px) var(--ui-canvas-grid-size, 18px) !important;
+}
+
+/* 上拉菜单内按钮悬停：末层核弹。对齐一级菜单/工具栏悬停底 rgba(.10)。
+ * 压过 idle .025、glider transparent、以及仅改 border 的空 hover 规则。 */
+html:not(#ui-pop-hov-1):not(#ui-pop-hov-2):not(#ui-pop-hov-3):not(#ui-pop-hov-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer .composer-footer
+:is(
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
+)
+:is(button, summary, [role="button"], .size-picker-option, .count-cell)
+:not(:disabled):not(.is-unbound):not([aria-disabled="true"]):not(.composer-tool-btn):not(.composer-height-toggle):not(.mode-model-choice)
+:is(:hover, :focus-visible) {
+    background: rgba(255, 255, 255, .10) !important;
+    background-color: rgba(255, 255, 255, .10) !important;
+    background-image: none !important;
+}
+
+html:not(#ui-pop-hov-1):not(#ui-pop-hov-2):not(#ui-pop-hov-3):not(#ui-pop-hov-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer .composer-footer
+:is(
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover
+)
+:is(button, summary, [role="button"], .size-picker-option, .count-cell).active
+:not(:disabled):not(.is-unbound):not(.mode-model-choice):is(:hover, :focus-visible) {
+    /* Keep selected readable; still show a hover lift above idle */
+    background: rgba(255, 255, 255, .12) !important;
+    background-color: rgba(255, 255, 255, .12) !important;
+}
+
+/* 左侧栏悬停：对齐工具栏黑底圆角 + 边缘内发光。
+ * 最近项目只给外层 .mm-recent-item 铺一层，内层 button 保持透明，避免双层。 */
+html:not(#ui-side-hov-1):not(#ui-side-hov-2):not(#ui-side-hov-3):not(#ui-side-hov-4).lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.mm-sidebar :is(
+    .mm-sidebar-nav > button,
+    .mm-asset-tree-root,
+    .mm-asset-tree-folder-btn,
+    .mm-sidebar-collapse,
+    .mm-sidebar-gear,
+    .mm-sidebar-user,
+    .mm-kind-item,
+    .mm-kind-back,
+    [role="button"]
+):not(:disabled):not(.mm-recent-group-head):not(.mm-recent-open):not(.mm-recent-menu-trigger):is(:hover, :focus-visible),
+html:not(#ui-side-hov-1):not(#ui-side-hov-2):not(#ui-side-hov-3):not(#ui-side-hov-4).lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.mm-sidebar .mm-recent-item:is(:hover, :focus-within, .menu-open, .active),
+html:not(#ui-side-hov-1):not(#ui-side-hov-2):not(#ui-side-hov-3):not(#ui-side-hov-4).lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.mm-sidebar-reopen:is(:hover, :focus-visible) {
+    border-color: rgba(255, 255, 255, .08) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow:
+        none !important;
+}
+
+html:not(#ui-side-hov-1):not(#ui-side-hov-2):not(#ui-side-hov-3):not(#ui-side-hov-4).lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.mm-sidebar .mm-recent-item:is(:hover, :focus-within, .menu-open, .active)
+:is(.mm-recent-open, .mm-recent-menu-trigger),
+html:not(#ui-side-hov-1):not(#ui-side-hov-2):not(#ui-side-hov-3):not(#ui-side-hov-4).lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.mm-sidebar .mm-recent-open:is(:hover, :focus-visible),
+html:not(#ui-side-hov-1):not(#ui-side-hov-2):not(#ui-side-hov-3):not(#ui-side-hov-4).lightbox-desktop-native:is(.theme-dark, .studio-theme-dark)
+.mm-sidebar .mm-recent-menu-trigger:is(:hover, :focus-visible) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* 模型选择上拉：默认与悬停均无边框无底色（含已选）；悬停仅做字移动效 */
+html:not(#ui-model-hov-1):not(#ui-model-hov-2):not(#ui-model-hov-3):not(#ui-model-hov-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer #composerApiSettingsPopover
+.composer-mode-model-list
+.mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice,
+html:not(#ui-model-hov-1):not(#ui-model-hov-2):not(#ui-model-hov-3):not(#ui-model-hov-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer #composerApiSettingsPopover
+.composer-mode-model-list
+.mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice.active,
+html:not(#ui-model-hov-1):not(#ui-model-hov-2):not(#ui-model-hov-3):not(#ui-model-hov-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer #composerApiSettingsPopover
+.composer-mode-model-list
+.mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:is(.selected, [aria-selected="true"], [aria-checked="true"]),
+html:not(#ui-model-hov-1):not(#ui-model-hov-2):not(#ui-model-hov-3):not(#ui-model-hov-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer #composerApiSettingsPopover
+.composer-mode-model-list
+.mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible, :active) {
+    border: 0 !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+/* 深色磨砂顶排（参考/批量/Audio/Text/Image/Video）：
+ * 未选中文字与图标改为可读浅色，避免跟底部输入实色 #1f1f1f 糊在一起。
+ * 选中项保持纯白。 */
+html:not(#ui-topbar-fg-1):not(#ui-topbar-fg-2):not(#ui-topbar-fg-3):not(#ui-topbar-fg-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer .composer-card-topbar
+:is(
+    .composer-asset-shortcut,
+    #apiKindToggle.composer-kind-toggle button
+):not(.is-on):not([aria-pressed="true"]):not(.active),
+html:not(#ui-topbar-fg-1):not(#ui-topbar-fg-2):not(#ui-topbar-fg-3):not(#ui-topbar-fg-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer .composer-card-topbar
+:is(
+    .composer-asset-shortcut,
+    #apiKindToggle.composer-kind-toggle button
+):not(.is-on):not([aria-pressed="true"]):not(.active)
+:is(i, svg, span),
+html:not(#ui-topbar-fg-1):not(#ui-topbar-fg-2):not(#ui-topbar-fg-3):not(#ui-topbar-fg-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer .composer-card-topbar .co-create-switch-label,
+html:not(#ui-topbar-fg-1):not(#ui-topbar-fg-2):not(#ui-topbar-fg-3):not(#ui-topbar-fg-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer .composer-card-topbar .co-create-switch-label :is(i, svg, span) {
+    color: rgba(241, 241, 241, .78) !important;
+    stroke: currentColor !important;
+}
+
+html:not(#ui-topbar-fg-1):not(#ui-topbar-fg-2):not(#ui-topbar-fg-3):not(#ui-topbar-fg-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer .composer-card-topbar
+#apiKindToggle.composer-kind-toggle button.active,
+html:not(#ui-topbar-fg-1):not(#ui-topbar-fg-2):not(#ui-topbar-fg-3):not(#ui-topbar-fg-4):is(.theme-dark, .studio-theme-dark)
+body #shell.shell #composer.composer .composer-card-topbar
+#apiKindToggle.composer-kind-toggle button.active :is(i, svg, span) {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+
+/* 深色悬停：去掉黑底径向/内发光（轻量版，避免超长 :is/:not 悬停税） */
+html.theme-dark #shell.shell :is(button, [role="button"], summary):not(:disabled):not(.run-btn):not(.primary):not(.primary-btn):is(:hover, :focus-visible),
+html.studio-theme-dark #shell.shell :is(button, [role="button"], summary):not(:disabled):not(.run-btn):not(.primary):not(.primary-btn):is(:hover, :focus-visible) {
+    background-image: none !important;
+}
+html.theme-dark #shell.shell #composer.composer :is(.composer-asset-shortcut, .co-create-switch, .composer-height-toggle):not(.is-on):not([aria-pressed="true"]):is(:hover, :focus-visible),
+html.studio-theme-dark #shell.shell #composer.composer :is(.composer-asset-shortcut, .co-create-switch, .composer-height-toggle):not(.is-on):not([aria-pressed="true"]):is(:hover, :focus-visible) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+html.theme-dark #shell.shell #composer.composer .input-thumb-upload,
+html.theme-dark #shell.shell #composer.composer .input-thumb-upload:is(:hover, :focus-visible, :active),
+html.studio-theme-dark #shell.shell #composer.composer .input-thumb-upload,
+html.studio-theme-dark #shell.shell #composer.composer .input-thumb-upload:is(:hover, :focus-visible, :active) {
+    background: rgba(31, 31, 31, .92) !important;
+    background-color: rgba(31, 31, 31, .92) !important;
+    background-image: none !important;
+    border: 1px dashed rgba(166, 166, 166, .55) !important;
+    border-color: rgba(166, 166, 166, .55) !important;
+    color: rgba(241, 241, 241, .86) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/* 添加预览钮：实色底，禁止 blur（WebView2 磨砂是卡顿源） */
+html body #shell.shell #composer.composer .input-thumb-upload,
+html.canvas-performance-mode body #shell.shell #composer.composer .input-thumb-upload {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background: rgba(31, 31, 31, .92) !important;
+}
+
+
+/* Float frost tokens on; never apply backdrop-filter via body *. */
+html, html.theme-dark, html.studio-theme-dark,
+html body, html.theme-dark body, html.studio-theme-dark body {
+    --ui-panel-frost-blur: blur(60px) !important;
+    --ui-composer-topbar-filter: none !important;
+    --sc-blur: 60px !important;
+    --vs-glass-blur: blur(60px) !important;
+    --canvas-glass-blur: blur(60px) !important;
+}
+
+/* 底部一级按钮小箭头：上拉展开朝下，收起朝上 */
+html body #shell.shell #composer.composer .composer-footer
+    :is(.composer-tool-btn, .composer-api-settings-btn) .composer-tool-caret {
+    transform: rotate(0deg) !important;
+    transform-origin: center center !important;
+    transition: transform var(--ui-motion-base, .18s) var(--ui-ease-emphasized, ease) !important;
+}
+html body #shell.shell #composer.composer .composer-footer
+    :is(.composer-tool-wrap.open, .composer-api-settings-wrap.open)
+    :is(.composer-tool-btn, .composer-api-settings-btn) .composer-tool-caret,
+html body #shell.shell #composer.composer .composer-footer
+    :is(.composer-tool-btn, .composer-api-settings-btn)[aria-expanded="true"] .composer-tool-caret {
+    transform: rotate(180deg) !important;
+}
+/* ================================================================
+ * 浅色模式浮层工具栏：禁止黑底。选区胶囊 / 媒体工具栏 / 顶栏 /
+ * 右键与上拉菜单一律白 80% + 深字。
+ * ================================================================ */
+html:not(.theme-dark):not(.studio-theme-dark) body :is(
+    #imageQuickToolbar.image-quick-toolbar,
+    .image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar,
+    .selection-capsule-bar,
+    .floating-toolbar::before,
+    .node-context-menu,
+    .canvas-context-menu,
+    .ui-menu.node-context-menu,
+    .create-menu,
+    .port-link-pick-menu,
+    .shell-user-menu,
+    #shellUserMenu.shell-user-menu,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover,
+    .iqt-dropdown-menu,
+    .selection-capsule-menu,
+    .selection-capsule-popover,
+    .selection-capsule-dropdown
+),
+html:not(.theme-dark):not(.studio-theme-dark).canvas-performance-mode body :is(
+    #imageQuickToolbar.image-quick-toolbar,
+    .image-quick-toolbar,
+    #selectionBoxCapsule .selection-capsule-bar,
+    .selection-capsule-bar,
+    .floating-toolbar::before,
+    .node-context-menu,
+    .canvas-context-menu,
+    .ui-menu.node-context-menu,
+    .create-menu,
+    .port-link-pick-menu,
+    .shell-user-menu,
+    #shellUserMenu.shell-user-menu,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    #composerApiSettingsPopover,
+    #composerSizePopover,
+    #composerKindPopover,
+    #composerVideoReferencePopover,
+    .iqt-dropdown-menu,
+    .selection-capsule-menu,
+    .selection-capsule-popover,
+    .selection-capsule-dropdown
+) {
+    background: rgba(255, 255, 255, .80) !important;
+    background-color: rgba(255, 255, 255, .80) !important;
+    background-image: none !important;
+    border: 1px solid rgba(0, 0, 0, .10) !important;
+    border-color: rgba(0, 0, 0, .10) !important;
+    color: #50565e !important;
+    box-shadow: var(--ui-shadow-float, 0 4px 14px rgba(0, 0, 0, .05)) !important;
+    -webkit-backdrop-filter: blur(60px) !important;
+    backdrop-filter: blur(60px) !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #selectionBoxCapsule .selection-capsule-bar :is(.selection-capsule-btn, .selection-capsule-folder, span, i, svg),
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #imageQuickToolbar.image-quick-toolbar :is(button, span, i, svg),
+html:not(.theme-dark):not(.studio-theme-dark) body
+    .floating-toolbar :is(.tool-button, .tool-main-button, span, i, svg):not(.active):not([aria-pressed="true"]) {
+    color: #50565e !important;
+    stroke: currentColor !important;
+}
+
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #selectionBoxCapsule .selection-capsule-bar :is(.is-danger, [data-action="delete"]),
+html:not(.theme-dark):not(.studio-theme-dark) body
+    #selectionBoxCapsule .selection-capsule-bar :is(.is-danger, [data-action="delete"]) :is(span, i, svg) {
+    color: #50565e !important;
+    stroke: currentColor !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html body #shell.shell #composer.composer .composer-footer
+        :is(.composer-tool-btn, .composer-api-settings-btn) .composer-tool-caret {
+        transition: none !important;
+    }
+}
+
+/* Settings modal scrim: dim + blur only while open (not canvas float chrome). */
+html body #shellSettingsModal.shell-settings-modal .shell-settings-backdrop {
+    background: rgba(0, 0, 0, .52) !important;
+    background-color: rgba(0, 0, 0, .52) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(112%) !important;
+    backdrop-filter: blur(14px) saturate(112%) !important;
+    pointer-events: auto !important;
+}
+:is(html.theme-dark, html.studio-theme-dark) body
+    #shellSettingsModal.shell-settings-modal .shell-settings-backdrop {
+    background: rgba(0, 0, 0, .58) !important;
+    background-color: rgba(0, 0, 0, .58) !important;
+}
+@media (prefers-reduced-motion: reduce) {
+    html body #shellSettingsModal.shell-settings-modal .shell-settings-backdrop {
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+        background: rgba(0, 0, 0, .68) !important;
+    }
+}
+
