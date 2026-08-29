@@ -54,7 +54,8 @@
             : '';
         row.classList.toggle('has-items', Boolean(node));
         row.classList.toggle('has-previews', count > 0);
-        row.classList.toggle('is-stacked', count > 1);
+        // Always stack while composer subject is open: previews + add button share fan/overlap.
+        row.classList.toggle('is-stacked', Boolean(node));
         const card = row.closest?.('.composer-card');
         if(card) card.classList.toggle('has-input-thumbs', Boolean(node));
         if(!node){
@@ -64,6 +65,7 @@
         }
         if(row.dataset.thumbsKey === thumbsKey && row.querySelector('.input-thumb-list')) return;
         row.dataset.thumbsKey = thumbsKey;
+        const thumbRot = (i) => ((i % 2) === 0 ? '-10deg' : '10deg');
         const thumbsHtml = dedup.map((img, i) => {
             const isVid = deps.isVideoMediaItem(img);
             const isSelf = node ? deps.isSelfReferenceForNode(node, img) : false;
@@ -73,9 +75,10 @@
             const inner = isVid ? `<video src="${deps.escapeHtml(img.url)}" muted preload="metadata" playsinline disablepictureinpicture controlslist="nodownload noplaybackrate noremoteplayback"></video>` : `<img src="${deps.escapeHtml(img.url)}" draggable="false">`;
             const label = `图${i + 1}`;
             const sourceUrl = img.originalLocalUrl || img.url || '';
-            return `<div class="input-thumb ${isSelf ? 'input-self' : ''}" style="--thumb-i:${i}" draggable="false" data-reorderable="${count > 1 ? 'true' : 'false'}" data-thumb-index="${i}" data-node-id="${deps.escapeHtml(img.nodeId || '')}" data-image-index="${img.imageIndex ?? ''}" data-url="${deps.escapeHtml(img.url || '')}" data-source-url="${deps.escapeHtml(sourceUrl)}" title="${deps.escapeHtml(`${img.name || deps.tr('smart.inputNum').replace('{n}', String(i + 1))} · ${title}`)}">${inner}<span class="input-thumb-label">${deps.escapeHtml(label)}</span></div>`;
+            return `<div class="input-thumb ${isSelf ? 'input-self' : ''}" style="--thumb-i:${i};--thumb-rot:${thumbRot(i)}" draggable="false" data-reorderable="${count > 1 ? 'true' : 'false'}" data-thumb-index="${i}" data-node-id="${deps.escapeHtml(img.nodeId || '')}" data-image-index="${img.imageIndex ?? ''}" data-url="${deps.escapeHtml(img.url || '')}" data-source-url="${deps.escapeHtml(sourceUrl)}" title="${deps.escapeHtml(`${img.name || deps.tr('smart.inputNum').replace('{n}', String(i + 1))} · ${title}`)}">${inner}<span class="input-thumb-label">${deps.escapeHtml(label)}</span></div>`;
         }).join('');
-        const uploadButton = `<button type="button" class="input-thumb input-thumb-upload" data-input-upload-media="1" title="上传并连接素材" aria-label="上传并连接素材"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-linecap="round"/></svg></button>`;
+        const uploadI = count;
+        const uploadButton = `<button type="button" class="input-thumb input-thumb-upload" style="--thumb-i:${uploadI};--thumb-rot:${thumbRot(uploadI)}" data-input-upload-media="1" title="上传并连接素材" aria-label="上传并连接素材"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-linecap="round"/></svg></button>`;
         row.innerHTML = `<div class="input-thumb-list" style="--thumb-count:${Math.max(count, 0)}">${thumbsHtml}${uploadButton}</div>`;
         if(typeof deps.bindInputThumbsDrag === 'function') deps.bindInputThumbsDrag(node, dedup);
         global.SmartCanvasComposerInputThumbs?.bindInputThumbReferenceActions?.();
