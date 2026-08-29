@@ -15,13 +15,41 @@
 .shell-settings-backdrop {
     position: absolute;
     inset: 0;
-    background: var(--ui-backdrop);
+    z-index: 0;
+    background: rgba(0, 0, 0, .52);
+    -webkit-backdrop-filter: blur(14px) saturate(112%);
+    backdrop-filter: blur(14px) saturate(112%);
+    pointer-events: auto;
+    cursor: default;
 }
 
-.shell-settings-backdrop,
+/* Keep history modal backdrop consistent when not embedded. */
 html body #shellProjectHistoryModal:not(.shell-project-history-embedded)
     .shell-project-history-backdrop {
-    backdrop-filter: none;
+    background: rgba(0, 0, 0, .52);
+    -webkit-backdrop-filter: blur(14px) saturate(112%);
+    backdrop-filter: blur(14px) saturate(112%);
+    pointer-events: auto;
+}
+
+/* While settings is open, lock page scroll and kill pointer hits behind the modal. */
+html.shell-settings-open,
+html.shell-settings-open body {
+    overflow: hidden !important;
+}
+html.shell-settings-open :is(
+    #canvasFrame,
+    .canvas-frame,
+    .gpt-dock,
+    .dock-open-btn,
+    .mm-sidebar,
+    .floating-toolbar,
+    .lightbox-native-titlebar,
+    .shell-user-menu,
+    .top-user-btn,
+    .canvas-bottom-chrome
+) {
+    pointer-events: none !important;
 }
 
 .shell-settings-dialog {

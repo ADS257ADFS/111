@@ -837,7 +837,11 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
         #composerSizePopover
     ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-modal{color:#3a3a3a}
-:where(html.theme-dark,html.studio-theme-dark) .shell-settings-backdrop{background:rgba(39, 39, 39, .28)}
+:where(html.theme-dark,html.studio-theme-dark) .shell-settings-backdrop{
+    background:rgba(0, 0, 0, .58);
+    -webkit-backdrop-filter:blur(14px) saturate(112%);
+    backdrop-filter:blur(14px) saturate(112%);
+}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-dialog{border:1px solid rgba(255, 255, 255, .92);background:#fafafa;box-shadow:0 32px 100px rgba(43, 43, 43, .24)}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-close-btn{color:#707070}
 :where(html.theme-dark,html.studio-theme-dark) .shell-settings-close-btn:hover{background:#fff;border-color:#eaeaea}

@@ -107,6 +107,7 @@
         modal.hidden = false;
         modal.setAttribute('aria-hidden', 'false');
         modal.classList.add('open');
+        document.documentElement.classList.add('shell-settings-open');
         setPane(pane || activePane || DEFAULT_PANE);
         document.getElementById('toolbarSettingsBtn')?.classList.add('active');
         document.getElementById('topUserBtn')?.setAttribute('aria-expanded', 'true');
@@ -119,6 +120,7 @@
         modal.classList.remove('open');
         modal.hidden = true;
         modal.setAttribute('aria-hidden', 'true');
+        document.documentElement.classList.remove('shell-settings-open');
         document.getElementById('toolbarSettingsBtn')?.classList.remove('active');
         document.getElementById('topUserBtn')?.setAttribute('aria-expanded', 'false');
     }
