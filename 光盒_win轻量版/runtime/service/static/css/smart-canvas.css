@@ -4941,8 +4941,8 @@ html body #shell.shell .image-node:is(:hover,.selected) .node-resize-handle {
     text-shadow:none !important;
 }
 
-/* Dense canvases trade GPU-heavy glass for interaction.
-   Float chrome also kills blur — WebView2 backdrop-filter thrash. */
+/* Dense canvases trade GPU-heavy glass on nodes/panels for interaction.
+   Float chrome keeps blur(60px) — only kill during pan/zoom below. */
 html.canvas-performance-mode :is(
     .image-node,
     .image-resolution-badge,
@@ -4961,22 +4961,7 @@ html.canvas-performance-mode :is(
     .image-edit-modal,
     .smart-group-frame-hit,
     .canvas-bottom-capsule,
-    .dock-open-btn,
-    #imageQuickToolbar,
-    .image-quick-toolbar,
-    .selection-capsule-bar,
-    .node-context-menu,
-    .canvas-context-menu,
-    .create-menu,
-    .port-link-pick-menu,
-    .shell-user-menu,
-    .composer-tool-popover,
-    .composer-api-settings-popover,
-    .iqt-dropdown-menu,
-    .selection-capsule-menu,
-    .selection-capsule-popover,
-    .selection-capsule-dropdown,
-    .floating-toolbar::before
+    .dock-open-btn
 ) {
     backdrop-filter:none !important;
     -webkit-backdrop-filter:none !important;
@@ -4995,10 +4980,16 @@ html.canvas-performance-mode .image-node,
 .world.viewport-transform-active ~ #selectionBoxCapsule .selection-capsule-bar,
 html.canvas-performance-mode.shell-panning :is(
     #imageQuickToolbar,
-    .selection-capsule-bar
+    .image-quick-toolbar,
+    .selection-capsule-bar,
+    .node-context-menu,
+    .canvas-context-menu,
+    .create-menu,
+    .port-link-pick-menu
 ),
 html.canvas-performance-mode .shell.panning :is(
     #imageQuickToolbar,
+    .image-quick-toolbar,
     .selection-capsule-bar
 ) {
     backdrop-filter: none !important;
