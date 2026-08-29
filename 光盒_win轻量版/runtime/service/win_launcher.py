@@ -2,13 +2,20 @@
 
 from __future__ import annotations
 
+import os
+import sys
+
+# This file can also be launched directly during development. Disable bytecode
+# writes before importing the rest of the application so the bundled Python
+# runtime does not dirty the Git working tree.
+os.environ.setdefault("PYTHONDONTWRITEBYTECODE", "1")
+sys.dont_write_bytecode = True
+
 import json
 import mimetypes
-import os
 import re
 import socket
 import subprocess
-import sys
 import threading
 import time
 import traceback
@@ -32,6 +39,10 @@ UI_ZOOM_FACTOR = 1.21
 DEFAULT_WINDOW_RATIO = 0.68
 WINDOW_MIN_WIDTH = 1440
 WINDOW_MIN_HEIGHT = 850
+INTRO_WINDOW_WIDTH = 880
+INTRO_WINDOW_HEIGHT = 520
+INTRO_WINDOW_MIN_WIDTH = 640
+INTRO_WINDOW_MIN_HEIGHT = 380
 LOCAL_ASSET_EXTENSIONS = {
     ".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp", ".tif", ".tiff", ".svg",
     ".mp4", ".webm", ".mov", ".m4v", ".avi", ".mkv",
@@ -199,9 +210,10 @@ def disable_system_window_rounding(hwnd: int) -> None:
         pass
 
 
-# 宿主底色必须与 CSS 窗框色（--ui-surface-shell）一致：WebView2 缩放取整
-# 会在窗口左右/底部留下 1px 缝隙，露出宿主色——写死白色会浅色露白、深色漏黑。
-# 浅色用 MiniMax 浅灰窗框 #fafafb；深色用 MiniMax 深灰窗框 #1b1b1b。
+# 宿主底色必须与 CSS 窗框色一致：浅色完整窗口栏为壳层浅灰 #fafafb
+# （--ui-surface-shell / --lightbox-chrome-bg），深色为 #181818。
+# WebView2 缩放取整会在窗口左右/底部留下 1px 缝隙，露出宿主色；
+# 抗锯齿补边也用同一色，四角同色才不会“上圆角更大 + 锯齿”。
 CHROME_BG = {"light": (0xFA, 0xFA, 0xFB), "dark": (0x18, 0x18, 0x18)}
 _host_theme = "light"
 
@@ -448,8 +460,11 @@ class WindowShadow:
                 g.DrawPath(pen, ring)
                 ring.Dispose()
                 pen.Dispose()
-            # 抗锯齿补边：主窗被 SetWindowRgn 圆角裁剪后边缘是硬锯齿；在阴影
-            # 窗上以窗框色实心填充同半径圆角矩形，四角透出的平滑圆弧盖住锯齿。
+            # 抗锯齿补边：主窗被 SetWindowRgn 圆角裁剪后边缘是硬锯齿。
+            # 1) 用与 CSS 窗框完全一致的实色圆角矩形垫底，四角透出的平滑
+            #    圆弧盖住锯齿（上下左右同一半径，避免旧 CreateRoundRectRgn
+            #    或顶栏色/底栏色不一致造成“上大下小”）。
+            # 2) 再沿轮廓画几圈半透明描边，进一步柔化锯齿台阶。
             edge_r, edge_g, edge_b = CHROME_BG[_host_theme]
             edge_brush = SolidBrush(Color.FromArgb(255, edge_r, edge_g, edge_b))
             edge_path = round_rect_path(
@@ -459,6 +474,26 @@ class WindowShadow:
             g.FillPath(edge_brush, edge_path)
             edge_path.Dispose()
             edge_brush.Dispose()
+            if _host_theme == "dark":
+                stroke_rgb = (255, 255, 255)
+            else:
+                stroke_rgb = (0, 0, 0)
+            for inset, alpha, pen_w in (
+                (0.0, 34, 1.35),
+                (0.55, 20, 1.05),
+                (1.1, 10, 1.0),
+            ):
+                pen = Pen(Color.FromArgb(alpha, *stroke_rgb), pen_w)
+                path = round_rect_path(
+                    float(win_x + inset),
+                    float(win_y + inset),
+                    float(win_w - inset * 2),
+                    float(win_h - inset * 2),
+                    max(1.0, float(WINDOW_CORNER_RADIUS) - inset),
+                )
+                g.DrawPath(pen, path)
+                path.Dispose()
+                pen.Dispose()
             self._edge_theme = _host_theme
             g.Dispose()
 
@@ -588,6 +623,39 @@ class DesktopBridge:
         self._maximized = False
         self._restore_bounds = None
         self._move_thread = None
+        self._intro_dom_ready = threading.Event()
+        self._window_shown = False
+        self._app_entered = False
+
+    def notify_intro_dom_ready(self) -> None:
+        """JS intro shell is in the DOM and WebGL is prepared."""
+        self._intro_dom_ready.set()
+
+    def _kick_intro_playback(self) -> None:
+        if self._window is None or self._app_entered:
+            return
+
+        def attempt(remaining: int = 80) -> None:
+            if remaining <= 0 or self._app_entered:
+                return
+            try:
+                self._window.evaluate_js(
+                    "window.lightboxStartIntroPlayback && window.lightboxStartIntroPlayback();"
+                )
+            except Exception:
+                threading.Timer(0.05, lambda: attempt(remaining - 1)).start()
+
+        threading.Timer(0.02, lambda: attempt()).start()
+
+    def _show_centered_intro_window(self) -> None:
+        if self._window is None or self._app_entered:
+            return
+        self.show_intro_window()
+        if not self._window_shown:
+            self._window_shown = True
+            self._window.show()
+        else:
+            self.show_intro_window()
 
     def _hwnd(self) -> int:
         if self._window is None or self._window.native is None:
@@ -679,6 +747,67 @@ class DesktopBridge:
         y = work_y + (work_height - height) // 2
         return x, y, width, height
 
+    def _normalize_restore_bounds(self, bounds):
+        """Reject intro/compact-sized restore targets; fall back to ~68% default."""
+        if not bounds or len(bounds) != 4:
+            return self._default_window_bounds()
+        _x, _y, width, height = bounds
+        if width < WINDOW_MIN_WIDTH or height < WINDOW_MIN_HEIGHT:
+            return self._default_window_bounds()
+        # Intro panel is 880×520 — never use that as the app windowed size.
+        if width <= INTRO_WINDOW_WIDTH + 40 and height <= INTRO_WINDOW_HEIGHT + 40:
+            return self._default_window_bounds()
+        return bounds
+
+    def _intro_window_bounds(self):
+        work_x, work_y, work_width, work_height = self._work_area()
+        width = min(INTRO_WINDOW_WIDTH, max(INTRO_WINDOW_MIN_WIDTH, work_width - 96))
+        height = min(INTRO_WINDOW_HEIGHT, max(INTRO_WINDOW_MIN_HEIGHT, work_height - 96))
+        x = work_x + (work_width - width) // 2
+        y = work_y + (work_height - height) // 2
+        return x, y, width, height
+
+    def show_intro_window(self) -> None:
+        """Small rounded startup panel — not the full software window."""
+        if self._app_entered:
+            return
+        self._set_form_min_size(INTRO_WINDOW_MIN_WIDTH, INTRO_WINDOW_MIN_HEIGHT)
+        # Keep a normal restore target for later maximize-from-intro.
+        self._restore_bounds = self._default_window_bounds()
+        x, y, width, height = self._intro_window_bounds()
+        hwnd = self._hwnd()
+        if ctypes.windll.user32.IsZoomed(hwnd) or ctypes.windll.user32.IsIconic(hwnd):
+            ctypes.windll.user32.ShowWindow(hwnd, 9)
+        ctypes.windll.user32.SetWindowPos(hwnd, 0, x, y, width, height, 0x0044)
+        self._maximized = False
+        self._set_resize_style(False)
+        if self._window is not None:
+            configure_opaque_form(self._window)
+        apply_solid_window_frame(hwnd, show_shadow=True)
+
+    def enter_app_from_intro(self) -> str:
+        """After welcome animation: restore min size and open fullscreen software."""
+        self._app_entered = True
+        self._set_form_min_size(WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT)
+        # Never remember the intro panel size as the restore target — that made
+        # the first windowed toggle shrink to the tiny startup panel.
+        self._restore_bounds = self._default_window_bounds()
+        self.maximize_to_work_area(remember=False)
+        # Late startup threads (finish_startup / force_show) can SW_RESTORE to the
+        # original 880×520 create size a few seconds later — re-assert fullscreen.
+        def _reassert_fullscreen(remaining: int = 6) -> None:
+            if not self._app_entered or remaining <= 0:
+                return
+            try:
+                if not self._is_work_area_maximized():
+                    self.maximize_to_work_area(remember=False)
+            except Exception:
+                traceback.print_exc()
+            threading.Timer(0.35, lambda: _reassert_fullscreen(remaining - 1)).start()
+
+        threading.Timer(0.2, lambda: _reassert_fullscreen()).start()
+        return "maximized"
+
     def show_default_window(self) -> None:
         self._restore_bounds = self._default_window_bounds()
         x, y, width, height = self._restore_bounds
@@ -694,9 +823,8 @@ class DesktopBridge:
 
     def restore_window(self) -> None:
         # Restore to the most recent windowed bounds (updated after every
-        # user move/resize), falling back to the centered default layout.
-        if self._restore_bounds is None:
-            self._restore_bounds = self._default_window_bounds()
+        # user move/resize), falling back to the centered ~68% default layout.
+        self._restore_bounds = self._normalize_restore_bounds(self._restore_bounds)
         x, y, width, height = self._restore_bounds
         hwnd = self._hwnd()
         if ctypes.windll.user32.IsZoomed(hwnd) or ctypes.windll.user32.IsIconic(hwnd):
@@ -712,7 +840,7 @@ class DesktopBridge:
         if remember and not self._maximized and not self._is_work_area_maximized():
             current = self._window_rect()
             if current:
-                self._restore_bounds = current
+                self._restore_bounds = self._normalize_restore_bounds(current)
         hwnd = self._hwnd()
         self._set_resize_style(False)
         if ctypes.windll.user32.IsZoomed(hwnd):
@@ -788,7 +916,7 @@ class DesktopBridge:
             self.maximize_to_work_area(remember=False)
             return "normal"
         if bounds:
-            self._restore_bounds = bounds
+            self._restore_bounds = self._normalize_restore_bounds(bounds)
         self.restore_window()
         return "normal"
 
@@ -839,7 +967,7 @@ class DesktopBridge:
             user32 = ctypes.windll.user32
             user32.ReleaseCapture()
             user32.SendMessageW(hwnd, message, wparam, 0)
-            self._restore_bounds = self._window_rect()
+            self._restore_bounds = self._normalize_restore_bounds(self._window_rect())
             if not self._is_work_area_maximized():
                 if self._window is not None:
                     configure_opaque_form(self._window)
@@ -876,7 +1004,7 @@ class DesktopBridge:
             # 拖动结束时若窗口已被切到最大化（如双击标题栏），一律不覆盖
             # 拖动结束时仅记录窗口化尺寸，避免“还原”回到最大化矩形。
             if not self._is_work_area_maximized():
-                self._restore_bounds = self._window_rect()
+                self._restore_bounds = self._normalize_restore_bounds(self._window_rect())
                 if self._window is not None:
                     configure_opaque_form(self._window)
                 apply_solid_window_frame(hwnd, show_shadow=True)
@@ -1170,23 +1298,31 @@ def install_local_asset_compat(app) -> None:
 # 名字绑定「中转站 + 该站的真实模型名」；底部输入栏永远显示这些名字。
 CUSTOM_MODEL_PRESETS: dict[str, list[str]] = {
     "image": [
-        "Nano Banana 2 Lite", "Seedream 5.0 Lite", "Seedream 5.0 Pro",
-        "Seedream 4.0", "Seedream 4.5", "GPT Image2",
-        "Banana 2", "Banana Pro", "Banana", "MJ V7", "MJ V8.2", "MJ V8.1",
+        "Gpt Image2",
+        "Nano Banana PRO",
+        "Seedream 5.0",
+        "Midjourney V7",
     ],
     "video": [
-        "Hailuo-02", "Vidu Q2", "Seedance 2.0", "Seedance 2.0 Fast",
-        "Seedance 2.5", "MiniMax H3", "Kling 3.0 Omni", "Gemini Omni Flash",
-        "Kling 3.0", "HappyHorse 1.0", "HappyHorse 1.1",
+        "Seedance 2.0",
+        "Seedance 2.0 Fast",
+        "Kling 3.0 Omni",
+        "MiniMax H3",
+        "Hailuo 2.3",
+        "Gemini Omni Flash",
     ],
     "audio": [
-        "Mureka V8", "Mureka O2", "Seed Audio 1.0", "MiniMax Music 2.6",
-        "ElevenLabs V3", "Sonilo Music", "Minimax-speech-2.8-hd",
-        "Minimax-speech-2.8-turbo", "Eleven V3", "Eleven Music V3",
+        "Mureka V8",
+        "Seed Audio 1.0",
+        "MiniMax Music 2.6",
+        "ElevenLabs V3",
+        "Minimax-speech-2.8-hd",
     ],
     "text": [
-        "Gemini 3.1 Flash Lite", "DeepSeek V4 Pro", "Gemini 3.1 Pro",
-        "Gemini 3 Flash", "GPT-5.6",
+        "DeepSeek V4",
+        "GPT-5.6 Sol",
+        "GLM-2",
+        "Gemini 3.1 Pro",
     ],
 }
 
@@ -1884,18 +2020,19 @@ def main() -> None:
         startup_thread.start()
 
         bridge = DesktopBridge()
-        initial_theme = "light" if 6 <= datetime.now().hour < 18 else "dark"
+        # Canvas opens dark every launch; welcome shader intro matches host chrome.
+        initial_theme = "dark"
         # Opaque host — transparency/layered modes break WebView2 composition
         # on Win10; windowed corners are rounded via SetWindowRgn (see
         # apply_rounded_window_region), maximized stays square.
-        initial_window_color = "#fafafb" if initial_theme == "light" else "#1b1b1b"
+        initial_window_color = "#1b1b1b"
         window = webview.create_window(
             APP_TITLE,
             url=f"{app_url(port)}?desktop=1&startup={uuid.uuid4().hex}",
             js_api=bridge,
-            width=1600,
-            height=1000,
-            min_size=(WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT),
+            width=INTRO_WINDOW_WIDTH,
+            height=INTRO_WINDOW_HEIGHT,
+            min_size=(INTRO_WINDOW_MIN_WIDTH, INTRO_WINDOW_MIN_HEIGHT),
             resizable=True,
             hidden=True,
             frameless=True,
@@ -1905,8 +2042,20 @@ def main() -> None:
             text_select=False,
         )
         bridge._window = window
+        bridge._window_shown = False
         # 启动即按初始主题设置宿主底色，JS 就绪后 set_window_backdrop 会继续跟随主题
         configure_opaque_form(window, initial_theme)
+
+        def force_show_window() -> None:
+            try:
+                if bridge._app_entered:
+                    return
+                configure_opaque_form(window)
+                bridge.set_window_backdrop(initial_theme)
+                bridge._show_centered_intro_window()
+                bridge._kick_intro_playback()
+            except Exception:
+                traceback.print_exc()
 
         def request_shutdown() -> None:
             server.should_exit = True
@@ -1915,14 +2064,40 @@ def main() -> None:
             main_window_ready.set()
 
         def finish_startup() -> None:
-            startup_finished.wait(timeout=6.0)
-            main_window_ready.wait(timeout=15.0)
+            startup_finished.wait(timeout=2.0)
+            bridge._intro_dom_ready.wait(timeout=12.0)
             try:
+                if bridge._app_entered:
+                    bridge.enable_standard_taskbar_behavior()
+                    configure_opaque_form(window)
+                    install_window_frame_refresh(window, bridge)
+                    hwnd = bridge._hwnd()
+                    if hwnd:
+                        apply_solid_window_frame(hwnd, show_shadow=False)
+                        window_shadow.attach(window)
+                    bridge.maximize_to_work_area(remember=False)
+                    return
                 configure_opaque_form(window)
-                bridge.show_default_window()
                 bridge.set_window_backdrop(initial_theme)
-                window.show()
-                time.sleep(0.12)
+                bridge._show_centered_intro_window()
+                time.sleep(0.06)
+                if bridge._app_entered:
+                    bridge.maximize_to_work_area(remember=False)
+                    return
+                bridge.show_intro_window()
+                bridge._kick_intro_playback()
+                main_window_ready.wait(timeout=10.0)
+                if bridge._app_entered:
+                    # App already fullscreen — never SW_RESTORE back to intro size.
+                    bridge.enable_standard_taskbar_behavior()
+                    configure_opaque_form(window)
+                    install_window_frame_refresh(window, bridge)
+                    hwnd = bridge._hwnd()
+                    if hwnd:
+                        apply_solid_window_frame(hwnd, show_shadow=False)
+                        window_shadow.attach(window)
+                    bridge.maximize_to_work_area(remember=False)
+                    return
                 bridge.enable_standard_taskbar_behavior()
                 configure_opaque_form(window)
                 install_window_frame_refresh(window, bridge)
@@ -1931,33 +2106,55 @@ def main() -> None:
                 # (-32000,-32000) after the library's hide/show hack — force it
                 # back onto a real windowed placement.
                 if hwnd:
+                    # Re-check after every wait — user may have entered mid-startup.
+                    if bridge._app_entered:
+                        apply_solid_window_frame(hwnd, show_shadow=False)
+                        bridge.maximize_to_work_area(remember=False)
+                        return
                     rect = bridge._window_rect()
                     if (
                         not rect
                         or rect[0] < -10000
                         or rect[1] < -10000
-                        or rect[2] < 400
-                        or rect[3] < 300
+                        or rect[2] < 320
+                        or rect[3] < 240
                     ):
-                        bridge.show_default_window()
-                    ctypes.windll.user32.ShowWindow(hwnd, 9)  # SW_RESTORE
-                    ctypes.windll.user32.SetForegroundWindow(hwnd)
-                    configure_opaque_form(window)
-                    apply_solid_window_frame(hwnd, show_shadow=True)
-                    window_shadow.attach(window)
-                    apply_solid_window_frame(hwnd, show_shadow=True)
-                    # pywebview may re-apply Padding after Navigating — punch again.
-                    time.sleep(0.35)
-                    configure_opaque_form(window)
-                    apply_solid_window_frame(hwnd, show_shadow=True)
-                    time.sleep(0.5)
-                    apply_solid_window_frame(hwnd, show_shadow=True)
+                        if not bridge._app_entered:
+                            bridge.show_intro_window()
+                    if bridge._app_entered:
+                        apply_solid_window_frame(hwnd, show_shadow=False)
+                        bridge.maximize_to_work_area(remember=False)
+                    else:
+                        ctypes.windll.user32.ShowWindow(hwnd, 9)  # SW_RESTORE
+                        # SW_RESTORE can revive the create-time 880×520 size if the
+                        # user entered during this window — bail out immediately.
+                        if bridge._app_entered:
+                            bridge.maximize_to_work_area(remember=False)
+                            return
+                        ctypes.windll.user32.SetForegroundWindow(hwnd)
+                        configure_opaque_form(window)
+                        apply_solid_window_frame(hwnd, show_shadow=True)
+                        window_shadow.attach(window)
+                        apply_solid_window_frame(hwnd, show_shadow=True)
+                        # pywebview may re-apply Padding after Navigating — punch again.
+                        time.sleep(0.08)
+                        if bridge._app_entered:
+                            bridge.maximize_to_work_area(remember=False)
+                            return
+                        configure_opaque_form(window)
+                        apply_solid_window_frame(hwnd, show_shadow=True)
             finally:
                 stop_startup.set()
+                if bridge._app_entered:
+                    try:
+                        bridge.maximize_to_work_area(remember=False)
+                    except Exception:
+                        traceback.print_exc()
 
         window.events.loaded += mark_main_window_ready
         window.events.closing += request_shutdown
         threading.Thread(target=finish_startup, name="LightboxStartupTransition", daemon=True).start()
+        threading.Timer(10.0, force_show_window).start()
 
         support_root = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local")) / "Lightbox-Windows-Clean"
         webview.start(
