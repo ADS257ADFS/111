@@ -1170,7 +1170,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerKindPopover .composer-kind-toggle button,
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    #composerKindPopover .composer-kind-toggle button span {
+    #composerKindPopover .composer-kind-toggle button .composer-kind-label {
     font-size: var(--ui-type-section) !important;
     font-weight: var(--ui-weight-menu-strong) !important;
     line-height: var(--ui-leading-tight) !important;
