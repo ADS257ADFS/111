@@ -50,8 +50,8 @@ function renderConnections(){
         ].filter(Boolean).join(' ');
         const color = isHistory ? 'rgba(148,156,168,0.48)' : 'rgba(135,145,158,0.62)';
         const opacity = isPendingLine ? '.68' : '.9';
-        const width = kind === 'input' ? '1.25' : '1.05';
-        return `<path class="conn-line ${cls}" d="${curve}" stroke="${color}" stroke-width="${width}" fill="none" opacity="${opacity}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path><path class="conn-hit" data-conn-index="${conn.index}" d="${curve}" stroke="transparent" stroke-width="14" fill="none"></path><circle class="conn-end" cx="${tx}" cy="${ty}" r="2.6" fill="var(--card)" stroke="${color}" stroke-width="1.25"></circle><g class="conn-cut" data-conn-index="${conn.index}" transform="translate(${mx} ${my})"><circle r="7" fill="var(--card)" stroke="${color}" stroke-width="1.1"></circle><path d="M-2.25 -2.25 L2.25 2.25 M2.25 -2.25 L-2.25 2.25" stroke="${color}" stroke-width="1.2" stroke-linecap="round"></path></g>`;
+        const width = '0.5';
+        return `<path class="conn-line ${cls}" d="${curve}" stroke="${color}" stroke-width="${width}" fill="none" opacity="${opacity}" stroke-linecap="round" stroke-linejoin="round"></path><path class="conn-hit" data-conn-index="${conn.index}" d="${curve}" stroke="transparent" stroke-width="14" fill="none"></path><circle class="conn-end" cx="${tx}" cy="${ty}" r="2.6" fill="var(--card)" stroke="${color}" stroke-width="0.5"></circle><g class="conn-cut" data-conn-index="${conn.index}" transform="translate(${mx} ${my})"><circle r="7" fill="var(--card)" stroke="${color}" stroke-width="1.1"></circle><path d="M-2.25 -2.25 L2.25 2.25 M2.25 -2.25 L-2.25 2.25" stroke="${color}" stroke-width="1.2" stroke-linecap="round"></path></g>`;
     }).join('');
     return `<svg class="connection-layer" width="6000" height="4000" viewBox="0 0 6000 4000" xmlns="http://www.w3.org/2000/svg">${paths}</svg>`;
 }
@@ -335,7 +335,7 @@ function render(){
     // Backdrop filters and long entrance animations are disproportionately
     // expensive once a canvas contains many independent layers. Keep the full
     // treatment for normal canvases and switch dense canvases automatically.
-    document.documentElement.classList.toggle('canvas-performance-mode', d().nodes.length >= 80);
+    document.documentElement.classList.add('canvas-performance-mode');
     const mediaStates = captureMediaPlaybackStates();
     const reusableNodes = new Map();
     d().world.querySelectorAll('.image-node').forEach(el => {
