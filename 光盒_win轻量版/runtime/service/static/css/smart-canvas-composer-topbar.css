@@ -149,14 +149,17 @@
 .shell #composer .composer-card-topbar .input-thumbs-row {
     display: none;
     grid-area: auto;
-    position: relative;
+    position: absolute;
+    left: 0;
+    bottom: 100%;
     align-items: flex-end;
     justify-content: flex-start;
     gap: 0;
-    padding: 0;
-    margin: 0 0 -2px;
+    padding: 0 0 2px;
+    margin: 0;
     min-width: 0;
     overflow: visible;
+    pointer-events: none;
 }
 
 .shell #composer .composer-card-topbar .input-thumbs-row.has-items {
@@ -169,9 +172,10 @@
     align-items: flex-end;
     gap: 0;
     min-width: 0;
-    height: 48px;
+    height: auto;
     padding: 0;
     overflow: visible;
+    pointer-events: auto;
 }
 
 .shell #composer .composer-card-topbar .input-thumb {
@@ -183,7 +187,7 @@
     border: 1px solid rgba(255, 255, 255, .88);
     background: #ffffff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, .18);
-    transform: translateY(-12px);
+    transform: translateY(8px);
     transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
     will-change: transform;
 }
@@ -192,7 +196,7 @@
 .shell #composer .composer-card-topbar .input-thumbs-row:not(.is-stacked) .input-thumb:focus-visible,
 .shell #composer .composer-card-topbar .input-thumbs-row:not(.is-stacked) .input-thumb:active {
     border-color: rgba(255, 255, 255, .95);
-    transform: translateY(-12px);
+    transform: translateY(8px);
     box-shadow: 0 6px 14px rgba(0, 0, 0, .22);
 }
 
@@ -234,7 +238,7 @@
 
 .shell #composer .composer-card-topbar .input-thumbs-row:not(.is-stacked)
     .input-thumb-upload:is(:hover, :focus-visible, :active) {
-    transform: translateY(-12px);
+    transform: translateY(8px);
 }
 
 .shell #composer .composer-card-topbar .input-thumb-upload :is(i, svg) {
@@ -257,14 +261,14 @@
     .input-thumb:not(.input-thumb-upload) {
     margin-right: -34px;
     z-index: calc(2 + var(--thumb-i, 0));
-    transform: translateY(-12px) rotate(var(--thumb-rot, -10deg)) !important;
+    transform: translateY(8px) rotate(var(--thumb-rot, -10deg)) !important;
 }
 
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within)
     .input-thumb-upload {
     margin-right: 0;
     z-index: 20;
-    transform: translateY(-12px) rotate(var(--thumb-rot, -10deg)) !important;
+    transform: translateY(8px) rotate(var(--thumb-rot, -10deg)) !important;
 }
 
 /* 悬停横向展开（保持垂直位置，避免图标下沉躲避） */
@@ -275,7 +279,7 @@
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:is(:hover, :focus-within) .input-thumb {
     margin-right: 0;
     z-index: 2;
-    transform: translateY(-12px) rotate(0deg) !important;
+    transform: translateY(8px) rotate(0deg) !important;
 }
 
 html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar
