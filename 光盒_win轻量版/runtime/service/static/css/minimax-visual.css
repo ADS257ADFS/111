@@ -5118,7 +5118,7 @@ body #shell.shell #composer.composer .composer-card-topbar
 
 /* ================================================================
  * M-v10：磨砂浮层统一（唯一规则源）
- * 浅色 55% / 深色 80% + blur(80px) + 轻投影
+ * 80% + blur(80px) + 轻投影；描边用 inset 阴影，避免 border 与 backdrop-filter 混色染底图
  * ================================================================ */
 html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body :is(
     .node-context-menu,
@@ -5147,9 +5147,10 @@ html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body :is(
     background-image: none !important;
     -webkit-backdrop-filter: var(--ui-glass-filter) !important;
     backdrop-filter: var(--ui-glass-filter) !important;
-    border: 1px solid var(--ui-glass-border) !important;
+    border: none !important;
     border-radius: var(--ui-radius-float) !important;
-    box-shadow: var(--ui-shadow-float) !important;
+    box-shadow: var(--ui-shadow-float-glass) !important;
+    background-clip: padding-box !important;
 }
 
 html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body :is(
@@ -5165,8 +5166,10 @@ html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body #shell.shell #composer.compo
     background-image: none !important;
     -webkit-backdrop-filter: var(--ui-glass-filter) !important;
     backdrop-filter: var(--ui-glass-filter) !important;
+    border: none !important;
     border-radius: var(--ui-radius-composer) !important;
-    box-shadow: var(--ui-shadow-float) !important;
+    box-shadow: var(--ui-shadow-float-glass) !important;
+    background-clip: padding-box !important;
 }
 
 html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body #shell.shell #composer.composer
@@ -5175,8 +5178,10 @@ html:not(#ui-glass-v10-1):not(#ui-glass-v10-2) body #shell.shell #composer.compo
     background-image: none !important;
     -webkit-backdrop-filter: var(--ui-glass-filter) !important;
     backdrop-filter: var(--ui-glass-filter) !important;
+    border: none !important;
     border-radius: var(--ui-radius-composer-top) var(--ui-radius-composer-top) 0 0 !important;
-    box-shadow: none !important;
+    box-shadow: var(--ui-glass-stroke) !important;
+    background-clip: padding-box !important;
 }
 
 /* M-v10-hover：深浅主题次级控件 Hover 统一底色，无描边 */
@@ -5343,9 +5348,10 @@ html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.compo
     background-image: none !important;
     -webkit-backdrop-filter: var(--ui-glass-filter) !important;
     backdrop-filter: var(--ui-glass-filter) !important;
-    border: 1px solid var(--ui-glass-border) !important;
+    border: none !important;
     border-radius: var(--ui-radius-composer) !important;
-    box-shadow: none !important;
+    box-shadow: var(--ui-glass-stroke) !important;
+    background-clip: padding-box !important;
 }
 
 html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.composer
@@ -5362,9 +5368,10 @@ html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.compo
     background-image: none !important;
     -webkit-backdrop-filter: var(--ui-glass-filter) !important;
     backdrop-filter: var(--ui-glass-filter) !important;
-    border: 1px solid var(--ui-glass-border) !important;
+    border: none !important;
     border-radius: var(--ui-radius-composer) !important;
-    box-shadow: var(--ui-shadow-float) !important;
+    box-shadow: var(--ui-shadow-float-glass) !important;
+    background-clip: padding-box !important;
 }
 
 html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.composer
@@ -5458,9 +5465,10 @@ html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell #composer.compo
     background-image: none !important;
     -webkit-backdrop-filter: var(--ui-glass-filter) !important;
     backdrop-filter: var(--ui-glass-filter) !important;
-    border: 1px solid var(--ui-glass-border) !important;
+    border: none !important;
     border-radius: var(--ui-radius-float) !important;
-    box-shadow: var(--ui-shadow-float) !important;
+    box-shadow: var(--ui-shadow-float-glass) !important;
+    background-clip: padding-box !important;
 }
 
 html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell :is(
@@ -5471,5 +5479,7 @@ html:not(#ui-v10-final-1):not(#ui-v10-final-2) body #shell.shell :is(
     .shell-user-menu,
     .iqt-dropdown-menu
 ) {
-    border: 1px solid var(--ui-glass-border) !important;
+    border: none !important;
+    box-shadow: var(--ui-shadow-float-glass) !important;
+    background-clip: padding-box !important;
 }

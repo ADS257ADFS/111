@@ -28,6 +28,9 @@
 
     /* 磨砂浮层细描边（比 --ui-border 略明显，深浅共用几何） */
     --ui-glass-border: rgba(0, 0, 0, .12);
+    /* 磨砂层用 inset 描边，避免与 backdrop-filter 同元素时底图颜色渗入 border */
+    --ui-glass-stroke: inset 0 0 0 1px var(--ui-glass-border);
+    --ui-shadow-float-glass: var(--ui-glass-stroke), var(--ui-shadow-float);
     --ui-glass-bg: rgba(255, 255, 255, .80);
     --ui-glass-popover: rgba(255, 255, 255, .80);
     --ui-glass-filter: blur(80px) saturate(160%);
