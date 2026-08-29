@@ -301,7 +301,7 @@ body.prompt-split-resize .image-node.prompt-smart-node { transition:none !import
 .loop-number-input { appearance:textfield; -moz-appearance:textfield; }
 .loop-smart-run i,.loop-smart-run svg { width:15px !important; height:15px !important; }
 .loop-smart-run:disabled { opacity:.45; cursor:not-allowed; }
-.create-menu { position:fixed; z-index:75; display:none; width:420px; max-width:calc(100vw - 28px); padding:10px; border-radius:var(--ui-radius-panel); background:var(--panel); border:1px solid var(--line); box-shadow:var(--ui-shadow-pop); backdrop-filter:none; }
+.create-menu { position:fixed; z-index:75; display:none; width:420px; max-width:calc(100vw - 28px); padding:var(--ui-space-3); border-radius:var(--ui-radius-float); background-color:var(--ui-glass-popover); border:1px solid var(--ui-border); box-shadow:var(--ui-shadow-float); backdrop-filter:var(--ui-glass-filter); -webkit-backdrop-filter:var(--ui-glass-filter); }
 .create-menu.open { display:block; }
 .create-menu-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px; }
 .create-card { min-height:0; padding:12px 10px; border-radius:14px; border:1px solid var(--line); background:var(--card); color:var(--ui-text); display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start; gap:10px; text-align:left; transition:transform .14s ease, border-color .14s ease, box-shadow .14s ease; aspect-ratio:1 / 1; width:100%; box-sizing:border-box; }
@@ -2422,7 +2422,7 @@ button svg,.lucide,[data-lucide] {
 }
 /* Stable frosted panels: composer, double-click create panel, and popovers. */
 
-/* Visible frosted glass panels and vertical hover motion. */.create-menu,
+/* Stable frosted panels: composer and asset panels (create-menu → v10 M-v10). */
 .image-node.empty-node,
 .image-node.prompt-smart-node,
 .image-node.loop-smart-node,
@@ -2471,7 +2471,6 @@ button svg,.lucide,[data-lucide] {
     animation:none;
     transform:translateY(1px);
 }
-.theme-dark .create-menu,
 .theme-dark .image-node.empty-node,
 .theme-dark .image-node.prompt-smart-node,
 .theme-dark .image-node.loop-smart-node,
@@ -3300,12 +3299,12 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell #composer .composer-card-to
 }.shell #composer .composer-card-topbar .co-create-switch:hover,
 .shell #composer .composer-card-topbar .co-create-switch:focus-visible{
     border-color:transparent !important;
-    background:#ffffff !important;
+    background:var(--ui-hover) !important;
     outline:none !important;
 }
 html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar .co-create-switch:hover,
 html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar .co-create-switch:focus-visible{
-    background:#000000 !important;
+    background:var(--ui-hover) !important;
 }
 .shell #composer .composer-card-topbar .co-create-switch.is-on,
 .shell #composer .composer-card-topbar .co-create-switch[aria-pressed="true"] {
@@ -3348,10 +3347,13 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .composer-ca
     z-index:1;
     inset:40px 10px 10px;
     display:block;
-    border-radius:18px;
-    background:var(--ui-surface-card);
+    border-radius:var(--ui-radius-composer, 22px);
+    background-color:var(--ui-glass-popover);
+    background-image:none;
     border:1px solid var(--ui-border);
-    box-shadow:none;
+    box-shadow:var(--ui-shadow-float);
+    -webkit-backdrop-filter:var(--ui-glass-filter);
+    backdrop-filter:var(--ui-glass-filter);
     pointer-events:none;
 }
 /* M5:composer-card-material 玻璃流光层与 ::before conic 描边已拆除(扁平定案) */
@@ -4724,84 +4726,7 @@ html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover :is(.size-pic
     outline:none !important;
 }
 
-/* Approved history-project neutral palette for composer secondary menus and
-   the asset library. Scoped to light mode so dark mode and primary controls
-   keep their existing visual language. */
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover,
-html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover {
-    background:#fff;
-    border-color:rgba(255,255,255,1);
-    backdrop-filter:none;
-    -webkit-backdrop-filter:none;
-}
-html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover :is(.size-picker-list,.quality-choice-grid,.count-grid,.video-flat-grid) {
-    gap:4px;
-}
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-branch summary,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-models button,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice,
-html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover :is(
-    .size-picker-option,
-    .video-flat-choice,
-    #composerQualityPanel .quality-choice-grid button,
-    #composerCountPanel .count-cell,
-    #composerVideoSizeMenu .count-cell,
-    .video-flat-segments button
-) {
-    color:#7d848e;
-    background:#fff !important;
-    background-image:none !important;
-    border:1px solid rgba(137,145,156,.22) !important;
-    box-shadow:none !important;
-    box-sizing:border-box;
-    border-radius:8px;
-}
-html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover .size-picker-ratio-list .size-picker-option {
-    min-height:34px;
-}html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-branch summary:hover,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-branch summary:focus-visible,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-branch.active > summary,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-models button:hover,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-models button:focus-visible,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice:hover,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice:focus-visible,
-html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover :is(
-    .size-picker-option,
-    .video-flat-choice,
-    #composerQualityPanel .quality-choice-grid button,
-    #composerCountPanel .count-cell,
-    #composerVideoSizeMenu .count-cell,
-    .video-flat-segments button
-):hover,
-html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover :is(
-    .size-picker-option,
-    .video-flat-choice,
-    #composerQualityPanel .quality-choice-grid button,
-    #composerCountPanel .count-cell,
-    #composerVideoSizeMenu .count-cell,
-    .video-flat-segments button
-):focus-visible{
-    background:#fafbfc !important;
-    border-color:rgba(137,145,156,.34) !important;
-    box-shadow:none !important;
-}
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-branch.active > summary{color:#505761 !important;}
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-api-models button.active,
-html:not(.theme-dark):not(.studio-theme-dark) #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.active,
-html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover :is(
-    .size-picker-option,
-    .video-flat-choice,
-    #composerQualityPanel .quality-choice-grid button,
-    #composerCountPanel .count-cell,
-    #composerVideoSizeMenu .count-cell,
-    .video-flat-segments button
-).active {
-    color:var(--ui-accent) !important;
-    background:rgba(var(--ui-accent-rgb),.06) !important;
-    background-image:none !important;
-    border-color:rgba(var(--ui-accent-rgb),.42) !important;
-    box-shadow:none !important;
-}
+/* composer 二级菜单 → v10 磨砂浮层（见 minimax-visual M-v10 / visual-typography C08） */
 html:not(.theme-dark):not(.studio-theme-dark) #composerSizePopover :is(.size-choice-glider.is-soft,.size-choice-glider.is-strong) {
     display:none !important;
 }

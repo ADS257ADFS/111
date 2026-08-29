@@ -296,15 +296,15 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
     left: 10px;
     display: block;
     border: 1px solid var(--sc-border);
-    border-radius: 18px;
+    border-radius: var(--ui-radius-composer, 22px);
     pointer-events: none;
-    background: var(--ui-surface-composer) !important;
+    background-color: var(--ui-glass-popover) !important;
     background-image: none !important;
     opacity: 1 !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: var(--ui-glass-filter) !important;
+    backdrop-filter: var(--ui-glass-filter) !important;
     filter: none !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035);
+    box-shadow: var(--ui-shadow-float) !important;
 }
 
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell #composer.composer .composer-card > :not(.composer-card-material):not(.composer-card-surface):not(.composer-card-topbar) {
@@ -364,9 +364,9 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
     .composer-asset-shortcut
 ):hover,
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell .composer-tool-wrap.open > .composer-tool-btn{
-    border-color: var(--sc-border-panel) !important;
-    background: var(--sc-hover) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07) !important;
+    border-color: transparent !important;
+    background: var(--ui-hover) !important;
+    box-shadow: none !important;
     transform: translateY(-1px);
 }
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell .composer-tool-wrap.open > .composer-tool-btn{color: var(--sc-text) !important;}

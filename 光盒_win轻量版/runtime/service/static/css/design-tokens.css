@@ -9,7 +9,7 @@
  *   4. 深浅主题切换只靠本文件的两个作用域，feature 不得自己写
  *      theme-dark 分支来改颜色（几何值深浅共用）。
  *
- * 视觉基准：v10 磨砂浮层（80% 深色 / 62% 浅色 + blur(80px)）
+ * 视觉基准：v10 磨砂浮层（80% 不透明 + blur(80px)）+ 字阶 18/16/14/13
  */
 
 /* ================================================================
@@ -24,11 +24,11 @@
     --ui-surface-elevated: #ffffff;      /* 菜单 / 弹层 */
     --ui-surface-input: #ffffff;         /* 输入框 */
     --ui-surface-composer: #ffffff;      /* 画布底部输入卡片 */
-    --ui-surface-composer-topbar: rgba(255, 255, 255, .62);
+    --ui-surface-composer-topbar: rgba(255, 255, 255, .80);
 
-    /* 磨砂浮层（v10：浅色更透 62%，深色 80%） */
-    --ui-glass-bg: rgba(255, 255, 255, .62);
-    --ui-glass-popover: rgba(255, 255, 255, .62);
+    /* 磨砂浮层（v10：80% 不透明 + blur(80px)） */
+    --ui-glass-bg: rgba(255, 255, 255, .80);
+    --ui-glass-popover: rgba(255, 255, 255, .80);
     --ui-glass-filter: blur(80px) saturate(160%);
 
     /* 悬停（全站统一；遗留 gh-quiet-hover 别名） */
@@ -74,8 +74,8 @@
     /* 软件内容区保持纯平面；整窗投影由桌面宿主单独绘制。 */
     --ui-shadow-pop: none;
     --ui-shadow-dialog: none;
-    /* 磨砂浮层轻外投影 */
-    --ui-shadow-float: 0 2px 10px rgba(0, 0, 0, .05);
+    /* 磨砂浮层轻外投影（v10） */
+    --ui-shadow-float: 0 4px 18px rgba(0, 0, 0, .12);
 }
 
 /* ================================================================
@@ -91,7 +91,7 @@ body.studio-theme-dark {
     --ui-surface-card: #1f1f1f;
     --ui-surface-elevated: #1f1f1f;
     --ui-surface-input: #1f1f1f;
-    --ui-surface-composer: #1f1f1f;      /* 底部输入栏：实色，无磨砂 */
+    --ui-surface-composer: #1f1f1f;
     --ui-surface-dock-composer: #242424;
     --ui-surface-composer-topbar: rgba(35, 35, 35, .80);
     --ui-glass-bg: rgba(35, 35, 35, .80);
@@ -130,7 +130,7 @@ body.studio-theme-dark {
 
     --ui-shadow-pop: none;
     --ui-shadow-dialog: none;
-    --ui-shadow-float: 0 2px 12px rgba(0, 0, 0, .22);
+    --ui-shadow-float: 0 4px 16px rgba(0, 0, 0, .30);
 }
 
 /* ================================================================
@@ -186,16 +186,16 @@ body.studio-theme-dark {
     --ui-font-body-cjk: "MiSans CJK Body 330", var(--ui-font);
     --ui-font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
 
-    --ui-type-display: 16px;   /* 展示标题与页级标题统一 */
-    --ui-type-page: 16px;      /* 页级标题 */
-    --ui-type-panel: 14px;     /* 面板标题 */
-    --ui-type-section: 14px;   /* 分区标题 / 菜单项 */
-    --ui-type-body: 14px;      /* 正文 */
-    --ui-type-control: 14px;   /* 控件文字 */
-    --ui-type-compact-label: 12.5px; /* 项目名 / 画布底栏 / 对象工具栏 */
-    --ui-type-project-title: var(--ui-type-compact-label); /* 左侧最近创作项目名称 */
-    --ui-type-meta: 11px;      /* 次要信息 */
-    --ui-type-micro: 11px;     /* 徽标 / 角标 */
+    --ui-type-display: 18px;   /* 弹窗主标题、少数大标题 */
+    --ui-type-page: 18px;      /* 页级 / 展示标题 */
+    --ui-type-panel: 18px;     /* 面板标题 */
+    --ui-type-section: 16px;   /* 导航、菜单、工具栏、对话、生成栏 */
+    --ui-type-body: 16px;      /* 正文 */
+    --ui-type-control: 16px;   /* 控件、输入、chip */
+    --ui-type-compact-label: 14px; /* 项目名、资产夹、搜索框 */
+    --ui-type-project-title: var(--ui-type-compact-label);
+    --ui-type-meta: 13px;      /* 快捷键、积分、时间、次要信息 */
+    --ui-type-micro: 13px;     /* 徽标、角标 */
 
     --ui-weight-regular: 380;
     --ui-weight-medium: 380;
@@ -205,7 +205,7 @@ body.studio-theme-dark {
     --ui-weight-dock-body: 300;
     --ui-weight-placeholder: 250; /* 底部输入栏与右侧对话栏占位说明；走可变轴，避开 350 固定实例 */
 
-    --ui-sidebar-nav-icon-size: 15px;
+    --ui-sidebar-nav-icon-size: 16px;
     --ui-sidebar-nav-icon-stroke: 1.8;
 
     --ui-leading-control: 1;     /* 单行控件 / 菜单项 */
@@ -297,8 +297,8 @@ body.studio-theme-dark {
     --ui-composer-surface-h: 174px;
     --ui-composer-surface-side-inset: 7px;
     --ui-composer-surface-bottom-gap: 15px;
-    /* Tall enough for 28px 参考/批量/模式 controls; white surface starts below. */
-    --ui-composer-topbar-h: 40px;
+    /* Tall enough for 30px 参考/批量/模式；白色输入面从其下缘开始。 */
+    --ui-composer-topbar-h: 42px;
     --ui-composer-topbar-offset: 4px;
     --ui-composer-topbar-growth: 0px;
     --ui-composer-topbar-content-inset: 0px;
@@ -317,9 +317,9 @@ body.studio-theme-dark {
     --ui-canvas-nav-radius: var(--ui-radius-panel);
     --ui-canvas-zoom-value-w: 32px;
     --ui-canvas-zoom-menu-w: 180px;
-    --ui-canvas-zoom-value-type: 11px;
-    --ui-canvas-zoom-menu-type: 11px;
-    --ui-canvas-zoom-shortcut-type: 11px;
+    --ui-canvas-zoom-value-type: 13px;
+    --ui-canvas-zoom-menu-type: 13px;
+    --ui-canvas-zoom-shortcut-type: 13px;
     --ui-shell-top-control-h: var(--ui-control-h);
     --ui-shell-top-control-radius: var(--ui-radius-panel);
     --ui-shell-agent-control-w: auto;
@@ -349,7 +349,7 @@ html.theme-dark,
 html.studio-theme-dark,
 body.theme-dark,
 body.studio-theme-dark {
-    --ui-canvas-grid-dot: rgba(255, 255, 255, .10);
+    --ui-canvas-grid-dot: rgba(255, 255, 255, .055);
     --ui-canvas-selection-fill: rgba(var(--ui-accent-rgb), .12);
     --ui-canvas-connection: rgba(255, 255, 255, .24);
 }
