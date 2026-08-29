@@ -8,7 +8,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: "Segoe UI", "Microsoft YaHei UI", "MiSans Variable", sans-serif;
-      font-size: 15px; line-height: 1.6; color: #292929; background: #f5f5f5; padding: 32px 24px 48px;
+      font-size: 16px; line-height: 1.6; color: #292929; background: #f5f5f5; padding: 32px 24px 48px;
     }
     .wrap { max-width: 760px; margin: 0 auto; }
     h1 { font-size: 20px; margin-bottom: 8px; }
@@ -48,7 +48,7 @@
     <p class="sub">亮/暗主题只有颜色不同，字号、字重、描边、分割线完全相同。</p>
 
     <div class="note">
-      <strong>上一版反馈「字偏小」</strong>——新版样板整体上调约 1px，请你再看是否合适。
+      <strong>v3 更新：</strong>字号再加大（16/14/13 为主）；磨砂透明度约 50%，blur 22px；画布底层加彩色图案便于感受透视。
     </div>
 
     <h2>一、字体家族</h2>
@@ -149,11 +149,11 @@
       <tr><td>颜色</td><td><code>rgba(135,145,158, .62)</code></td></tr>
     </table>
 
-    <h2>八、磨砂浮层</h2>
-    <p>菜单、工具栏、生成栏等悬浮面板使用：</p>
+    <h2>八、磨砂浮层（v3 加强）</h2>
     <ul style="padding-left:20px;font-size:14px;color:#505050">
-      <li>背景透明度约 82%</li>
-      <li>模糊 <code>blur(14px) saturate(120%)</code></li>
+      <li>背景透明度约 <strong>50%</strong>（亮色 <code>rgba(255,255,255,.50)</code>）</li>
+      <li>模糊 <code>blur(22px) saturate(150%)</code></li>
+      <li>画布底层有彩色图案 + 右上角「磨砂透视示意」条纹卡</li>
     </ul>
 
     <h2>九、画布网格</h2>

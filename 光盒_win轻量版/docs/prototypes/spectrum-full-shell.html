@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>光盒 · 完整壳层视觉样板 v2</title>
+  <title>光盒 · 完整壳层视觉样板 v3</title>
   <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; }
@@ -37,17 +37,17 @@ body {
   --lb-danger: #e34850;
   --lb-conn: rgba(135, 145, 158, 0.62);
   --lb-conn-pending: rgba(10, 132, 255, 0.68);
-  /* 磨砂浮层 */
-  --lb-glass-bg: rgba(255, 255, 255, 0.82);
-  --lb-glass-topbar: rgba(243, 245, 247, 0.62);
-  --lb-glass-filter: blur(14px) saturate(120%);
-  --lb-shadow-float: 0 4px 16px rgba(0,0,0,.08);
-  /* 字号（整体比上一版略大） */
+  /* 磨砂浮层（更透明、模糊更强，便于看出效果） */
+  --lb-glass-bg: rgba(255, 255, 255, 0.50);
+  --lb-glass-topbar: rgba(243, 245, 247, 0.45);
+  --lb-glass-filter: blur(22px) saturate(150%);
+  --lb-shadow-float: 0 4px 20px rgba(0,0,0,.10);
+  /* 字号（再加大一档） */
   --lb-font: "Segoe UI", "Microsoft YaHei UI", "MiSans Variable", sans-serif;
-  --lb-type-display: 17px;
-  --lb-type-body: 15px;
-  --lb-type-compact: 13px;
-  --lb-type-meta: 12px;
+  --lb-type-display: 18px;
+  --lb-type-body: 16px;
+  --lb-type-compact: 14px;
+  --lb-type-meta: 13px;
   --lb-weight-body: 380;
   --lb-weight-latin: 350;
   /* 圆角分层（拉开差异） */
@@ -61,7 +61,7 @@ body {
   --lb-r-pill: 999px;
   --lb-titlebar-h: 28px;
   --lb-sidebar-w: 250px;
-  --lb-panel-w: 340px;
+  --lb-panel-w: 400px;
   --lb-composer-w: 760px;
   --lb-grid-size: 22px;
 }
@@ -77,8 +77,8 @@ html.theme-dark {
   --lb-border-strong: rgba(255, 255, 255, 0.14);
   --lb-divider: rgba(255, 255, 255, 0.08);
   --lb-hover: rgba(255,255,255,.07);
-  --lb-glass-bg: rgba(38, 38, 38, 0.88);
-  --lb-glass-topbar: rgba(255, 255, 255, 0.04);
+  --lb-glass-bg: rgba(30, 30, 32, 0.52);
+  --lb-glass-topbar: rgba(255, 255, 255, 0.06);
   --lb-conn: rgba(255, 255, 255, 0.24);
 }
 
@@ -200,48 +200,62 @@ html.theme-dark {
   background: rgba(0,0,0,.03); text-align: left; cursor: pointer;
 }
 
-/* personal homepage modal */
-.profile-modal {
-  position: absolute; inset: 0; z-index: 400; display: flex; align-items: center; justify-content: center;
-  background: rgba(0,0,0,.32);
+/* 磨砂效果直观示意（画布右下角） */
+.glass-demo {
+  position: absolute; right: 16px; top: 56px; z-index: 88;
+  width: 210px; height: 118px; border-radius: var(--lb-r-float); overflow: hidden;
+  border: var(--lb-divider-size) solid var(--lb-border);
+  box-shadow: var(--lb-shadow-float);
 }
-.profile-dialog {
-  width: min(680px, 92%); max-height: 80%; display: grid; grid-template-columns: 180px 1fr;
-  border: var(--lb-divider-size) solid var(--lb-border); border-radius: var(--lb-r-dialog);
-  background: var(--lb-glass-bg); backdrop-filter: var(--lb-glass-filter);
-  -webkit-backdrop-filter: var(--lb-glass-filter); box-shadow: var(--lb-shadow-float); overflow: hidden;
+.glass-demo-pattern {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(90deg, #ff6b9d 0 20px, #ffd166 20px 40px, #4ecdc4 40px 60px, #6c9eff 60px 80px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.08) 0 12px, transparent 12px 24px);
 }
-.profile-nav { padding: 12px; border-right: var(--lb-divider-size) solid var(--lb-divider); background: rgba(0,0,0,.02); }
-.profile-nav button {
-  display: flex; align-items: center; gap: 8px; width: 100%; height: 34px; padding: 0 10px;
-  border: none; border-radius: var(--lb-r-chrome); background: transparent;
-  font-size: var(--lb-type-body); text-align: left; cursor: pointer;
+.glass-demo-card {
+  position: absolute; inset: 20px 14px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  padding: 12px; border-radius: var(--lb-r-card);
+  border: var(--lb-divider-size) solid rgba(255,255,255,.35);
+  background: var(--lb-glass-bg);
+  backdrop-filter: var(--lb-glass-filter); -webkit-backdrop-filter: var(--lb-glass-filter);
+  font-size: var(--lb-type-compact); color: var(--lb-text); text-align: center; line-height: 1.4;
 }
-.profile-nav button.is-active { background: var(--lb-selected); color: var(--lb-accent); }
-.profile-body { padding: 20px 24px; overflow: auto; }
-.profile-body h2 { font-size: var(--lb-type-display); margin-bottom: 4px; }
-.profile-body > p { font-size: var(--lb-type-compact); color: var(--lb-text-muted); margin-bottom: 16px; }
-.profile-card {
-  display: flex; align-items: center; gap: 14px; padding: 16px;
-  border: var(--lb-divider-size) solid var(--lb-border); border-radius: var(--lb-r-card); margin-bottom: 12px;
-}
-.profile-balance {
-  padding: 16px; border: var(--lb-divider-size) solid var(--lb-border);
-  border-radius: var(--lb-r-card); background: rgba(10,132,255,.06);
-}
-.profile-balance strong { font-size: 28px; color: var(--lb-accent); }
+.glass-demo-card small { font-size: var(--lb-type-meta); color: var(--lb-text-muted); }
 
-/* stage — 直角，无圆角，无交界处投影 */
+/* personal homepage — 不在画布中央，独立入口见 个人主页-样板.html */
 .stage-wrap { background: var(--lb-bg-canvas); min-height: 0; display: flex; box-shadow: none; }
 .stage {
   flex: 1; border-radius: 0; overflow: hidden;
   background: var(--lb-bg-stage); border: none; box-shadow: none; position: relative; min-height: 0;
 }
 .canvas {
-  position: absolute; inset: 0;
+  position: absolute; inset: 0; z-index: 1;
   background-color: var(--lb-bg-stage);
   background-image: radial-gradient(circle, rgba(0,0,0,.11) 1px, transparent 1px);
   background-size: var(--lb-grid-size) var(--lb-grid-size);
+}
+/* 画布底层彩色图案 — 用于直观感受磨砂透视 */
+.canvas-bg-pattern {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 280px 220px at 18% 28%, rgba(255, 120, 160, 0.38) 0%, transparent 70%),
+    radial-gradient(ellipse 320px 260px at 72% 38%, rgba(80, 170, 255, 0.42) 0%, transparent 72%),
+    radial-gradient(ellipse 240px 200px at 48% 72%, rgba(255, 195, 90, 0.36) 0%, transparent 68%),
+    radial-gradient(ellipse 200px 180px at 85% 78%, rgba(140, 230, 170, 0.32) 0%, transparent 65%),
+    repeating-linear-gradient(
+      -32deg,
+      rgba(0, 0, 0, 0.028) 0 10px,
+      transparent 10px 22px
+    );
+}
+html.theme-dark .canvas-bg-pattern {
+  background:
+    radial-gradient(ellipse 280px 220px at 18% 28%, rgba(255, 80, 130, 0.28) 0%, transparent 70%),
+    radial-gradient(ellipse 320px 260px at 72% 38%, rgba(60, 140, 255, 0.32) 0%, transparent 72%),
+    radial-gradient(ellipse 240px 200px at 48% 72%, rgba(255, 170, 60, 0.26) 0%, transparent 68%),
+    repeating-linear-gradient(-32deg, rgba(255,255,255,.04) 0 10px, transparent 10px 22px);
 }
 html.theme-dark .canvas {
   background-image: radial-gradient(circle, rgba(255,255,255,.055) 1px, transparent 1px);
@@ -361,8 +375,8 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 }
 .composer-topbar-left, .composer-topbar-right { display: flex; align-items: center; gap: 4px; }
 .composer-topbar-rail button {
-  height: 28px; padding: 0 11px; border: none; border-radius: var(--lb-r-pill);
-  background: transparent; font-size: 12px; color: var(--lb-text-secondary); cursor: pointer;
+  height: 30px; padding: 0 12px; border: none; border-radius: var(--lb-r-pill);
+  background: transparent; font-size: var(--lb-type-compact); color: var(--lb-text-secondary); cursor: pointer;
   display: inline-flex; align-items: center; gap: 5px;
 }
 .composer-topbar-rail button.is-active { background: rgba(0,0,0,.06); color: var(--lb-text); }
@@ -393,7 +407,7 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 .composer-footer { display: flex; align-items: center; justify-content: space-between; padding: 4px 2px 2px; }
 .tool-wrap { position: relative; }
 .tool-btn {
-  display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px;
+  display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px;
   border: none; border-radius: var(--lb-r-pill); background: rgba(0,0,0,.04);
   font-size: var(--lb-type-compact); font-weight: 600; color: var(--lb-text-secondary); cursor: pointer;
 }
@@ -493,22 +507,23 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 </head>
 <body>
 
-<div class="proto-badge">完整壳层样板 v2 · 已按反馈修正</div>
+<div class="proto-badge">完整壳层样板 v3</div>
 <div class="proto-toolbar">
   <button class="lb-btn" onclick="document.documentElement.classList.toggle('theme-dark')">切换亮/暗</button>
-  <a class="lb-btn" href="字体说明.html">字体说明 →</a>
+  <a class="lb-btn" href="字体说明.html">字体说明</a>
+  <a class="lb-btn" href="个人主页-样板.html">个人主页</a>
   <a class="lb-btn" href="index.html">← 入口</a>
 </div>
 
 <div class="spec-panel">
-  <h4>描边 & 分割线参数</h4>
-  描边 <code>rgba(0,0,0,.10)</code><br>
-  强描边 <code>.16</code><br>
-  分割线 <code>rgba(0,0,0,.07)</code><br>
-  线宽 <code>1px</code><br>
-  网格间距 <code>22px</code><br>
-  连线粗细 <code>1.05px</code> 固定<br>
-  圆角：6/8/10/12/14/22
+  <h4>磨砂浮层参数</h4>
+  背景 <code>rgba(255,255,255,.50)</code><br>
+  模糊 <code>blur(22px)</code><br>
+  饱和度 <code>150%</code><br>
+  <br>
+  <h4>描边 & 分割线</h4>
+  描边 <code>.10</code> · 分割线 <code>.07</code><br>
+  网格 <code>22px</code> · 连线 <code>1.05px</code>
 </div>
 
 <div class="app">
@@ -554,7 +569,7 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
       </div>
       <div class="user-menu">
         <span class="proto-label" style="top:-18px;left:0">用户菜单</span>
-        <button class="user-menu-item"><span class="ico">🏠</span>个人主页</button>
+        <button class="user-menu-item"><span class="ico">🏠</span><a href="个人主页-样板.html" style="color:inherit;text-decoration:none">个人主页</a></button>
         <button class="user-menu-item"><span class="ico">🌓</span>主题<small>浅色</small></button>
         <button class="user-menu-item"><span class="ico">⚙</span>设置</button>
         <div class="user-menu-divider"></div>
@@ -564,31 +579,17 @@ html.theme-dark .node-media { background: linear-gradient(135deg, #1a3050, #2a20
 
     <div class="stage-wrap">
       <div class="stage">
+        <div class="canvas-bg-pattern" aria-hidden="true"></div>
         <div class="canvas">
-          <span class="proto-label" style="top:8px;left:8px">画布直角 · 网格 22px</span>
+          <span class="proto-label" style="top:8px;left:8px">画布直角 · 网格 22px · 底层有彩色图案</span>
 
-          <!-- 个人主页弹窗 -->
-          <div class="profile-modal">
-            <div class="profile-dialog">
-              <span class="proto-label" style="top:-18px;left:0">个人主页面板</span>
-              <nav class="profile-nav">
-                <button class="is-active">👤 用户中心</button>
-                <button>📊 用量看板</button>
-                <button>🕐 历史记录</button>
-                <button>⚙ 设置</button>
-              </nav>
-              <div class="profile-body">
-                <h2>用户中心</h2>
-                <p>查看账户与可用积分，按需完成充值。</p>
-                <div class="profile-card">
-                  <div class="user-avatar" style="width:48px;height:48px;font-size:20px">👤</div>
-                  <div><strong style="font-size:var(--lb-type-body)">用户</strong><br><span style="font-size:var(--lb-type-compact);color:var(--lb-text-muted)">光盒个人账户</span></div>
-                </div>
-                <div class="profile-balance">
-                  <div style="font-size:var(--lb-type-compact);color:var(--lb-text-muted)">可用积分</div>
-                  <strong>2365</strong> <span style="font-size:var(--lb-type-compact)">积分</span>
-                </div>
-              </div>
+          <!-- 磨砂效果直观示意 -->
+          <div class="glass-demo">
+            <span class="proto-label" style="top:-18px;left:0">磨砂透视示意</span>
+            <div class="glass-demo-pattern"></div>
+            <div class="glass-demo-card">
+              <strong>磨砂浮层</strong>
+              <small>后方条纹图案被模糊透视</small>
             </div>
           </div>
 
