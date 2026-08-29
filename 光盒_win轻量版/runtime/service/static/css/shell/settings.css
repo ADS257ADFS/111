@@ -6,7 +6,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 28px;
+    padding: 18px;
     color: var(--ui-text);
 }
 
@@ -15,42 +15,71 @@
 .shell-settings-backdrop {
     position: absolute;
     inset: 0;
-    background: var(--ui-backdrop);
+    z-index: 0;
+    background: rgba(0, 0, 0, .52);
+    -webkit-backdrop-filter: blur(14px) saturate(112%);
+    backdrop-filter: blur(14px) saturate(112%);
+    pointer-events: auto;
+    cursor: default;
 }
 
-.shell-settings-backdrop,
+/* Keep history modal backdrop consistent when not embedded. */
 html body #shellProjectHistoryModal:not(.shell-project-history-embedded)
     .shell-project-history-backdrop {
-    backdrop-filter: blur(8px) saturate(80%);
+    background: rgba(0, 0, 0, .52);
+    -webkit-backdrop-filter: blur(14px) saturate(112%);
+    backdrop-filter: blur(14px) saturate(112%);
+    pointer-events: auto;
+}
+
+/* While settings is open, lock page scroll and kill pointer hits behind the modal. */
+html.shell-settings-open,
+html.shell-settings-open body {
+    overflow: hidden !important;
+}
+html.shell-settings-open :is(
+    #canvasFrame,
+    .canvas-frame,
+    .gpt-dock,
+    .dock-open-btn,
+    .mm-sidebar,
+    .floating-toolbar,
+    .lightbox-native-titlebar,
+    .shell-user-menu,
+    .top-user-btn,
+    .canvas-bottom-chrome
+) {
+    pointer-events: none !important;
 }
 
 .shell-settings-dialog {
     position: relative;
     z-index: 1;
-    width: min(1180px, calc(100vw - 32px));
-    height: min(88vh, 800px);
-    max-height: calc(100vh - 32px);
+    width: min(787px, calc(100vw - 36px));
+    height: min(58vh, 533px);
+    max-height: calc(100vh - 36px);
     display: block;
     overflow: hidden;
     border: 1px solid var(--ui-border);
-    border-radius: 18px;
+    border-radius: var(--ui-radius-panel);
     background: var(--ui-surface-elevated);
     box-shadow: var(--ui-shadow-dialog);
+    font-family: var(--ui-font);
 }
 
 .shell-settings-close-btn {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 10px;
+    right: 10px;
     z-index: 12;
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 0;
     border: 1px solid transparent;
-    border-radius: 11px;
+    border-radius: var(--ui-radius-control);
     background: transparent;
     color: var(--ui-text-secondary);
     cursor: pointer;
@@ -60,19 +89,19 @@ html body #shellProjectHistoryModal:not(.shell-project-history-embedded)
     border-color: var(--ui-border);
 }
 
-.shell-settings-close-btn svg { width: 18px; height: 18px; }
+.shell-settings-close-btn svg { width: var(--ui-icon-sm); height: var(--ui-icon-sm); }
 
 .shell-settings-body {
     width: 100%;
     height: 100%;
     min-height: 0;
     display: grid;
-    grid-template-columns: 285px minmax(0, 1fr);
+    grid-template-columns: 190px minmax(0, 1fr);
 }
 
 .shell-settings-nav {
     min-height: 0;
-    padding: 22px 14px 16px;
+    padding: 14px 10px 12px;
     display: flex;
     flex-direction: column;
     border-right: 1px solid var(--ui-border);
@@ -86,23 +115,26 @@ html body #shellProjectHistoryModal:not(.shell-project-history-embedded)
     min-height: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--ui-space-5);
+    gap: var(--ui-space-4);
 }
 
 .shell-settings-nav-btn {
     width: 100%;
-    min-height: 44px;
-    padding: 0 13px;
+    min-height: 36px;
+    height: 36px;
+    padding: 0 10px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     border: 1px solid transparent;
-    border-radius: 13px;
+    border-radius: var(--ui-radius-card);
     background: transparent;
     color: var(--ui-text-secondary);
-    font: inherit;
+    font-family: var(--ui-font);
     font-size: var(--ui-type-section);
     font-weight: var(--ui-weight-medium);
+    line-height: var(--ui-leading-control);
+    letter-spacing: 0;
     text-align: left;
     cursor: pointer;
     transition: background-color var(--ui-motion-fast) var(--ui-ease), border-color var(--ui-motion-fast) var(--ui-ease);
@@ -110,25 +142,26 @@ html body #shellProjectHistoryModal:not(.shell-project-history-embedded)
 
 .shell-settings-nav-btn svg,
 .shell-settings-nav-btn i {
-    width: 17px;
-    height: 17px;
+    width: var(--ui-sidebar-nav-icon-size, 15px);
+    height: var(--ui-sidebar-nav-icon-size, 15px);
     flex: 0 0 auto;
-    stroke-width: 1.55;
+    stroke-width: var(--ui-sidebar-nav-icon-stroke, 1.8);
     color: inherit;
 }
 
 .shell-settings-nav-btn[data-shell-settings-pane="api"] svg,
 .shell-settings-nav-btn[data-shell-settings-pane="api"] i {
-    transform: translateX(-1.5px);
+    transform: translateX(-1px);
 }.shell-settings-nav-btn:hover{
     background: var(--ui-hover);
     border-color: var(--ui-border);
 }
 
 .shell-settings-nav-btn.active {
-    color: var(--ui-text);
+    color: var(--ui-accent);
     background: var(--ui-selected);
-    border-color: var(--ui-border-strong);
+    border-color: color-mix(in srgb, var(--ui-accent) 28%, transparent);
+    font-weight: var(--ui-weight-medium);
 }
 
 .shell-settings-nav-btn:disabled {
@@ -156,7 +189,7 @@ html body #shellProjectHistoryModal:not(.shell-project-history-embedded)
 .shell-settings-pane {
     display: none;
     box-sizing: border-box;
-    padding: 28px 64px 30px 30px;
+    padding: 18px 36px 20px 20px;
 }
 
 .shell-settings-pane.active {
@@ -188,21 +221,24 @@ html body #shellProjectHistoryModal:not(.shell-project-history-embedded)
     transition: none;
 }
 
-.shell-settings-section-head { margin-bottom: 20px; }
+.shell-settings-section-head { margin-bottom: 12px; }
 .shell-settings-section-head h2 {
     margin: 0 0 4px;
     color: var(--ui-text);
-    font-size: var(--gh-type-panel, 16px);
-    line-height: 1.35;
-    font-weight: var(--gh-weight-semibold, 600);
-    letter-spacing: 0;
+    font-family: var(--ui-font);
+    font-size: var(--ui-type-page);
+    line-height: var(--ui-leading-tight);
+    font-weight: var(--ui-weight-semibold);
+    letter-spacing: var(--ui-tracking-title);
 }
 .shell-settings-section-head p {
     margin: 0;
     color: var(--ui-text-muted);
-    font-size: var(--gh-type-body, 13px);
-    line-height: 1.55;
-    font-weight: var(--gh-weight-regular, 400);
+    font-family: var(--ui-font-body-cjk);
+    font-size: var(--ui-type-meta);
+    line-height: var(--ui-leading-body);
+    font-weight: var(--ui-weight-regular);
+    letter-spacing: 0;
 }
 
 .shell-settings-account-pane {
@@ -680,64 +716,103 @@ html:is(.theme-dark, .studio-theme-dark) .shell-recharge-select input[type="rang
 .shell-usage-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
+    gap: var(--ui-space-5);
 }
 .shell-usage-grid article {
-    min-height: 132px;
-    padding: 20px;
+    min-height: 88px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
-    border: 1px solid #e5e9ee;
-    border-radius: 18px;
-    background: #f7f9fa;
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-card);
+    background: var(--ui-surface-chrome);
 }
-.shell-usage-grid span { color: var(--ui-text-secondary); font-size: 12px; }
-.shell-usage-grid strong { margin: 12px 0 auto; color: var(--ui-text); font-size:var(--ui-type-display); font-weight: 600; }
-.shell-usage-grid small { color: var(--ui-text-muted); font-size: 11px; }
+.shell-usage-grid span {
+    color: var(--ui-text-secondary);
+    font-family: var(--ui-font);
+    font-size: var(--ui-type-meta);
+    font-weight: var(--ui-weight-medium);
+    line-height: var(--ui-leading-control);
+    letter-spacing: 0;
+}
+.shell-usage-grid strong {
+    margin: 8px 0 auto;
+    color: var(--ui-text);
+    font-family: var(--ui-font);
+    font-size: var(--ui-type-page);
+    font-weight: var(--ui-weight-semibold);
+    line-height: var(--ui-leading-tight);
+    letter-spacing: 0;
+}
+.shell-usage-grid small {
+    color: var(--ui-text-muted);
+    font-family: var(--ui-font);
+    font-size: var(--ui-type-meta);
+    font-weight: var(--ui-weight-regular);
+    line-height: var(--ui-leading-control);
+}
 
 .shell-settings-info-card,
 .shell-settings-empty-state {
-    margin-top: 18px;
-    padding: 22px;
-    border: 1px solid #e5e9ee;
-    border-radius: 18px;
-    background: #f7f9fa;
+    margin-top: 12px;
+    padding: 14px;
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-card);
+    background: var(--ui-surface-chrome);
 }
 .shell-settings-info-card h3,
-.shell-settings-empty-state h3 { margin: 0 0 7px; color: var(--ui-text); font-size: 14px; font-weight: 600; }
-.shell-settings-info-card p,
-.shell-settings-empty-state p { margin: 0; color: var(--ui-text-muted); font-size: 12px; line-height: 1.6; }
-.shell-settings-empty-state { min-height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-.shell-settings-empty-state > svg { width: 28px; height: 28px; margin-bottom: 14px; color: var(--ui-text-secondary); stroke-width: 1.4; }
-
-.shell-settings-shortcut-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
-.shell-settings-shortcut-item {
-    min-height: 44px;
-    padding: 8px 11px;
-    display: grid;
-    grid-template-columns: 88px minmax(0, 1fr);
-    align-items: center;
-    gap: 10px;
-    border: 1px solid #e5e9ee;
-    border-radius: 13px;
-    background: #f7f9fa;
-    color: var(--ui-text-secondary);
-    font-size:11px;
-    font-weight: 400;
+.shell-settings-empty-state h3 {
+    margin: 0 0 6px;
+    color: var(--ui-text);
+    font-family: var(--ui-font);
+    font-size: var(--ui-type-section);
+    font-weight: var(--ui-weight-semibold);
+    line-height: var(--ui-leading-tight);
+    letter-spacing: 0;
 }
-.shell-settings-shortcut-keys { min-width: 0; display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+.shell-settings-info-card p,
+.shell-settings-empty-state p {
+    margin: 0;
+    color: var(--ui-text-muted);
+    font-family: var(--ui-font-body-cjk);
+    font-size: var(--ui-type-meta);
+    font-weight: var(--ui-weight-regular);
+    line-height: var(--ui-leading-body);
+    letter-spacing: 0;
+}
+.shell-settings-empty-state { min-height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.shell-settings-empty-state > svg { width: var(--ui-icon); height: var(--ui-icon); margin-bottom: 10px; color: var(--ui-text-secondary); stroke-width: 1.4; }
+
+.shell-settings-shortcut-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ui-space-4); }
+.shell-settings-shortcut-item {
+    min-height: 36px;
+    padding: 6px 10px;
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-card);
+    background: var(--ui-surface-chrome);
+    color: var(--ui-text-secondary);
+    font-family: var(--ui-font);
+    font-size: var(--ui-type-meta);
+    font-weight: var(--ui-weight-regular);
+    line-height: var(--ui-leading-control);
+}
+.shell-settings-shortcut-keys { min-width: 0; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
 .shell-settings-shortcut-item kbd {
-    min-width: 30px;
-    height: 23px;
-    padding: 0 7px;
+    min-width: 26px;
+    height: 20px;
+    padding: 0 6px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #dce1e7;
-    border-radius: 7px;
-    background: #fff;
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-surface-card);
     color: var(--ui-text);
-    font: 445 10px ui-monospace, "SFMono-Regular", Consolas, monospace;
+    font: var(--ui-weight-latin) var(--ui-type-micro) var(--ui-font-mono);
 }
 .shell-settings-shortcut-item span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
@@ -815,9 +890,9 @@ html:is(.theme-dark, .studio-theme-dark) .shell-recharge-summary > button { box-
 html:is(.theme-dark, .studio-theme-dark) .shell-recharge-summary > button:hover { box-shadow: none; }
 
 @media (max-width: 900px) {
-    .shell-settings-modal { padding: 14px; }
-    .shell-settings-dialog { width: calc(100vw - 28px); height: calc(100vh - 28px); max-height: none; }
-    .shell-settings-body { grid-template-columns: 238px minmax(0, 1fr); }
+    .shell-settings-modal { padding: 12px; }
+    .shell-settings-dialog { width: calc(100vw - 24px); height: calc(100vh - 24px); max-height: none; }
+    .shell-settings-body { grid-template-columns: 168px minmax(0, 1fr); }
     .shell-recharge-layout { grid-template-columns: 1fr; }
     .shell-recharge-select { border-right: 0; border-bottom: 1px solid #eef1f5; }
     .shell-account-quick-list,
@@ -826,15 +901,91 @@ html:is(.theme-dark, .studio-theme-dark) .shell-recharge-summary > button:hover 
 
 @media (max-width: 640px) {
     .shell-settings-body { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); }
-    .shell-settings-nav { padding: 8px; flex-direction: row; gap: 6px; overflow-x: auto; border-right: 0; border-bottom: 1px solid #e5e9ee; }
+    .shell-settings-nav { padding: 8px; flex-direction: row; gap: 6px; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--ui-border); }
     .shell-settings-nav-main { flex-direction: row; gap: 6px; }
-    .shell-settings-nav-btn { width: auto; min-width: max-content; min-height: 38px; }
+    .shell-settings-nav-btn { width: auto; min-width: max-content; min-height: 32px; height: 32px; }
     .shell-settings-logout-btn { margin-top: 0; }
-    .shell-settings-pane { padding: 20px 52px 20px 16px; }
+    .shell-settings-pane { padding: 14px 24px 16px 14px; }
     .shell-settings-shortcut-list { grid-template-columns: 1fr; }
     .shell-recharge-presets { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .shell-account-overview { align-items: flex-start; flex-direction: column; }
     .shell-account-balance { justify-items: start; width: 100%; }
+}
+
+/* V10 type lock: beat legacy 445/600 weights from visual-typography-system. */
+html body .shell-settings-dialog,
+html body .shell-settings-dialog :where(:not(svg):not(svg *):not(pre):not(code)) {
+    font-family: var(--ui-font) !important;
+    letter-spacing: 0 !important;
+}
+
+html body .shell-settings-nav .shell-settings-nav-btn,
+html body .shell-settings-nav .shell-settings-nav-btn span {
+    font-size: var(--ui-type-section) !important;
+    font-weight: var(--ui-weight-medium) !important;
+    line-height: var(--ui-leading-control) !important;
+    color: var(--ui-text-secondary) !important;
+}
+
+html body .shell-settings-nav .shell-settings-nav-btn.active,
+html body .shell-settings-nav .shell-settings-nav-btn.active span {
+    color: var(--ui-accent) !important;
+    font-weight: var(--ui-weight-medium) !important;
+}
+
+html body .shell-settings-nav .shell-settings-logout-btn,
+html body .shell-settings-nav .shell-settings-logout-btn span {
+    color: var(--ui-danger) !important;
+    font-weight: var(--ui-weight-medium) !important;
+}
+
+html body .shell-settings-dialog .shell-settings-section-head h2 {
+    font-size: var(--ui-type-page) !important;
+    font-weight: var(--ui-weight-semibold) !important;
+    line-height: var(--ui-leading-tight) !important;
+    color: var(--ui-text) !important;
+}
+
+html body .shell-settings-dialog .shell-settings-section-head p {
+    font-size: var(--ui-type-meta) !important;
+    font-weight: var(--ui-weight-regular) !important;
+    line-height: var(--ui-leading-body) !important;
+    color: var(--ui-text-muted) !important;
+}
+
+html body .shell-settings-dialog .shell-usage-grid span {
+    font-size: var(--ui-type-meta) !important;
+    font-weight: var(--ui-weight-medium) !important;
+    line-height: var(--ui-leading-control) !important;
+    color: var(--ui-text-secondary) !important;
+}
+
+html body .shell-settings-dialog .shell-usage-grid strong {
+    font-size: var(--ui-type-page) !important;
+    font-weight: var(--ui-weight-semibold) !important;
+    line-height: var(--ui-leading-tight) !important;
+    color: var(--ui-text) !important;
+}
+
+html body .shell-settings-dialog .shell-usage-grid small {
+    font-size: var(--ui-type-meta) !important;
+    font-weight: var(--ui-weight-regular) !important;
+    line-height: var(--ui-leading-control) !important;
+    color: var(--ui-text-muted) !important;
+}
+
+html body .shell-settings-dialog :is(.shell-settings-info-card, .shell-settings-empty-state) h3 {
+    font-size: var(--ui-type-section) !important;
+    font-weight: var(--ui-weight-semibold) !important;
+    line-height: var(--ui-leading-tight) !important;
+    color: var(--ui-text) !important;
+}
+
+html body .shell-settings-dialog :is(.shell-settings-info-card, .shell-settings-empty-state) p {
+    font-size: var(--ui-type-meta) !important;
+    font-weight: var(--ui-weight-regular) !important;
+    line-height: var(--ui-leading-body) !important;
+    color: var(--ui-text-muted) !important;
 }
 
 /* Project history lives inside Settings; it no longer creates a canvas overlay. */
@@ -924,7 +1075,10 @@ html:is(.theme-dark, .studio-theme-dark) body #shellProjectHistoryModal.shell-pr
 }
 
 .shell-project-history-embedded .shell-project-history-head h2 {
-    font-size:16px;
+    font-size: var(--ui-type-page);
+    font-weight: var(--ui-weight-semibold);
+    line-height: var(--ui-leading-tight);
+    color: var(--ui-text);
 }
 
 .shell-project-history-embedded .shell-project-history-tools {
