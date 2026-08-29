@@ -3889,6 +3889,7 @@ async function bootstrapSmartCanvas(){
         try { lucide.createIcons({ root: document.getElementById('shell') || document.body }); }
         catch(_e) { try { lucide.createIcons(); } catch(__e) {} }
     }
+    applyTheme(localStorage.getItem('studio_theme') || localStorage.getItem('canvas_theme') || 'dark');
     loadPromptPresets();
     loadPromptTemplateGroups();
     loadPromptTemplateOverrides();
