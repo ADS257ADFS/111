@@ -146,7 +146,7 @@
         const overlay = document.createElement('div');
         overlay.id = 'musicResultModal';
         overlay.className = 'music-result-modal-overlay';
-        overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);';
+        overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.72);display:flex;align-items:center;justify-content:center;backdrop-filter:none;';
         overlay.innerHTML = `<div class="music-result-modal" style="background:#1a1a22;color:var(--ui-text);border-radius:14px;padding:18px 20px;width:min(420px,90vw);box-shadow:0 18px 60px rgba(0,0,0,0.4);font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;">
             <div class="music-result-modal-head" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
                 <span class="music-result-modal-title" style="font-size:14px;font-weight:600;">🎵 音乐生成完成</span>
