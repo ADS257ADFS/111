@@ -46,6 +46,7 @@ function fitViewportToPromptNode(node){
 
 function applyViewport(options={}){
     S().viewport.scale = S().safeScale(S().viewport.scale);
+    if(S().shell) S().shell._scShellRectCache = null;
     global.dispatchEvent(new CustomEvent('smart-canvas-viewport-change', {
         detail:{scale:S().viewport.scale}
     }));
@@ -59,13 +60,11 @@ function applyViewport(options={}){
         S().viewport.y = Math.round(S().viewport.y * devicePixelRatio) / devicePixelRatio;
         S().world.style.transform = `translate(${S().viewport.x}px, ${S().viewport.y}px) scale(${S().viewport.scale})`;
     }
+    // transformOnly pan/zoom: only touch compositor transform. Writing --world-scale
+    // here invalidates every descendant (wires, ports, selection borders) every frame.
+    // flushViewportApply / settle path syncs --world-scale once after the gesture.
     if(options.transformOnly) return;
     S().world.style.setProperty('--world-scale', String(S().viewport.scale));
-    // Keep the generation wave readable when the canvas is zoomed out without
-    // letting it grow beyond the pending card. Ports use the same screen-size
-    // compensation principle, but the loader is deliberately capped.
-    const generationLoaderCompensation = Math.min(2.4, Math.max(1, 1 / S().viewport.scale));
-    S().world.style.setProperty('--generation-loader-compensation', String(generationLoaderCompensation));
     if(options.light) return;
     S().shell.style.backgroundSize = '24px 24px';
     S().shell.style.backgroundPosition = '0 0';
@@ -139,10 +138,19 @@ function animateViewportTo(target, options={}){
 }
 
 function screenToWorld(event){
-    const rect = S().shell.getBoundingClientRect();
+    const shell = S().shell;
+    if(!shell) return {x:0, y:0};
+    // Cache shell rect — getBoundingClientRect every mousemove forces layout.
+    let cache = shell._scShellRectCache;
+    const now = performance.now();
+    if(!cache || (now - cache.at) > 48){
+        const rect = shell.getBoundingClientRect();
+        cache = {at: now, left: rect.left, top: rect.top};
+        shell._scShellRectCache = cache;
+    }
     return {
-        x:(event.clientX - rect.left - S().viewport.x) / S().viewport.scale,
-        y:(event.clientY - rect.top - S().viewport.y) / S().viewport.scale
+        x:(event.clientX - cache.left - S().viewport.x) / S().viewport.scale,
+        y:(event.clientY - cache.top - S().viewport.y) / S().viewport.scale
     };
 }
 
