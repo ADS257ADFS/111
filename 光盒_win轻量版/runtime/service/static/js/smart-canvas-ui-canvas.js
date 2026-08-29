@@ -391,7 +391,18 @@ ctx.minimap?.addEventListener('mousedown', e => {
     ctx.centerViewportOnWorldPoint(ctx.minimapEventToWorld(e));
 });
 window.onmousemove = e => {
-    ctx.lastMouseWorld = ctx.screenToWorld(e);
+    // Only convert to world coords when an interaction actually needs them.
+    const needsWorld =
+        ctx.portDragState ||
+        ctx.selectionState ||
+        ctx.panState ||
+        ctx.dragState ||
+        ctx.dragPending ||
+        ctx.thumbDragState ||
+        ctx.resizeState ||
+        ctx.promptSplitResizeState ||
+        ctx.smartMinimapDrag;
+    if(needsWorld) ctx.lastMouseWorld = ctx.screenToWorld(e);
     if(ctx.smartMinimapDrag){
         e.preventDefault();
         ctx.centerViewportOnWorldPoint(ctx.minimapEventToWorld(e));
@@ -796,8 +807,11 @@ window.onmouseup = e => {
         ctx.loopInsertPreview = null;
         ctx.dragState = null;
         if(stateChanged) ctx.render();
+        else {
+            ctx.refreshConnectionLayer();
+            ctx.renderMinimap?.();
+        }
         ctx.scheduleSave();
-        ctx.refreshConnectionLayer();
     }
 };
 const applyCanvasWheelInput = input => {

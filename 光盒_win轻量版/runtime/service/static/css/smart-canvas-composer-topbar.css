@@ -214,22 +214,22 @@
     justify-content: center !important;
     padding: 0 !important;
     border: 1px dashed rgba(148, 163, 184, .55) !important;
-    background: rgba(255, 255, 255, .80) !important;
-    background-color: rgba(255, 255, 255, .80) !important;
+    background: rgba(255, 255, 255, .92) !important;
+    background-color: rgba(255, 255, 255, .92) !important;
     color: rgba(26, 26, 26, .78) !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: blur(60px) !important;
-    backdrop-filter: blur(60px) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 .shell #composer .composer-card-topbar .input-thumb-upload:is(:hover, :focus-visible, :active) {
     border-color: rgba(100, 116, 139, .72) !important;
-    background: rgba(255, 255, 255, .88) !important;
-    background-color: rgba(255, 255, 255, .88) !important;
+    background: rgba(255, 255, 255, .96) !important;
+    background-color: rgba(255, 255, 255, .96) !important;
     background-image: none !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: blur(60px) !important;
-    backdrop-filter: blur(60px) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 .shell #composer .composer-card-topbar .input-thumbs-row:not(.is-stacked)
@@ -282,15 +282,15 @@ html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar
     .input-thumb-upload,
 html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar
     .input-thumb-upload:is(:hover, :focus-visible, :active) {
-    background: rgba(31, 31, 31, .80) !important;
-    background-color: rgba(31, 31, 31, .80) !important;
+    background: rgba(31, 31, 31, .92) !important;
+    background-color: rgba(31, 31, 31, .92) !important;
     background-image: none !important;
     border: 1px dashed rgba(166, 166, 166, .55) !important;
     border-color: rgba(166, 166, 166, .55) !important;
     color: rgba(241, 241, 241, .86) !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: blur(60px) !important;
-    backdrop-filter: blur(60px) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 html:is(.theme-dark, .studio-theme-dark) .shell #composer .composer-card-topbar

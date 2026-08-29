@@ -440,7 +440,7 @@ function render(){
     d().renderMinimap();
     if(window.lucide){
         try { lucide.createIcons({root:d().world}); }
-        catch(_e) { lucide.createIcons(); }
+        catch(_e) { /* never scan the whole document — that freezes WebView2 */ }
     }
     measureSmartNodeImages();
     refreshRunTimerPills();

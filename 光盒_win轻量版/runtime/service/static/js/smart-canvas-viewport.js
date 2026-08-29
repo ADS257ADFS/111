@@ -46,6 +46,7 @@ function fitViewportToPromptNode(node){
 
 function applyViewport(options={}){
     S().viewport.scale = S().safeScale(S().viewport.scale);
+    if(S().shell) S().shell._scShellRectCache = null;
     global.dispatchEvent(new CustomEvent('smart-canvas-viewport-change', {
         detail:{scale:S().viewport.scale}
     }));
@@ -138,10 +139,19 @@ function animateViewportTo(target, options={}){
 }
 
 function screenToWorld(event){
-    const rect = S().shell.getBoundingClientRect();
+    const shell = S().shell;
+    if(!shell) return {x:0, y:0};
+    // Cache shell rect — getBoundingClientRect every mousemove forces layout.
+    let cache = shell._scShellRectCache;
+    const now = performance.now();
+    if(!cache || (now - cache.at) > 48){
+        const rect = shell.getBoundingClientRect();
+        cache = {at: now, left: rect.left, top: rect.top};
+        shell._scShellRectCache = cache;
+    }
     return {
-        x:(event.clientX - rect.left - S().viewport.x) / S().viewport.scale,
-        y:(event.clientY - rect.top - S().viewport.y) / S().viewport.scale
+        x:(event.clientX - cache.left - S().viewport.x) / S().viewport.scale,
+        y:(event.clientY - cache.top - S().viewport.y) / S().viewport.scale
     };
 }
 
