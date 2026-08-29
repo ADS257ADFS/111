@@ -5259,10 +5259,10 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
     text-overflow:ellipsis;
     white-space:nowrap;
     text-align:left;
-    font-size:14px !important;
-    font-weight:520 !important;
-    font-variation-settings:"wght" 520 !important;
-    line-height:1.25 !important;
+    font-size:var(--ui-type-section) !important;
+    font-weight:var(--ui-weight-menu-strong) !important;
+    font-variation-settings:"wght" var(--ui-weight-menu-strong) !important;
+    line-height:var(--ui-leading-tight) !important;
     color:inherit !important;
 }
 

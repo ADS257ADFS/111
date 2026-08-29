@@ -1032,7 +1032,7 @@ html:not(.theme-dark):not(.studio-theme-dark) body:not(.studio-theme-dark) .canv
  * 10px !important 钉死。压缩 :is() 会丢掉中间类、输掉优先级，
  * 所以这里复刻完整 ID+类链，并多写一档同类名，保证后加载胜出。
  * 一级 footer 保持 --ui-type-section；其它上拉菜单选项用 --ui-type-meta。
- * 模式切换上拉与一级按钮同字号（--ui-type-section）。
+ * 模式切换上拉、模型选择上拉的模型名字与一级按钮同字号（--ui-type-section）。
  * ================================================================ */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer .composer-tool-wrap > .composer-tool-btn,
@@ -1762,9 +1762,9 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover .mode-model-choice .mode-model-name {
-    font-size: 14px !important;
-    font-weight: 520 !important;
-    font-variation-settings: "wght" 520 !important;
+    font-size: var(--ui-type-section) !important;
+    font-weight: var(--ui-weight-menu-strong) !important;
+    font-variation-settings: "wght" var(--ui-weight-menu-strong) !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer :is(
@@ -4606,7 +4606,8 @@ html:is(.theme-dark, .studio-theme-dark):not(#ui-shadow-reset-1):not(#ui-shadow-
  * M83：底部一级按钮上拉菜单小于一级，并使用 --ui-shadow-float。
  * 选项文字走 --ui-type-meta（11px），行高走紧凑控件档；面板内边距
  * 与宽度一并收一档。一级 footer 按钮尺寸与字号不变。
- * 例外：#composerKindPopover 模式切换与一级按钮同字号（--ui-type-section）。
+ * 例外：#composerKindPopover 模式切换、#composerApiSettingsPopover 模型名
+ * 与一级按钮同字号（--ui-type-section）。
  * ================================================================ */
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer :is(
@@ -4690,10 +4691,22 @@ body #shell.shell #composer.composer .composer-footer
 html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
 body #shell.shell #composer.composer .composer-footer
     #composerApiSettingsPopover .composer-mode-model-list .mode-model-name {
-    font-size: 14px !important;
-    font-weight: 520 !important;
-    font-variation-settings: "wght" 520 !important;
-    line-height: 1.25 !important;
+    font-size: var(--ui-type-section) !important;
+    font-weight: var(--ui-weight-menu-strong) !important;
+    font-variation-settings: "wght" var(--ui-weight-menu-strong) !important;
+    line-height: var(--ui-leading-tight) !important;
+}
+
+/* 模型列表其它入口（分支/直选）字号同一级按钮 */
+html:not(#ui-composer-pop-1):not(#ui-composer-pop-2):not(#ui-composer-pop-3):not(#ui-composer-pop-4)
+body #shell.shell #composer.composer .composer-footer #composerApiSettingsPopover :is(
+    .composer-api-branch summary,
+    .composer-api-models button,
+    .direct-option
+) {
+    font-size: var(--ui-type-section) !important;
+    font-weight: var(--ui-weight-menu-strong) !important;
+    line-height: var(--ui-leading-tight) !important;
 }
 
 /* Desc is absolutely positioned; idle name stays vertically centered. */
