@@ -4927,35 +4927,24 @@ html body #shell.shell .image-node:is(:hover,.selected) .node-resize-handle {
     text-shadow:none !important;
 }
 
-/* Dense canvases trade GPU-heavy glass for immediate interaction. The class is
-   applied automatically by the renderer and removed again below 24 nodes. */
+/* Dense canvases trade GPU-heavy glass on nodes/panels for interaction.
+   Float chrome (toolbars/menus/popovers) keeps blur(60px) — see minimax float frost. */
 html.canvas-performance-mode :is(
     .image-node,
     .image-resolution-badge,
     .smart-minimap,
-    .create-menu,
     .canvas-history-panel,
     .asset-panel,
     .prompt-template-panel,
     .prompt-preset-panel,
     .composer-card,
     .composer-card-material,
-    .composer-tool-popover,
-    .composer-api-settings-popover,
     .smart-popover,
     .loop-number-popover,
     .asset-dialog-backdrop,
     .log-modal,
     .shortcut-modal,
     .image-edit-modal,
-    #imageQuickToolbar,
-    .image-quick-toolbar,
-    .selection-capsule-bar,
-    .port-link-pick-menu,
-    .port-link-pick-shell,
-    .node-context-menu,
-    .canvas-context-menu,
-    .shell-user-menu,
     .smart-group-frame-hit,
     .canvas-bottom-capsule,
     .dock-open-btn
@@ -4972,16 +4961,7 @@ html.canvas-performance-mode .image-node,
     contain: layout style;
 }
 
-/* Toolbars that follow the selection: solid fill beats 80% alpha while panning. */
-html.canvas-performance-mode :is(
-    #imageQuickToolbar.image-quick-toolbar,
-    .image-quick-toolbar,
-    #selectionBoxCapsule .selection-capsule-bar,
-    .selection-capsule-bar
-) {
-    background: #1f1f1f !important;
-    background-color: #1f1f1f !important;
-}
+/* Float chrome keeps translucent frost while panning — no solid fill override. */
 
 /* Add-preview button: solid fill only — blur(60px) thrash in WebView2. */
 html.canvas-performance-mode #composer .input-thumb-upload,
