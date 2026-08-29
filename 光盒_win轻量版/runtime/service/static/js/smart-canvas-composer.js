@@ -49,10 +49,21 @@
             : (node ? deps.visibleReferenceImagesFor(node) : []);
         const dedup = global.SmartCanvasComposerInputThumbs?.orderedInputThumbItems?.(node, rawRefs) || rawRefs;
         const count = Array.isArray(dedup) ? dedup.length : 0;
+        const thumbsKey = node
+            ? `${node.id}|${count}|${dedup.map((img) => `${img.nodeId || ''}:${img.imageIndex ?? ''}:${img.url || ''}`).join(',')}`
+            : '';
         row.classList.toggle('has-items', Boolean(node));
         row.classList.toggle('has-previews', count > 0);
         row.classList.toggle('is-stacked', count > 1);
-        if(!node){ row.innerHTML = ''; return; }
+        const card = row.closest?.('.composer-card');
+        if(card) card.classList.toggle('has-input-thumbs', Boolean(node));
+        if(!node){
+            row.dataset.thumbsKey = '';
+            row.innerHTML = '';
+            return;
+        }
+        if(row.dataset.thumbsKey === thumbsKey && row.querySelector('.input-thumb-list')) return;
+        row.dataset.thumbsKey = thumbsKey;
         const thumbsHtml = dedup.map((img, i) => {
             const isVid = deps.isVideoMediaItem(img);
             const isSelf = node ? deps.isSelfReferenceForNode(node, img) : false;
@@ -68,6 +79,24 @@
         row.innerHTML = `<div class="input-thumb-list" style="--thumb-count:${Math.max(count, 0)}">${thumbsHtml}${uploadButton}</div>`;
         if(typeof deps.bindInputThumbsDrag === 'function') deps.bindInputThumbsDrag(node, dedup);
         global.SmartCanvasComposerInputThumbs?.bindInputThumbReferenceActions?.();
+    }
+
+    function composerParamsFingerprint(deps, composerKey){
+        const s = deps.settings || {};
+        return [
+            composerKey,
+            s.engine || '',
+            s.apiKind || '',
+            s.provider_id || '',
+            s.model || '',
+            s.ratio || '',
+            s.size || '',
+            s.quality || '',
+            s.count ?? '',
+            s.videoMode || '',
+            s.duration ?? '',
+            s.audioMode || ''
+        ].join('|');
     }
 
     function updateComposer(){
@@ -161,7 +190,11 @@
         renderInputThumbsRow(node);
         renderInputPromptPreview(node);
         deps.syncCascadeRunButton(node);
-        deps.updateProviderModels();
+        const paramsFp = composerParamsFingerprint(deps, composerKey);
+        if(switchedNode || deps._composerParamsFp !== paramsFp){
+            deps._composerParamsFp = paramsFp;
+            deps.updateProviderModels();
+        }
         global.SmartCanvasComposerText?.syncComposer?.(node);
         global.SmartCanvasCoCreate?.syncComposer?.(node);
         scheduleComposerReposition(node);

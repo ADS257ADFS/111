@@ -153,12 +153,15 @@
 .shell #composer .composer-card-topbar .input-thumb {
     width: 36px;
     height: 36px;
+    flex: 0 0 36px;
+    margin: 0;
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, .88);
     background: #ffffff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, .18);
     transform: translateY(-10px);
-    transition: transform .18s ease, margin .18s ease, left .18s ease, box-shadow .18s ease;
+    transition: transform .16s ease;
+    will-change: transform;
 }
 
 .shell #composer .composer-card-topbar .input-thumb:hover {
@@ -190,39 +193,31 @@
     transform: translateY(5px);
 }
 
-/* 多图默认叠放（图二） */
+/* 多图默认叠放：只用 transform，避免 absolute↔relative 触发布局抖动 */
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within) .input-thumb-list {
-    width: calc(36px + (min(var(--thumb-count, 1), 5) - 1) * 10px + 40px);
+    gap: 0;
 }
 
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within)
     .input-thumb:not(.input-thumb-upload) {
-    position: absolute;
-    left: calc(var(--thumb-i, 0) * 10px);
-    bottom: 0;
-    margin: 0;
+    margin-right: -26px;
     z-index: calc(2 + var(--thumb-i, 0));
     transform: translateY(-10px) rotate(calc((var(--thumb-i, 0) - 1) * 4deg));
 }
 
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:not(:hover):not(:focus-within)
     .input-thumb-upload {
-    position: absolute;
-    left: calc(min(var(--thumb-count, 1), 5) * 10px + 14px);
-    bottom: 0;
     z-index: 20;
     transform: translateY(-10px) rotate(6deg);
 }
 
-/* 悬停横向展开（图三） */
+/* 悬停横向展开 */
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:is(:hover, :focus-within) .input-thumb-list {
     gap: 8px;
-    width: auto;
 }
 
 .shell #composer .composer-card-topbar .input-thumbs-row.is-stacked:is(:hover, :focus-within) .input-thumb {
-    position: relative;
-    left: auto !important;
+    margin-right: 0;
     z-index: 2;
     transform: translateY(-10px) rotate(0deg);
 }

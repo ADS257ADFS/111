@@ -3393,14 +3393,14 @@ html body #shell.shell #composer.composer:not([data-height-state="expanded"])
 
 /* 预览已挪到顶栏：把原先 thumbs 行高度还给输入区，底部栏总高不变 */
 html body #shell.shell #composer.composer:not([data-height-state="expanded"])
-    .composer-card:has(#inputThumbsRow.has-items) > .prompt-row {
+    .composer-card.has-input-thumbs > .prompt-row {
     min-height: calc(119px + var(--ui-composer-prompt-padding-top)) !important;
     height: calc(119px + var(--ui-composer-prompt-padding-top)) !important;
     max-height: calc(119px + var(--ui-composer-prompt-padding-top)) !important;
 }
 
 html body #shell.shell #composer.composer:not([data-height-state="expanded"])
-    .composer-card:has(#inputThumbsRow.has-items) > .prompt-row > #promptInput.prompt-input {
+    .composer-card.has-input-thumbs > .prompt-row > #promptInput.prompt-input {
     min-height: 119px !important;
 }
 
@@ -5491,66 +5491,22 @@ body #shell.shell #composer.composer .composer-card-topbar
 }
 
 
-/* 深色悬停：彻底去掉黑底径向 + 边缘内发光（末层兜底） */
-html:not(#ui-dark-hov-flat-1):not(#ui-dark-hov-flat-2):not(#ui-dark-hov-flat-3):not(#ui-dark-hov-flat-4):is(.theme-dark, .studio-theme-dark)
-body :is(
-    button,
-    [role="button"],
-    summary,
-    .mode-model-choice,
-    .port-link-pick-item,
-    .canvas-bottom-capsule-btn,
-    .canvas-bottom-help-btn,
-    .mm-sidebar-reopen,
-    .size-picker-option,
-    .count-cell,
-    .mm-asset-tree-root,
-    .mm-asset-tree-folder-btn,
-    .mm-sidebar-nav > button,
-    .mm-kind-item,
-    .mm-kind-back,
-    .mm-sidebar-collapse,
-    .mm-sidebar-gear,
-    .mm-sidebar-user,
-    .composer-tool-btn,
-    .composer-api-settings-btn,
-    .composer-template-btn
-):not(:disabled):not(.run-btn):not(.cascade-run-btn):not(.primary):not(.primary-btn):not(.is-stop):not(.mm-recent-group-head):not(.dock-chrome-title-trigger)
-:is(:hover, :focus-visible),
-html:not(#ui-dark-hov-flat-1):not(#ui-dark-hov-flat-2):not(#ui-dark-hov-flat-3):not(#ui-dark-hov-flat-4):is(.theme-dark, .studio-theme-dark)
-body .mm-sidebar .mm-recent-item:is(:hover, :focus-within, .menu-open, .active) {
+/* 深色悬停：去掉黑底径向/内发光（轻量版，避免超长 :is/:not 悬停税） */
+html.theme-dark #shell.shell :is(button, [role="button"], summary):not(:disabled):not(.run-btn):not(.primary):not(.primary-btn):is(:hover, :focus-visible),
+html.studio-theme-dark #shell.shell :is(button, [role="button"], summary):not(:disabled):not(.run-btn):not(.primary):not(.primary-btn):is(:hover, :focus-visible) {
     background-image: none !important;
-    box-shadow: none !important;
 }
-
-/* 深色：彻底取消按钮悬停黑色圆角底（含顶栏 / 上传+ / 普通 button） */
-html:not(#ui-no-black-hov-1):not(#ui-no-black-hov-2):is(.theme-dark, .studio-theme-dark)
-body #shell.shell #composer.composer :is(
-    button,
-    .composer-asset-shortcut,
-    .co-create-switch,
-    .composer-tool-btn,
-    .composer-api-settings-btn,
-    .composer-height-toggle
-):not(.run-btn):not(.cascade-run-btn):not(.primary):not(.primary-btn):not(.is-stop):not([aria-pressed="true"].co-create-switch):not(.is-on):not(.input-thumb-upload)
-:is(:hover, :focus-visible) {
-    background-image: none !important;
-    box-shadow: none !important;
-}
-html:not(#ui-no-black-hov-1):not(#ui-no-black-hov-2):is(.theme-dark, .studio-theme-dark)
-body #shell.shell #composer.composer :is(
-    .composer-asset-shortcut,
-    .co-create-switch,
-    .composer-height-toggle
-):not(.is-on):not([aria-pressed="true"])
-:is(:hover, :focus-visible) {
+html.theme-dark #shell.shell #composer.composer :is(.composer-asset-shortcut, .co-create-switch, .composer-height-toggle):not(.is-on):not([aria-pressed="true"]):is(:hover, :focus-visible),
+html.studio-theme-dark #shell.shell #composer.composer :is(.composer-asset-shortcut, .co-create-switch, .composer-height-toggle):not(.is-on):not([aria-pressed="true"]):is(:hover, :focus-visible) {
     background: transparent !important;
     background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
 }
-html:not(#ui-no-black-hov-1):not(#ui-no-black-hov-2):is(.theme-dark, .studio-theme-dark)
-body #shell.shell #composer.composer .input-thumb-upload:is(:hover, :focus-visible, :active),
-html:not(#ui-no-black-hov-1):not(#ui-no-black-hov-2):is(.theme-dark, .studio-theme-dark)
-body #shell.shell #composer.composer .input-thumb-upload {
+html.theme-dark #shell.shell #composer.composer .input-thumb-upload,
+html.theme-dark #shell.shell #composer.composer .input-thumb-upload:is(:hover, :focus-visible, :active),
+html.studio-theme-dark #shell.shell #composer.composer .input-thumb-upload,
+html.studio-theme-dark #shell.shell #composer.composer .input-thumb-upload:is(:hover, :focus-visible, :active) {
     background: #ffffff !important;
     background-color: #ffffff !important;
     background-image: none !important;

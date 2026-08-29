@@ -1662,7 +1662,11 @@ let _jimengLastVideoCommand = null;
             composerHeadParams.innerHTML = renderModeModelList('image');
         }
         if(typeof bindSmartControlPills === 'function') bindSmartControlPills(composerHeadParams);
-        if(global.lucide) lucide.createIcons();
+        if(global.lucide?.createIcons){
+            const root = (typeof d === 'function' ? d()?.composer : null) || global.document?.getElementById?.('composer') || undefined;
+            try { lucide.createIcons(root ? { root } : undefined); }
+            catch(_e){ lucide.createIcons(); }
+        }
     }
 
     function renderApiParams(){
@@ -2436,7 +2440,11 @@ let _jimengLastVideoCommand = null;
             syncApiKindToggleVisibility();
             global.SmartCanvasComposerText.syncComposer(selected);
             bindComposerApiSettings();
-            if(global.lucide) lucide.createIcons();
+            if(global.lucide?.createIcons){
+            const root = (typeof d === 'function' ? d()?.composer : null) || global.document?.getElementById?.('composer') || undefined;
+            try { lucide.createIcons(root ? { root } : undefined); }
+            catch(_e){ lucide.createIcons(); }
+        }
             const scheduleComposerReposition = deps.scheduleComposerReposition;
             if(composer?.classList.contains('open') && typeof scheduleComposerReposition === 'function') scheduleComposerReposition(selected);
             return;
@@ -2478,7 +2486,11 @@ let _jimengLastVideoCommand = null;
         syncComposerToolVisibility();
         syncSizeChoiceGliders();
         if(typeof deps.persistActiveSmartSettings === 'function') deps.persistActiveSmartSettings();
-        if(global.lucide) lucide.createIcons();
+        if(global.lucide?.createIcons){
+            const root = (typeof d === 'function' ? d()?.composer : null) || global.document?.getElementById?.('composer') || undefined;
+            try { lucide.createIcons(root ? { root } : undefined); }
+            catch(_e){ lucide.createIcons(); }
+        }
         const selectedNode = deps.selectedNode;
         const scheduleComposerReposition = deps.scheduleComposerReposition;
         const openNode = typeof selectedNode === 'function' ? selectedNode() : null;
