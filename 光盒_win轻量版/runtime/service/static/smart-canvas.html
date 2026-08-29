@@ -45,11 +45,11 @@
     <link rel="stylesheet" href="/static/css/studio-theme-dark.css?v=2026.08.29.nofrost1">
     <link rel="stylesheet" href="/static/css/visual-system-preview.css?v=2026.08.29.nofrost1">
 <link rel="stylesheet" href="/static/css/visual-typography-system.css?v=2026.08.29.nofrost1">
-    <link rel="stylesheet" href="/static/css/canvas-dark-glass.css?v=2026.08.29.modelhov1">
+    <link rel="stylesheet" href="/static/css/canvas-dark-glass.css?v=2026.08.29.modelmenu1">
     <link rel="stylesheet" href="/static/css/canvas-clear-glass.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-footer-previews.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-control-metrics.css?v=2026.08.11.82">
-    <link rel="stylesheet" href="/static/css/smart-canvas-composer-topbar.css?v=2026.08.29.topbarblk1">
+    <link rel="stylesheet" href="/static/css/smart-canvas-composer-topbar.css?v=2026.08.29.modelmenu1">
     <link rel="stylesheet" href="/static/css/smart-canvas-shell-chrome.css?v=2026.08.11.82">
     <link rel="stylesheet" href="/static/css/smart-canvas-control-weight.css?v=2026.08.11.82">
     <script>
@@ -62,7 +62,7 @@
 <link rel="stylesheet" href="/static/css/native-ui-zoom.css?v=2026.08.11.82">
 <link rel="stylesheet" href="/static/css/design-tokens.css?v=2026.08.29.froston2">
   <link rel="stylesheet" href="/static/css/ui-primitives.css?v=2026.08.11.82">
-  <link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.29.topbarblk1">
+  <link rel="stylesheet" href="/static/css/minimax-visual.css?v=2026.08.29.modelmenu1">
   <style id="canvasZoomCompactType">
     #shell.shell #canvasZoomMenuBtn.canvas-zoom-value-btn {
       font-size: 11px !important;
@@ -127,7 +127,7 @@
     }
   </style>
   <style id="modelChoiceNoHoverFill">
-    /* Last-load lock: model picker rows never show hover/active slab fill. */
+    /* Last-load lock: model picker rows never show hover/active slab fill or frame. */
     #composerApiSettingsPopover .mode-model-choice,
     #composerApiSettingsPopover .mode-model-choice:hover,
     #composerApiSettingsPopover .mode-model-choice:focus,
@@ -145,6 +145,13 @@
       background: transparent !important;
       background-color: transparent !important;
       background-image: none !important;
+      box-shadow: none !important;
+    }
+    #composerApiSettingsPopover .mode-model-choice:is(:hover, :focus-visible)::before,
+    #composerApiSettingsPopover .mode-model-choice:is(:hover, :focus-visible)::after {
+      content: none !important;
+      display: none !important;
+      background: none !important;
       box-shadow: none !important;
     }
   </style>
@@ -189,10 +196,10 @@
                                     </button>
                                     <div id="composerKindPopover" class="composer-tool-popover" role="menu" aria-label="模式切换">
                                         <div id="apiKindToggle" class="composer-kind-toggle" role="group" aria-label="模式切换">
-                                            <button type="button" data-kind="image" class="active" title="图片生成" aria-label="图片生成" role="menuitem"><i data-lucide="image"></i><span>图片生成</span></button>
-                                            <button type="button" data-kind="video" title="视频生成" aria-label="视频生成" role="menuitem"><i data-lucide="film"></i><span>视频生成</span></button>
-                                            <button type="button" data-kind="text" title="文本生成" aria-label="文本生成" role="menuitem"><i data-lucide="message-square-text"></i><span>文本生成</span></button>
-                                            <button type="button" data-kind="audio" title="音频生成" aria-label="音频生成" role="menuitem"><i data-lucide="music-2"></i><span>音频生成</span></button>
+                                            <button type="button" data-kind="image" class="active" title="图片生成" aria-label="图片生成" role="menuitem"><i data-lucide="image"></i><span class="composer-kind-copy"><span class="composer-kind-label">图片生成</span><span class="composer-kind-hint">Image</span></span><i data-lucide="check" class="composer-kind-check" aria-hidden="true"></i></button>
+                                            <button type="button" data-kind="video" title="视频生成" aria-label="视频生成" role="menuitem"><i data-lucide="film"></i><span class="composer-kind-copy"><span class="composer-kind-label">视频生成</span><span class="composer-kind-hint">Video</span></span><i data-lucide="check" class="composer-kind-check" aria-hidden="true"></i></button>
+                                            <button type="button" data-kind="text" title="文本生成" aria-label="文本生成" role="menuitem"><i data-lucide="message-square-text"></i><span class="composer-kind-copy"><span class="composer-kind-label">文本生成</span><span class="composer-kind-hint">Text</span></span><i data-lucide="check" class="composer-kind-check" aria-hidden="true"></i></button>
+                                            <button type="button" data-kind="audio" title="音频生成" aria-label="音频生成" role="menuitem"><i data-lucide="music-2"></i><span class="composer-kind-copy"><span class="composer-kind-label">音频生成</span><span class="composer-kind-hint">Audio</span></span><i data-lucide="check" class="composer-kind-check" aria-hidden="true"></i></button>
                                         </div>
                                     </div>
                                 </div>

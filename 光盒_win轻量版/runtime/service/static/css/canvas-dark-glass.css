@@ -1715,9 +1715,25 @@ and these rows must not depend on a travelling glider. */
         #composerVideoReferencePopover,
         #composerKindPopover,
         #composerSizePopover
-    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible) {
+    ) :is(button, summary, [role="button"]):not(.mode-model-choice):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible) {
     border: 1px solid rgba(255, 255, 255, .08) !important;
     border-radius: 8px !important;
+}
+
+/* 模型名行：禁止悬停灰方框（描边 + 底填一律清掉） */
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice:is(:hover, :focus, :focus-visible, :active),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice:is(.active, .selected, [aria-selected="true"], [aria-checked="true"]) {
+    border: 0 !important;
+    border-color: transparent !important;
+    outline: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
 }
 
 /* The shared typography layer targets these controls by ID. Match that
