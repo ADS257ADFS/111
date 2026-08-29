@@ -3395,7 +3395,7 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages .bubble.user {
 
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-topbar {
-    z-index: calc(var(--ui-z-raised) + 3) !important;
+    z-index: calc(var(--ui-z-raised) + 6) !important;
     top: var(--ui-composer-topbar-offset, 0) !important;
     height: var(--ui-composer-topbar-h) !important;
     padding-top: var(--ui-composer-topbar-content-inset) !important;
@@ -3433,17 +3433,17 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
     backdrop-filter: none!important;
 }
 
-/* 深色：窄条半透明磨砂（底框可透出细描边） */
+/* 深色：窄条半透明磨砂（底框上移压进窄条，透过磨砂可见） */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-topbar {
-    border: 1px solid var(--ui-panel-frost-border, rgba(255, 255, 255, .16)) !important;
-    border-color: var(--ui-panel-frost-border, rgba(255, 255, 255, .16)) !important;
-    background: var(--ui-panel-frost, rgba(31, 31, 31, .55)) !important;
-    background-color: var(--ui-panel-frost, rgba(31, 31, 31, .55)) !important;
+    border: 1px solid rgba(255, 255, 255, .16) !important;
+    border-color: rgba(255, 255, 255, .16) !important;
+    background: rgba(31, 31, 31, .42) !important;
+    background-color: rgba(31, 31, 31, .42) !important;
     background-image: none !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: var(--ui-panel-frost-blur, blur(60px) saturate(140%)) !important;
-    backdrop-filter: var(--ui-panel-frost-blur, blur(60px) saturate(140%)) !important;
+    -webkit-backdrop-filter: blur(60px) saturate(140%) !important;
+    backdrop-filter: blur(60px) saturate(140%) !important;
 }
 
 /* 磨砂底不再画在顶排伪元素上（改由 composer-card-material 承载，见下）。 */
@@ -5244,7 +5244,7 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
     --sc-blur: 60px;
     --sc-border: rgba(255, 255, 255, .16);
     --lightbox-chrome-bg: #1f1f1f;
-    --ui-panel-frost: rgba(31, 31, 31, .55);
+    --ui-panel-frost: rgba(31, 31, 31, .42);
     --ui-panel-frost-blur: blur(60px) saturate(140%);
     --ui-panel-frost-border: rgba(255, 255, 255, .16);
 }
@@ -5810,7 +5810,7 @@ html.canvas-performance-mode body #shell.shell #composer.composer .input-thumb-u
 /* Float frost tokens on; never apply backdrop-filter via body *. */
 html, html.theme-dark, html.studio-theme-dark,
 html body, html.theme-dark body, html.studio-theme-dark body {
-    --ui-panel-frost: rgba(31, 31, 31, .55) !important;
+    --ui-panel-frost: rgba(31, 31, 31, .42) !important;
     --ui-panel-frost-blur: blur(60px) saturate(140%) !important;
     --ui-composer-topbar-filter: none !important;
     --sc-blur: 60px !important;
@@ -5998,32 +5998,38 @@ html.studio-theme-dark body #shell.shell #composer.composer
     box-shadow: none !important;
 }
 
-/* 深色底栏窄条：半透明磨砂；底框抬到窄条之上露出细描边；控件仍在最上 */
+/* 深色底栏窄条：半透明磨砂压在底框之上（底框上移压进窄条，透过磨砂可见描边）
+ * 注意：绝不能把 surface z-index 抬过 topbar，否则实色底框会盖死磨砂，看起来像两截硬叠。 */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-topbar,
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer.open
     .composer-card > .composer-card-topbar {
-    border: 1px solid var(--ui-panel-frost-border, rgba(255, 255, 255, .16)) !important;
-    border-color: var(--ui-panel-frost-border, rgba(255, 255, 255, .16)) !important;
-    background: var(--ui-panel-frost, rgba(31, 31, 31, .55)) !important;
-    background-color: var(--ui-panel-frost, rgba(31, 31, 31, .55)) !important;
+    z-index: calc(var(--ui-z-raised) + 6) !important;
+    border: 1px solid rgba(255, 255, 255, .16) !important;
+    border-color: rgba(255, 255, 255, .16) !important;
+    background: rgba(31, 31, 31, .42) !important;
+    background-color: rgba(31, 31, 31, .42) !important;
     background-image: none !important;
-    -webkit-backdrop-filter: var(--ui-panel-frost-blur, blur(60px) saturate(140%)) !important;
-    backdrop-filter: var(--ui-panel-frost-blur, blur(60px) saturate(140%)) !important;
+    -webkit-backdrop-filter: blur(60px) saturate(140%) !important;
+    backdrop-filter: blur(60px) saturate(140%) !important;
 }
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-material {
     display: none !important;
 }
-/* 底框压在窄条背景之上，顶边细描边可见；左右控件/输入区再压上来 */
+/* 底框上移压进窄条约一半，细描边透过磨砂可见 */
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > .composer-card-surface {
-    z-index: calc(var(--ui-z-raised) + 4) !important;
+    z-index: calc(var(--ui-z-raised) + 1) !important;
+    top: 18px !important;
     border: 1px solid rgba(255, 255, 255, .16) !important;
     border-color: rgba(255, 255, 255, .16) !important;
 }
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
-    .composer-card > .composer-card-topbar > :is(.composer-card-topbar-left, .composer-card-topbar-right),
+    .composer-card > .composer-card-topbar > :is(.composer-card-topbar-left, .composer-card-topbar-right) {
+    z-index: calc(var(--ui-z-raised) + 7) !important;
+    position: relative !important;
+}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-card > :not(.composer-card-material):not(.composer-card-surface):not(.composer-card-topbar) {
     z-index: calc(var(--ui-z-raised) + 5) !important;

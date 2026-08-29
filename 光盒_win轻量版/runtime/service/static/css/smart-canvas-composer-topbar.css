@@ -26,13 +26,13 @@
 }
 
 :is(html.theme-dark, html.studio-theme-dark) .shell #composer .composer-card-topbar {
-    border: 1px solid var(--ui-panel-frost-border, rgba(255, 255, 255, .16)) !important;
-    border-bottom: 1px solid var(--ui-panel-frost-border, rgba(255, 255, 255, .16)) !important;
-    background: var(--ui-panel-frost, rgba(31, 31, 31, .55)) !important;
-    background-color: var(--ui-panel-frost, rgba(31, 31, 31, .55)) !important;
+    border: 1px solid rgba(255, 255, 255, .16) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, .16) !important;
+    background: rgba(31, 31, 31, .42) !important;
+    background-color: rgba(31, 31, 31, .42) !important;
     background-image: none !important;
-    -webkit-backdrop-filter: var(--ui-panel-frost-blur, blur(60px) saturate(140%)) !important;
-    backdrop-filter: var(--ui-panel-frost-blur, blur(60px) saturate(140%)) !important;
+    -webkit-backdrop-filter: blur(60px) saturate(140%) !important;
+    backdrop-filter: blur(60px) saturate(140%) !important;
 }
 
 /* Unified, slightly larger controls across both sides of the composer top bar. */
