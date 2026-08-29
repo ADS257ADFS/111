@@ -171,8 +171,7 @@
 
         const perGroup = perGroupCount(node);
         const pending = Math.max(0, Number(node?.pending) || 0);
-        const wavePhase = -(2000 + (Date.now() % 2000));
-        const waveLoader = () => `<div class="generation-wave-loader" style="--generation-wave-phase:${wavePhase}ms" aria-hidden="true">${Array.from({length:16}, () => '<span class="generation-wave-block"></span>').join('')}</div>`;
+        const waveLoader = () => `<div class="generation-wave-loader generation-ig-loader" role="img" aria-label="生成中" aria-hidden="true"><span class="generation-ig-dots" aria-hidden="true"></span><span class="generation-ig-glow" aria-hidden="true"></span></div>`;
         const body = displayGroups.map(group => {
             const metrics = measureGroupGrid(group, node, scale, perGroup, pending);
             const promptLabel = esc(String(group.prompt || '').trim() || tr('smart.coCreateUntitled') || '提示词');

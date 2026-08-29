@@ -1,0 +1,440 @@
+/* Independent rounded startup panel → zoom into fullscreen software. */
+
+html.lightbox-shader-intro-active,
+html.lightbox-shader-intro-active body {
+    background: #0a0a0a !important;
+    overflow: hidden !important;
+}
+
+html.lightbox-shader-intro-active :is(
+    .lightbox-native-titlebar,
+    .mm-sidebar,
+    .workspace,
+    .gpt-dock,
+    .dock-resizer,
+    .dock-open-btn,
+    .lightbox-native-resize-handle
+) {
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+.lightbox-shader-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    box-sizing: border-box;
+    background: #000;
+    overflow: hidden;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lightbox-shader-intro.is-done {
+    display: none !important;
+}
+
+.lightbox-shader-intro-panel {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+    overflow: hidden;
+    background: #000;
+    border: 0;
+    box-shadow: none;
+    transform: translateZ(0);
+    opacity: 1;
+    contain: strict;
+    backface-visibility: hidden;
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lightbox-shader-intro.is-exiting .lightbox-shader-intro-panel {
+    opacity: 0;
+    will-change: opacity;
+    pointer-events: none;
+}
+
+.lightbox-shader-intro.is-exiting {
+    pointer-events: none;
+    transition: background 0.5s ease;
+    background: transparent;
+}
+
+/* Stage: CSS motion visible instantly; WebGL canvas stacks on top when live. */
+.lightbox-shader-intro-stage {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+    opacity: 1;
+}
+
+.lightbox-shader-intro-stage::before {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        repeating-conic-gradient(
+            from 0deg at 50% 50%,
+            #000 0deg 6deg,
+            #141414 6deg 12deg,
+            #2a2a2a 12deg 18deg,
+            #0a0a0a 18deg 24deg
+        );
+    animation: lightbox-shader-intro-css-motion 5s linear infinite;
+    opacity: 1;
+}
+
+.lightbox-shader-intro.is-shader-live .lightbox-shader-intro-stage::before {
+    opacity: 0;
+    visibility: hidden;
+    animation: none;
+}
+
+@keyframes lightbox-shader-intro-css-motion {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.lightbox-shader-intro-stage canvas {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Logo: opacity 0→1 over 2s once playback starts (ID selectors match critical CSS). */
+.lightbox-shader-intro-label {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    padding: 0 1.5rem;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label,
+#lightboxShaderIntro.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label {
+    visibility: visible;
+    opacity: 1;
+}
+
+.lightbox-shader-intro-label img {
+    display: block;
+    height: clamp(1.9rem, 5.67vw, 3.73rem);
+    width: auto;
+    max-width: min(86%, 320px);
+    object-fit: contain;
+    object-position: center;
+    opacity: 0;
+    filter: brightness(0) invert(1);
+    transform: translateZ(0);
+    user-select: none;
+    -webkit-user-drag: none;
+    will-change: opacity;
+}
+
+.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label img,
+#lightboxShaderIntro.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label img {
+    animation: lightbox-shader-intro-logo-fade 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes lightbox-shader-intro-logo-fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.lightbox-shader-intro.is-exiting .lightbox-shader-intro-label,
+#lightboxShaderIntro.lightbox-shader-intro.is-exiting .lightbox-shader-intro-label {
+    opacity: 0;
+    animation: none;
+    transition: opacity 0.35s ease;
+}
+
+.lightbox-shader-intro.is-exiting .lightbox-shader-intro-label img,
+#lightboxShaderIntro.lightbox-shader-intro.is-exiting .lightbox-shader-intro-label img {
+    animation: none;
+}
+
+html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro {
+    padding: 0;
+}
+
+html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro-panel {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    min-height: 0;
+    aspect-ratio: auto;
+    border-radius: 0;
+    border: 0;
+}
+
+/* Bottom loader — Uiverse (andrew-manzyk), scaled down, 20px from bottom edge. */
+.lightbox-shader-intro-loader {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    z-index: 3;
+    transform: translateX(-50%);
+    pointer-events: none;
+    opacity: 0.92;
+}
+
+.lightbox-shader-intro.is-exiting .lightbox-shader-intro-loader,
+.lightbox-shader-intro.is-done .lightbox-shader-intro-loader {
+    opacity: 0;
+    transition: opacity 0.28s ease;
+}
+
+.lightbox-shader-intro-loader .loader {
+    --main-size: 2em;
+    --text-color: #ffffff;
+    --shine-color: #ffffff40;
+    --shadow-color: #aaaaaa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    user-select: none;
+    position: relative;
+    font-size: var(--main-size);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--text-color);
+    width: 7.3em;
+    height: 1em;
+    filter: drop-shadow(0 0 0.05em var(--shine-color));
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    letter-spacing: 0.02em;
+}
+
+.lightbox-shader-intro-loader .loader .text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    position: absolute;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(1) {
+    clip-path: polygon(0% 0%, 11.11% 0%, 11.11% 100%, 0% 100%);
+    font-size: calc(var(--main-size) / 20);
+    margin-left: -2.1em;
+    opacity: 0.6;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(2) {
+    clip-path: polygon(11.11% 0%, 22.22% 0%, 22.22% 100%, 11.11% 100%);
+    font-size: calc(var(--main-size) / 16);
+    margin-left: -0.98em;
+    opacity: 0.7;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(3) {
+    clip-path: polygon(22.22% 0%, 33.33% 0%, 33.33% 100%, 22.22% 100%);
+    font-size: calc(var(--main-size) / 13);
+    margin-left: -0.33em;
+    opacity: 0.8;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(4) {
+    clip-path: polygon(33.33% 0%, 44.44% 0%, 44.44% 100%, 33.33% 100%);
+    font-size: calc(var(--main-size) / 11);
+    margin-left: -0.05em;
+    opacity: 0.9;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(5) {
+    clip-path: polygon(44.44% 0%, 55.55% 0%, 55.55% 100%, 44.44% 100%);
+    font-size: calc(var(--main-size) / 10);
+    margin-left: 0em;
+    opacity: 1;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(6) {
+    clip-path: polygon(55.55% 0%, 66.66% 0%, 66.66% 100%, 55.55% 100%);
+    font-size: calc(var(--main-size) / 11);
+    margin-left: 0.05em;
+    opacity: 0.9;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(7) {
+    clip-path: polygon(66.66% 0%, 77.77% 0%, 77.77% 100%, 66.66% 100%);
+    font-size: calc(var(--main-size) / 13);
+    margin-left: 0.33em;
+    opacity: 0.8;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(8) {
+    clip-path: polygon(77.77% 0%, 88.88% 0%, 88.88% 100%, 77.77% 100%);
+    font-size: calc(var(--main-size) / 16);
+    margin-left: 0.98em;
+    opacity: 0.7;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(9) {
+    clip-path: polygon(88.88% 0%, 100% 0%, 100% 100%, 88.88% 100%);
+    font-size: calc(var(--main-size) / 20);
+    margin-left: 2.1em;
+    opacity: 0.6;
+}
+
+.lightbox-shader-intro-loader .loader .text span {
+    animation:
+        lightbox-intro-loader-scrolling 2s cubic-bezier(0.1, 0.6, 0.9, 0.4) infinite,
+        lightbox-intro-loader-shadow 2s cubic-bezier(0.1, 0.6, 0.9, 0.4) infinite;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(1) span {
+    background: linear-gradient(to right, var(--text-color) 4%, var(--shadow-color) 7%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(2) span {
+    background: linear-gradient(to right, var(--text-color) 9%, var(--shadow-color) 13%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(3) span {
+    background: linear-gradient(to right, var(--text-color) 15%, var(--shadow-color) 18%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(4) span {
+    background: linear-gradient(to right, var(--text-color) 20%, var(--shadow-color) 23%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(6) span {
+    background: linear-gradient(to right, var(--shadow-color) 29%, var(--text-color) 32%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(7) span {
+    background: linear-gradient(to right, var(--shadow-color) 34%, var(--text-color) 37%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(8) span {
+    background: linear-gradient(to right, var(--shadow-color) 39%, var(--text-color) 42%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.lightbox-shader-intro-loader .loader .text:nth-child(9) span {
+    background: linear-gradient(to right, var(--shadow-color) 45%, var(--text-color) 48%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.lightbox-shader-intro-loader .loader .line {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    height: 3px;
+    width: 7.3em;
+    margin-top: 0.55em;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .22);
+}
+
+.lightbox-shader-intro-loader .loader .line::before {
+    content: none;
+    display: none;
+}
+
+.lightbox-shader-intro-loader .loader .line::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 38%;
+    background: linear-gradient(90deg, rgba(255,255,255,.35), #fff 55%, rgba(255,255,255,.35));
+    border-radius: 999px;
+    transform: translateX(-120%);
+    animation: lightbox-intro-progress-slide 1.35s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes lightbox-intro-progress-slide {
+    0% { transform: translateX(-120%); }
+    100% { transform: translateX(320%); }
+}
+
+@keyframes lightbox-intro-loader-wobble {
+    0% { transform: translateX(-90%); }
+    50% { transform: translateX(90%); }
+    100% { transform: translateX(-90%); }
+}
+
+@keyframes lightbox-intro-loader-scrolling {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+@keyframes lightbox-intro-loader-shadow {
+    0% { background-position: -98% 0; }
+    100% { background-position: 102% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lightbox-shader-intro-loader .loader .text span,
+    .lightbox-shader-intro-loader .loader .line::after {
+        animation: none !important;
+    }
+    .lightbox-shader-intro-loader .loader .line::after {
+        transform: none;
+        width: 55%;
+        left: 22.5%;
+    }
+}

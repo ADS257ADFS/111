@@ -11,30 +11,50 @@
         return c;
     }
 
+    function cloneNodePayload(node){
+        if(typeof S().serializableSmartNode === 'function'){
+            return S().serializableSmartNode(node);
+        }
+        return JSON.parse(JSON.stringify(node || {}));
+    }
+
 function copySelectedNodes(nodeIds){
     if(!S().canvas) return false;
-    const ids = Array.isArray(nodeIds) && nodeIds.length ? nodeIds : S().selectedNodeIds();
+    const ids = Array.isArray(nodeIds) && nodeIds.length ? nodeIds : (S().selectedNodeIds?.() || []);
     const copiedNodes = ids.map(id => S().nodes.find(n => n.id === id)).filter(Boolean);
-    if(!copiedNodes.length) return false;
-    const idSet = new Set(copiedNodes.map(n => n.id));
-    const copiedConnections = (S().canvas.connections || []).filter(c => idSet.has(c.from) && idSet.has(c.to));
-    S().nodeClipboard = {
-        nodes:JSON.parse(JSON.stringify(copiedNodes)),
-        connections:JSON.parse(JSON.stringify(copiedConnections))
-    };
-    S().toast(`Copied ${copiedNodes.length} nodes`);
-    return true;
+    if(!copiedNodes.length){
+        S().toast?.(S().tr?.('smart.toastNothingToCopy') || '请先选中要复制的对象');
+        return false;
+    }
+    try {
+        const idSet = new Set(copiedNodes.map(n => n.id));
+        const copiedConnections = (S().canvas.connections || []).filter(c => idSet.has(c.from) && idSet.has(c.to));
+        S().nodeClipboard = {
+            nodes: copiedNodes.map(cloneNodePayload),
+            connections: JSON.parse(JSON.stringify(copiedConnections))
+        };
+        const count = copiedNodes.length;
+        S().toast?.(count === 1 ? (S().tr?.('smart.toastCopiedOne') || '已复制 1 个对象') : (S().trf?.('smart.toastCopiedMany', {count}) || `已复制 ${count} 个对象`));
+        return true;
+    } catch(err) {
+        console.error('[SmartCanvasNodeClipboard] copy failed', err);
+        S().toast?.(S().tr?.('smart.toastCopyFailed') || '复制失败');
+        return false;
+    }
 }
 
 
 function pasteNodes(){
-    if(!S().canvas || !S().nodeClipboard?.nodes?.length) return false;
+    if(!S().canvas || !S().nodeClipboard?.nodes?.length){
+        S().toast?.(S().tr?.('smart.toastNothingToPaste') || '剪贴板为空，请先复制');
+        return false;
+    }
     S().lastNodePasteAt = Date.now();
     S().pushUndo();
     const sourceNodes = S().nodeClipboard.nodes;
     const xs = sourceNodes.map(n => Number(n.x) || 0);
     const ys = sourceNodes.map(n => Number(n.y) || 0);
-    const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+    const cx = (Math.min(...xs) + Math.max(...xs) ) / 2;
     const cy = (Math.min(...ys) + Math.max(...ys)) / 2;
     const p = S().lastMouseWorld || S().viewportCenter();
     const dx = p.x - cx;
@@ -42,9 +62,14 @@ function pasteNodes(){
     const idMap = new Map();
     const copies = sourceNodes.map(n => {
         const copy = S().cloneSmartNode(n, dx, dy);
+        if(!copy?.id) return null;
         idMap.set(n.id, copy.id);
         return copy;
-    });
+    }).filter(Boolean);
+    if(!copies.length){
+        S().toast?.(S().tr?.('smart.toastPasteFailed') || '粘贴失败');
+        return false;
+    }
     copies.forEach(copy => {
         if(Array.isArray(copy.inputNodeIds)){
             copy.inputNodeIds = copy.inputNodeIds.map(id => idMap.get(id)).filter(Boolean);
@@ -63,6 +88,7 @@ function pasteNodes(){
     S().selectedImage = {nodeId:'', index:-1};
     S().render();
     S().scheduleSave();
+    S().toast?.(copies.length === 1 ? (S().tr?.('smart.toastPastedOne') || '已粘贴 1 个对象') : (S().trf?.('smart.toastPastedMany', {count: copies.length}) || `已粘贴 ${copies.length} 个对象`));
     return true;
 }
 
