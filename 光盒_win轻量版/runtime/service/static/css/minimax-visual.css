@@ -3018,7 +3018,6 @@ html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-menu
     .port-link-pick-item,
     .node-port-menu .menu-btn,
     .composer-mode-option,
-    .mode-model-choice,
     .create-card,
     .video-reference-option,
     .skill-menu-item,
@@ -3030,7 +3029,6 @@ html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-menu
 
 :is(html, html.theme-dark, html.studio-theme-dark) body :is(
     .composer-mode-option,
-    .mode-model-choice,
     .create-card,
     .video-reference-option,
     .skill-menu-item
@@ -3038,6 +3036,16 @@ html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-menu
     color: var(--ui-accent) !important;
     background-color: var(--ui-selected) !important;
     border-color: var(--ui-border-focus) !important;
+}
+
+/* 模型名行：按下/已选也不铺方块底（悬停只做字移动效） */
+:is(html, html.theme-dark, html.studio-theme-dark) body .mode-model-choice:active:not(:disabled):not(.is-disabled),
+:is(html, html.theme-dark, html.studio-theme-dark) body .mode-model-choice:is(.active, .selected, [aria-selected="true"], [aria-checked="true"]) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body :is(
@@ -5883,5 +5891,46 @@ html body #shellSettingsModal.shell-settings-modal :is(
     background: #000 !important;
     background-color: #000 !important;
     background-image: none !important;
+}
+
+/* ================================================================
+ * 模型选择行：末层核弹。悬停/按下/已选一律无方块底、无描边。
+ * 压过 canvas-dark-glass / dark-desaturated / M9 / popover hover 填充。
+ * ================================================================ */
+html body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice,
+html body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice:hover,
+html body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice:focus,
+html body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice:focus-visible,
+html body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice:active,
+html body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice.active,
+html body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice.selected,
+html body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice[aria-selected="true"],
+html body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice[aria-checked="true"],
+html.theme-dark body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice,
+html.theme-dark body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice:is(:hover, :focus, :focus-visible, :active, .active, .selected, [aria-selected="true"], [aria-checked="true"]),
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice,
+html.studio-theme-dark body #shell.shell #composer.composer
+    #composerApiSettingsPopover .mode-model-choice:is(:hover, :focus, :focus-visible, :active, .active, .selected, [aria-selected="true"], [aria-checked="true"]) {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    border: 0 !important;
+    border-color: transparent !important;
+    outline: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
 }
 

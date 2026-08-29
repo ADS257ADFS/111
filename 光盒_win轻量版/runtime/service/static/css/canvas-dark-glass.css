@@ -746,7 +746,6 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
     .size-picker-option,
     .count-cell,
-    .mode-model-choice,
     .composer-api-models button,
     .composer-hd-scales button,
     .composer-hd-actions button,
@@ -761,7 +760,6 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
 }:is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
     .size-picker-option,
     .count-cell,
-    .mode-model-choice,
     .composer-api-models button,
     .composer-hd-scales button,
     .composer-hd-actions button,
@@ -776,7 +774,6 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-empty-dot-grid-active #shel
 :is(html.theme-dark, html.studio-theme-dark) #shell.shell :is(
     .size-picker-option.active,
     .count-cell.active,
-    .mode-model-choice.active,
     .composer-api-models button.active,
     .composer-hd-scales button.active,
     .port-link-pick-option.active

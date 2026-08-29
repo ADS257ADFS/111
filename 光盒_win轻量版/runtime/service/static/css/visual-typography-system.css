@@ -2261,8 +2261,6 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover .composer-api-models button,
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice,
-html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     #composerSizePopover :is(
         .size-picker-option,
         .video-flat-choice,
@@ -2288,8 +2286,6 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover .composer-api-models button.active,
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice:is(:hover, :focus-visible),
-html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     #composerSizePopover :is(
         .size-picker-option,
         .video-flat-choice,
@@ -2307,8 +2303,6 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.compos
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     #composerApiSettingsPopover .composer-api-models button.active{color: #505761 !important;}
 
-html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
-    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.active,
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer
     #composerSizePopover :is(
         .size-picker-option,

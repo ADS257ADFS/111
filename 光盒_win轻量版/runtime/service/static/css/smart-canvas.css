@@ -5475,8 +5475,11 @@ html body #shell.shell #composer.composer #composerApiSettingsPopover .composer-
 #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.active .mode-model-check {
     display:inline-flex;
 }html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice.mode-model-choice.mode-model-choice:not(.is-unbound):not(:disabled):is(:hover, :focus-visible){
-    background:#f1f3f6 !important;
-    background-color:#f1f3f6 !important;
+    background:transparent !important;
+    background-color:transparent !important;
+    background-image:none !important;
+    border-color:transparent !important;
+    box-shadow:none !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell #composer.composer #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice.mode-model-choice.active {

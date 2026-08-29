@@ -1460,7 +1460,7 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
         #composerVideoReferencePopover,
         #composerKindPopover,
         #composerSizePopover
-    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;background-image:none !important;box-shadow:none !important}
+    ) :is(button, summary, [role="button"]):not(.mode-model-choice):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;background-image:none !important;box-shadow:none !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer :is(
         #composerApiSettingsPopover,
@@ -1542,7 +1542,7 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
         #composerVideoReferencePopover,
         #composerKindPopover,
         #composerSizePopover
-    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important}
+    ) :is(button, summary, [role="button"]):not(.mode-model-choice):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important}
 :is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
     .composer-footer :is(
         #composerApiSettingsBtn,
@@ -1567,7 +1567,7 @@ html:is(.theme-dark, .studio-theme-dark) body #shellUserMenu.shell-user-menu .sh
         #composerVideoReferencePopover,
         #composerKindPopover,
         #composerSizePopover
-    ) :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
+    ) :is(button, summary, [role="button"]):not(.mode-model-choice):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible){border:1px solid rgba(255, 255, 255, .08) !important;background:transparent !important;box-shadow:none !important}
 :where(html.theme-dark,html.studio-theme-dark) body #shell.shell #composer.composer
     #composerAssetPreviewBody .composer-preview-asset-name{color:#fff !important;background:linear-gradient(to bottom, transparent, rgba(0,0,0,.72)) !important}
 :where(html.theme-dark,html.studio-theme-dark) .composer-asset-hover-preview{border:1px solid rgba(255,255,255,.12);background:#1f1f1f;box-shadow:0 22px 54px rgba(0,0,0,.42)}
