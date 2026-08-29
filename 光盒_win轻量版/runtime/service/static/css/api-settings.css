@@ -16,13 +16,26 @@ button { font-family:inherit; cursor:pointer; border:0; background:transparent; 
 .page-head .title { font-size:var(--ui-type-display); line-height:var(--ui-leading-tight); font-weight:600; letter-spacing:var(--ui-tracking-title); }
 .page-head .sub { margin-top:8px; color:var(--muted); font-size:12px; line-height:1.55; font-weight:400; max-width:520px; }
 .page-head .status { color:var(--muted); font-size:11px; font-weight:400; letter-spacing:.04em; text-transform:uppercase; min-height:16px; }
+.page-head-actions { display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:flex-end; }
+.api-mode-tabs { display:inline-flex; align-items:center; gap:2px; padding:3px; border-radius:10px; background:var(--soft); border:1px solid var(--line); }
+.api-mode-tab { appearance:none; border:0; background:transparent; color:var(--muted); font:inherit; font-size:12px; font-weight:600; letter-spacing:.01em; padding:7px 12px; border-radius:8px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:background .15s ease, color .15s ease; }
+.api-mode-tab:hover { color:var(--text); background:rgba(255,255,255,.55); }
+.api-mode-tab.is-active { color:var(--text); background:var(--panel); box-shadow:inset 0 0 0 1px var(--line-strong); }
+.provider-empty-hint { margin:4px 0 0; padding:12px 12px; border-radius:12px; background:var(--soft); border:1px dashed var(--line-strong); color:var(--muted); font-size:12px; line-height:1.55; }
+body.show-custom-models .layout { grid-template-columns:minmax(0,1fr); }
+#apiPlatformSidebar[hidden] { display:none !important; }
 .layout { display:grid; grid-template-columns:260px minmax(0,1fr); gap:36px; align-items:start; }
 .settings-embedded,
 .settings-embedded body { height:100%; min-height:100%; overflow:auto; }
 .settings-embedded .page { min-height:100%; padding:16px; }
 .settings-embedded .wrap { max-width:none; }
-.settings-embedded .page-head { display:none; }
+/* 嵌入设置中心：保留顶栏 Tab，隐藏大标题文案 */
+.settings-embedded .page-head { display:flex; padding:0 0 12px; align-items:center; justify-content:space-between; gap:12px; }
+.settings-embedded .page-head .title,
+.settings-embedded .page-head .sub { display:none; }
+.settings-embedded .page-head-actions { width:100%; justify-content:space-between; }
 .settings-embedded .layout { grid-template-columns:190px minmax(0,1fr); gap:16px; }
+.settings-embedded body.show-custom-models .layout { grid-template-columns:minmax(0,1fr); }
 .settings-embedded .sidebar { top:0; max-height:calc(100vh - 32px); padding:12px; border-radius:14px; }
 .settings-embedded .content { gap:14px; }
 .settings-embedded .content-head,

@@ -206,12 +206,11 @@
     }
 
     function visibleCandidateRects(ctx, excludedIds){
-        return (ctx.nodes || []).filter(node => {
-            if(excludedIds.has(node.id)) return false;
-            const element = ctx.world?.querySelector?.(`.image-node[data-id="${global.CSS?.escape?.(node.id) || node.id}"]`);
-            if(element && element.hidden) return false;
-            return true;
-        }).map(node => rectOf({...ctx.nodeRect(node), id:node.id})).filter(rect => rect.width && rect.height);
+        // Use model geometry only — per-node querySelector on every mousemove
+        // was a major drag hitch with many nodes.
+        return (ctx.nodes || []).filter(node => !excludedIds.has(node.id))
+            .map(node => rectOf({...ctx.nodeRect(node), id:node.id}))
+            .filter(rect => rect.width && rect.height);
     }
 
     function ensureOverlay(ctx){

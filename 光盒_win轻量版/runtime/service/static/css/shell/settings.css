@@ -21,7 +21,7 @@
 .shell-settings-backdrop,
 html body #shellProjectHistoryModal:not(.shell-project-history-embedded)
     .shell-project-history-backdrop {
-    backdrop-filter: blur(8px) saturate(80%);
+    backdrop-filter: none;
 }
 
 .shell-settings-dialog {

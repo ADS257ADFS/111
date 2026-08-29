@@ -1,0 +1,176 @@
+/* Independent rounded startup panel → zoom into fullscreen software. */
+
+html.lightbox-shader-intro-active,
+html.lightbox-shader-intro-active body {
+    background: #0a0a0a !important;
+    overflow: hidden !important;
+}
+
+html.lightbox-shader-intro-active :is(
+    .lightbox-native-titlebar,
+    .mm-sidebar,
+    .workspace,
+    .gpt-dock,
+    .dock-resizer,
+    .dock-open-btn,
+    .lightbox-native-resize-handle
+) {
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+.lightbox-shader-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    box-sizing: border-box;
+    background: #000;
+    overflow: hidden;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lightbox-shader-intro.is-done {
+    display: none !important;
+}
+
+.lightbox-shader-intro-panel {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+    overflow: hidden;
+    background: #000;
+    border: 0;
+    box-shadow: none;
+    transform: translateZ(0);
+    opacity: 1;
+    contain: strict;
+    backface-visibility: hidden;
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lightbox-shader-intro.is-exiting .lightbox-shader-intro-panel {
+    opacity: 0;
+    will-change: opacity;
+    pointer-events: none;
+}
+
+.lightbox-shader-intro.is-exiting {
+    pointer-events: none;
+    transition: background 0.5s ease;
+    background: transparent;
+}
+
+/* Stage: CSS motion visible instantly; WebGL canvas stacks on top when live. */
+.lightbox-shader-intro-stage {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+    opacity: 1;
+}
+
+.lightbox-shader-intro-stage::before {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        repeating-conic-gradient(
+            from 0deg at 50% 50%,
+            #000 0deg 6deg,
+            #141414 6deg 12deg,
+            #2a2a2a 12deg 18deg,
+            #0a0a0a 18deg 24deg
+        );
+    animation: lightbox-shader-intro-css-motion 5s linear infinite;
+    opacity: 1;
+}
+
+.lightbox-shader-intro.is-shader-live .lightbox-shader-intro-stage::before {
+    opacity: 0;
+    visibility: hidden;
+    animation: none;
+}
+
+@keyframes lightbox-shader-intro-css-motion {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.lightbox-shader-intro-stage canvas {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Logo: opacity 0→1 over 2s, synced with motion start. */
+.lightbox-shader-intro-label {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    padding: 0 1.5rem;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label {
+    visibility: visible;
+    opacity: 1;
+}
+
+.lightbox-shader-intro.is-label-visible .lightbox-shader-intro-label img {
+    opacity: 1;
+}
+
+.lightbox-shader-intro-label img {
+    display: block;
+    height: clamp(1.9rem, 5.67vw, 3.73rem);
+    width: auto;
+    max-width: min(86%, 320px);
+    object-fit: contain;
+    object-position: center;
+    opacity: 0;
+    filter: brightness(0) invert(1);
+    transform: translateZ(0);
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.lightbox-shader-intro.is-exiting .lightbox-shader-intro-label {
+    opacity: 0;
+    animation: none;
+    transition: opacity 0.35s ease;
+}
+
+html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro {
+    padding: 0;
+}
+
+html.lightbox-desktop-native.lightbox-shader-intro-active .lightbox-shader-intro-panel {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    min-height: 0;
+    aspect-ratio: auto;
+    border-radius: 0;
+    border: 0;
+}
