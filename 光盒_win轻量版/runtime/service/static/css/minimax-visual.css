@@ -4246,31 +4246,42 @@ html:not(.theme-dark):not(.studio-theme-dark) body #shell.shell .canvas-bottom-c
 /* M63：左下用户面板与最近创作项目共用主文字层级，并收紧外框。 */
 :is(html, html.theme-dark, html.studio-theme-dark) body #shellUserMenu.shell-user-menu {
     width: var(--ui-user-menu-w) !important;
-    padding: var(--ui-space-3) !important;
+    padding: var(--ui-space-2) !important;
     border-radius: var(--ui-radius-panel) !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body
     #shellUserMenu.shell-user-menu .shell-user-menu-profile {
-    padding: var(--ui-space-1) var(--ui-space-2) var(--ui-space-3) !important;
+    padding: var(--ui-space-1) var(--ui-space-2) var(--ui-space-2) !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body
     #shellUserMenu.shell-user-menu .shell-user-points {
-    padding: var(--ui-space-2) var(--ui-space-4) !important;
+    padding: 10px 12px !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body
+    #shellUserMenu.shell-user-menu .shell-user-points-track {
+    height: 6px !important;
+    margin-top: 6px !important;
+}
+
+:is(html, html.theme-dark, html.studio-theme-dark) body
+    #shellUserMenu.shell-user-menu .shell-user-points-meta {
+    margin-top: 6px !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body
     #shellUserMenu.shell-user-menu .shell-user-menu-list {
-    gap: var(--ui-space-3) !important;
-    padding: var(--ui-space-2) 0 !important;
+    gap: 2px !important;
+    padding: var(--ui-space-1) 0 !important;
 }
 
 :is(html, html.theme-dark, html.studio-theme-dark) body
     #shellUserMenu.shell-user-menu .shell-user-menu-item {
-    min-height: var(--ui-control-h-lg) !important;
-    padding-top: 2px !important;
-    padding-bottom: 2px !important;
+    min-height: var(--ui-control-h) !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 html:not(#ui-user-menu-type-1):not(#ui-user-menu-type-2):not(#ui-user-menu-type-3):not(#ui-user-menu-type-4) body
