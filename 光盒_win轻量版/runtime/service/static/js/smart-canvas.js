@@ -3885,6 +3885,7 @@ function registerSmartCanvasModuleDeps(){
 }
 async function bootstrapSmartCanvas(){
     registerSmartCanvasModuleDeps();
+    document.documentElement.classList.add('canvas-performance-mode');
     if(window.lucide){
         try { lucide.createIcons({ root: document.getElementById('shell') || document.body }); }
         catch(_e) { try { lucide.createIcons(); } catch(__e) {} }
