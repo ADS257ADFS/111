@@ -167,13 +167,15 @@
         if(!moving.width || !moving.height || !candidates.length || !threshold){
             return {dx:0, dy:0, guides:[]};
         }
+        // Spacing is O(n²) and a primary drag hitch in WebView2 — align-only under perf mode.
+        const perf = global.document?.documentElement?.classList?.contains('canvas-performance-mode');
         const xChoice = bestAxisCandidate([
             ...alignCandidates(moving, candidates, 'x', threshold),
-            ...spacingCandidates(moving, candidates, 'x', threshold),
+            ...(perf ? [] : spacingCandidates(moving, candidates, 'x', threshold)),
         ]);
         const yChoice = bestAxisCandidate([
             ...alignCandidates(moving, candidates, 'y', threshold),
-            ...spacingCandidates(moving, candidates, 'y', threshold),
+            ...(perf ? [] : spacingCandidates(moving, candidates, 'y', threshold)),
         ]);
         const guides = [];
         [xChoice, yChoice].forEach(choice => {
@@ -206,12 +208,11 @@
     }
 
     function visibleCandidateRects(ctx, excludedIds){
-        return (ctx.nodes || []).filter(node => {
-            if(excludedIds.has(node.id)) return false;
-            const element = ctx.world?.querySelector?.(`.image-node[data-id="${global.CSS?.escape?.(node.id) || node.id}"]`);
-            if(element && element.hidden) return false;
-            return true;
-        }).map(node => rectOf({...ctx.nodeRect(node), id:node.id})).filter(rect => rect.width && rect.height);
+        // Use model geometry only — per-node querySelector on every mousemove
+        // was a major drag hitch with many nodes.
+        return (ctx.nodes || []).filter(node => !excludedIds.has(node.id))
+            .map(node => rectOf({...ctx.nodeRect(node), id:node.id}))
+            .filter(rect => rect.width && rect.height);
     }
 
     function ensureOverlay(ctx){
