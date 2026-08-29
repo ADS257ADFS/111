@@ -518,11 +518,12 @@ video.node-img { object-fit:cover; background:transparent; }
 .loading-cell.pending-slot::after { display:none; }
 .loading-cell.pending-slot .pending-slot-inner,
 .pending-mixed-loading .pending-slot-inner,
-.pending-mixed-media { position:relative; width:100%; max-width:100%; aspect-ratio:var(--pending-aspect, 0.75); height:100%; border-radius:10px; overflow:hidden; border:1px solid var(--line); background:linear-gradient(90deg, var(--soft) 0%, var(--card) 50%, var(--soft) 100%); background-size:200% 100%; animation:shimmer 1.5s infinite linear; container-type:size; pointer-events:none; flex:0 0 auto; box-sizing:border-box; }
+.pending-mixed-media { position:relative; width:100%; max-width:100%; aspect-ratio:var(--pending-aspect, 0.75); height:100%; border-radius:10px; overflow:hidden; border:1px solid var(--line); background:#fafafa; background-size:auto; animation:none; container-type:size; pointer-events:none; flex:0 0 auto; box-sizing:border-box; }
+.pending-mixed-media { background:linear-gradient(90deg, var(--soft) 0%, var(--card) 50%, var(--soft) 100%); background-size:200% 100%; animation:shimmer 1.5s infinite linear; }
 .loading-cell.pending-slot .pending-slot-inner::after,
-.pending-mixed-loading .pending-slot-inner::after { content:''; position:absolute; inset:0; z-index:1; background:linear-gradient(105deg, transparent 38%, rgba(255,255,255,.52) 50%, transparent 62%); transform:translateX(-120%); animation:canvasSweepLight 1.35s ease-in-out infinite; pointer-events:none; }
+.pending-mixed-loading .pending-slot-inner::after { display:none; content:none; }
 .loading-cell.pending-slot .generation-wave-loader,
-.pending-mixed-loading .generation-wave-loader { z-index:2; opacity:1 !important; visibility:visible !important; display:grid !important; pointer-events:none; }
+.pending-mixed-loading .generation-wave-loader { z-index:2; opacity:1 !important; visibility:visible !important; display:block !important; pointer-events:none; }
 .pending-slot-footer { display:flex; align-items:center; justify-content:center; gap:8px; height:26px; min-height:0; width:100%; pointer-events:auto; position:absolute; left:0; right:0; bottom:10px; z-index:40; overflow:visible; }
 .pending-slot-status { font-size:11px; color:var(--muted); line-height:1; pointer-events:none; user-select:none; }
 .pending-slot-cancel { position:relative; z-index:41; height:24px; padding:0 12px; border-radius:999px; border:1px solid rgba(255,255,255,.82); background:rgba(255,255,255,.96); color:#555b63; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:445; line-height:1; white-space:nowrap; cursor:pointer; pointer-events:auto; box-shadow:none; touch-action:manipulation; }.pending-slot-cancel:hover,
@@ -541,13 +542,14 @@ video.node-img { object-fit:cover; background:transparent; }
 .image-node.node-pending-batch::before { display:none !important; }
 .image-node.node-pending-batch .node-body { position:absolute; inset:0; z-index:4; overflow:hidden; pointer-events:auto; padding:0; border-radius:12px; background:transparent; }
 .image-node.node-pending-batch .loading-cell.pending-slot .pending-slot-inner { border-color:rgba(148,163,184,.28); }
-.image-node.node-pending-batch .generation-wave-block { background:rgba(255,255,255,.94); box-shadow:none; }
 .theme-dark .image-node.node-pending-batch { background:var(--card); border-color:rgba(255,255,255,.12); }
-.theme-dark .loading-cell.pending-slot .pending-slot-inner { border-color:rgba(255,255,255,.12); }
+.theme-dark .loading-cell.pending-slot .pending-slot-inner,
+.theme-dark .pending-mixed-loading .pending-slot-inner,
+html.studio-theme-dark .loading-cell.pending-slot .pending-slot-inner,
+html.studio-theme-dark .pending-mixed-loading .pending-slot-inner { border-color:rgba(255,255,255,.12); background:#1f1f1f; }
 .theme-dark .pending-slot-cancel { border-color:rgba(255,255,255,.18); background:rgba(42,42,42,.92); color:#e5e7eb; box-shadow:none; }.theme-dark .pending-slot-cancel:hover{ background:rgba(54,54,54,.96); }
 .image-node.node-generation-failed .node-hint { color:#d92d20; font-weight:445; }
 .theme-dark .image-node.node-generation-failed .node-hint { color:#ff7b72; }
-.theme-dark .image-node.node-pending-batch .generation-wave-block { background:rgba(255,255,255,.88); box-shadow:none; }
 .loading-cell { border-radius:12px; background:linear-gradient(90deg, var(--soft) 0%, var(--card) 50%, var(--soft) 100%); background-size:200% 100%; animation:shimmer 1.5s infinite linear; border:1px solid var(--line); position:relative; overflow:hidden; }
 .loading-cell.single { width:260px; height:180px; }
 .loading-cell::after { content:''; position:absolute; inset:0; background:linear-gradient(105deg, transparent 38%, rgba(255,255,255,.52) 50%, transparent 62%); transform:translateX(-120%); animation:canvasSweepLight 1.65s ease-in-out infinite; pointer-events:none; }
@@ -611,55 +613,131 @@ video.node-img { object-fit:cover; background:transparent; }
 .image-node:is(.node-pending,.node-visual-loading) .node-body {
     container-type:size;
 }
-.generation-wave-loader {
-    --generation-loader-block:5.76cqmin;
-    --generation-loader-gap:2.32cqmin;
-    --generation-loader-travel:9cqmin;
-    --generation-loader-grid-size:calc(var(--generation-loader-block) + var(--generation-loader-block) + var(--generation-loader-block) + var(--generation-loader-block) + var(--generation-loader-gap) + var(--generation-loader-gap) + var(--generation-loader-gap));
+/* Full-bleed ImageGeneration morph (AICSS-style dots + masked glow). */
+.generation-wave-loader,
+.generation-wave-loader.generation-ig-loader {
     position:absolute;
-    left:50%;
-    top:50%;
+    inset:0;
+    left:0;
+    top:0;
     z-index:8;
-    width:var(--generation-loader-grid-size);
-    height:calc(var(--generation-loader-grid-size) + var(--generation-loader-travel));
-    display:grid;
-    grid-template-columns:repeat(4,var(--generation-loader-block));
-    grid-auto-rows:var(--generation-loader-block);
-    gap:var(--generation-loader-gap);
-    transform:translate(-50%,-50%);
+    width:100%;
+    height:100%;
+    display:block;
+    transform:none;
     transform-origin:center;
     filter:none;
-    overflow:visible;
+    overflow:hidden;
     pointer-events:none;
+    border-radius:inherit;
+    background:transparent;
 }
 .image-node:is(.node-pending,.node-running,.node-visual-loading) .node-body > .generation-wave-loader {
-    display:grid !important;
+    display:block !important;
     opacity:1 !important;
     visibility:visible !important;
+    inset:0;
+    width:100%;
+    height:100%;
+    border-radius:inherit;
+    background:#fafafa;
 }
-.generation-wave-block {
-    position:relative;
-    box-sizing:border-box;
-    width:var(--generation-loader-block);
-    height:var(--generation-loader-block);
-    border-radius:1.44cqmin;
-    background:#fff;
-    border:0;
-    box-shadow:none;
-    animation:generationBlockWave 2s cubic-bezier(.45,0,.55,1) infinite;
-    animation-delay:var(--generation-wave-phase,-2s);
-    animation-fill-mode:both;
-    will-change:transform,opacity;
+.theme-dark .image-node:is(.node-pending,.node-running,.node-visual-loading) .node-body > .generation-wave-loader,
+html.studio-theme-dark .image-node:is(.node-pending,.node-running,.node-visual-loading) .node-body > .generation-wave-loader {
+    background:#1f1f1f;
 }
-.generation-wave-block:nth-child(4n+2) { animation-delay:calc(var(--generation-wave-phase,-2s) + .2s); }
-.generation-wave-block:nth-child(4n+3) { animation-delay:calc(var(--generation-wave-phase,-2s) + .4s); }
-.generation-wave-block:nth-child(4n+4) { animation-delay:calc(var(--generation-wave-phase,-2s) + .6s); }
-@keyframes generationBlockWave {
-    0%,100% { transform:translateY(0) scale(1); opacity:1; }
-    50% { transform:translateY(var(--generation-loader-travel)) scale(.84); opacity:.2; }
+.generation-ig-dots {
+    position:absolute;
+    inset:0;
+    background-image:radial-gradient(circle, #a1a1a1 0.7px, transparent 1.3px);
+    background-size:11px 11px;
+    background-repeat:space;
+    opacity:0.22;
+    pointer-events:none;
 }
+.generation-ig-glow {
+    position:absolute;
+    inset:0;
+    background-image:radial-gradient(circle, #0b0d12 1.1px, transparent 1.6px);
+    background-size:11px 11px;
+    background-repeat:space;
+    -webkit-mask-image:radial-gradient(ellipse at center, #000 0%, transparent 60%), radial-gradient(ellipse at center, #000 0%, transparent 62%);
+    mask-image:radial-gradient(ellipse at center, #000 0%, transparent 60%), radial-gradient(ellipse at center, #000 0%, transparent 62%);
+    -webkit-mask-repeat:no-repeat, no-repeat;
+    mask-repeat:no-repeat, no-repeat;
+    -webkit-mask-size:72% 62%, 52% 52%;
+    mask-size:72% 62%, 52% 52%;
+    -webkit-mask-position:16% 20%, 30% 32%;
+    mask-position:16% 20%, 30% 32%;
+    animation:ig-morph 4.2s cubic-bezier(0.35, 1.55, 0.65, 1) infinite, ig-breathe 1.9s cubic-bezier(0.66, 0, 0.34, 1) infinite;
+    pointer-events:none;
+    will-change:mask-size, mask-position, -webkit-mask-size, -webkit-mask-position, opacity;
+}
+html:is(.theme-dark,.studio-theme-dark) .generation-ig-dots {
+    background-image:radial-gradient(circle, #737373 0.7px, transparent 1.3px);
+    opacity:0.28;
+}
+html:is(.theme-dark,.studio-theme-dark) .generation-ig-glow {
+    background-image:radial-gradient(circle, #f5f5f5 1.1px, transparent 1.6px);
+}
+@keyframes ig-morph {
+    0% {
+        -webkit-mask-size:52% 46%, 40% 40%;
+        mask-size:52% 46%, 40% 40%;
+        -webkit-mask-position:16% 20%, 30% 32%;
+        mask-position:16% 20%, 30% 32%;
+    }
+    25% {
+        -webkit-mask-size:46% 58%, 44% 38%;
+        mask-size:46% 58%, 44% 38%;
+        -webkit-mask-position:84% 16%, 66% 30%;
+        mask-position:84% 16%, 66% 30%;
+    }
+    50% {
+        -webkit-mask-size:60% 44%, 38% 46%;
+        mask-size:60% 44%, 38% 46%;
+        -webkit-mask-position:82% 84%, 62% 68%;
+        mask-position:82% 84%, 62% 68%;
+    }
+    75% {
+        -webkit-mask-size:48% 54%, 46% 40%;
+        mask-size:48% 54%, 46% 40%;
+        -webkit-mask-position:14% 82%, 34% 66%;
+        mask-position:14% 82%, 34% 66%;
+    }
+    100% {
+        -webkit-mask-size:52% 46%, 40% 40%;
+        mask-size:52% 46%, 40% 40%;
+        -webkit-mask-position:16% 20%, 30% 32%;
+        mask-position:16% 20%, 30% 32%;
+    }
+}
+@keyframes ig-breathe {
+    0%, 100% { opacity:0.55; }
+    50% { opacity:1; }
+}
+@keyframes ig-shine {
+    0%, 18% { background-position:100% 0; }
+    82%, 100% { background-position:0% 0; }
+}
+/* Co-create / generic loading cells that host the ig loader: solid canvas, no shimmer. */
+.loading-cell:has(> .generation-ig-loader) {
+    background:#fafafa;
+    animation:none;
+}
+.loading-cell:has(> .generation-ig-loader)::after {
+    display:none;
+}
+html:is(.theme-dark,.studio-theme-dark) .loading-cell:has(> .generation-ig-loader) {
+    background:#1f1f1f;
+}
+/* Legacy wave-block selectors kept inert (markup no longer emits blocks). */
+.generation-wave-block { display:none !important; }
 .loading-cell.pending-slot .co-create-pending-inner .generation-wave-loader,
 .pending-mixed-loading .co-create-pending-inner .generation-wave-loader {
+    inset:auto;
+    left:50%;
+    top:50%;
     width:36px;
     height:36px;
     display:block !important;
@@ -667,8 +745,14 @@ video.node-img { object-fit:cover; background:transparent; }
     border:3px solid rgba(148,163,184,.28);
     border-top-color:var(--accent);
     border-radius:50%;
+    background:transparent;
+    transform:translate(-50%,-50%);
     animation:coCreatePendingSpin .8s linear infinite;
 }
+.loading-cell.pending-slot .co-create-pending-inner .generation-ig-dots,
+.loading-cell.pending-slot .co-create-pending-inner .generation-ig-glow,
+.pending-mixed-loading .co-create-pending-inner .generation-ig-dots,
+.pending-mixed-loading .co-create-pending-inner .generation-ig-glow,
 .loading-cell.pending-slot .co-create-pending-inner .generation-wave-block,
 .pending-mixed-loading .co-create-pending-inner .generation-wave-block {
     display:none !important;
@@ -677,13 +761,9 @@ video.node-img { object-fit:cover; background:transparent; }
     to { transform:translate(-50%,-50%) rotate(360deg); }
 }
 @media (prefers-reduced-motion:reduce) {
-    .generation-wave-block { animation:none; opacity:1; }
+    .generation-ig-glow { animation:none; opacity:0.7; }
     .loading-cell.pending-slot .co-create-pending-inner .generation-wave-loader,
     .pending-mixed-loading .co-create-pending-inner .generation-wave-loader { animation:none; }
-}
-@keyframes generationBlockPulse {
-    0%,100% { opacity:1; }
-    50% { opacity:.42; }
 }
 .composer.generating .composer-card { position:relative; overflow:visible; }
 .composer.generating .composer-card::after { content:''; position:absolute; inset:0; border-radius:18px; pointer-events:none; z-index:2; background:linear-gradient(105deg, transparent 36%, rgba(255,255,255,.42) 50%, transparent 64%); background-size:220% 100%; background-position:160% 0; transform:none; animation:composerCardSweepLight 1.8s ease-in-out infinite; }
@@ -5004,7 +5084,7 @@ html.canvas-performance-mode .shell #composer .input-thumb-upload {
     background: rgba(31, 31, 31, .92) !important;
 }
 
-/* Pending-node wave blocks: kill infinite per-block animations under perf mode. */
+/* Wave-block markup retired; ig morph stays live under perf mode (generating feedback). */
 html.canvas-performance-mode .generation-wave-block {
     animation: none !important;
     will-change: auto !important;
@@ -5012,7 +5092,8 @@ html.canvas-performance-mode .generation-wave-block {
     transform: none !important;
 }
 
-/* Kill remaining infinite GPU animations that perf-mode previously left live. */
+/* Kill remaining infinite GPU animations that perf-mode previously left live.
+   Intentionally excludes .generation-ig-glow — full-bleed generating morph. */
 html.canvas-performance-mode :is(
     .loading-cell,
     .loading-cell.pending-slot .pending-slot-inner,
@@ -5063,13 +5144,7 @@ html.canvas-performance-mode .shell #composer .composer-card-topbar .input-thumb
     will-change: auto !important;
 }
 
-/* Dark generation feedback stays neutral and translucent. Keep the existing
-   wave timing and opacity falloff unchanged. */
-html:is(.theme-dark,.studio-theme-dark) #shell.shell .generation-wave-block {
-    background-color:rgba(148,163,184,.46);
-    box-shadow:none;
-}
-
+/* Dark pending canvas + ig glow handled above (.generation-ig-*). Co-create spinner stays muted. */
 html:is(.theme-dark,.studio-theme-dark) .loading-cell.pending-slot .co-create-pending-inner .generation-wave-loader,
 html:is(.theme-dark,.studio-theme-dark) .pending-mixed-loading .co-create-pending-inner .generation-wave-loader {
     border-color:rgba(148,163,184,.2);

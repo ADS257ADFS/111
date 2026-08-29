@@ -675,8 +675,9 @@ function smartLoopBodyHtml(node){
     </div>`;
 }
 function generationWaveLoaderHtml(auto = false){
-    const phase = -(2000 + (Date.now() % 2000));
-    return `<div class="generation-wave-loader"${auto ? ' data-auto-running-loader="1"' : ''} style="--generation-wave-phase:${phase}ms" aria-hidden="true">${Array.from({length:16}, () => '<span class="generation-wave-block"></span>').join('')}</div>`;
+    /* Full-bleed ImageGeneration-style morph (dots + masked glow). Kept class
+       name generation-wave-loader for existing selectors / visual-loading. */
+    return `<div class="generation-wave-loader generation-ig-loader"${auto ? ' data-auto-running-loader="1"' : ''} role="img" aria-label="生成中" aria-hidden="true"><span class="generation-ig-dots" aria-hidden="true"></span><span class="generation-ig-glow" aria-hidden="true"></span></div>`;
 }
 
 function pendingBatchStyleVars(node){
