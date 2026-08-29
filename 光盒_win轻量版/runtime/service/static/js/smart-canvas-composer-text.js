@@ -222,7 +222,9 @@
             };
         });
         syncApiButtonLabel(node);
-        global.lucide?.createIcons?.();
+        const composerRoot = document.getElementById('composer');
+        try { global.lucide?.createIcons?.(composerRoot ? { root: composerRoot } : undefined); }
+        catch(_e) { try { global.lucide?.createIcons?.(); } catch(__e) {} }
         return true;
     }
 

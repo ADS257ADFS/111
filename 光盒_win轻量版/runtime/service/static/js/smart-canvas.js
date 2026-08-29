@@ -3885,8 +3885,10 @@ function registerSmartCanvasModuleDeps(){
 }
 async function bootstrapSmartCanvas(){
     registerSmartCanvasModuleDeps();
-    if(window.lucide) lucide.createIcons();
-    applyTheme(localStorage.getItem('studio_theme') || localStorage.getItem('canvas_theme') || 'dark');
+    if(window.lucide){
+        try { lucide.createIcons({ root: document.getElementById('shell') || document.body }); }
+        catch(_e) { try { lucide.createIcons(); } catch(__e) {} }
+    }
     loadPromptPresets();
     loadPromptTemplateGroups();
     loadPromptTemplateOverrides();
