@@ -3923,7 +3923,16 @@ html:not(#ui-composer-hint-1):not(#ui-composer-hint-2):not(#ui-composer-hint-3):
 :is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
     #composer.composer #composerHeightToggle.composer-height-toggle {
     right:17px !important;
-    top:36px !important;
+    top:41px !important;
+    border:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+}
+:is(html, html.theme-dark, html.studio-theme-dark) body #shell.shell
+    #composer.composer #composerHeightToggle.composer-height-toggle:is(:hover, :focus-visible) {
+    border:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
 }
 
 /* Expanded composer grows upward only; bottom edge must never move.

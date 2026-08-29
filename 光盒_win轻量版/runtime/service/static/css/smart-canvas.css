@@ -3413,14 +3413,14 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-inpu
 .composer-height-toggle {
     position:absolute;
     right:12px;
-    top:37px;
+    top:42px;
     z-index:6;
     width:26px;
     height:26px;
     padding:0;
-    border:1px solid #dfe3e8 !important;
-    border-radius:8px;
-    background:rgba(255,255,255,.9) !important;
+    border:0 !important;
+    border-radius:0;
+    background:transparent !important;
     color:#747b85 !important;
     box-shadow:none !important;
     display:grid;
@@ -3428,11 +3428,13 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-inpu
     cursor:pointer;
     pointer-events:auto !important;
     outline:none;
-    transition:background-color .16s ease, border-color .16s ease;
+    transition:color .16s ease, opacity .16s ease;
 }.composer-height-toggle:hover,
 .composer-height-toggle:focus-visible{
-    border-color:#cbd1d9 !important;
-    background:#f2f3f5 !important;
+    border:0 !important;
+    background:transparent !important;
+    color:#5c636b !important;
+    opacity:.92;
 }
 .composer-height-toggle :is(i,svg) {
     grid-area:1 / 1;
@@ -3506,13 +3508,14 @@ html:not(.theme-dark):not(.studio-theme-dark) .shell .composer-card .prompt-inpu
 }
 .theme-dark .shell .composer-card .prompt-input{color:var(--ui-text) !important;}
 .theme-dark .composer-height-toggle {
-    border-color:#3a3b40 !important;
-    background:#2e2f33 !important;
+    border:0 !important;
+    background:transparent !important;
     color:#9aa0a9 !important;
 }.theme-dark .composer-height-toggle:hover,
 .theme-dark .composer-height-toggle:focus-visible{
-    border-color:#4a4b50 !important;
-    background:#38393d !important;
+    border:0 !important;
+    background:transparent !important;
+    color:#c4c8ce !important;
 }
 .theme-dark .shell .prompt-node-text,
 .theme-dark .shell .loop-smart-text {
