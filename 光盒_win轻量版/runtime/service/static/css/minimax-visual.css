@@ -5082,9 +5082,11 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
 }
 
 /* ================================================================
- * Dark chrome unify: #1F1F1F @ 80% + 1px fine border（无 backdrop blur）
- * blur(60px) 会在工具栏/胶囊随画布平移时整屏重算，导致严重卡顿。
- * 保留色值与透明度；磨砂改为不透明/半透明实色面。
+ * Dark chrome unify: #1F1F1F @ 80% + blur(60px) + 1px fine border
+ * 覆盖：媒体工具栏、打组/解组胶囊、右键菜单、引用/创建面板、
+ * 底部一级上拉菜单、左下用户菜单。引用面板取消内层磨砂。
+ * :not(#ui-shadow-reset-*) matches M76 weight so float shadow cannot
+ * erase toolbar / capsule / menu edges.
  * ================================================================ */
 :is(html.theme-dark, html.studio-theme-dark) {
     --mm-chrome: #1f1f1f;
@@ -5092,13 +5094,12 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
     --mm-card: #1f1f1f;
     --panel: rgba(31, 31, 31, .80) !important;
     --sc-glass: rgba(31, 31, 31, .80);
-    --sc-blur: 0px;
+    --sc-blur: 60px;
     --sc-border: rgba(255, 255, 255, .16);
     --lightbox-chrome-bg: #1f1f1f;
     --ui-panel-frost: rgba(31, 31, 31, .80);
-    --ui-panel-frost-blur: none;
+    --ui-panel-frost-blur: blur(60px);
     --ui-panel-frost-border: rgba(255, 255, 255, .16);
-    --ui-composer-topbar-filter: none;
 }
 
 html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4):is(.theme-dark, .studio-theme-dark) body :is(
@@ -5117,11 +5118,7 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     #composerApiSettingsPopover,
     #composerSizePopover,
     #composerKindPopover,
-    #composerVideoReferencePopover,
-    .composer-card > .composer-card-material,
-    .image-node.smart-group-node .smart-group-frame-hit,
-    .canvas-bottom-capsule,
-    .dock-open-btn.dock-open-btn
+    #composerVideoReferencePopover
 ),
 :is(html.theme-dark, html.studio-theme-dark) body :is(
     #imageQuickToolbar.image-quick-toolbar,
@@ -5139,11 +5136,7 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     #composerApiSettingsPopover,
     #composerSizePopover,
     #composerKindPopover,
-    #composerVideoReferencePopover,
-    .composer-card > .composer-card-material,
-    .image-node.smart-group-node .smart-group-frame-hit,
-    .canvas-bottom-capsule,
-    .dock-open-btn.dock-open-btn
+    #composerVideoReferencePopover
 ) {
     background: rgba(31, 31, 31, .80) !important;
     background-color: rgba(31, 31, 31, .80) !important;
@@ -5152,8 +5145,8 @@ html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not
     border-color: rgba(255, 255, 255, .16) !important;
     outline: 0 !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: blur(60px) !important;
+    backdrop-filter: blur(60px) !important;
 }
 
 /* 顶栏 / 左栏 / 右栏：深色统一单条 1px hairline（与右侧栏一致，禁止 inset 叠粗） */
