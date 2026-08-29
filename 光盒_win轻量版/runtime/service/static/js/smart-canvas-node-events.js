@@ -56,15 +56,6 @@ function arrangeAllCanvasNodes(){
     return Boolean(arranged);
 }
 
-function openPersonalSettings(){
-    const target = global.parent !== global ? global.parent : global;
-    if(typeof target.openShellSettings === 'function'){
-        target.openShellSettings('account');
-        return;
-    }
-    target.postMessage({type:'canvas-open-settings', section:'account'}, global.location.origin);
-}
-
 function ensureCanvasContextMenu(){
     if(canvasContextMenu) return canvasContextMenu;
     canvasContextMenu = document.createElement('div');
@@ -73,16 +64,17 @@ function ensureCanvasContextMenu(){
     canvasContextMenu.setAttribute('role', 'menu');
     canvasContextMenu.innerHTML = `
         <button class="ui-menu-item" type="button" role="menuitem" data-canvas-context-action="new-canvas"><i data-lucide="file-plus-2"></i><span>新建画布</span></button>
+        <div class="ui-menu-divider" role="separator" aria-hidden="true"></div>
         <button class="ui-menu-item" type="button" role="menuitem" data-canvas-context-action="arrange-all"><i data-lucide="layout-dashboard"></i><span>整理全局</span></button>
         <button class="ui-menu-item" type="button" role="menuitem" data-canvas-context-action="refresh"><i data-lucide="refresh-cw"></i><span>刷新</span></button>
         <button class="ui-menu-item" type="button" role="menuitem" data-canvas-context-action="reset-view"><i data-lucide="scan"></i><span>视角重置</span></button>
+        <div class="ui-menu-divider" role="separator" aria-hidden="true"></div>
         <button class="ui-menu-item" type="button" role="menuitem" data-canvas-context-action="paste"><i data-lucide="clipboard-paste"></i><span>黏贴</span></button>
         <button class="ui-menu-item" type="button" role="menuitem" data-canvas-context-action="undo"><i data-lucide="undo-2"></i><span>撤销</span></button>
-        <button class="ui-menu-item" type="button" role="menuitem" data-canvas-context-action="assets"><i data-lucide="folder-open"></i><span>打开资产库</span></button>
-        <button class="ui-menu-item" type="button" role="menuitem" data-canvas-context-action="settings"><i data-lucide="settings"></i><span>个人设置</span></button>`;
+        <button class="ui-menu-item" type="button" role="menuitem" data-canvas-context-action="assets"><i data-lucide="folder-open"></i><span>打开资产库</span></button>`;
     canvasContextMenu.addEventListener('click', async event => {
         const button = event.target.closest('[data-canvas-context-action]');
-        if(!button) return;
+        if(!button || button.disabled) return;
         event.preventDefault();
         event.stopPropagation();
         const action = button.dataset.canvasContextAction;
@@ -97,7 +89,6 @@ function ensureCanvasContextMenu(){
         if(action === 'paste') d().pasteNodes?.();
         if(action === 'undo') d().performUndo?.();
         if(action === 'assets') d().toggleAssetLibrary?.(true);
-        if(action === 'settings') openPersonalSettings();
     });
     document.body.appendChild(canvasContextMenu);
     d().refreshIcons?.();
@@ -223,12 +214,32 @@ function openNodeContextMenu(event, nodeId){
     menu.style.top = `${top}px`;
 }
 
+function syncCanvasContextMenuAvailability(menu){
+    if(!menu) return;
+    const canPaste = Boolean(d().nodeClipboard?.nodes?.length);
+    const canUndo = Boolean(d().undoStack?.length);
+    const canArrange = Boolean(d().nodes?.length);
+    const pasteBtn = menu.querySelector('[data-canvas-context-action="paste"]');
+    const undoBtn = menu.querySelector('[data-canvas-context-action="undo"]');
+    const arrangeBtn = menu.querySelector('[data-canvas-context-action="arrange-all"]');
+    [
+        [pasteBtn, canPaste],
+        [undoBtn, canUndo],
+        [arrangeBtn, canArrange]
+    ].forEach(([button, enabled]) => {
+        if(!button) return;
+        button.disabled = !enabled;
+        button.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+    });
+}
+
 function openCanvasContextMenu(event){
     event.preventDefault();
     event.stopPropagation();
     closeNodeContextMenu();
     d().lastMouseWorld = d().screenToWorld?.(event) || d().lastMouseWorld;
     const menu = ensureCanvasContextMenu();
+    syncCanvasContextMenuAvailability(menu);
     menu.hidden = false;
     const rect = menu.getBoundingClientRect();
     const left = Math.max(8, Math.min(event.clientX, global.innerWidth - rect.width - 8));
@@ -265,10 +276,9 @@ function ensurePortDragPathElement(){
         path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         path.setAttribute('class', 'port-drag-temp conn-pending');
         path.setAttribute('stroke', 'rgba(135,145,158,0.62)');
-        path.setAttribute('stroke-width', '1.15');
+        path.setAttribute('stroke-width', '0.5');
         path.setAttribute('fill', 'none');
         path.setAttribute('stroke-linecap', 'round');
-        path.setAttribute('vector-effect', 'non-scaling-stroke');
         svg.appendChild(path);
     }
     return path;
