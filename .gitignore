@@ -1,0 +1,7 @@
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local dev caches under app service only — do NOT ignore runtime/python bundle
+光盒_win轻量版/runtime/service/**/__pycache__/
+光盒_win轻量版/runtime/service/**/*.py[cod]
