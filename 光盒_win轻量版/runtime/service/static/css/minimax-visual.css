@@ -5148,21 +5148,20 @@ html body #shell.shell #composer.composer .composer-footer .composer-footer-glid
 }
 
 /* ================================================================
- * Dark chrome unify: #1F1F1F @ 80% + blur(60px) 磨砂
- * 覆盖：媒体工具栏、打组/解组胶囊、右键菜单、引用/创建面板、
- * 底部一级上拉菜单、左下用户菜单、端口选择面板。
+ * Dark chrome unify: #1F1F1F @ ~88% solid frost (NO backdrop blur).
+ * blur(60px) thrash in WebView2 — keep fill only for float chrome.
  * ================================================================ */
 :is(html.theme-dark, html.studio-theme-dark) {
     --mm-chrome: #1f1f1f;
     --mm-elevated: #1f1f1f;
     --mm-card: #1f1f1f;
-    --panel: rgba(31, 31, 31, .80) !important;
-    --sc-glass: rgba(31, 31, 31, .80);
-    --sc-blur: 60px;
+    --panel: rgba(31, 31, 31, .88) !important;
+    --sc-glass: rgba(31, 31, 31, .88);
+    --sc-blur: 0px;
     --sc-border: rgba(255, 255, 255, .16);
     --lightbox-chrome-bg: #1f1f1f;
-    --ui-panel-frost: rgba(31, 31, 31, .80);
-    --ui-panel-frost-blur: blur(60px);
+    --ui-panel-frost: rgba(31, 31, 31, .88);
+    --ui-panel-frost-blur: none;
     --ui-panel-frost-border: rgba(255, 255, 255, .16);
 }
 
@@ -5226,18 +5225,18 @@ html.canvas-performance-mode:is(.theme-dark, .studio-theme-dark) body :is(
     #composerVideoReferencePopover,
     .iqt-dropdown-menu
 ) {
-    background: rgba(31, 31, 31, .80) !important;
-    background-color: rgba(31, 31, 31, .80) !important;
+    background: rgba(31, 31, 31, .88) !important;
+    background-color: rgba(31, 31, 31, .88) !important;
     background-image: none !important;
     border: 1px solid rgba(255, 255, 255, .16) !important;
     border-color: rgba(255, 255, 255, .16) !important;
     outline: 0 !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: blur(60px) !important;
-    backdrop-filter: blur(60px) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
-/* 浅色浮层同规格：白 80% + blur(60px) */
+/* 浅色浮层：白半透明实色，禁止 blur */
 html:not(.theme-dark):not(.studio-theme-dark) body :is(
     #imageQuickToolbar.image-quick-toolbar,
     .image-quick-toolbar,
@@ -5278,15 +5277,15 @@ html.canvas-performance-mode:not(.theme-dark):not(.studio-theme-dark) body :is(
     #composerVideoReferencePopover,
     .iqt-dropdown-menu
 ) {
-    background: rgba(255, 255, 255, .80) !important;
-    background-color: rgba(255, 255, 255, .80) !important;
+    background: rgba(255, 255, 255, .92) !important;
+    background-color: rgba(255, 255, 255, .92) !important;
     background-image: none !important;
     border: 1px solid rgba(0, 0, 0, .10) !important;
     border-color: rgba(0, 0, 0, .10) !important;
     outline: 0 !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: blur(60px) !important;
-    backdrop-filter: blur(60px) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 /* 顶栏 / 左栏 / 右栏：深色统一单条 1px hairline（与右侧栏一致，禁止 inset 叠粗） */
@@ -5732,14 +5731,14 @@ html.canvas-performance-mode body #shell.shell #composer.composer .input-thumb-u
 }
 
 
-/* Float frost tokens on; never apply backdrop-filter via body *. */
+/* Float frost tokens: fill only. Never reintroduce blur via body *. */
 html, html.theme-dark, html.studio-theme-dark,
 html body, html.theme-dark body, html.studio-theme-dark body {
-    --ui-panel-frost-blur: blur(60px) !important;
+    --ui-panel-frost-blur: none !important;
     --ui-composer-topbar-filter: none !important;
-    --sc-blur: 60px !important;
-    --vs-glass-blur: blur(60px) !important;
-    --canvas-glass-blur: blur(60px) !important;
+    --sc-blur: 0px !important;
+    --vs-glass-blur: none !important;
+    --canvas-glass-blur: none !important;
 }
 
 /* 底部一级按钮小箭头：上拉展开朝下，收起朝上 */
@@ -5815,8 +5814,8 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-performance-mode body :is(
     border-color: rgba(0, 0, 0, .10) !important;
     color: #50565e !important;
     box-shadow: var(--ui-shadow-float, 0 4px 14px rgba(0, 0, 0, .05)) !important;
-    -webkit-backdrop-filter: blur(60px) !important;
-    backdrop-filter: blur(60px) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body

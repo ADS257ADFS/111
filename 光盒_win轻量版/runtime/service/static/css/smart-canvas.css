@@ -4935,8 +4935,8 @@ html body #shell.shell .image-node:is(:hover,.selected) .node-resize-handle {
     text-shadow:none !important;
 }
 
-/* Dense canvases trade GPU-heavy glass on nodes/panels for interaction.
-   Float chrome (toolbars/menus/popovers) keeps blur(60px) — see minimax float frost. */
+/* Dense canvases trade GPU-heavy glass for interaction.
+   Float chrome also kills blur — WebView2 backdrop-filter thrash. */
 html.canvas-performance-mode :is(
     .image-node,
     .image-resolution-badge,
@@ -4955,7 +4955,22 @@ html.canvas-performance-mode :is(
     .image-edit-modal,
     .smart-group-frame-hit,
     .canvas-bottom-capsule,
-    .dock-open-btn
+    .dock-open-btn,
+    #imageQuickToolbar,
+    .image-quick-toolbar,
+    .selection-capsule-bar,
+    .node-context-menu,
+    .canvas-context-menu,
+    .create-menu,
+    .port-link-pick-menu,
+    .shell-user-menu,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .iqt-dropdown-menu,
+    .selection-capsule-menu,
+    .selection-capsule-popover,
+    .selection-capsule-dropdown,
+    .floating-toolbar::before
 ) {
     backdrop-filter:none !important;
     -webkit-backdrop-filter:none !important;
@@ -4969,7 +4984,16 @@ html.canvas-performance-mode .image-node,
     contain: layout style;
 }
 
-/* Float chrome keeps translucent frost while panning — no solid fill override. */
+/* While panning/zooming, force moving float chrome to solid fill (no blur thrash). */
+.world.viewport-transform-active ~ #imageQuickToolbar,
+.world.viewport-transform-active ~ #selectionBoxCapsule .selection-capsule-bar,
+html.canvas-performance-mode.shell-panning :is(
+    #imageQuickToolbar,
+    .selection-capsule-bar
+) {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
 
 /* Add-preview button: solid fill only — blur(60px) thrash in WebView2. */
 html.canvas-performance-mode #composer .input-thumb-upload,
