@@ -1177,17 +1177,17 @@ body.input-thumb-pointer-dragging, body.input-thumb-pointer-dragging * { cursor:
     padding:0;
     overflow:hidden;
     border:1px dashed var(--ui-border-strong, rgba(148,163,184,.55));
-    background:rgba(255,255,255,.80);
-    color:rgba(26,26,26,.78);
+    background:rgba(31,31,31,.92);
+    color:rgba(241,241,241,.86);
     box-shadow:none;
-    backdrop-filter:blur(60px);
-    -webkit-backdrop-filter:blur(60px);
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
 }
 .input-thumb-upload svg { width:16px; height:16px; stroke-width:1.35; pointer-events:none; transform:none; }
 .input-thumb-upload:hover,
 .input-thumb-upload:focus-visible{
     border-color:rgba(100,116,139,.72);
-    background:rgba(255,255,255,.88);
+    background:rgba(45,45,45,.94);
     box-shadow:none;
     outline:none;
 }
@@ -1197,12 +1197,12 @@ html.studio-theme-dark .input-thumb-upload,
 .theme-dark .input-thumb-upload:focus-visible,
 html.studio-theme-dark .input-thumb-upload:hover,
 html.studio-theme-dark .input-thumb-upload:focus-visible {
-    background:rgba(31,31,31,.80) !important;
+    background:rgba(31,31,31,.92) !important;
     border:1px dashed rgba(166,166,166,.55) !important;
     color:rgba(241,241,241,.86) !important;
     box-shadow:none !important;
-    backdrop-filter:blur(60px) !important;
-    -webkit-backdrop-filter:blur(60px) !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
 }
 .composer-head { grid-area:head; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 2px; min-width:0; }
 .composer-head-left { min-width:0; display:flex; align-items:center; gap:6px; flex:1 1 auto; overflow:visible; }
@@ -4983,11 +4983,20 @@ html.canvas-performance-mode :is(
     background-color: #1f1f1f !important;
 }
 
-/* Add-preview button keeps dashed frost even in performance mode. */
+/* Add-preview button: solid fill only — blur(60px) thrash in WebView2. */
 html.canvas-performance-mode #composer .input-thumb-upload,
 html.canvas-performance-mode .shell #composer .input-thumb-upload {
-    backdrop-filter: blur(60px) !important;
-    -webkit-backdrop-filter: blur(60px) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(31, 31, 31, .92) !important;
+}
+
+/* Pending-node wave blocks: kill infinite per-block animations under perf mode. */
+html.canvas-performance-mode .generation-wave-block {
+    animation: none !important;
+    will-change: auto !important;
+    opacity: .55 !important;
+    transform: none !important;
 }
 
 html.canvas-performance-mode :is(

@@ -3990,7 +3990,8 @@ function scheduleInteractionLayerRefresh(){
     interactionLayerRaf = requestAnimationFrame(() => {
         interactionLayerRaf = 0;
         refreshConnectionLayer();
-        renderMinimap();
+        // Minimap full redraw during drag/pan is a major hitch — defer to settle.
+        if(!dragState && !panState && !resizeState) renderMinimap();
     });
 }
 function serializableSmartNode(node){

@@ -3130,19 +3130,29 @@ html:not(.theme-dark):not(.studio-theme-dark) body .port-link-pick-menu
 
 /* M13：软件内容区一律扁平无投影。窗口外框阴影由 win_launcher 的
    独立原生伴随窗口绘制，不在任一 WebView/iframe 的 CSS 树中。
-   :not(#...) 仅提升优先级，用于压过旧皮肤中带 !important 的组件投影。 */
+   仅压在 body / #shell，禁止 body * 全树匹配（WebView2 下会持续拖垮样式）。 */
 html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body,
-html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body *,
-html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body *::before,
-html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) body *::after {
+html:not(#ui-shadow-reset-1):not(#ui-shadow-reset-2):not(#ui-shadow-reset-3):not(#ui-shadow-reset-4) #shell.shell {
     box-shadow:none !important;
     text-shadow:none !important;
 }
 
-/* 圆角边缘只由背景与 1px 边界构成，避免背景在边框下方叠色发毛。 */
-html body *,
-html body *::before,
-html body *::after {
+/* 圆角边缘只由背景与 1px 边界构成；限定到常见面板，避免 body * 税。 */
+html body #shell.shell :is(
+    .composer-card,
+    .composer-tool-popover,
+    .composer-api-settings-popover,
+    .port-link-pick-shell,
+    .create-menu,
+    .node-context-menu,
+    .canvas-context-menu,
+    .shell-user-menu,
+    .smart-popover,
+    .asset-panel,
+    .canvas-bottom-capsule,
+    .image-quick-toolbar,
+    .selection-capsule-bar
+) {
     background-clip: padding-box;
 }
 
@@ -3686,17 +3696,13 @@ html:not(#ui-type-reset-1):not(#ui-type-reset-2):not(#ui-type-reset-3):not(#ui-t
     font-size: var(--ui-type-meta) !important;
 }
 
-html:not(#ui-type-reset-1):not(#ui-type-reset-2):not(#ui-type-reset-3):not(#ui-type-reset-4) body *::before,
-html:not(#ui-type-reset-1):not(#ui-type-reset-2):not(#ui-type-reset-3):not(#ui-type-reset-4) body *::after,
-html:not(#ui-type-reset-1):not(#ui-type-reset-2):not(#ui-type-reset-3):not(#ui-type-reset-4) body *::placeholder {
+html:not(#ui-type-reset-1):not(#ui-type-reset-2):not(#ui-type-reset-3):not(#ui-type-reset-4) body {
     font-weight: var(--ui-weight-latin) !important;
     font-variation-settings: "wght" var(--ui-weight-latin) !important;
 }
 
-/* 复杂 :where/:not 在旧 WebView2 中可能只留下 body 继承值；这里直接覆盖每个元素，
-   确保模型名、尺寸数字、媒体类型和动态生成菜单统一命中当前全局字重。 */
-html:not(#ui-latin-weight-1):not(#ui-latin-weight-2):not(#ui-latin-weight-3):not(#ui-latin-weight-4) body,
-html:not(#ui-latin-weight-1):not(#ui-latin-weight-2):not(#ui-latin-weight-3):not(#ui-latin-weight-4) body * {
+/* 字重靠继承，禁止 body * + font-variation-settings（全树样式税是卡顿主因之一）。 */
+html:not(#ui-latin-weight-1):not(#ui-latin-weight-2):not(#ui-latin-weight-3):not(#ui-latin-weight-4) body {
     font-weight: var(--ui-weight-latin) !important;
     font-variation-settings: "wght" var(--ui-weight-latin) !important;
 }
@@ -5572,21 +5578,22 @@ html.theme-dark #shell.shell #composer.composer .input-thumb-upload,
 html.theme-dark #shell.shell #composer.composer .input-thumb-upload:is(:hover, :focus-visible, :active),
 html.studio-theme-dark #shell.shell #composer.composer .input-thumb-upload,
 html.studio-theme-dark #shell.shell #composer.composer .input-thumb-upload:is(:hover, :focus-visible, :active) {
-    background: rgba(31, 31, 31, .80) !important;
-    background-color: rgba(31, 31, 31, .80) !important;
+    background: rgba(31, 31, 31, .92) !important;
+    background-color: rgba(31, 31, 31, .92) !important;
     background-image: none !important;
     border: 1px dashed rgba(166, 166, 166, .55) !important;
     border-color: rgba(166, 166, 166, .55) !important;
     color: rgba(241, 241, 241, .86) !important;
-    -webkit-backdrop-filter: blur(60px) !important;
-    backdrop-filter: blur(60px) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
-/* 添加预览钮：单独保留虚线 + 60px 磨砂（不受全局 frosted kill / perf 模式影响） */
+/* 添加预览钮：实色底，禁止 blur（WebView2 磨砂是卡顿源） */
 html body #shell.shell #composer.composer .input-thumb-upload,
 html.canvas-performance-mode body #shell.shell #composer.composer .input-thumb-upload {
-    -webkit-backdrop-filter: blur(60px) !important;
-    backdrop-filter: blur(60px) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background: rgba(31, 31, 31, .92) !important;
 }
 
 
