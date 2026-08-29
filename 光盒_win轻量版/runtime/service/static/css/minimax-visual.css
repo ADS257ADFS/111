@@ -5235,18 +5235,19 @@ html.canvas-performance-mode:is(.theme-dark, .studio-theme-dark) body :is(
     #composerVideoReferencePopover,
     .iqt-dropdown-menu
 ) {
-    background: rgba(31, 31, 31, .80) !important;
-    background-color: rgba(31, 31, 31, .80) !important;
+    background: rgba(31, 31, 31, .92) !important;
+    background-color: rgba(31, 31, 31, .92) !important;
     background-image: none !important;
     border: 1px solid rgba(255, 255, 255, .16) !important;
     border-color: rgba(255, 255, 255, .16) !important;
     outline: 0 !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: blur(60px) !important;
-    backdrop-filter: blur(60px) !important;
+    /* Perf mode is always on in this build — blur(60px) is the WebView2 lag source. */
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
-/* 浅色浮层同规格：白 80% + blur(60px) */
+/* 浅色浮层：实色底（perf 常开，blur 会卡 WebView2） */
 html:not(.theme-dark):not(.studio-theme-dark) body :is(
     #imageQuickToolbar.image-quick-toolbar,
     .image-quick-toolbar,
@@ -5287,15 +5288,15 @@ html.canvas-performance-mode:not(.theme-dark):not(.studio-theme-dark) body :is(
     #composerVideoReferencePopover,
     .iqt-dropdown-menu
 ) {
-    background: rgba(255, 255, 255, .80) !important;
-    background-color: rgba(255, 255, 255, .80) !important;
+    background: rgba(255, 255, 255, .92) !important;
+    background-color: rgba(255, 255, 255, .92) !important;
     background-image: none !important;
     border: 1px solid rgba(0, 0, 0, .10) !important;
     border-color: rgba(0, 0, 0, .10) !important;
     outline: 0 !important;
     box-shadow: none !important;
-    -webkit-backdrop-filter: blur(60px) !important;
-    backdrop-filter: blur(60px) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 /* 顶栏 / 左栏 / 右栏：深色统一单条 1px hairline（与右侧栏一致，禁止 inset 叠粗） */
@@ -5753,6 +5754,14 @@ html body, html.theme-dark body, html.studio-theme-dark body {
     --vs-glass-blur: blur(60px) !important;
     --canvas-glass-blur: blur(60px) !important;
 }
+/* Perf mode always on in this build: neutralize frost blur tokens. */
+html.canvas-performance-mode,
+html.canvas-performance-mode body {
+    --ui-panel-frost-blur: none !important;
+    --sc-blur: 0px !important;
+    --vs-glass-blur: none !important;
+    --canvas-glass-blur: none !important;
+}
 
 /* 底部一级按钮小箭头：上拉展开朝下，收起朝上 */
 html body #shell.shell #composer.composer .composer-footer
@@ -5820,15 +5829,16 @@ html:not(.theme-dark):not(.studio-theme-dark).canvas-performance-mode body :is(
     .selection-capsule-popover,
     .selection-capsule-dropdown
 ) {
-    background: rgba(255, 255, 255, .80) !important;
-    background-color: rgba(255, 255, 255, .80) !important;
+    background: rgba(255, 255, 255, .92) !important;
+    background-color: rgba(255, 255, 255, .92) !important;
     background-image: none !important;
     border: 1px solid rgba(0, 0, 0, .10) !important;
     border-color: rgba(0, 0, 0, .10) !important;
     color: #50565e !important;
     box-shadow: var(--ui-shadow-float, 0 4px 14px rgba(0, 0, 0, .05)) !important;
-    -webkit-backdrop-filter: blur(60px) !important;
-    backdrop-filter: blur(60px) !important;
+    /* Perf mode is always on — solid fill only, no blur thrash. */
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 html:not(.theme-dark):not(.studio-theme-dark) body
