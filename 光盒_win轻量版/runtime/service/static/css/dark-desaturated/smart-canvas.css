@@ -1629,3 +1629,16 @@ body #shell.shell #assetPanel.asset-panel::before {
     background: none !important;
     box-shadow: none !important;
 }
+
+/* Model name hover: no inset plate / no fill on name spans */
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell
+    #composerApiSettingsPopover .mode-model-choice.active,
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell
+    #composerApiSettingsPopover .mode-model-choice:is(:hover, :focus-visible),
+:is(html.theme-dark, html.studio-theme-dark) #shell.shell
+    #composerApiSettingsPopover .mode-model-choice
+    :is(.mode-model-name, .mode-model-title-row, .mode-model-copy, span) {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}

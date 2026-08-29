@@ -127,7 +127,7 @@
     }
   </style>
   <style id="modelChoiceNoHoverFill">
-    /* Last-load lock: model picker rows never show hover/active slab fill or frame. */
+    /* Last-load lock: model picker rows + NAME text never show hover/active slab. */
     #composerApiSettingsPopover .mode-model-choice,
     #composerApiSettingsPopover .mode-model-choice:hover,
     #composerApiSettingsPopover .mode-model-choice:focus,
@@ -136,7 +136,17 @@
     #composerApiSettingsPopover .mode-model-choice.active,
     #composerApiSettingsPopover .mode-model-choice.selected,
     #composerApiSettingsPopover .mode-model-choice[aria-selected="true"],
-    #composerApiSettingsPopover .mode-model-choice[aria-checked="true"] {
+    #composerApiSettingsPopover .mode-model-choice[aria-checked="true"],
+    #composerApiSettingsPopover .mode-model-choice :is(
+      .mode-model-copy,
+      .mode-model-title-row,
+      .mode-model-name,
+      .mode-model-desc,
+      .mode-model-ico,
+      span
+    ),
+    #composerApiSettingsPopover .mode-model-choice:is(:hover, :focus, :focus-visible, :active)
+      :is(.mode-model-copy, .mode-model-title-row, .mode-model-name, .mode-model-desc, .mode-model-ico, span) {
       appearance: none !important;
       -webkit-appearance: none !important;
       border: 0 !important;
@@ -146,9 +156,20 @@
       background-color: transparent !important;
       background-image: none !important;
       box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+      user-select: none !important;
+      -webkit-user-select: none !important;
+    }
+    #composerApiSettingsPopover .mode-model-choice :is(.mode-model-name, .mode-model-title-row)::selection,
+    #composerApiSettingsPopover .mode-model-choice :is(.mode-model-name, .mode-model-title-row)::-moz-selection {
+      background: transparent !important;
+      color: inherit !important;
     }
     #composerApiSettingsPopover .mode-model-choice:is(:hover, :focus-visible)::before,
-    #composerApiSettingsPopover .mode-model-choice:is(:hover, :focus-visible)::after {
+    #composerApiSettingsPopover .mode-model-choice:is(:hover, :focus-visible)::after,
+    #composerApiSettingsPopover .mode-model-choice :is(.mode-model-name, .mode-model-title-row, .mode-model-copy)::before,
+    #composerApiSettingsPopover .mode-model-choice :is(.mode-model-name, .mode-model-title-row, .mode-model-copy)::after {
       content: none !important;
       display: none !important;
       background: none !important;

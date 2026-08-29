@@ -6127,3 +6127,49 @@ html body.gpt-dock-canvas-mode .chat-shell #messages.messages
     color: var(--ui-text) !important;
 }
 
+/* MODEL-NAME HOVER SLAB KILL v2
+ * Screenshot shows gray rect glued to the name text, not the whole row.
+ * Zero fill on the row AND on title/name/copy spans (hover/active/idle). */
+html body #shell.shell #composer.composer #composerApiSettingsPopover
+    .composer-mode-model-list .mode-model-choice,
+html body #shell.shell #composer.composer #composerApiSettingsPopover
+    .composer-mode-model-list .mode-model-choice:is(:hover, :focus, :focus-visible, :active, .active, .selected),
+html body #shell.shell #composer.composer #composerApiSettingsPopover
+    .composer-mode-model-list .mode-model-choice
+    :is(.mode-model-copy, .mode-model-title-row, .mode-model-name, .mode-model-desc, span),
+html body #shell.shell #composer.composer #composerApiSettingsPopover
+    .composer-mode-model-list .mode-model-choice:is(:hover, :focus, :focus-visible, :active, .active)
+    :is(.mode-model-copy, .mode-model-title-row, .mode-model-name, .mode-model-desc, span),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice,
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice:is(:hover, :focus, :focus-visible, :active, .active),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice
+    :is(.mode-model-copy, .mode-model-title-row, .mode-model-name, span),
+:is(html.theme-dark, html.studio-theme-dark) body #shell.shell #composer.composer
+    #composerApiSettingsPopover .composer-mode-model-list .mode-model-choice:is(:hover, :focus-visible, :active)
+    :is(.mode-model-copy, .mode-model-title-row, .mode-model-name, span) {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    border: 0 !important;
+    border-color: transparent !important;
+    outline: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    filter: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+}
+html body #shell.shell #composer.composer #composerApiSettingsPopover
+    .mode-model-name::selection,
+html body #shell.shell #composer.composer #composerApiSettingsPopover
+    .mode-model-title-row::selection {
+    background: transparent !important;
+    color: inherit !important;
+}
+
